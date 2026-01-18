@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+	<report id="print_close_cash_report"
+				model="cash.close.closed"
+				string=" تقرير اقفال الصندوق"
+				report_type="qweb-pdf"
+				name="qimamhd_mizan_car_13.cash_close_report_view"
+				file="qimamhd_mizan_car_13.cash_close_report_view"
+				menu="True"
+
+				/>
+
+		<template id="cash_close_report_view">
+		    <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"></t>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"></t>
+            </t>
+
+			<div class="header">
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+						<t t-if="not user_id.branch_id.no_header_report_account">
+							<t t-if="user_id.branch_id.branch_header">
+								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_header)"
+									style="max-height: 200px;"/>
+							</t>
+							<t t-else="">
+								<t t-if="company.header_image">
+									<img t-if="company.header_image" t-att-src="'data:image/png;base64,%s' % to_text(company.header_image)"
+										style="max-height: 200px;"/>
+								</t>
+						    </t>
+						</t>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="row mt32 mb32">
+                    <div class="col-12">
+						<t t-if="not user_id.branch_id.no_header_report_account">
+							<t t-if="user_id.branch_id.branch_footer">
+ 								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_footer)"
+									style="max-height: 200px;"/>
+									<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+									<br />
+							</t>
+							<t t-else="">
+								<t t-if="company.footer_image">
+									<img t-if="company.footer_image" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)"
+										style="max-height: 200px;"/>
+										<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+										<br />
+								</t>
+							</t>
+						</t>
+                    </div>
+                </div>
+            </div>
+
+			<t t-call ="web.html_container">
+
+				<t t-call="web.external_layout">
+
+<style>
+        table {
+          border-collapse: collapse;
+          width: 100%;
+           font-size:9px;
+        }
+        #t01 th, td {
+          text-align: left;
+          padding: 3px;
+          font-size:9px;
+          vertical-align: middle;
+        }
+</style>
+<style>
+#customers {
+  border-collapse: collapse;
+  width: 100%;
+   border: 1px solid DarkOrange;
+
+  overflow:hidden
+}
+
+#supplier {
+  border-collapse: collapse;
+  width: 100%;
+   border: 1px solid DarkOrange;
+
+  overflow:hidden
+}
+
+#customers td, #customers th {
+  border: 1px solid gray;
+  padding: 5px;
+  text-align: right;
+}
+
+#supplier td, #supplier th {
+  border: 1px solid #D3D3D3;
+  padding: 8px;
+  text-align: right;
+  vertical-align: top;
+}
+
+#customers tr:nth-child(even){background-color: #F5F5F5;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: right;
+
+
+}
+
+#supplier th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: right;
+
+}
+</style>
+<style>
+#table1 {
+  border-collapse: collapse;
+  width: 100%;
+  font-size:9px;
+}
+
+#table1 th, #table1 td {
+  padding: 8px;
+  text-align: right;
+  font-size:9px;
+}
+</style>
+<style>
+  #foo {
+position:absolute;
+bottom:300px;
+right:0px;
+  }
+</style>
+
+						<div class="page">
+                            <br></br>
+                            <center><strong> تقرير اقفال الصندوق  </strong></center>
+                              <br></br>
+
+								<table  id="table1" style="font-size:11px;">
+                                    <tr>
+                                        <td style="vertical-align:top;font-size:11px; border-collapse: collapse;">
+                                            <table id="table1" class="table table-sm table table-bordered" style="background-color:white;">
+                                            <tr style="background-color:white;">
+
+                                                <td style="vertical-align:top;font-size:11px; border-collapse: collapse;">
+                                                    <strong>رقم الطلب </strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="docs.seq"/>
+                                                </td>
+                                                <td>
+                                                    <strong> التاريخ </strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="docs.order_date"/>
+                                                </td>
+
+                                                <td>
+                                                    <strong> الفرع </strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="docs.branch_id.name"/>
+                                                </td>
+
+
+                                            </tr>
+                                            <tr style="background-color:white;">
+                                                <td>
+                                                <strong> صندوق الفرع </strong>
+                                                </td>
+                                                <td>
+                                                <span t-esc="docs.branch_cash_journal_id.name"/>
+                                                </td>
+                                                <td>
+                                                <strong> صندوق المركز الرئيسي </strong>
+                                                </td>
+                                                <td>
+                                                <span t-esc="docs.main_cash_journal_id.name"/>
+                                                </td>
+
+
+
+                                            </tr>
+                                                <tr>
+                                                     <td>
+                                                    <strong> الوصف  </strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="docs.description"/>
+                                                </td>
+                                                </tr>
+                                                <tr>
+                                                      <td>
+                                                    <strong> المبلغ  </strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="docs.amount"/>
+                                                </td>
+                                                </tr>
+                                             </table>
+                                    </td>
+
+                                    </tr>
+                                </table>
+                              <table class="table">
+                                <tr>
+                                    <td>
+                                        <strong> البائع  </strong> <span> Sale Man </span>
+                                    </td>
+                                    <td>
+                                            --------------------------------
+                                    </td>
+
+
+                                    <td>
+                                        <strong> المدير العام  </strong> <span>  General Manager </span>
+                                    </td>
+                                    <td>
+                                            --------------------------------
+                                    </td>
+
+                                    <td>
+                                        <strong> المحاسب  </strong> <span> Accountant </span>
+                                    </td>
+                                    <td>
+                                            --------------------------------
+                                    </td>
+
+                                </tr>
+                                <tr>
+
+                                     <td>
+                                        <strong>التوقيع</strong> <span>Signature</span>
+                                    </td>
+                                    <td>
+                                            --------------------------------
+                                    </td>
+
+                                    <td>
+                                        <strong>التوقيع</strong> <span>Signature</span>
+                                    </td>
+                                    <td>
+                                            --------------------------------
+                                    </td>
+
+                                    <td>
+                                        <strong> التوقيع </strong> <span>Signature</span>
+                                    </td>
+                                    <td>
+                                            --------------------------------
+                                    </td>
+
+
+
+                                </tr>
+                            </table>
+
+
+ْ						</div>
+
+                     <p style="page-break-after:always;">
+                             </p>
+				</t>
+				</t>
+	</template>
+
+
+</odoo>

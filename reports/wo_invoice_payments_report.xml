@@ -1,0 +1,1104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+	<report id="print_wo_inv_pay_rpt"
+				model="mizan.wo.invoice.payments.report"
+				string=" تقرير اوامر العمل المكتملة"
+				report_type="qweb-pdf"
+				name="qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view"
+				file="qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view"
+				 menu="True"
+
+				/>
+     <report
+        id="print_wo_inv_pay_xlsx"
+        model="mizan.wo.invoice.payments.report"
+        string="Print to XLSX"
+        report_type="xlsx"
+        name="qimamhd_mizan_car_13.print_wo_inv_pay_xlsx_view"
+        file="تقرير اوامر العمل المكتملة"
+        attachment_use="False"
+        />
+
+		<template id="print_wo_inv_pay_rpt_view">
+		    <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"></t>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"></t>
+            </t>
+
+			<div class="header">
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+						<t t-if="not user_id.branch_id.no_header_report_account">
+							<t t-if="user_id.branch_id.branch_header">
+								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_header)"
+									style="max-height: 200px;"/>
+							</t>
+							<t t-else="">
+								<t t-if="company.header_image">
+									<img t-if="company.header_image" t-att-src="'data:image/png;base64,%s' % to_text(company.header_image)"
+										style="max-height: 200px;"/>
+								</t>
+						    </t>
+						</t>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="row mt32 mb32">
+                    <div class="col-12">
+						<t t-if="not user_id.branch_id.no_header_report_account">
+							<t t-if="user_id.branch_id.branch_footer">
+ 								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_footer)"
+									style="max-height: 200px;"/>
+									<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+									<br />
+							</t>
+							<t t-else="">
+								<t t-if="company.footer_image">
+									<img t-if="company.footer_image" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)"
+										style="max-height: 200px;"/>
+										<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+										<br />
+								</t>
+							</t>
+						</t>
+                    </div>
+                </div>
+            </div>
+
+			<t t-call ="web.html_container">
+
+				<t t-call="web.external_layout">
+
+<style>
+        table {
+          border-collapse: collapse;
+          width: 100%;
+           font-size:9px;
+        }
+        #t01 th, td {
+          text-align: left;
+          padding: 3px;
+          font-size:9px;
+          vertical-align: middle;
+        }
+</style>
+<style>
+#customers {
+  border-collapse: collapse;
+  width: 100%;
+   border: 1px solid DarkOrange;
+
+  overflow:hidden
+}
+
+#supplier {
+  border-collapse: collapse;
+  width: 100%;
+   border: 1px solid DarkOrange;
+
+  overflow:hidden
+}
+
+#customers td, #customers th {
+  border: 1px solid gray;
+  padding: 5px;
+  text-align: right;
+}
+
+#supplier td, #supplier th {
+  border: 1px solid #D3D3D3;
+  padding: 8px;
+  text-align: right;
+  vertical-align: top;
+}
+
+#customers tr:nth-child(even){background-color: #F5F5F5;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: right;
+
+
+}
+
+#supplier th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: right;
+
+}
+</style>
+<style>
+#table1 {
+  border-collapse: collapse;
+  width: 100%;
+  font-size:9px;
+}
+
+#table1 th, #table1 td {
+  padding: 8px;
+  text-align: right;
+  font-size:9px;
+}
+</style>
+<style>
+  #foo {
+position:absolute;
+bottom:300px;
+right:0px;
+  }
+</style>
+
+						<div class="page">
+
+								<center><strong> تقرير اوامر العمل المكتملة </strong></center>
+
+                                   <t t-if="branchs">
+                                        <div>
+
+                                            <strong> بيانات بالسيارات الواردة الى المركز : <span t-esc="', '.join(g['name'] for g in branchs)"/></strong>
+
+                                        </div>
+                                    </t>
+                                  <t t-set="work_order_date" t-value="[]"/>
+
+                                    <t t-foreach="docs.sorted(key=lambda x: (x.end_date))" t-as="l">
+                                       <t t-if="l.end_date.strftime('%Y-%m-%d') not in work_order_date">
+                                               <t t-set="work_order_date" t-value="work_order_date+[l.end_date.strftime('%Y-%m-%d')]"/>
+
+                                       </t>
+
+
+                                   </t>
+
+
+                                  <t t-set="states" t-value="[]"/>
+                                   <t t-foreach="docs.filtered(lambda x: x.state == 'execute_completed')" t-as="l">
+                                       <t t-if="l.state == 'execute_completed'">
+                                           <t t-if="'completed' not in states">
+                                                  <t t-set="states" t-value="states+['completed']"/>
+                                           </t>
+                                       </t>
+                                   </t>
+                                  <t t-foreach="docs.filtered(lambda x: x.state != 'execute_completed')" t-as="l">
+
+                                       <t t-if="l.state != 'execute_completed'">
+                                           <t t-if="'un_completed' not in states">
+                                                  <t t-set="states" t-value="states+['un_completed']"/>
+                                           </t>
+                                       </t>
+                                   </t>
+                                <t t-if="group_by_type == 'by_date'">
+                                      <t t-if="display_type == 'detail'">
+                                          <t t-foreach="sorted(set(work_order_date))" t-as="rec">
+                                            <div>
+                                                    <strong> تاريخ : <span t-esc="rec"/></strong>
+                                            </div>
+                                     <br></br>
+                                     <t t-foreach="sorted(set(states))" t-as="state">
+                                         <span t-esc="state"/>
+
+                                          <div>
+                                              <t t-if="state == 'completed'">
+
+                                                <strong> اوامر العمل المكتملة </strong>
+                                              </t>
+                                               <t t-if="state == 'un_completed'">
+
+                                                <strong> اوامر العمل الغير مكتملة </strong>
+                                              </t>
+
+                                        </div>
+
+                                    <table  id="customers">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th class="text-center" style="width: 5%">الرقم</th>
+                                                <th class="text-center" style="width: 7%">تاريخ الخروج</th>
+                                                  <th class="text-center" style="width: 5%">رقم امر العمل</th>
+                                                <th class="text-center" style="width: 5%">رقم الفاتورة</th>
+                                                <th class="text-center" style="width: 20%">العميل</th>
+                                                <th class="text-center" style="width: 5%">نوع السيارة</th>
+                                                <th class="text-center" style="width: 7%">رقم اللوحة</th>
+                                                <th class="text-center" style="width: 5%">خدمة</th>
+                                                 <th class="text-center" style="width: 5%">قطع غيار</th>
+                                                <th class="text-center" style="width: 5%">الخصم</th>
+
+                                                 <th class="text-center" style="width: 7%">الاجمالي قبل الضريبة</th>
+
+                                                 <th class="text-center" style="width: 5%">الضريبة</th>
+                                                 <th class="text-center" style="width: 7%">الاجمالي</th>
+
+                                                <th class="text-center" style="width: 5%">الدفع نقد</th>
+                                                <th class="text-center" style="width: 5%">الدفع شبكة</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           <t t-set="l_cnt" t-value="0"/>
+                                           <t t-set="l_services_total" t-value="0"/>
+                                           <t t-set="l_spare_parts_total" t-value="0"/>
+                                           <t t-set="l_discount_total" t-value="0"/>
+                                           <t t-set="l_tax_total" t-value="0"/>
+                                           <t t-set="l_amount_total" t-value="0"/>
+                                           <t t-set="l_total_before_total" t-value="0"/>
+                                           <t t-set="l_cash" t-value="0"/>
+                                           <t t-set="l_bank" t-value="0"/>
+
+                                            <t t-foreach="docs" t-as="line">
+                                                <t t-if="rec == line.end_date.strftime('%Y-%m-%d')">
+                                                          <t t-set="l_cnt" t-value="l_cnt + 1"/>
+                                                          <t t-set="l_services_total" t-value="sum(l.total_before_tax for l in line.result_lines) + l_services_total"/>
+                                                          <t t-set="l_spare_parts_total" t-value="sum(l.total_before_tax for l in line.lines_spare_parts) + l_spare_parts_total"/>
+                                                          <t t-set="l_discount_total" t-value="sum((l.quantity * l.price_unit * (l.discount /100)) for l in line.create_invoice_manually_id.invoice_line_ids) + l_discount_total"/>
+                                                          <t t-set="l_tax_total" t-value="l_tax_total + line.create_invoice_manually_id.amount_tax"/>
+                                                          <t t-set="l_total_before_total" t-value="l_total_before_total + (sum(l.total_before_tax for l in line.result_lines) + sum(l.total_before_tax for l in line.lines_spare_parts))"/>
+                                                          <t t-set="l_amount_total" t-value="l_amount_total + line.create_invoice_manually_id.amount_total"/>
+                                                          <t t-set="l_cash" t-value="l_cash + line.create_invoice_manually_id.get_payment_amt_of_invoice('cash')"/>
+                                                          <t t-set="l_bank" t-value="l_bank + line.create_invoice_manually_id.get_payment_amt_of_invoice('bank')"/>
+                                                            <tr>
+                                                                     <td>
+                                                                     <span t-esc="l_cnt"/>
+                                                                  </td>
+
+                                                              <td>
+                                                                 <span t-esc="line.end_date.strftime('%Y-%m-%d')"/>
+                                                              </td>
+                                                                <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="line.id"/>
+                                                                </strong>
+                                                              </td>
+                                                                <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="line.create_invoice_manually_id.name"/>
+                                                                </strong>
+                                                              </td>
+                                                                  <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="line.create_invoice_manually_id.partner_id.name"/>
+                                                                </strong>
+                                                              </td>
+
+                                                                <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="line.car_type_id.name"/>
+                                                                </strong>
+                                                              </td>
+                                                              <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="line.entry_card_id.car_panel_no"/>
+                                                                </strong>
+                                                              </td>
+                                                              <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="round(sum(l.total_before_tax for l in line.result_lines),2)"/>
+                                                                </strong>
+                                                              </td>
+                                                              <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="round(sum(l.total_before_tax for l in line.lines_spare_parts),2)"  />
+                                                                </strong>
+                                                              </td>
+
+                                                                <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="round(sum((l.quantity * l.price_unit * (l.discount /100)) for l in line.create_invoice_manually_id.invoice_line_ids),2)"/>
+                                                                </strong>
+                                                              </td>
+                                                                  <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="round(sum(l.total_before_tax for l in line.result_lines) + sum(l.total_before_tax for l in line.lines_spare_parts),2)"  />
+                                                                </strong>
+                                                              </td>
+                                                                 <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="line.create_invoice_manually_id.amount_tax"/>
+                                                                </strong>
+                                                              </td>
+                                                                 <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc="line.create_invoice_manually_id.amount_total"/>
+                                                                </strong>
+                                                              </td>
+                                                                <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc=" '{:,.2f}'.format(line.create_invoice_manually_id.get_payment_amt_of_invoice('cash'))"/>
+                                                                </strong>
+                                                              </td>
+                                                              <td>
+                                                                <strong><span style="color:gray;" />
+                                                                   <span t-esc=" '{:,.2f}'.format(line.create_invoice_manually_id.get_payment_amt_of_invoice('bank'))"/>
+                                                                </strong>
+                                                              </td>
+                                                            </tr>
+                                                           </t>
+
+                                            </t>
+
+
+                                        </tbody>
+
+                                            <tr style="background-color:gray;color:white;"  class="text-center">
+                                                <td  colspan="7">
+                                                <strong> اجمالي تاريخ : <span t-esc="rec"/></strong>
+
+                                              </td>
+
+                                              <td>
+                                                <strong>
+        <!--                                           <span t-esc="l_services_total"/>-->
+                                                    <span t-esc=" '{:,.2f}'.format(l_services_total )" /></strong>
+
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_spare_parts_total)" /></strong>
+
+                                              </td>
+
+
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_discount_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_total_before_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_tax_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_amount_total)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_cash)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_bank)" /></strong>
+
+                                              </td>
+
+                                            </tr>
+                                   </table>
+                                   <br></br>
+                                     </t>
+
+                                     </t>
+                                         <table  class="table table-sm table table-bordered" style="width:50%">
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th >دفعت</th>
+                                                    <th >اجمالي المبلغ</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                  <t t-foreach="payments_sum" t-as="pay">
+                                                    <tr >
+                                                      <td >
+                                                       <strong><span style="color:gray;"  />
+                                                        <span t-esc="pay['journal_name']"/></strong>
+                                                      </td>
+                                                        <td >
+                                                       <strong><span style="color:gray;" />
+                                                        <span t-esc=" '{:,.2f}'.format(pay['amount'])"/></strong>
+                                                      </td>
+
+                                                    </tr>
+                                                  </t>
+
+                                            </tbody>
+
+                                           </table>
+
+                                    </t>
+                                      <t t-if="display_type == 'summary'">
+                                        <table  id="customers">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th class="text-center" style="width: 5%">تاريخ الخروج</th>
+
+                                                <th class="text-center" style="width: 5%">خدمة</th>
+                                                 <th class="text-center" style="width: 5%">قطع غيار</th>
+                                                <th class="text-center" style="width: 5%">الخصم</th>
+
+                                                 <th class="text-center" style="width: 7%">الاجمالي قبل الضريبة</th>
+
+                                                 <th class="text-center" style="width: 5%">الضريبة</th>
+                                                 <th class="text-center" style="width: 7%">الاجمالي</th>
+
+                                                <th class="text-center" style="width: 5%">الدفع نقد</th>
+                                                <th class="text-center" style="width: 5%">الدفع شبكة</th>
+
+
+                                            </tr>
+                                        </thead>
+                                                <t t-set="l_services_total_all" t-value="0"/>
+                                               <t t-set="l_spare_parts_total_all" t-value="0"/>
+                                               <t t-set="l_discount_total_all" t-value="0"/>
+                                               <t t-set="l_tax_total_all" t-value="0"/>
+                                               <t t-set="l_amount_total_all" t-value="0"/>
+                                               <t t-set="l_total_before_total_all" t-value="0"/>
+                                               <t t-set="l_cash_all" t-value="0"/>
+                                               <t t-set="l_bank_all" t-value="0"/>
+
+                                         <t t-foreach="sorted(set(work_order_date))" t-as="rec">
+                                            <tbody>
+
+                                               <t t-set="l_cnt" t-value="0"/>
+                                               <t t-set="l_services_total" t-value="0"/>
+                                               <t t-set="l_spare_parts_total" t-value="0"/>
+                                               <t t-set="l_discount_total" t-value="0"/>
+                                               <t t-set="l_tax_total" t-value="0"/>
+                                               <t t-set="l_amount_total" t-value="0"/>
+                                               <t t-set="l_total_before_total" t-value="0"/>
+                                               <t t-set="l_cash" t-value="0"/>
+                                               <t t-set="l_bank" t-value="0"/>
+
+                                             <t t-foreach="docs" t-as="line">
+                                                <t t-if="rec == line.end_date.strftime('%Y-%m-%d')">
+                                                      <t t-set="l_cnt" t-value="l_cnt + 1"/>
+                                                      <t t-set="l_services_total" t-value="sum(l.total_before_tax for l in line.result_lines) + l_services_total"/>
+                                                      <t t-set="l_services_total_all" t-value="sum(l.total_before_tax for l in line.result_lines) + l_services_total_all"/>
+
+                                                      <t t-set="l_spare_parts_total" t-value="sum(l.total_before_tax for l in line.lines_spare_parts) + l_spare_parts_total"/>
+                                                      <t t-set="l_spare_parts_total_all" t-value="sum(l.total_before_tax for l in line.lines_spare_parts) + l_spare_parts_total_all"/>
+
+                                                      <t t-set="l_discount_total" t-value="sum((l.quantity * l.price_unit * (l.discount /100)) for l in line.create_invoice_manually_id.invoice_line_ids) + l_discount_total"/>
+                                                      <t t-set="l_discount_total_all" t-value="sum((l.quantity * l.price_unit * (l.discount /100)) for l in line.create_invoice_manually_id.invoice_line_ids) + l_discount_total_all"/>
+
+                                                      <t t-set="l_tax_total" t-value="l_tax_total + line.create_invoice_manually_id.amount_tax"/>
+                                                      <t t-set="l_tax_total_all" t-value="l_tax_total_all + line.create_invoice_manually_id.amount_tax"/>
+
+                                                      <t t-set="l_total_before_total" t-value="l_total_before_total + (sum(l.total_before_tax for l in line.result_lines) + sum(l.total_before_tax for l in line.lines_spare_parts))"/>
+                                                      <t t-set="l_total_before_total_all" t-value="l_total_before_total_all + (sum(l.total_before_tax for l in line.result_lines) + sum(l.total_before_tax for l in line.lines_spare_parts))"/>
+
+                                                      <t t-set="l_amount_total" t-value="l_amount_total + line.create_invoice_manually_id.amount_total"/>
+                                                      <t t-set="l_amount_total_all" t-value="l_amount_total_all + line.create_invoice_manually_id.amount_total"/>
+
+                                                          <t t-set="l_cash" t-value="l_cash + line.create_invoice_manually_id.get_payment_amt_of_invoice('cash')"/>
+                                                           <t t-set="l_cash_all" t-value="l_cash_all + line.create_invoice_manually_id.get_payment_amt_of_invoice('cash')"/>
+
+                                                          <t t-set="l_bank" t-value="l_bank + line.create_invoice_manually_id.get_payment_amt_of_invoice('bank')"/>
+
+                                                          <t t-set="l_bank_all" t-value="l_bank_all + line.create_invoice_manually_id.get_payment_amt_of_invoice('bank')"/>
+                                                 </t>
+                                            </t>
+                                        </tbody>
+                                         <tr style="background-color:white;color:black;"  class="text-center">
+                                                <td>
+                                                <strong> اجمالي تاريخ : <span t-esc="rec"/></strong>
+
+                                              </td>
+
+                                              <td>
+                                                <strong>
+        <!--                                           <span t-esc="l_services_total"/>-->
+                                                    <span t-esc=" '{:,.2f}'.format(l_services_total )" /></strong>
+
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_spare_parts_total)" /></strong>
+
+                                              </td>
+
+
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_discount_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_total_before_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_tax_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_amount_total)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_cash)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_bank)" /></strong>
+
+                                              </td>
+
+                                            </tr>
+                                            </t>
+                                             <tr style="background-color:gray;color:white;"  class="text-center">
+                                                <td>
+                                                <strong> الاجمالي </strong>
+
+                                              </td>
+
+                                              <td>
+                                                <strong>
+        <!--                                           <span t-esc="l_services_total"/>-->
+                                                    <span t-esc=" '{:,.2f}'.format(l_services_total_all )" /></strong>
+
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_spare_parts_total_all)" /></strong>
+
+                                              </td>
+
+
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_discount_total_all)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_total_before_total_all)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_tax_total_all)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_amount_total_all)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_cash_all)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_bank_all)" /></strong>
+
+                                              </td>
+
+                                            </tr>
+
+                                        </table>
+                                        <br></br>
+
+                                               <table  class="table table-sm table table-bordered" style="width:50%">
+                                                    <thead>
+                                                    <tr class="text-center">
+                                                        <th >دفعت</th>
+                                                        <th >اجمالي المبلغ</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                      <t t-foreach="payments_sum" t-as="pay">
+                                                        <tr >
+                                                          <td >
+                                                           <strong><span style="color:gray;"  />
+                                                            <span t-esc="pay['journal_name']"/></strong>
+                                                          </td>
+                                                            <td >
+                                                           <strong><span style="color:gray;" />
+                                                            <span t-esc="pay['amount']"/></strong>
+                                                          </td>
+
+                                                        </tr>
+                                                      </t>
+
+                                                </tbody>
+
+                                               </table>
+
+
+
+                                        </t>
+                                 </t>
+                                 <t t-if="group_by_type == 'by_type'">
+                                      <t t-if="display_type == 'detail'">
+                                             <br></br>
+                                             <t t-foreach="sorted(set(states))" t-as="state">
+                                                 <span t-esc="state"/>
+
+                                                  <div>
+                                                      <t t-if="state == 'completed'">
+
+                                                        <strong> اوامر العمل المكتملة </strong>
+                                                      </t>
+                                                       <t t-if="state == 'un_completed'">
+
+                                                        <strong> اوامر العمل الغير مكتملة </strong>
+                                                      </t>
+
+                                                </div>
+
+                                            <table  id="customers">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th class="text-center" style="width: 5%">الرقم</th>
+                                                        <th class="text-center" style="width: 7%">تاريخ الخروج</th>
+                                                          <th class="text-center" style="width: 5%">رقم امر العمل</th>
+                                                        <th class="text-center" style="width: 5%">رقم الفاتورة</th>
+                                                        <th class="text-center" style="width: 20%">العميل</th>
+                                                        <th class="text-center" style="width: 5%">نوع السيارة</th>
+                                                        <th class="text-center" style="width: 7%">رقم اللوحة</th>
+                                                        <th class="text-center" style="width: 5%">خدمة</th>
+                                                         <th class="text-center" style="width: 5%">قطع غيار</th>
+                                                        <th class="text-center" style="width: 5%">الخصم</th>
+
+                                                         <th class="text-center" style="width: 7%">الاجمالي قبل الضريبة</th>
+
+                                                         <th class="text-center" style="width: 5%">الضريبة</th>
+                                                         <th class="text-center" style="width: 7%">الاجمالي</th>
+
+                                                        <th class="text-center" style="width: 5%">الدفع نقد</th>
+                                                        <th class="text-center" style="width: 5%">الدفع شبكة</th>
+
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                   <t t-set="l_cnt" t-value="0"/>
+                                                   <t t-set="l_services_total" t-value="0"/>
+                                                   <t t-set="l_spare_parts_total" t-value="0"/>
+                                                   <t t-set="l_discount_total" t-value="0"/>
+                                                   <t t-set="l_tax_total" t-value="0"/>
+                                                   <t t-set="l_amount_total" t-value="0"/>
+                                                   <t t-set="l_total_before_total" t-value="0"/>
+                                                   <t t-set="l_cash" t-value="0"/>
+                                                   <t t-set="l_bank" t-value="0"/>
+
+                                                    <t t-foreach="docs" t-as="line">
+                                                                   <t t-set="l_cnt" t-value="l_cnt + 1"/>
+                                                                  <t t-set="l_services_total" t-value="sum(l.total_before_tax for l in line.result_lines) + l_services_total"/>
+                                                                  <t t-set="l_spare_parts_total" t-value="sum(l.total_before_tax for l in line.lines_spare_parts) + l_spare_parts_total"/>
+                                                                  <t t-set="l_discount_total" t-value="sum((l.quantity * l.price_unit * (l.discount /100)) for l in line.create_invoice_manually_id.invoice_line_ids) + l_discount_total"/>
+                                                                  <t t-set="l_tax_total" t-value="l_tax_total + line.create_invoice_manually_id.amount_tax"/>
+                                                                  <t t-set="l_total_before_total" t-value="l_total_before_total + (sum(l.total_before_tax for l in line.result_lines) + sum(l.total_before_tax for l in line.lines_spare_parts))"/>
+                                                                  <t t-set="l_amount_total" t-value="l_amount_total + line.create_invoice_manually_id.amount_total"/>
+                                                                  <t t-set="l_cash" t-value="l_cash + line.create_invoice_manually_id.get_payment_amt_of_invoice('cash')"/>
+                                                                  <t t-set="l_bank" t-value="l_bank + line.create_invoice_manually_id.get_payment_amt_of_invoice('bank')"/>
+                                                                    <tr>
+                                                                             <td>
+                                                                             <span t-esc="l_cnt"/>
+                                                                          </td>
+
+                                                                      <td>
+                                                                         <span t-esc="line.end_date.strftime('%Y-%m-%d')"/>
+                                                                      </td>
+                                                                        <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="line.id"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                        <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="line.create_invoice_manually_id.name"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                          <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="line.create_invoice_manually_id.partner_id.name"/>
+                                                                        </strong>
+                                                                      </td>
+
+                                                                        <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="line.car_type_id.name"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                      <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="line.entry_card_id.car_panel_no"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                      <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="round(sum(l.total_before_tax for l in line.result_lines),2)"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                      <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="round(sum(l.total_before_tax for l in line.lines_spare_parts),2)"  />
+                                                                        </strong>
+                                                                      </td>
+
+                                                                        <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="round(sum((l.quantity * l.price_unit * (l.discount /100)) for l in line.create_invoice_manually_id.invoice_line_ids),2)"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                          <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="round(sum(l.total_before_tax for l in line.result_lines) + sum(l.total_before_tax for l in line.lines_spare_parts),2)"  />
+                                                                        </strong>
+                                                                      </td>
+                                                                         <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="line.create_invoice_manually_id.amount_tax"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                         <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc="line.create_invoice_manually_id.amount_total"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                        <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc=" '{:,.2f}'.format(l_cash)"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                      <td>
+                                                                        <strong><span style="color:gray;" />
+                                                                           <span t-esc=" '{:,.2f}'.format(l_bank)"/>
+                                                                        </strong>
+                                                                      </td>
+                                                                    </tr>
+
+
+                                                    </t>
+
+
+                                                </tbody>
+
+                                                    <tr style="background-color:gray;color:white;"  class="text-center">
+                                                        <td  colspan="7">
+                                                        <strong> الاجمالي  :  </strong>
+
+                                                      </td>
+
+                                                      <td>
+                                                        <strong>
+                <!--                                           <span t-esc="l_services_total"/>-->
+                                                            <span t-esc=" '{:,.2f}'.format(l_services_total )" /></strong>
+
+
+                                                      </td>
+                                                        <td>
+                                                        <strong>
+                                                            <span t-esc=" '{:,.2f}'.format(l_spare_parts_total)" /></strong>
+
+                                                      </td>
+
+
+                                                         <td>
+                                                        <strong>
+                                                            <span t-esc=" '{:,.2f}'.format(l_discount_total)" /></strong>
+
+                                                      </td>
+                                                         <td>
+                                                        <strong>
+                                                            <span t-esc=" '{:,.2f}'.format(l_total_before_total)" /></strong>
+
+                                                      </td>
+                                                         <td>
+                                                        <strong>
+                                                            <span t-esc=" '{:,.2f}'.format(l_tax_total)" /></strong>
+
+                                                      </td>
+                                                         <td>
+                                                        <strong>
+                                                            <span t-esc=" '{:,.2f}'.format(l_amount_total)" /></strong>
+
+                                                      </td>
+                                                        <td>
+                                                        <strong>
+                                                            <span t-esc=" '{:,.2f}'.format(l_cash)" /></strong>
+
+                                                      </td>
+                                                        <td>
+                                                        <strong>
+                                                            <span t-esc=" '{:,.2f}'.format(l_bank)" /></strong>
+
+                                                      </td>
+
+                                                    </tr>
+                                           </table>
+                                           <br></br>
+                                             </t>
+                                                       <table  class="table table-sm table table-bordered" style="width:50%">
+                                                        <thead>
+                                                        <tr class="text-center">
+                                                            <th >دفعت</th>
+                                                            <th >اجمالي المبلغ</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                          <t t-foreach="payments_sum" t-as="pay">
+                                                            <tr >
+                                                              <td >
+                                                               <strong><span style="color:gray;"  />
+                                                                <span t-esc="pay['journal_name']"/></strong>
+                                                              </td>
+                                                                <td >
+                                                               <strong><span style="color:gray;" />
+                                                                <span t-esc=" '{:,.2f}'.format(pay['amount'])"/></strong>
+                                                              </td>
+
+                                                            </tr>
+                                                          </t>
+
+                                                    </tbody>
+
+                                                   </table>
+
+
+                                    </t>
+                                      <t t-if="display_type == 'summary'">
+                                        <table  id="customers">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th class="text-center" style="width: 5%">تاريخ الخروج</th>
+
+                                                <th class="text-center" style="width: 5%">خدمة</th>
+                                                 <th class="text-center" style="width: 5%">قطع غيار</th>
+                                                <th class="text-center" style="width: 5%">الخصم</th>
+
+                                                 <th class="text-center" style="width: 7%">الاجمالي قبل الضريبة</th>
+
+                                                 <th class="text-center" style="width: 5%">الضريبة</th>
+                                                 <th class="text-center" style="width: 7%">الاجمالي</th>
+
+                                                <th class="text-center" style="width: 5%">الدفع نقد</th>
+                                                <th class="text-center" style="width: 5%">الدفع شبكة</th>
+
+
+                                            </tr>
+                                        </thead>
+                                                <t t-set="l_services_total_all" t-value="0"/>
+                                               <t t-set="l_spare_parts_total_all" t-value="0"/>
+                                               <t t-set="l_discount_total_all" t-value="0"/>
+                                               <t t-set="l_tax_total_all" t-value="0"/>
+                                               <t t-set="l_amount_total_all" t-value="0"/>
+                                               <t t-set="l_total_before_total_all" t-value="0"/>
+                                               <t t-set="l_cash_all" t-value="0"/>
+                                               <t t-set="l_bank_all" t-value="0"/>
+
+                                         <t t-foreach="sorted(set(work_order_date))" t-as="rec">
+                                            <tbody>
+
+                                               <t t-set="l_cnt" t-value="0"/>
+                                               <t t-set="l_services_total" t-value="0"/>
+                                               <t t-set="l_spare_parts_total" t-value="0"/>
+                                               <t t-set="l_discount_total" t-value="0"/>
+                                               <t t-set="l_tax_total" t-value="0"/>
+                                               <t t-set="l_amount_total" t-value="0"/>
+                                               <t t-set="l_total_before_total" t-value="0"/>
+                                               <t t-set="l_cash" t-value="0"/>
+                                               <t t-set="l_bank" t-value="0"/>
+
+                                             <t t-foreach="docs" t-as="line">
+                                                <t t-if="rec == line.end_date.strftime('%Y-%m-%d')">
+                                                      <t t-set="l_cnt" t-value="l_cnt + 1"/>
+                                                      <t t-set="l_services_total" t-value="sum(l.total_before_tax for l in line.result_lines) + l_services_total"/>
+                                                      <t t-set="l_services_total_all" t-value="sum(l.total_before_tax for l in line.result_lines) + l_services_total_all"/>
+
+                                                      <t t-set="l_spare_parts_total" t-value="sum(l.total_before_tax for l in line.lines_spare_parts) + l_spare_parts_total"/>
+                                                      <t t-set="l_spare_parts_total_all" t-value="sum(l.total_before_tax for l in line.lines_spare_parts) + l_spare_parts_total_all"/>
+
+                                                      <t t-set="l_discount_total" t-value="sum((l.quantity * l.price_unit * (l.discount /100)) for l in line.create_invoice_manually_id.invoice_line_ids) + l_discount_total"/>
+                                                      <t t-set="l_discount_total_all" t-value="sum((l.quantity * l.price_unit * (l.discount /100)) for l in line.create_invoice_manually_id.invoice_line_ids) + l_discount_total_all"/>
+
+                                                      <t t-set="l_tax_total" t-value="l_tax_total + line.create_invoice_manually_id.amount_tax"/>
+                                                      <t t-set="l_tax_total_all" t-value="l_tax_total_all + line.create_invoice_manually_id.amount_tax"/>
+
+                                                      <t t-set="l_total_before_total" t-value="l_total_before_total + (sum(l.total_before_tax for l in line.result_lines) + sum(l.total_before_tax for l in line.lines_spare_parts))"/>
+                                                      <t t-set="l_total_before_total_all" t-value="l_total_before_total_all + (sum(l.total_before_tax for l in line.result_lines) + sum(l.total_before_tax for l in line.lines_spare_parts))"/>
+
+                                                      <t t-set="l_amount_total" t-value="l_amount_total + line.create_invoice_manually_id.amount_total"/>
+                                                      <t t-set="l_amount_total_all" t-value="l_amount_total_all + line.create_invoice_manually_id.amount_total"/>
+
+                                                          <t t-set="l_cash" t-value="l_cash + line.create_invoice_manually_id.get_payment_amt_of_invoice('cash')"/>
+                                                           <t t-set="l_cash_all" t-value="l_cash_all + line.create_invoice_manually_id.get_payment_amt_of_invoice('cash')"/>
+
+                                                          <t t-set="l_bank" t-value="l_bank + line.create_invoice_manually_id.get_payment_amt_of_invoice('bank')"/>
+
+                                                          <t t-set="l_bank_all" t-value="l_bank_all + line.create_invoice_manually_id.get_payment_amt_of_invoice('bank')"/>
+                                                 </t>
+                                            </t>
+                                        </tbody>
+                                         <tr style="background-color:white;color:black;"  class="text-center">
+                                                <td>
+                                                <strong> اجمالي تاريخ : <span t-esc="rec"/></strong>
+
+                                              </td>
+
+                                              <td>
+                                                <strong>
+        <!--                                           <span t-esc="l_services_total"/>-->
+                                                    <span t-esc=" '{:,.2f}'.format(l_services_total )" /></strong>
+
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_spare_parts_total)" /></strong>
+
+                                              </td>
+
+
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_discount_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_total_before_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_tax_total)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_amount_total)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_cash)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_bank)" /></strong>
+
+                                              </td>
+
+                                            </tr>
+                                            </t>
+                                             <tr style="background-color:gray;color:white;"  class="text-center">
+                                                <td>
+                                                <strong> الاجمالي </strong>
+
+                                              </td>
+
+                                              <td>
+                                                <strong>
+        <!--                                           <span t-esc="l_services_total"/>-->
+                                                    <span t-esc=" '{:,.2f}'.format(l_services_total_all )" /></strong>
+
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_spare_parts_total_all)" /></strong>
+
+                                              </td>
+
+
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_discount_total_all)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_total_before_total_all)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_tax_total_all)" /></strong>
+
+                                              </td>
+                                                 <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_amount_total_all)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_cash_all)" /></strong>
+
+                                              </td>
+                                                <td>
+                                                <strong>
+                                                    <span t-esc=" '{:,.2f}'.format(l_bank_all)" /></strong>
+
+                                              </td>
+
+                                            </tr>
+
+                                        </table>
+                                        <br></br>
+
+                                               <table  class="table table-sm table table-bordered" style="width:50%">
+                                                    <thead>
+                                                    <tr class="text-center">
+                                                        <th >دفعت</th>
+                                                        <th >اجمالي المبلغ</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                      <t t-foreach="payments_sum" t-as="pay">
+                                                        <tr >
+                                                          <td >
+                                                           <strong><span style="color:gray;"  />
+                                                            <span t-esc="pay['journal_name']"/></strong>
+                                                          </td>
+                                                            <td >
+                                                           <strong><span style="color:gray;" />
+                                                            <span t-esc="pay['amount']"/></strong>
+                                                          </td>
+
+                                                        </tr>
+                                                      </t>
+
+                                                </tbody>
+
+                                               </table>
+
+
+
+                                        </t>
+                                </t>
+
+
+ْ						</div>
+
+                     <p style="page-break-after:always;">
+                             </p>
+				</t>
+				</t>
+	</template>
+
+
+</odoo>

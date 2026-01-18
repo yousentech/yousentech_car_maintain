@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	    <data>
+
+
+          <menuitem id="closed_menu" name="الاقفالات" parent="account.account_account_menu" groups="account.group_account_user"
+              />
+
+
+<!-- mntns.service.areas-->
+
+         <record model="ir.ui.view" id="wo_period_closed_view">
+            <field name="name">wo.period.closed.view</field>
+            <field name="model">wo.period.closed</field>
+            <field name="type">form</field>
+              <field name="arch" type="xml">
+                    <form>
+                        <sheet>
+                            <group>
+                                <group>
+                                    <field name="inv_closed_from_date" />
+                                </group>
+                                <group>
+                                    <field name="inv_closed_to_date" />
+                                </group>
+                             </group>
+                        </sheet>
+
+                     </form>
+              </field>
+        </record>
+
+        <record id="wo_period_closed_view_search" model="ir.ui.view">
+            <field name="name">wo.period.closed.search</field>
+            <field name="model">wo.period.closed</field>
+            <field name="arch" type="xml">
+                <search string="البحث">
+
+                    <field name="inv_closed_from_date" />
+
+                    <field name="inv_closed_to_date" />
+
+                </search>
+             </field>
+        </record>
+
+        <record id="wo_period_closed_tree_view" model="ir.ui.view">
+            <field name="name">wo.period.closed.tree</field>
+            <field name="model">wo.period.closed</field>
+            <field name="arch" type="xml">
+                <tree>
+                	      <field name="inv_closed_from_date" />
+
+                           <field name="inv_closed_to_date" />
+				</tree>
+            </field>
+        </record>
+          <record id="action_wo_period_closed_view" model="ir.actions.act_window">
+            <field name="name">ايقاف الفترات المخزنية</field>
+            <field name="res_model">wo.period.closed</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="wo_period_closed_tree_view"/>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Click to create new Car Parts
+                </p>
+            </field>
+          </record>
+		  <menuitem id="wo_period_closed_menu" name="ايقاف الفترات المخزنية" sequence="1" parent="mizan_car_setup_menu"
+		            action="action_wo_period_closed_view" />
+
+
+		</data>
+
+</odoo>

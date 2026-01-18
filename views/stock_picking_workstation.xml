@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+<!--        stock picking-->
+         <record id="view_stock_picking_workstation" model="ir.ui.view">
+            <field name="name">stock.picking.workstation.mizan</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                   <field name="warehouse_id" position="after">
+                         <field name="workstation_id" />
+                   </field>
+            </field>
+        </record>
+        <record id="stock_picking_workstation_tree" model="ir.ui.view">
+            <field name="name">stock.picking.workstation.tree</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_tree"/>
+            <field name="arch" type="xml">
+                  <field name="warehouse_id" position="after">
+                         <field name="workstation_id" />
+                   </field>
+
+            </field>
+        </record>
+        <record id="stock_picking_workstation_search" model="ir.ui.view">
+            <field name="name">stock.picking.workstation.mizan</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_pickingtype_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                          <field name="workstation_id" />
+
+
+                         <group expand='0' string='Filters'>
+                             <filter string="الورشة" name="wo_workstation_filter" domain="[]" context="{'group_by' : 'workstation_id'}"/>
+
+                      </group>
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

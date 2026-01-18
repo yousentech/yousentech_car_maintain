@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <menuitem id="branch_assignment_menu" name="الاسناد للفروع" parent="hr.menu_hr_root" />
+
+    <record id="view_salesman_assign_form" model="ir.ui.view">
+        <field name="name">mizan.salesman.assignments.form</field>
+        <field name="model">mizan.salesman.assignments</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form >
+                <sheet>
+                    <group >
+                         <group>
+                             <field name="salesman_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="branch_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+
+                            <field name="assign_date"  />
+
+
+                         </group>
+                        <group>
+                            <field name="state"  />
+                            <field name="close_date"  />
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_salesman_assign_tree" model="ir.ui.view">
+        <field name="name">mizan.salesman.assignments.tree</field>
+        <field name="model">mizan.salesman.assignments</field>
+         <field name="arch" type="xml">
+            <tree >
+                         <field name="salesman_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                        <field name="assign_date"  />
+                        <field name="branch_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                        <field name="state"  />
+                        <field name="close_date"  />
+            </tree>
+        </field>
+    </record>
+    <record id="view_salesman_assign_search" model="ir.ui.view">
+        <field name="name">mizan.salesman.assignments.search</field>
+        <field name="model">mizan.salesman.assignments</field>
+         <field eval="10" name="priority"/>
+
+         <field name="arch" type="xml">
+            <search >
+                         <field name="salesman_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+                        <field name="assign_date"  />
+                        <field name="branch_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                        <field name="state"  />
+                        <field name="close_date"  />
+                       <separator/>
+                       <group expand='0' string='Filters'>
+                            <filter string="حسب الفني" name="salesman_filter" domain="[]" context="{'group_by': 'salesman_id'}"/>
+
+                           <filter string="حسب الفرع" name="branch_filter" domain="[]" context="{'group_by': 'branch_id'}"/>
+
+                           <filter string="حسب الحالة" name="state_filter" domain="[]" context="{'group_by': 'state'}"/>
+
+                      </group>
+                      <separator/>
+                      <group expand='0' string='Filters'>
+                           <filter string="الاسناد النشط" name="currecnt_state_filter" domain="[('state','=', 'current')]"/>
+
+                    </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="salesman_assign_action">
+        <field name="name">اسناد المندوبين للفروع</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mizan.salesman.assignments</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="view_id" ref="view_salesman_assign_tree" />
+    </record>
+
+       <menuitem id="salesman_assign_menu" name="اسناد المندوبين للفروع" parent="branch_assignment_menu"  sequence="3"
+                   action="salesman_assign_action" />
+
+</odoo>

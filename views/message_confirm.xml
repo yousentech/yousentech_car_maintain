@@ -1,0 +1,35 @@
+
+<odoo>
+    <data>
+        <record id="mizan_message_confirm_view" model="ir.ui.view">
+            <field name="name">mizan.message.confirm.form</field>
+            <field name="model">mizan.message.confirm</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group string="رسالة تأكيد">
+                        <strong>
+                            <field name="desc" nolabel="1" readonly="1"/>
+
+                        </strong>
+
+                    </group>
+                    <footer>
+                        <button name="confirm" string="تاكيد / Confirm" type="object" class="oe_highlight"/>
+                        <button  special="cancel" class="btn-secondary" string="cancel/ خروج"/>
+
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="message confirm"
+            id="message_confirm_action"
+            res_model="mizan.message.confirm"
+            view_mode="form"
+            target="new"
+        />
+<!--            binding_model="wo.installation.order.mst"-->
+<!--            binding_views="form"-->
+
+    </data>
+</odoo>

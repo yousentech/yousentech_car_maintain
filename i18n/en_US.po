@@ -1,0 +1,3664 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* qimamhd_mizan_car_13
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-06 12:53+0000\n"
+"PO-Revision-Date: 2025-05-06 17:15+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4\n"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_line__state__complete
+msgid " completed / مكتمل"
+msgstr "completed "
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__services_amt_after_tax
+msgid " اجمالي شامل الضريبة للخدمات"
+msgstr "Total (VAT incl) – Services"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__technical_is_done
+msgid " اعتمد بواسطة"
+msgstr "Approved by"
+
+#. module: qimamhd_mizan_car_13
+#: model:res.groups,name:qimamhd_mizan_car_13.group_un_close_cash_priv
+msgid " الغاء اقفال الصناديق"
+msgstr "Cancel Cash Close"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_close_cash_report
+msgid " تقرير اقفال الصندوق"
+msgstr "Cancel Cash Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_wo_technical_report
+msgid " تقرير الفنيين"
+msgstr "Technicians Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_wo_sum_report
+msgid " تقرير اوامر العمل"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_wo_inv_pay_rpt
+msgid " تقرير اوامر العمل المكتملة"
+msgstr "Completed Work Orders Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_mizan_work_order_report
+msgid " طباعة امر العمل"
+msgstr "Print Work Order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_mizan_checkup_order_report
+msgid " طباعة طلب الفحص"
+msgstr "Checkup Order Print"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.constraint,message:qimamhd_mizan_car_13.constraint_mizan_car_checkup_procedure_line_checkup_part_id_uniq
+#: model:ir.model.constraint,message:qimamhd_mizan_car_13.constraint_mizan_car_computer_codes_lines_computer_code_uniq
+#: model:ir.model.constraint,message:qimamhd_mizan_car_13.constraint_mizan_car_spare_parts_lines_product_id_uniq
+#: model:ir.model.constraint,message:qimamhd_mizan_car_13.constraint_mizan_car_work_procedure_line_product_id_uniq
+#: model:ir.model.constraint,message:qimamhd_mizan_car_13.constraint_mizan_parts_results_name_uniq
+msgid " مكرر لا يمكن الاستمرار"
+msgstr "Duplicate can not continue"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid ""
+"<br/>\n"
+"                                          <strong> اوامر العمل المكتملة </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid ""
+"<br/>\n"
+"                                        <strong> اوامر العمل الغير مكتملة </strong>\n"
+"                                    <br/>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> اسم العميل </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> اسم العميل </strong> <span> Customer Name </span>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> اسم الفني  </strong> <span> Installer Name </span>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> اسم الموظف  </strong> <span> Representative  Name </span>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "<strong> الاجمالي  :  </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "<strong> الاجمالي </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong> البائع  </strong> <span> Sale Man </span>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> التاريخ </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> التوقيع </strong> <span>Signature</span>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> الجوال </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "<strong> الحالة </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "<strong> الدوبة المصنعة </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> الفرع </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong> المبلغ  </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong> المحاسب  </strong> <span> Accountant </span>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong> المدير العام  </strong> <span>  General Manager </span>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong> الوصف  </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "<strong> اوامر العمل الغير مكتملة </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "<strong> اوامر العمل المكتملة </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "<strong> بيانات بالسيارات الواردة الى المركز : </strong><br/>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong> تقرير اقفال الصندوق  </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "<strong> تقرير الفنيين </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "<strong> تقرير اوامر العمل </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "<strong> تقرير اوامر العمل المكتملة </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> رقم الشاصي </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> رقم اللوحة  </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> صافي المبلغ  </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong> صندوق الفرع </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong> صندوق المركز الرئيسي </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "<strong> عداد الطبلون </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "<strong> موديل السيارة </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong> نوع السيارة </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "<strong> نوع القير </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+msgid "<strong>اجراء الفحص </strong>"
+msgstr "<strong>Checkup Procedure</strong>"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong>التوقيع</strong> <span>Signature</span>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong>الدفعة المقدمة  </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "<strong>امر العمل</strong>"
+msgstr "<strong>Work order</strong>"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong>تقرير امر عمل   / Work Order Report</strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "<strong>تقرير طلب الفحص   / Checkup Order Report</strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_report_view
+msgid "<strong>رقم الطلب </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "<strong>رقم امر العمل </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "<strong>رقم كرت الدخول </strong>"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+msgid "<strong>كرت الدخول</strong>"
+msgstr "<strong>Entry Card</strong>"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__account_move_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__account_move_id
+msgid "Account Move"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__account_payment_id
+msgid "Account Payment"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_needaction
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_mizan_product_wizard_form
+msgid "Add"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+msgid "Add Multi Products"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__add_user_spare_parts_flag
+msgid "Add User Spare Parts Flag"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "Add line"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__amount_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__amount_tax
+msgid "Amount Tax"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_attachment_count
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__botton_mouth_x
+msgid "Botton Mouth X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__botton_mouth_y
+msgid "Botton Mouth Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__branch_id
+msgid "Branch"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_mizan_product_wizard_form
+msgid "Cancel"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__car_no_required
+msgid "Car No Required"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__car_type_required
+msgid "Car Type Required"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__car_types_lines
+msgid "Car Types Lines"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_checkup_procedure_line
+msgid "Car checkup order Sub Lines line add"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_computer_codes_lines
+msgid "Car checkup order computer codes Lines"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_entry_card_master
+msgid "Car checkup order master"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_spare_parts_lines
+msgid "Car checkup order spare parts Lines"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_checkup_procedure_master
+msgid "Car checkup procedure master"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_work_procedure_line
+msgid "Car work order line"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_work_procedure_master
+msgid "Car work procedure master"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_car_checkup_procedure_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_cash_close_closed_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_entry_card_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_computers_codes_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_workstation_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_work_procedure_view
+msgid "Click to create new"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_wo_period_closed_view
+msgid "Click to create new Car Parts"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_car_manufactory_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_car_size_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_car_types_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_parts_result_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_product_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_salesman_sides_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_salesman_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_services_types_view
+#: model_terms:ir.actions.act_window,help:qimamhd_mizan_car_13.action_mizan_stock_picking_view
+msgid "Click to create new service Type"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__collecting_products_report_flag
+msgid "Collecting Products Report Flag"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__company_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__company_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__company_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__company_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__company_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__company_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides__company_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__company_id
+msgid "Company"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__compelete_done_date_not_required_flag
+msgid "Compelete Done Date Not Required Flag"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__confirm_message_flag
+msgid "Confirm Message Flag"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__create_invoice_manually_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__create_invoice_manually_id
+msgid "Create Invoice Manually"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_message_confirm__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_product_wizard__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__create_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_message_confirm__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_product_wizard__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "Description"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__discount_inv_posted
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__discount_inv_posted
+msgid "Discount Inv Posted"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_message_confirm__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_product_wizard__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_picking__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_inv_pay_rpt_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_inv_pay_xlsx_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_sum_xlsx_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_technical_report_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_technical_xlsx_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_work_order_sum_report_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__display_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_hr_employee
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__employee_id
+msgid "Employee"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__date_end
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__date_end
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__date_end
+msgid "End Date"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_product_product__en_name
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_product_template__en_name
+msgid "English Name"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__execute_done
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__execute_done
+msgid "Execute Done"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_employee__face_features_line_id
+msgid "Face Features Line"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__field
+msgid "Field"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__field_desc
+msgid "Field Desc"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__field_type
+msgid "Field Type"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.stock_picking_workstation_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_supervisor_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_technical_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_salesman_assign_search
+msgid "Filters"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_follower_ids
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_channel_ids
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_partner_ids
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__header_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__header_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__header_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__header_id
+msgid "Header"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_message_confirm__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_product_wizard__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_picking__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_inv_pay_rpt_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_inv_pay_xlsx_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_sum_xlsx_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_technical_report_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_technical_xlsx_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_work_order_sum_report_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__id
+msgid "ID"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_cash_close_closed__message_needaction
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_cash_close_closed__message_unread
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_needaction
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_cash_close_closed__message_has_error
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_cash_close_closed__message_has_sms_error
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_has_error
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_stock_location
+msgid "Inventory Locations"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#. openerp-web
+#: code:addons/qimamhd_mizan_car_13/static/src/xml/inventory_report.xml:0
+#, python-format
+msgid "Inventory at Date"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_is_follower
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__is_guarantee_flag
+msgid "Is Guarantee Flag"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__is_user_allow_delete
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__is_user_allow_delete
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__is_user_allow_delete
+msgid "Is User Allow Delete"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__is_user_sale_man
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__is_user_sale_man
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__is_user_sale_man
+msgid "Is User Sale Man"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__is_user_supervisor
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__is_user_supervisor
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__is_user_supervisor
+msgid "Is User Supervisor"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__is_user_technical
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__is_user_technical
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__is_user_technical
+msgid "Is User Technical"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_account_journal
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__journal_id
+msgid "Journal"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_account_move
+msgid "Journal Entries"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_account_move_line
+msgid "Journal Item"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_message_confirm____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_product_wizard____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_picking____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_inv_pay_rpt_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_inv_pay_xlsx_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_sum_xlsx_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_technical_report_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_print_wo_technical_xlsx_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_report_qimamhd_mizan_car_13_work_order_sum_report_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view____last_update
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_message_confirm__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_product_wizard__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__write_uid
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_message_confirm__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_product_wizard__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__write_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__left_cheak_x
+msgid "Left Cheak X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__left_cheak_y
+msgid "Left Cheak Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__left_ear_x
+msgid "Left Ear X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__left_ear_y
+msgid "Left Ear Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__left_eye_x
+msgid "Left Eye X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__left_eye_y
+msgid "Left Eye Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__left_mouth_x
+msgid "Left Mouth X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__left_mouth_y
+msgid "Left Mouth Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__lines_computer
+msgid "Lines Computer"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__lines_payment
+msgid "Lines Payment"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__lines_spare_parts
+msgid "Lines Spare Parts"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_main_attachment_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view_tree_view
+msgid "Make Products History Tree"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_has_error
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_ids
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__model
+msgid "Model"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_picking__name
+msgid "Name"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__new_value
+msgid "New Value"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__nose_base_x
+msgid "Nose Base X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__nose_base_y
+msgid "Nose Base Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_needaction_counter
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_has_error_counter
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_cash_close_closed__message_needaction_counter
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_cash_close_closed__message_has_error_counter
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_cash_close_closed__message_unread_counter
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__old_value
+msgid "Old Value"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__operation_date
+msgid "Operation Date"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__partner_mobile_not_required
+msgid "Partner Mobile Not Required"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_account_payment
+msgid "Payments"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_stock_picking_type
+msgid "Picking Type"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+msgid "Print Report"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_wo_inv_pay_xlsx
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_wo_sum_xlsx
+#: model:ir.actions.report,name:qimamhd_mizan_car_13.print_wo_technical_xlsx
+msgid "Print to XLSX"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+msgid "Print to Xlsx"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__product_id
+msgid "Product"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_product_template
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__product_tmpl_id
+msgid "Product Template"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__product_tmpl_id
+msgid "Product Tmpl"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_product_wizard
+msgid "Product Wizard"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_product_wizard__product_ids
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_mizan_product_wizard_form
+msgid "Products"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__record_name
+msgid "Record Name"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: code:addons/qimamhd_mizan_car_13/models/checkup_procedure.py:0
+#: code:addons/qimamhd_mizan_car_13/models/work_order_pocedure.py:0
+#, python-format
+msgid "Register Payment"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_register_payment
+msgid "Register Payment in Mizan Car order"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__result_lines
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__result_lines
+msgid "Result Lines"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__right_cheak_x
+msgid "Right Cheak X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__right_cheak_y
+msgid "Right Cheak Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__right_ear_x
+msgid "Right Ear X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__right_ear_y
+msgid "Right Ear Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__right_eye_x
+msgid "Right Eye X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__right_eye_y
+msgid "Right Eye Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__right_mouth_x
+msgid "Right Mouth X"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_emp_face_features__right_mouth_y
+msgid "Right Mouth Y"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_has_sms_error
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_sale_order_line
+msgid "Sales Order Line"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__service_price_include_tax_flag
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__service_price_include_tax_flag
+msgid "Service Price Include Tax Flag"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__date_start
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__date_start
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__date_start
+msgid "Start Date"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__state
+msgid "State"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_stock_move
+msgid "Stock Move"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__stock_picking_id
+msgid "Stock Picking"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__subject
+msgid "Subject"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__tax_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__tax_id
+msgid "Tax"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_stock_picking
+msgid "Transfer"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_unread
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__message_unread_counter
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__use_pricelist
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__use_pricelist
+msgid "Use Pricelist"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__user_id
+msgid "User name"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__vin_no_required
+msgid "Vin No Required"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__website_message_ids
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_cash_close_closed__website_message_ids
+#: model:ir.model.fields,help:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__workstation_flag_id
+msgid "Workstation Flag"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_auditor_analysis_view__write_uid
+msgid "Write Uid"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_picking__branch_id
+msgid "branch_id"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_message_confirm_view
+msgid "cancel/ خروج"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_cash_close_closed
+msgid "cash.close.closed"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "completed / مكتمل"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+msgid "custom Report"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_emp_face_features
+msgid "emp.face.features"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_hr_supervisor_assignments
+msgid "hr supervisor assignments"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_hr_technical_assignments
+msgid "hr technical assignments"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.message_confirm_action
+msgid "message confirm"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_salesman_assignments
+msgid "mizan salesman assignments"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_wo_picking
+msgid "mizan work orders view in picking"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.multi_mizan_product_wizard_action
+msgid "mizan.Multi Product"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_manufactory
+msgid "mizan.car.manufactory"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_size
+msgid "mizan.car.size"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_car_types
+msgid "mizan.car.types"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_computers_codes
+msgid "mizan.computers.codes"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_default_results
+msgid "mizan.default.results"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_message_confirm
+msgid "mizan.message.confirm"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_parts_results
+msgid "mizan.parts.results"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_picking_workstation
+msgid "mizan.picking.workstation"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_sales_man
+msgid "mizan.sales.man"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_salesman_sides
+msgid "mizan.salesman.sides"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_services_types
+msgid "mizan.services.types"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_wo_invoice_payments_report
+msgid "mizan.wo.invoice.payments.report"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_wo_report_module
+msgid "mizan.wo.report.module"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_mizan_wo_technical_report
+msgid "mizan.wo.technical.report"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_report_qimamhd_mizan_car_13_print_wo_inv_pay_rpt_view
+msgid "report.qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_report_qimamhd_mizan_car_13_print_wo_inv_pay_xlsx_view
+msgid "report.qimamhd_mizan_car_13.print_wo_inv_pay_xlsx_view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_report_qimamhd_mizan_car_13_print_wo_sum_xlsx_view
+msgid "report.qimamhd_mizan_car_13.print_wo_sum_xlsx_view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_report_qimamhd_mizan_car_13_print_wo_technical_report_view
+msgid "report.qimamhd_mizan_car_13.print_wo_technical_report_view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_report_qimamhd_mizan_car_13_print_wo_technical_xlsx_view
+msgid "report.qimamhd_mizan_car_13.print_wo_technical_xlsx_view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_report_qimamhd_mizan_car_13_work_order_sum_report_view
+msgid "report.qimamhd_mizan_car_13.work_order_sum_report_view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_line__state__started
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "started / البدء"
+msgstr "started"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.inherit_employee_form_view
+msgid "string"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_wo_auditor_analysis_view
+msgid "wo.auditor.analysis.view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_wo_period_closed
+msgid "wo.period.closed"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_wo_sales_analysis
+msgid "wo.sales.analysis"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_wo_services_analysis_view
+msgid "wo.services.analysis.view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_wo_spare_part_analysis_view
+msgid "wo.spare.part.analysis.view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_wo_technicals_analysis_view
+msgid "wo.technicals.analysis.view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model,name:qimamhd_mizan_car_13.model_wo_work_order_analysis_view
+msgid "wo.work.order.analysis.view"
+msgstr ""
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_car_checkup_procedure_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+msgid "اجراء الفحص"
+msgstr "Checkup Procedure"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_wo_invoice_payments_report__display_type__summary
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_wo_technical_report__display_type__summary
+msgid "اجمالي"
+msgstr "Total"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__total
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__total
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__total
+msgid "اجمالي "
+msgstr "Total"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "اجمالي الخدمات"
+msgstr "Services Total"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__services_discount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__spare_parts_discount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__total_discount
+msgid "اجمالي الخصم"
+msgstr "Discount Total"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__spare_parts_discount
+msgid "اجمالي الخصم لقطع الغيار"
+msgstr "Total Discount – Spare Parts"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__services_discount
+msgid "اجمالي الخصم للخدمات"
+msgstr "Total Discount – Services"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__services_amt_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__spare_parts_amt_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__total_tax
+msgid "اجمالي الضريبة"
+msgstr "Tax Total"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__spare_parts_amt_tax
+msgid "اجمالي الضريبة لقطع الغيار"
+msgstr "Tax Total - Spare Parts"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__invoice_amout_total
+msgid "اجمالي الفاتورة شامل الضريبة"
+msgstr "Invoice Total (VAT Incl.)"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "اجمالي المبلغ"
+msgstr "Total Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "اجمالي تاريخ :"
+msgstr "Total as of Date:"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__amount_with_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__amount_with_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__amount_with_tax
+msgid "اجمالي شامل الضريبة"
+msgstr "Total Including Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__spare_parts_amt_after_tax
+msgid "اجمالي شامل الضريبة لقطع الغيار"
+msgstr "Total Including Tax – Spare Parts"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__untaxed_amount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__untaxed_amount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__untaxed_amount
+msgid "اجمالي قبل الضريبة"
+msgstr "Total Before Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__spare_parts_amt_before_tax
+msgid "اجمالي قبل الضريبة لقطع الغيار"
+msgstr "Total Before Tax – Spare Parts"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__services_amt_before_tax
+msgid "اجمالي قبل الضريبة للخدمات"
+msgstr "Total Before Tax – Services"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "اجمالي قطع الغيار"
+msgstr "Spare Part Total"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_car_size_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_car_size_menu
+msgid "احجام السيارات"
+msgstr "Car Sizes"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__body_image
+msgid "اختر صورة السيارة لستخدم للفحص في البدي"
+msgstr "Select Image For Body Checkup"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__selected
+msgid "اختيار"
+msgstr "Select"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__cancel_state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__cancel_state
+msgid "اخفاء الاشعارات الملغية"
+msgstr "Hide Cancelled Work Orders"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__hide_uncompleted_orders
+msgid "اخفاء الاوامر الغير مكتملة"
+msgstr "Hide Incomplete Work Orders"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "ادخال الخدمات"
+msgstr "services Entry"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+msgid "ادخال النتائج"
+msgstr "results Entry"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_res_config_settings__vin_no
+msgid "ادخال رقم الشاصي للسيارة اجباري"
+msgstr "Car Vin No Required"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+msgid "ادخال رقم جوال العميل"
+msgstr "Enter Customer Mobile"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_res_config_settings__partner_mobile_not_required
+msgid "ادخال رقم جوال العميل غير اجباري"
+msgstr "Customer Mobile not Required"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_res_config_settings__car_no
+msgid "ادخال رقم لوحة السيارة اجباري"
+msgstr "Car Panel not Required"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_res_config_settings__car_type
+msgid "ادخال نوع السيارة اجباري"
+msgstr "Car Type Entry is Required"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_stock_picking_mizan
+msgid "ارسال الى امر العمل"
+msgstr "Send to Work order"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_stock_picking_mizan
+msgid "ازالة الشحنة من امر العمل"
+msgstr "Delete Inv Issue from Work order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__use_minus_qty
+msgid "استخدام الكميات السالبة"
+msgstr "Use Inventory Qty Minus"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__state__return_to_modify
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__state__return_to_modify
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__state__return_to_modify
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+msgid "استعادة للتعديل"
+msgstr "Return to Modify"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__technical_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__technical_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__technical_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__technical_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__technical_ids
+msgid "اسم الفني"
+msgstr "Technical name"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__supervisor_name
+msgid "اسم المشرف"
+msgstr "Supervisor name"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.hr_technical_assign_action
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.technical_assign_menu
+msgid "اسناد الفنيين للفروع"
+msgstr "Assign Technicians to Branches"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.hr_supervisor_assign_action
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.supervisor_assign_menu
+msgid "اسناد المشرفين للفروع"
+msgstr "Assign Supervisors to Branches"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.salesman_assign_action
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.salesman_assign_menu
+msgid "اسناد المندوبين للفروع"
+msgstr "Assign Sales Man to Branches"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_product_template_search_view
+msgid "اصناف الفحص"
+msgstr "Checkup items"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__is_guarantee
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__is_guarantee
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__is_guarantee
+msgid "اضافة ضمان"
+msgstr "Add guranatee"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+msgid "اعتماد"
+msgstr "Confirm"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+msgid "اعدادات نظام الفحص"
+msgstr "Checkup system Setting"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+msgid "اقفال"
+msgstr "Close"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.close_cash_menu
+msgid "اقفال الصناديق"
+msgstr "Close Cashboxes"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_cash_close_closed_view
+msgid "اقفال الصندوق"
+msgstr "Close Cashboxes"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__state__execute_completed
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__state__execute_completed
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__state__execute_completed
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "اكتمال التنفيذ"
+msgstr "Execute Completed"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_computers_codes_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_computers_codes_menu
+msgid "اكواد الكمبيوتر"
+msgstr "Computer Codes"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__services_price
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__total
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__total
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_move__total
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__total_all
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__total
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "الاجمالي"
+msgstr "Taxable amount"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "الاجمالي الكلي"
+msgstr "Total All"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__services_price_after_discount
+msgid "الاجمالي بعد الخصم"
+msgstr "Total after Discount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__total_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__total_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__services_amt_after_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__spare_parts_amt_after_tax
+msgid "الاجمالي بعد الضريبة"
+msgstr "Total after Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__services_price_with_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__total_all_with_tax
+msgid "الاجمالي شامل الضريبة"
+msgstr "Total Include Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__total_before_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__total_before_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__services_amt_before_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__spare_parts_amt_before_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__total_all_before_tax
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "الاجمالي قبل الضريبة"
+msgstr "Total before Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_manufactory__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_size__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_sides__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__name
+msgid "الاسم"
+msgstr "Name"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_parts_results__en_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__en_name
+msgid "الاسم الانجليزي"
+msgstr "English Name"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_product__en_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_template__en_name
+msgid "الاسم بالانجليزي"
+msgstr "English Name"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_supervisor_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_technical_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_salesman_assign_search
+msgid "الاسناد النشط"
+msgstr "Assign Active"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.branch_assignment_menu
+msgid "الاسناد للفروع"
+msgstr "Branches Assign"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+msgid "الاعمال الغير مغلقة"
+msgstr "Orders not Closed"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+msgid "الاعمال المغلقة"
+msgstr "Closed Orders"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+msgid "الاعمال لم يتم البدء"
+msgstr "Not started Orders"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.closed_menu
+msgid "الاقفالات"
+msgstr "Closures"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "الايرادات المحققة"
+msgstr "Achieved Revenues"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__create_uid
+msgid "البائع"
+msgstr "Seller"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_computers_codes_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_workstation_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.wo_period_closed_view_search
+msgid "البحث"
+msgstr "Search"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.wo_auditor_analysis_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.wo_sales_analysis_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.wo_services_analysis_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.wo_services_lines_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.wo_spare_part_analysis_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.wo_technicals_analysis_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.wo_work_order_analysis_search_view
+msgid "البحث في"
+msgstr "Search In`"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__payment_note
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "البيان"
+msgstr "Description"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view_tree_view
+msgid "البيانات"
+msgstr "Data"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "التاريخ"
+msgstr "Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__pricelist_id
+msgid "التسعيرة حسب"
+msgstr "Pricing Based On"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__sequence
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__sequence
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__sequence
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__sequence
+msgid "التسلسل"
+msgstr "Sequence"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__additional_services__change_of_guarantee
+msgid "التغيير على الضمان"
+msgstr "Warranty Modification"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_report_menu
+msgid "التقارير"
+msgstr "Reports"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__unit_cost
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_move__unit_cost
+msgid "التكلفة"
+msgstr "Cost"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__state
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__state
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "الحالة"
+msgstr "State"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "الخدمات"
+msgstr "Services"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__wo_completed
+msgid "الخدمات المكتملة"
+msgstr "Completed Services"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__product_ids
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "الخدمة"
+msgstr "Service"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__product_service_id
+msgid "الخدمة المنجزة"
+msgstr "Executed Service"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__state__not_checkup_car
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__state__not_checkup_car
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__state__not_checkup_car
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "الخروج بدون فحص"
+msgstr "Exit Car without Checkup"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__service_discount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__discount_line
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__discount_line
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__discount_line
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__discount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__discount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__discount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__discount
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "الخصم"
+msgstr "Discount"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "الدفع شبكة"
+msgstr "Bank Payment"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "الدفع نقد"
+msgstr "Cash Payment"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "الدفعات المقدمة"
+msgstr "Advances Payments"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "الرقم"
+msgstr "Number"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "الرمز"
+msgstr "Code"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__unit_price
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__unit_price
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__price
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "السعر"
+msgstr "Price"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+msgid "السماح بادخال رقم الشاصي للسيارة"
+msgstr "Allow Enter Car Vin No"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+msgid "السماح بادخال رقم لوحة السيارة"
+msgstr "Allow Enter Car Panel No"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__company_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__company_ids1
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__company_ids1
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_car_manufactory_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_car_size_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_car_types_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_computers_codes_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_computers_codes_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_computers_codes_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_salesman_sides_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_salesman_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_salesman_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_services_types_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_services_types_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+msgid "الشركة"
+msgstr "Company"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__car_manuf_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_types__header_id
+msgid "الشركة المصنعة"
+msgstr "Manufactory Company"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_car_manufactory_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_car_manufactory_menu
+msgid "الشركة المصنعة للسيارات"
+msgstr "Car Manufactory Company"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_stock_picking_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_stock_picking_menu
+msgid "الصرف المخزني"
+msgstr "Inventory Issue"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_stock_picking_search_mizan
+msgid "الصرف لاوامر العمل"
+msgstr "Inv Issue To Work Order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__product_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__product_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__amount_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__amount_tax
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__amount_tax
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "الضريبة"
+msgstr "Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__services_amt_tax
+msgid "الضريبة للخدمات"
+msgstr "Tax on Services"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__product_has_guarantee_flag
+msgid "الضمان"
+msgstr "Guarantee"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__qty
+msgid "العدد/الكمية"
+msgstr "Quantity"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__partner_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__partner_id
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "العميل"
+msgstr "Customer"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+msgid "الغاء الاقفال"
+msgstr "Cancel Closures"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+msgid "الغاء امر التركيب"
+msgstr "Cancel Order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__checkup_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__checkup_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__checkup_id
+msgid "الفحص"
+msgstr "Checkup"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_employee__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__branch_ids
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__branch_name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__branch_id
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "الفرع"
+msgstr "Branch"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__branch_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__branch_id
+msgid "الفرع المسند اليه"
+msgstr "Branch assigned To"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__technical_emp_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__hr_technical_assignments_id
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "الفني"
+msgstr "Technical"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__technical_1
+msgid "الفني 1"
+msgstr "Technical 1"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__technical_2
+msgid "الفني 2"
+msgstr "Technical 2"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__technical_3
+msgid "الفني 3"
+msgstr "Technical 3"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__technical_4
+msgid "الفني 4"
+msgstr "Technical 4"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "الفني :"
+msgstr "Technical :"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "الفني المعمد"
+msgstr "Authorized Technician"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "الفنيين المشتركين"
+msgstr "Participating Technicians"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__product_id
+msgid "القطع المستبدلة"
+msgstr "Spare Parts"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__qty
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__qty
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__qty
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__qty
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "الكمية"
+msgstr "Qty"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__qty_done
+msgid "الكمية الفعلية"
+msgstr "Qty Done"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__aval_qty
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_move__aval_qty
+msgid "الكمية المتوفرة"
+msgstr "Aval. Qty"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__computer_code
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__name
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "الكود"
+msgstr "Code"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__supervisor_amount
+msgid "المببلغ المحدد من المشرف"
+msgstr "Amount Set by Supervisor"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__amount
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+msgid "المبلغ"
+msgstr "Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__remaining_amount
+msgid "المبلغ المتبقي"
+msgstr "Remaining amount"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view_tree_view
+msgid "المبلغ المدفرع"
+msgstr "Payment Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__advance_amount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__advance_amount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__payment_amount
+msgid "المبلغ المدفوع"
+msgstr "Payment Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+msgid "المبلغ المدفوع تراكمي"
+msgstr "Cum. Advance Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__advanced_amount
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_search_view
+msgid "المبلغ المقدم"
+msgstr "Advance Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__untaxed_amount
+msgid "المبلغ قبل الضريبة"
+msgstr "Total Before Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+msgid "المتبقي"
+msgstr "Remaining"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__product_categ_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__product_categ_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__product_categ_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__product_categ_id
+msgid "المجموعة المخزنية"
+msgstr "Inventory Category"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_car_entry_menu
+msgid "المدخلات"
+msgstr "Entries"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__supervisor_emp_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__supervisor_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__supervisor_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__supervisor_name_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__supervisor_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__supervisor_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__supervisor_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__supervisor_id
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "المشرف"
+msgstr "Supervisor"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_employee__supervisor_emp
+msgid "المشرف الفني"
+msgstr "Supervisor"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__car_size_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__car_size_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__car_size_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__car_size_id
+msgid "المقاس"
+msgstr "Size"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__notes
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__notes
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__notes
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__notes
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__notes
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_search_view
+msgid "الملاحظات"
+msgstr "Notes"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__product_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__product_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__product_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__product_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__product_id
+msgid "المنتج"
+msgstr "Product"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_product_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_product_menu
+msgid "المنتجات"
+msgstr "Products"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__sale_man_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__sale_man_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__sale_man_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__sale_man_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__salesman_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__sale_man_id
+msgid "المندوب"
+msgstr "Sale Man"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_salesman_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_salesman_menu
+msgid "المندوبين"
+msgstr "Sales Mans"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__car_model
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__car_model
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__car_model
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__car_model
+msgid "الموديل"
+msgstr "Car Model"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_product__results_lines
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_template__results_lines
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.product_checkup_view
+msgid "النتائج الافتراضية"
+msgstr "Default Results"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__default_result
+msgid "النتيجة الافتراضية"
+msgstr "Default Result"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_workstation_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_workstation_menu
+msgid "الورش"
+msgstr "Workshops"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_picking_workstation__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__workstation_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking_type__workstation_id
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.stock_picking_workstation_search
+msgid "الورشة"
+msgstr "Workshop"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__description
+msgid "الوصف"
+msgstr "Description"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__desc_en
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__desc_en
+msgid "الوصف بالانجليزي"
+msgstr "English Description"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_computer_codes_lines__desc_ar
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__desc_ar
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "الوصف بالعربي"
+msgstr "Arabic Description"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed__inv_closed_to_date
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+msgid "الى تاريخ"
+msgstr "Date To"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__sale_order_id
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "امر البيع"
+msgstr "Sale Order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__no_spare_parts_flag
+msgid "امر البيع لا يحتاج قطع مستبدلة"
+msgstr "Not Spare Part Required "
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__wo_ids
+msgid "امر التركيب"
+msgstr "Work Order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_work_procedure_view
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__work_order_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_payment__work_order_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__work_order_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__work_order_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__work_order_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__work_order_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__work_order_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__work_order_id1
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__state__work_order_started
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__state__work_order_started
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__state__work_order_started
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "امر العمل"
+msgstr "Work Order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_payment__checkup_id
+msgid "امر الفحص"
+msgstr "Checkup Order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__end_date
+msgid "انتهاء العمل"
+msgstr "Order Finsih"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__end_date
+msgid "انتهاء الفحص"
+msgstr "Order Finsih"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+msgid "انشاء امر العمل"
+msgstr "Create Work Order"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "انشاء امر بيع"
+msgstr "Create Sale Order"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+msgid "انشاء فاتورة مبيعات"
+msgstr "Create Sale Invoice"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_services_types_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_services_types_menu
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_services_types_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_services_types_view
+msgid "انواع الخدمات"
+msgstr "Services Types"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_car_types_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_car_types_menu
+msgid "انواع السيارات"
+msgstr "Cars Types"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_car_manufactory_view
+msgid "انواع السيارات المرتبطة"
+msgstr "Related Cars Types"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_parts_result_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_parts_result_view
+msgid "انواع الفحص"
+msgstr "Checkup Types"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__hr_supervisor_assignments__state__closed
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__hr_technical_assignments__state__closed
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_salesman_assignments__state__closed
+msgid "ايقاف"
+msgstr "Stop"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_period_closed__inv_closed_from_date
+msgid "ايقاف العمليات المخزنية من"
+msgstr "Stop Inventory Operations From"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_wo_period_closed_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.wo_period_closed_menu
+msgid "ايقاف الفترات المخزنية"
+msgstr "Stop Inventory Periods"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__create_date
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__state__execute_started
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__state__execute_started
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__state__execute_started
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+msgid "بدء الفحص"
+msgstr "Checkup Start"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__technical_is_started
+msgid "بدأ بواسطة"
+msgstr "Started By"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__account_move__pay_type__bank
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__pay_type__bank
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__pay_type__bank
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__pay_type__bank
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__sale_order__pay_type__bank
+msgid "بنكي"
+msgstr "Bank"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "بيانات بالسيارات الواردة الى المركز :"
+msgstr "Data of Cars Arrived at the Center:"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__entry_card_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__entry_card_id
+msgid "بيانات كرت الدخول"
+msgstr "Entry Card Data"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "تاريح البدء"
+msgstr "Start Date"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "تاريخ :"
+msgstr "Date :"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+msgid "تاريخ اكتمال التفيذ غير اجباري"
+msgstr "Execute Completed Date Not Required"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_res_config_settings__compelete_done_date_not_required
+msgid "تاريخ اكتمال التنفيذ غير اجباري"
+msgstr "Execute Completed Date Not Required"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__assign_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__assign_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__assign_date
+msgid "تاريخ الاسناد"
+msgstr "Assign Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__order_date
+msgid "تاريخ الاقفال"
+msgstr "Closure Date"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "تاريخ الانتهاء"
+msgstr "End Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_supervisor_assignments__close_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_technical_assignments__close_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_salesman_assignments__close_date
+msgid "تاريخ الايقاف"
+msgstr "Stop Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__create_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__create_date
+msgid "تاريخ البدء"
+msgstr "Start Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__create_date
+msgid "تاريخ البدء العمل"
+msgstr "Work Start Date"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "تاريخ الخروج"
+msgstr "Exit Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__pay_date
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view_tree_view
+msgid "تاريخ الدفع"
+msgstr "Payment Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__order_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__order_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__order_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__order_date
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__order_date
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_tree_view
+msgid "تاريخ الطلب"
+msgstr "Order Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__end_date
+msgid "تاريخ انتهاء العمل"
+msgstr "Work Completion Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__complete_done_date
+msgid "تاريخ انجاز العمل"
+msgstr "Order Executed Date"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__complete_date
+msgid "تاريخ ووقت الاكتمال"
+msgstr "Completion Date and Time"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__start_Service_date
+msgid "تاريخ ووقت البدء"
+msgstr "Start Date and Time"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+msgid "تاكيد .. هل انت متاكد من عملية الدفع وترحيلها للحسابات"
+msgstr "Confirm >>> Are you sure from Payment and Posted to Accounts  !"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_message_confirm_view
+msgid "تاكيد / Confirm"
+msgstr "Confirm"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_res_config_settings__collecting_products
+msgid "تجميع الاصناف في بند واحد"
+msgstr "Collecting Products in Invoice Printing"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "تحديث الاصناف من امر الصرف"
+msgstr "Update Inventory Issue"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_services_types__product_id
+msgid "تحديد الصنف المطابق للخدمة لانشاء امر البيع"
+msgstr "Determine Related Product"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_wo_work_order_analysis_view
+msgid "تحليل اوامر العمل"
+msgstr "Work Orders Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_work_order_analysis_view
+msgid "تحليل اوامر العمل "
+msgstr "Work Orders Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_wo_services_analysis_view
+msgid "تحليل مبيعات الخدمات"
+msgstr "Services Sales Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_wo_services_analysis_view
+msgid "تحليل مبيعات الخدمات "
+msgstr "Services Sales Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_wo_sales_analysis_view
+msgid "تحليل مبيعات الخدمات وقطع الغيار"
+msgstr "Services and Spare Parts Sales Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_wo_sales_analysis_view
+msgid "تحليل مبيعات الخدمات وقطع الغيار "
+msgstr "Services and Spare Parts Sales Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_wo_technicals_analysis_view
+msgid "تحليل مبيعات الفنيين"
+msgstr "Technicians Sales Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_wo_technicals_analysis_view
+msgid "تحليل مبيعات الفنيين "
+msgstr "Technicians Sales Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_wo_spare_part_analysis_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_wo_spare_part_analysis_view
+msgid "تحليل مبيعات قطع الغيار"
+msgstr "Spare Parts Sales Analysis"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_wo_invoice_payments_report__display_type__detail
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_wo_technical_report__display_type__detail
+msgid "تحليلي"
+msgstr "Detailed"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__account_move__pay_type__transfer
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__pay_type__transfer
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__pay_type__transfer
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__pay_type__transfer
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__sale_order__pay_type__transfer
+msgid "تحويل"
+msgstr "Transfer"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__group_by_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_report_module__group_by_type
+msgid "ترتيب التقرير"
+msgstr "Report Sorting"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+msgid "ترحيل الخصم على مستوى الفاتورة من امر الفحص الى ام البيع"
+msgstr "Posted Discount as Product into sale order and Sale Invoice"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_res_config_settings__discount_posted
+msgid "ترحيل الخصم في اوامر التركيب"
+msgstr "Post Discount in Checkup System"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_payment_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "تسجيل دفعة"
+msgstr "Payment Register"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_wo_tehnical_rpt
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_mizan_wo_tehnical_rpt
+msgid "تقرير الفنيين"
+msgstr "Technicians Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_wo_report
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_mizan_wo_report
+msgid "تقرير اوامر العمل"
+msgstr "Work Orders Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_wo_invoice_payments_rpt
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_mizan_wo_invoice_payments_rpt
+msgid "تقرير اوامر العمل المكتملة"
+msgstr "Completed Work Orders Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_wo_auditor_analysis_view
+msgid "تقرير تتبع حركة العمليات"
+msgstr "Operations Movement Tracking Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_wo_auditor_analysis_view
+msgid "تقرير تتبع حركة العمليات "
+msgstr "Operations Movement Tracking Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.menu_wo_services_lines_view
+msgid "تقرير حركة الخدمات لامر العمل للفنيين"
+msgstr "Service Movement for Work Order by Technicians Report "
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__send_done_wo
+msgid "تم ارسال الى امر العمل"
+msgstr "Send Done to WorkOrder"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__closed_flag
+msgid "تم الاقفال"
+msgstr "Closed"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__matched_flag
+msgid "تم المطابقة"
+msgstr "Matched"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__gear_type__auto_gear
+msgid "تماتيك"
+msgstr "Automatic"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_message_confirm__desc
+msgid "تنبيه / "
+msgstr "Alert /"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_car_setup_menu
+msgid "تهيئة نظام الصيانة"
+msgstr "Checkup System Setting"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_mizan_salesman_sides_view
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_salesman_sides_menu
+msgid "جهات المندوبين"
+msgstr "Sales Mans Sides"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__salesman_side
+msgid "جهة المندوب الخارجي"
+msgstr "External Sale Man Side"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__partner_mobile
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "جوال العميل"
+msgstr "Customer Mobile"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "حالة الانجاز"
+msgstr "Completion Status"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_wo_invoice_payments_report__group_by_type__by_date
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_wo_report_module__group_by_type__by_date
+msgid "حسب التاريخ"
+msgstr "By Date"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_supervisor_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_technical_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_salesman_assign_search
+msgid "حسب الحالة"
+msgstr "State"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+msgid "حسب العميل"
+msgstr "By Customer"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_supervisor_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_technical_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_salesman_assign_search
+msgid "حسب الفرع"
+msgstr "Branch"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_supervisor_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_hr_technical_assign_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.view_salesman_assign_search
+msgid "حسب الفني"
+msgstr "Technical"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+msgid "حسب المشرف"
+msgstr "By Supervisor"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_wo_invoice_payments_report__group_by_type__by_type
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_wo_report_module__group_by_type__by_type
+msgid "حسب النوع"
+msgstr "By Type"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move_line__product_has_guarantee_flag
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_product__guarantee_able
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_template__guarantee_able
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order_line__product_has_guarantee_flag
+msgid "خاضع للضمان"
+msgstr "guarantee-able"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__additional_services
+msgid "خدمات اضافية"
+msgstr "Additional Services"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__additional_services__internal_branches_services
+msgid "خدمات داخلية بين الفروع"
+msgstr "Internal Services Between Branches"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "خدمة"
+msgstr "Service"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_product__discount_product_flag
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_template__discount_product_flag
+msgid "خصم"
+msgstr "Discount"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+msgid "دخول السيارة"
+msgstr "Entry Car"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_bank_statement_import_journal_creation__use_main_cash_close
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_journal__use_main_cash_close
+msgid "دفتر صندوق المركز الرئيسي لاقفال صناديق الفروع"
+msgstr "Main Center Cashbox for Branch Cashbox Closures"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+msgid "دفعت"
+msgstr "Paid"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_message_confirm_view
+msgid "رسالة تأكيد"
+msgstr "Confirmation Message"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__cash_close_id
+msgid "رقم اقفال الصندوق"
+msgstr "Cashbox Closure Number"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_tree_view
+msgid "رقم التسلسلي"
+msgstr "Sequence No"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__partner_mobile
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__partner_mobile
+msgid "رقم الجوال"
+msgstr "Mobile No"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view_tree_view
+msgid "رقم الدفع"
+msgstr "Payment No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__vin_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__vin_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__vin_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__vin_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__vin_no
+msgid "رقم الشاصي"
+msgstr "Car Vin No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__stock_picking_id
+msgid "رقم الشحنة"
+msgstr "Shipment Number"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_tree_view
+msgid "رقم الطلب"
+msgstr "Order No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__seq
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__seq
+msgid "رقم العملية"
+msgstr "Operation No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__invoice_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__invoice_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__invoice_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__invoice_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__invoice_no
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "رقم الفاتورة"
+msgstr "Invoice Number"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__car_panel_no
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "رقم اللوحة"
+msgstr "Vehicle Plate Number"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__sale_order_id
+msgid "رقم امر البيع"
+msgstr "Sale Order No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__header_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__header_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__header_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__header_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_work_order_analysis_view__header_id
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "رقم امر العمل"
+msgstr "Work Order No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__checkup_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__checkup_id
+msgid "رقم امر الفحص"
+msgstr "Checkup order No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__entry_card_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_payment__entry_card_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__header_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__entry_card_id
+msgid "رقم كرت الدخول"
+msgstr "Entry Card No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__car_panel_no
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__car_panel_no
+msgid "رقم لوحة السيارة"
+msgstr "Car Panel No."
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_wo_services_lines_view
+msgid "رولات الاصناف "
+msgstr "Products Rolls"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_move__unit_price
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__unit_price
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__unit_price
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_spare_part_analysis_view__unit_price
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__unit_price
+msgid "سعر البيع"
+msgstr "Sale Price"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__service_type_price
+msgid "سعر الخدمة"
+msgstr "Service Price"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_res_config_settings__service_price_include_tax
+msgid "سعر الخدمة شاملة الضريبة"
+msgstr "Service Price Include Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__main_cash_journal_id
+msgid "صندوق النقدية المركز الرئيسي"
+msgstr "Main Center Cashbox"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__branch_cash_journal_id
+msgid "صندوق النقدية للفرع"
+msgstr "Branch Cashbox"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_product__guarantee_product
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_template__guarantee_product
+msgid "صنف ضمان"
+msgstr "guarantee Product"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_product__is_checkup_product
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_product_template__is_checkup_product
+msgid "صنف فحص"
+msgstr "Checkup Product"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+msgid "طباعة اصناف الفاتورة"
+msgstr "Invoice Products Printing"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+msgid "طريقة احتساب الضريبة في نظام الفحص"
+msgstr "Calculate Tax in Checkup System"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__pay_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__pay_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__pay_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__pay_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__pay_type
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+msgid "طريقة الدفع"
+msgstr "Payment Type"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.car_checkup_menu
+msgid "طلبات الفحص"
+msgstr "Checkup Orders"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__gear_type__manual
+msgid "عادي"
+msgstr "Normal"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__drum_counter
+msgid "عداد طبلون"
+msgstr "Drum Counter"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "عدد الخدمات المنجزة"
+msgstr "Number of Completed Services"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__technical_count
+msgid "عدد الفنيين في الخدمة"
+msgstr "Number of Technicians in Service"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_invoice_payments_report__display_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_wo_technical_report__display_type
+msgid "عرض التقرير"
+msgstr "View Report"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__work_order_flag
+msgid "عملية امر عمل"
+msgstr "Work Order"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__commission
+msgid "عمولة الفحص"
+msgstr "Checkup Commission"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_computers_codes__active_code
+msgid "غير نشط"
+msgstr "Not Active"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+msgid "فاتورة المبيعات"
+msgstr "Sale Invoice"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "فترة الانجاز(ساعة)"
+msgstr "Completion Time (Hours)"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__diff_times
+msgid "فتره الانجاز(ساعة)"
+msgstr "Completion Time (Hours)"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_procedure_form_view
+msgid "فحص الكمبيوتر"
+msgstr "Computer Checkup"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__remaining_matched_amount
+msgid "فرق المطابقة"
+msgstr "Matching Difference"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_hr_employee__technical_emp
+msgid "فني تركيب"
+msgstr "Technical"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_procedure_form_view
+msgid "قطع الغيار"
+msgstr "Spare Parts"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "قطع غيار"
+msgstr "Spare Parts"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+msgid "قيد الاقفال"
+msgstr "Accounting Entry for Cashbox Closure"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.actions.act_window,name:qimamhd_mizan_car_13.action_entry_card_view
+msgid "كرت الدخول"
+msgstr "Entry Card"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.constraint,message:qimamhd_mizan_car_13.constraint_mizan_car_entry_card_master_sequence_by_branch_unique
+msgid "لا يمكن تكرار رقم العملية"
+msgstr "Not  Duplicate Operation No."
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_technical_report_view
+msgid "لوحة السيارة"
+msgstr "Vehicle Plate No"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__discount_type__amount
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_spare_parts_lines__discount_type__amount
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_line__discount_type__amount
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__discount_type__amount
+msgid "مبلغ"
+msgstr "Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__discount_amount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__discount_amount
+msgid "مبلغ الخصم"
+msgstr "Discount Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__amount_tax
+msgid "مبلغ الضريبة"
+msgstr "Amount Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_register_payment__invoice_amount
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__invoice_with_tax
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_payment_view
+msgid "مبلغ الفاتورة"
+msgstr "Invoice Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__supervisor_amount
+msgid "مبلغ المشرف"
+msgstr "Supervisor Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__matched_amount
+msgid "مبلغ المطابقة"
+msgstr "Matching Amount"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__amount_with_tax
+msgid "مبلغ شامل الضريبة"
+msgstr "Amount Including Tax"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__hr_supervisor_assignments__state__current
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__hr_technical_assignments__state__current
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_salesman_assignments__state__current
+msgid "متوفر لدى الفرع"
+msgstr "Available in Branch"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_technicals_analysis_view__time_difference
+msgid "مدة انجاز امر العمل"
+msgstr "Work Order Completion Time"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_cash_close_closed__user_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__user_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__user_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__user_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__user_id
+msgid "مدخل البيانات/مسئول المبيعات"
+msgstr "Sales user"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__manual_ref_no
+msgid "مرجع امر الصرف"
+msgstr "Payment Reference"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_register_payment__state__posted
+msgid "مرحل"
+msgstr "Posted"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__state__draft
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__state__draft
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__state__draft
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "مرحلة الاعداد"
+msgstr "Prepared phase"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__state__confirm
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__state__confirm
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__state__confirm
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "مرحلة التاكيد"
+msgstr "Confirm Phase"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "مرحلة الفحص"
+msgstr "Inspection Phase"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_order_report_view
+msgid "مرحلة امر العمل"
+msgstr "Work Order Phase"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__sale_user
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_closed_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_form_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_search_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.entry_card_master_tree_view
+msgid "مسئول المبيعات"
+msgstr "Sales User"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_register_payment__state__draft
+msgid "مسودة"
+msgstr "Draft"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_services_analysis_view__price_include
+msgid "مشمولة السعر"
+msgstr "Price Included"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.cash_close_form_view
+msgid "مطابقة الصندوق"
+msgstr "Cashbox Reconciliation"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__state__cancel_order
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__state__cancel_order
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__state__cancel_order
+msgid "ملغي امر التركيب"
+msgstr "Cancel Order"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_invoice_payments_report
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_report_wizred
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_wo_technical_report
+msgid "من تاريخ"
+msgstr "Date From"
+
+#. module: qimamhd_mizan_car_13
+#: model:res.groups,name:qimamhd_mizan_car_13.group_sales_man_priv
+msgid "منح صلاحيات البائع"
+msgstr "Grand Sales Privileges"
+
+#. module: qimamhd_mizan_car_13
+#: model:res.groups,name:qimamhd_mizan_car_13.group_supervisor_priv
+msgid "منح صلاحيات المشرف"
+msgstr "Grand Supervisors Privileges"
+
+#. module: qimamhd_mizan_car_13
+#: model:res.groups,name:qimamhd_mizan_car_13.group_add_spare_parts_priv
+msgid "منح صلاحية اضافة قطع الغيار في شاشة امر العمل"
+msgstr "Grant add Spare Parts in Work Orders"
+
+#. module: qimamhd_mizan_car_13
+#: model:res.groups,name:qimamhd_mizan_car_13.group_rtn_to_draft_and
+#: cancel_priv
+msgid "منح صلاحية الاستعادة للتعديل والغاء الطلبات في نظام الصيانة"
+msgstr "Grant Restore Permission to Modify and Cancel Orders in the Maintenance System"
+
+#. module: qimamhd_mizan_car_13
+#: model:res.groups,name:qimamhd_mizan_car_13.group_technician_priv
+msgid "منح صلاحية الفني"
+msgstr "Grand Technical Privileges"
+
+#. module: qimamhd_mizan_car_13
+#: model:res.groups,name:qimamhd_mizan_car_13.group_allow_delete_wo_priv
+msgid "منح صلاحية حذف طلبات الفحص واومر العمل"
+msgstr "Grant Permission to Delete Inspection Requests and Work Orders"
+
+#. module: qimamhd_mizan_car_13
+#: model:res.groups,name:qimamhd_mizan_car_13.group_allow_matched_cash_priv
+msgid "منح صلاحية مطابقة الصناديق"
+msgstr "Grant Permission to Reconcile Cashboxes"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_sales_man__sale_man_type__external
+msgid "مندوب خارجي"
+msgstr "External sales Man"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_sales_man__sale_man_type__internal
+msgid "مندوب داخلي"
+msgstr "Internal Sales Man"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.account_close_cash_search
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.account_close_cash_tree_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.account_move_mizan_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.inherit_sale_order_mizan
+msgid "مندوب نظام الصيانة"
+msgstr "Sales Man Checkup System"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_location__workstation_location_id
+msgid "موقع ورشة"
+msgstr "Workshop Location"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_parts_result_lines_menu
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.mizan_parts_result_tree_view
+msgid "نتائج الفحص"
+msgstr "Checkup Results"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__checkup_part_result_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_default_results__checkup_part_result_id
+msgid "نتيجة الفحص"
+msgstr "Checkup Result"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__discount_type__percentage
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_spare_parts_lines__discount_type__percentage
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_line__discount_type__percentage
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__discount_type__percentage
+msgid "نسبة"
+msgstr "Percentage"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.ui.menu,name:qimamhd_mizan_car_13.mizan_car_system_menu
+msgid "نظام الصيانة"
+msgstr "Checkup Sytem"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__account_move__pay_type__cash
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_checkup_procedure_master__pay_type__cash
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_entry_card_master__pay_type__cash
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__mizan_car_work_procedure_master__pay_type__cash
+#: model:ir.model.fields.selection,name:qimamhd_mizan_car_13.selection__sale_order__pay_type__cash
+msgid "نقدا"
+msgstr "Cash"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__checkup_part_id
+msgid "نوع /كود الفحص"
+msgstr "Checkup Code"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__gear_type
+msgid "نوع الجير"
+msgstr "Gear Type"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__service_type_id
+msgid "نوع الخدمة"
+msgstr "Service Type"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__discount_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__discount_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__discount_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__discount_type
+msgid "نوع الخصم"
+msgstr "Discount Type"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_account_move__car_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_master__car_type_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_entry_card_master__car_type_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_master__car_type_id
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_sale_order__car_type
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_stock_picking__car_type_id
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.checkup_res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "نوع السيارة"
+msgstr "Car Type"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__type
+msgid "نوع المنتج"
+msgstr "Product Type"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_sales_man__sale_man_type
+msgid "نوع المندوب"
+msgstr "Sale Man Type"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_spare_parts_lines__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_wo_sales_analysis__name
+msgid "وصف الخدمة"
+msgstr "Service Description"
+
+#. module: qimamhd_mizan_car_13
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_checkup_procedure_line__name
+#: model:ir.model.fields,field_description:qimamhd_mizan_car_13.field_mizan_car_work_procedure_line__name
+msgid "وصف الفحص"
+msgstr "Checkup Description"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "وقت الخروج"
+msgstr "Exit Time"
+
+#. module: qimamhd_mizan_car_13
+#: model_terms:ir.ui.view,arch_db:qimamhd_mizan_car_13.work_order_sum_report_view
+msgid "وقت الدخول"
+msgstr "Entry Time"

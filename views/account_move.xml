@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="account_move_mizan_view" model="ir.ui.view">
+		<field name="name">mizan order In invoice</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_move_form" />
+		<field name="arch" type="xml">
+                   <xpath expr="//field[@name='ref']" position="after">
+                            <field name="type" invisible="1"/>
+
+                            <field name="partner_mobile" readonly="1"  attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+                            <field name="car_panel_no" readonly="1" attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+                            <field name="car_type"  readonly="1" attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+                            <field name="is_guarantee"  readonly="1" attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+                            <field name="work_order_id"  readonly="1" attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+                            <field name="collecting_products_report_flag" invisible="1"/>
+
+                             <field name="sale_man_id"   attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مندوب نظام الصيانة"/>
+
+                   </xpath>
+<!--                      <xpath expr="//button[@name='action_post']" position="attributes">-->
+<!--                            <attribute name="confirm">هل انت متاكد من اجمالي الفاتورة ... Are you sure from Invoice Total</attribute>-->
+<!--                      </xpath>-->
+
+		</field>
+	</record>
+     <record id="account_move_mizan_tree_view" model="ir.ui.view">
+		<field name="name">mizan In tree invoice</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_invoice_tree" />
+		<field name="arch" type="xml">
+                   <xpath expr="//field[@name='ref']" position="after">
+                        <field name="partner_mobile"  attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+                        <field name="car_panel_no"  attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+                       <field name="car_type"  attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+
+                        <field name="work_order_id"  attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>
+                   </xpath>
+        </field>
+	</record>
+     <record id="account_move_mizan_search2" model="ir.ui.view">
+                    <field name="name">account.move.search2.mizan</field>
+                    <field name="model">account.move</field>
+                    <field name="inherit_id" ref="account.view_account_invoice_filter" />
+                    <field name="arch" type="xml">
+
+                        <xpath expr="//search" position="inside">
+                              <field name="partner_mobile"/>
+                                <field name="car_panel_no"  />
+                               <field name="car_type"  />
+                                <field name="sale_man_id"  />
+                               <field name="work_order_id" />
+                        </xpath>
+
+                    </field>
+         </record>
+
+<!--	 <record id="account_move_mizan_search" model="ir.ui.view">-->
+<!--                    <field name="name">account.move.search.mizan</field>-->
+<!--                    <field name="model">account.move</field>-->
+<!--                    <field name="inherit_id" ref="account.view_account_invoice_filter" />-->
+<!--                    <field name="arch" type="xml">-->
+
+<!--                        <xpath expr="//search" position="inside">-->
+<!--                                <field name="partner_mobile"/>-->
+<!--                                <field name="car_panel_no"  />-->
+<!--                               <field name="car_type"  attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>-->
+<!--                                <field name="sale_man_id"  attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>-->
+<!--                               <field name="work_order_id"  attrs="{'invisible': [('type','not in', ['out_invoice','out_refund'])]}"/>-->
+<!--                        </xpath>-->
+
+<!--                    </field>-->
+<!--         </record>-->
+
+
+</odoo>

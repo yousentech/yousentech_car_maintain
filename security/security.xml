@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+        <record id="group_sales_man_priv" model="res.groups">
+			<field name="name">منح صلاحيات البائع</field>
+		</record>
+
+        <record id="group_supervisor_priv" model="res.groups">
+			<field name="name">منح صلاحيات المشرف</field>
+		</record>
+        <record id="group_technician_priv" model="res.groups">
+			<field name="name">منح صلاحية الفني</field>
+		</record>
+         <record id="group_add_spare_parts_priv" model="res.groups">
+			<field name="name">منح صلاحية اضافة قطع الغيار في شاشة امر العمل</field>
+		</record>
+        <record id="group_rtn_to_draft_and cancel_priv" model="res.groups">
+			<field name="name">منح صلاحية الاستعادة للتعديل والغاء الطلبات في نظام الصيانة</field>
+		</record>
+        <record id="group_un_close_cash_priv" model="res.groups">
+			<field name="name"> الغاء اقفال الصناديق</field>
+		</record>
+        <record id="group_allow_delete_wo_priv" model="res.groups">
+			<field name="name">منح صلاحية حذف طلبات الفحص واومر العمل</field>
+		</record>
+      <record id="group_allow_matched_cash_priv" model="res.groups">
+			<field name="name">منح صلاحية مطابقة الصناديق</field>
+		</record>
+
+        
+        <record id="car_checkup_branch_rules" model="ir.rule">
+            <field name="name">car checkup Branch</field>
+            <field name="model_id" ref="model_mizan_car_entry_card_master"/>
+            <field name="global" eval="True"/>
+             <field name="domain_force">['|',('branch_id','!=',int(user.is_admin)), ('branch_id', 'in',
+                    user.allowed_branch_ids.ids)]</field>
+            	<field name="perm_read" eval="True" />
+			<field name="perm_write" eval="True" />
+			<field name="perm_create" eval="True" />
+			<field name="perm_unlink" eval="True" />
+        </record>
+
+         <record id="car_workstation_picking_branch_rules" model="ir.rule">
+            <field name="name">workstation picking Branch</field>
+            <field name="model_id" ref="model_mizan_picking_workstation"/>
+            <field name="global" eval="True"/>
+             <field name="domain_force">['|',('branch_id','!=',int(user.is_admin)), ('branch_id', 'in',
+                    user.allowed_branch_ids.ids)]</field>
+             <field name="perm_read" eval="True" />
+			<field name="perm_write" eval="True" />
+			<field name="perm_create" eval="True" />
+			<field name="perm_unlink" eval="True" />
+        </record>
+        <record id="cash_close_branch_rules" model="ir.rule">
+            <field name="name">cash close Branch</field>
+            <field name="model_id" ref="model_cash_close_closed"/>
+            <field name="global" eval="True"/>
+             <field name="domain_force">['|',('branch_id','!=',int(user.is_admin)), ('branch_id', 'in',
+                    user.allowed_branch_ids.ids)]</field>
+             <field name="perm_read" eval="True" />
+			<field name="perm_write" eval="True" />
+			<field name="perm_create" eval="True" />
+			<field name="perm_unlink" eval="True" />
+        </record>
+
+<!--        <record id="mizan_car_checkup_technical_lines_rules" model="ir.rule">-->
+<!--            <field name="name">mizan_car_checkup_technical_lines</field>-->
+<!--            <field name="model_id" ref="model_mizan_car_checkup_lines"/>-->
+<!--            <field name="global" eval="True"/>-->
+<!--             <field name="domain_force">['|','|',('user_id','=',user.id), ('technical_name.user_id','=',user.id),('header_id.supervisor_name.user_id','=',user.id)]</field>-->
+<!--            	<field name="perm_read" eval="True" />-->
+<!--			<field name="perm_write" eval="True" />-->
+<!--			<field name="perm_create" eval="True" />-->
+<!--			<field name="perm_unlink" eval="True" />-->
+<!--        </record>-->
+
+
+    </data>
+</odoo>
