@@ -6,7 +6,7 @@
             <field name="name">wo_spare_part_analysis_tree_view</field>
             <field name="model">wo.spare.part.analysis.view</field>
             <field name="arch" type="xml">
-                <tree create="0" default_order="header_id,create_uid,stock_picking_id,order_date,product_categ_id,product_id,qty,unit_price,total,discount,untaxed_amount,amount_tax,amount_with_tax,partner_id,create_date,branch_id,invoice_no,car_panel_no,partner_mobile,state,supervisor_id desc">
+                <tree create="0" default_order="header_id,create_uid,stock_picking_id,order_date,product_categ_id,product_id,qty,unit_price,total,discount,untaxed_amount,amount_tax,amount_with_tax,partner_id,create_date,company_id,invoice_no,car_panel_no,partner_mobile,state,supervisor_id desc">
                   <field name="id"  widget="handle" />
                   <field name="header_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
                    <field name="product_categ_id"  readonly="1" />
@@ -25,7 +25,7 @@
                    <field name="partner_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
                     <field name="order_date"  />
                     <field name="create_date"  readonly="1" />
-                    <field name="branch_id"  readonly="1" />
+                    <field name="company_id"  readonly="1" />
                     <field name="invoice_no"  readonly="1" />
                     <field name="car_panel_no"  readonly="1" />
                     <field name="partner_mobile"  readonly="1" />
@@ -52,7 +52,7 @@
                    <field name="partner_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
                     <field name="order_date"  />
                     <field name="create_date"  readonly="1" />
-                    <field name="branch_id"  readonly="1" />
+                    <field name="company_id"  readonly="1" />
                     <field name="invoice_no"  readonly="1" />
                     <field name="car_panel_no"  readonly="1" />
                     <field name="partner_mobile"  readonly="1" />

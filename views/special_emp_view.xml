@@ -9,7 +9,7 @@
                  <field name = "supervisor_emp" />
 				 <field name = "technical_emp" />
 <!--				 <field name = "salesman_type" widget="radio"/>-->
-				 <field name = "branch_id" />
+				 <field name = "company_id" />
 			 
 			 </field>
 			 <notebook>

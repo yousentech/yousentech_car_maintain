@@ -9,7 +9,8 @@ class view_mizan_picking(models.Model):
     _auto = False
     id = fields.Integer(string="ID")
     name = fields.Char(strin="name")
-    branch_id = fields.Integer(string="branch_id")
+    # branch_id = fields.Integer(string="branch_id")
+    company_id = fields.Many2one('res.company',string="الفرع")
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'mizan_wo_picking')
@@ -20,12 +21,21 @@ class view_mizan_picking(models.Model):
         # then
         # sl.location_dest_id else sl.location_id
         # end, 0) location_id
+        ##
+        # self._cr.execute("""CREATE OR REPLACE VIEW mizan_wo_picking AS
+        #                 (select wo.id,'[ '|| 'ID ' || wo.id::text ||' ] '|| '[ '|| (select p.name from res_partner p where p.id=wo.partner_id)|| ' ] '||
+        #                          case when  wo.car_panel_no is not null then ' [ ' ||  wo.car_panel_no ||' ] 'else ' ' end || ' [ ' || b.name || ']'
+        #                       as name, en.branch_id as branch_id
+        #                      from mizan_car_work_procedure_master wo, mizan_car_entry_card_master en, custom_branches b
+        #                         where wo.sale_order_id is null and en.id = wo.entry_card_id and b.id= en.branch_id and wo.state not in ('execute_completed','cancel_order'));
+        #                             """)
+        
         self._cr.execute("""CREATE OR REPLACE VIEW mizan_wo_picking AS
                         (select wo.id,'[ '|| 'ID ' || wo.id::text ||' ] '|| '[ '|| (select p.name from res_partner p where p.id=wo.partner_id)|| ' ] '||
                                  case when  wo.car_panel_no is not null then ' [ ' ||  wo.car_panel_no ||' ] 'else ' ' end || ' [ ' || b.name || ']'
                               as name, en.branch_id as branch_id
-                             from mizan_car_work_procedure_master wo, mizan_car_entry_card_master en, custom_branches b
-                                where wo.sale_order_id is null and en.id = wo.entry_card_id and b.id= en.branch_id and wo.state not in ('execute_completed','cancel_order'));
+                             from mizan_car_work_procedure_master wo, mizan_car_entry_card_master en
+                                where wo.sale_order_id is null and en.id = wo.entry_card_id and wo.state not in ('execute_completed','cancel_order'));
                                     """)
 
 
@@ -44,7 +54,7 @@ class xx_stock_picking(models.Model):
 
     def _get_default_branches(self):
 
-        return [('branch_id', 'in', self.env.user.allowed_branch_ids.ids),
+        return [('company_id', 'in',  self.env.companies.ids),
                ]
 
     manual_ref_no = fields.Char(string="مرجع امر الصرف")
@@ -60,6 +70,7 @@ class xx_stock_picking(models.Model):
     send_done_wo = fields.Boolean(string="تم ارسال الى امر العمل", readonly=True)
 
     workstation_id = fields.Many2one('mizan.picking.workstation', string="الورشة")
+    ##
     workstation_flag_id = fields.Integer(default=lambda self: self._default_workstation_id(),
                                      compute="_get_workstation_id")
 
@@ -82,7 +93,7 @@ class xx_stock_picking(models.Model):
                         "تنبيه..  لا يمكن اعتماد الشحنة لعدم تحديد امر العمل للجهة المصروفة [%s] " % rec.location_dest_id.name)
             if rec.workstation_id and rec.work_order_id:
                 if not (
-                        rec.workstation_id.branch_id.id == rec.work_order_id.branch_id):
+                        rec.workstation_id.company_id.id == rec.work_order_id.company_id):
                     raise ValidationError(
                         "تنبيه.. الفروع غير متوافقة بين امر العمل والوشة ")
 
@@ -163,7 +174,7 @@ class xx_stock_picking(models.Model):
                 #print("rec.workstation_id.branch_id.id", rec.workstation_id.branch_id.id)
                 #print("rec.work_order_id.branch_id.id", rec.work_order_id.branch_id)
 
-                if not(rec.workstation_id.branch_id.id == rec.work_order_id.branch_id):
+                if not(rec.workstation_id.company_id.id == rec.work_order_id.company_id):
                     raise ValidationError(
                         "تنبيه.. الفروع غير متوافقة بين امر العمل والورشة ")
  
@@ -202,7 +213,7 @@ class xx_stock_picking(models.Model):
         for rec in self:
             if rec.work_order_id or rec.work_order_flag:
                 for line in rec.move_ids_without_package:
-                    if (line.reserved_availability != line.product_uom_qty) or not line.unit_price:
+                    if (line.product_qty != line.product_uom_qty) or not line.unit_price:
                         raise ValidationError(
                             " تنبيه ... الصنف [%s] قد يكن الكمية غير صحيحه او ان السعر غير صحيح " % line.product_id.name)
         return super(xx_stock_picking, self).button_validate()
@@ -218,7 +229,7 @@ class xx_stock_picking(models.Model):
                 sql_query = """          
                                         select count(*) as exist_res from  wo_period_closed
                                         where '{}' between inv_closed_from_date and inv_closed_to_date
-                                        """.format(rec.order_date)
+                                        """.format(rec.date)
 
                 if sql_query:
                     print("sql_query", sql_query)
@@ -266,7 +277,7 @@ class xx_stock_picking(models.Model):
                         " لا يمكن ارسال الاصناف لامر العمل بسبب تم انشاء امر بيع ")
                 else:
                     for line in rec.move_ids_without_package:
-                        if (line.reserved_availability <= 0 and not line.quantity_done) or not line.unit_price or (line.product_uom_qty != line.quantity_done):
+                        if (line.product_qty <= 0 and not line.quantity) or not line.unit_price or (line.product_uom_qty != line.quantity):
                             raise ValidationError(
                                 " تنبيه ... الصنف [%s] قد يكن الكمية غير صحيحه او ان السعر غير صحيح " % line.product_id.name)
 
@@ -287,7 +298,7 @@ class xx_stock_picking(models.Model):
                             if line_move.product_id.id == product_id:
                                
                                 if rec.state == 'done':
-                                    qty = qty + line_move.quantity_done
+                                    qty = qty + line_move.quantity
                                     unit_price = unit_price + line_move.unit_price
                                     p_count = p_count + 1
 
@@ -370,7 +381,7 @@ class xx_stock_move(models.Model):
     #
     #             rec.unit_price= price
 
-    @api.depends('unit_price', 'quantity_done', 'reserved_availability', 'product_id','unit_cost','product_uom_qty')
+    @api.depends('unit_price', 'quantity', 'product_qty', 'product_id','unit_cost','product_uom_qty')
     def _calc_total(self):
         for rec in self:
             # rec.product_id.product_tmpl_id.check_product_price_from_cost(rec.unit_price)

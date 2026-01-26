@@ -13,7 +13,9 @@ class xx_technical_assignments(models.Model):
     assign_date = fields.Date(string="تاريخ الاسناد", required=True, default=fields.Date.today,copy=False)
     close_date = fields.Date(string="تاريخ الايقاف", copy=False,readonly=True)
 
-    branch_id = fields.Many2one('custom.branches', string='الفرع المسند اليه', copy=False,required=True,)
+    # branch_id = fields.Many2one('custom.branches', string='الفرع المسند اليه', copy=False,required=True,)
+    company_id = fields.Many2one('res.company', string='الفرع المسند اليه', copy=False,required=True,)
+
     state = fields.Selection([('current','متوفر لدى الفرع'),('closed','ايقاف')],string="الحالة", default='current',readonly=True)
 
 
@@ -47,7 +49,9 @@ class xx_supervisor_assignments(models.Model):
     assign_date = fields.Date(string="تاريخ الاسناد", required=True, default=fields.Date.today,copy=False)
     close_date = fields.Date(string="تاريخ الايقاف",  copy=False)
 
-    branch_id = fields.Many2one('custom.branches', string='الفرع المسند اليه', copy=False,required=True,)
+    # branch_id = fields.Many2one('custom.branches', string='الفرع المسند اليه', copy=False,required=True,)
+    company_id = fields.Many2one('res.company', string='الفرع المسند اليه', copy=False,required=True,)
+
     state = fields.Selection([('current','متوفر لدى الفرع'),('closed','ايقاف')], string="الحالة", default='current',readonly=True)
 
 
@@ -83,7 +87,9 @@ class xx_sales_man_assignments(models.Model):
     assign_date = fields.Date(string="تاريخ الاسناد", required=True, default=fields.Date.today,copy=False)
     close_date = fields.Date(string="تاريخ الايقاف", copy=False,readonly=True)
 
-    branch_id = fields.Many2one('custom.branches', string='الفرع المسند اليه', copy=False,required=True,)
+    # branch_id = fields.Many2one('custom.branches', string='الفرع المسند اليه', copy=False,required=True,)
+    company_id = fields.Many2one('res.company', string='الفرع المسند اليه', copy=False,required=True,)
+
     state = fields.Selection([('current','متوفر لدى الفرع'),('closed','ايقاف')],string="الحالة", default='current',readonly=True)
 
 

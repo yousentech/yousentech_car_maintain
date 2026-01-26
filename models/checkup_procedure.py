@@ -66,16 +66,17 @@ class xx_car_checkup(models.Model):
 
     sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('branch_id','=', branch_id),('state','=', 'current')]")
 
-
-    services_price = fields.Float(string="الاجمالي", compute="_cal_tot_price", store=True,
+    ##
+    services_price = fields.Float(string="الاجمالي", store=True,
                                   readonly=True)
     discount_type = fields.Selection([('amount', 'مبلغ'), ('percentage', 'نسبة')], string="نوع الخصم",
                                      default='percentage')
     service_discount = fields.Float(string="الخصم")
-
-    services_price_after_discount = fields.Float(string="الاجمالي بعد الخصم", compute="_cal_tot_price", store=True,
+    ##
+    services_price_after_discount = fields.Float(string="الاجمالي بعد الخصم", store=True,
                                                  readonly=True)
-    services_price_with_tax = fields.Float(string="الاجمالي شامل الضريبة", compute="_cal_tot_price", store=True,
+    ##
+    services_price_with_tax = fields.Float(string="الاجمالي شامل الضريبة", store=True,
                                            readonly=True)
      # body_image = fields.Binary(string="اختر صورة مكان الفحص في البدي",copy=False)
 
@@ -110,14 +111,14 @@ class xx_car_checkup(models.Model):
     @api.model
     def _default_branch_id(self):
         for rec in self:
-             return rec.entry_card_id.branch_id.id
+             return rec.entry_card_id.company_id.id
 
     @api.depends('entry_card_id')
     def _get_branch_id(self):
         for rec in self:
             if rec.entry_card_id:
  
-                rec.branch_id = rec.entry_card_id.branch_id.id
+                rec.branch_id = rec.entry_card_id.company_id.id
             else:
                 rec.branch_id = 0
 
@@ -166,35 +167,35 @@ class xx_car_checkup(models.Model):
 
     @api.model
     def _default_user_technical(self):
-         return self.user_has_groups('qimamhd_mizan_car_13.group_technician_priv')
+         return self.user_has_groups('yousentech_car_maintain.group_technician_priv')
 
     def _user_technical_edit_mode(self):
-         self.is_user_technical = self.user_has_groups('qimamhd_mizan_car_13.group_technician_priv')
+         self.is_user_technical = self.user_has_groups('yousentech_car_maintain.group_technician_priv')
 
     @api.model
     def _default_user_supervisor(self):
-         return self.user_has_groups('qimamhd_mizan_car_13.group_supervisor_priv')
+         return self.user_has_groups('yousentech_car_maintain.group_supervisor_priv')
 
     def _user_supervisor_edit_mode(self):
-         self.is_user_supervisor = self.user_has_groups('qimamhd_mizan_car_13.group_supervisor_priv')
+         self.is_user_supervisor = self.user_has_groups('yousentech_car_maintain.group_supervisor_priv')
 
     @api.model
     def _default_user_sale_man(self):
 
-        return self.user_has_groups('qimamhd_mizan_car_13.group_sales_man_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_sales_man_priv')
 
     def _user_sale_man_edit_mode(self):
 
-         self.is_user_sale_man = self.user_has_groups('qimamhd_mizan_car_13.group_sales_man_priv')
+         self.is_user_sale_man = self.user_has_groups('yousentech_car_maintain.group_sales_man_priv')
     
         #========================================================================================================================== 
     is_user_allow_delete = fields.Boolean(default=lambda self: self._default_user_allow_delete(), compute="_user_allow_delete")
     @api.model
     def _default_user_allow_delete(self):
-        return self.user_has_groups('qimamhd_mizan_car_13.group_allow_delete_wo_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_allow_delete_wo_priv')
 
     def _user_allow_delete(self):
-        self.is_user_allow_delete = self.user_has_groups('qimamhd_mizan_car_13.group_allow_delete_wo_priv')
+        self.is_user_allow_delete = self.user_has_groups('yousentech_car_maintain.group_allow_delete_wo_priv')
 
 
     @api.onchange('service_type_id')
@@ -210,7 +211,7 @@ class xx_car_checkup(models.Model):
              # rec.check_all_lines()
 
             # whs_id = self.env['stock.warehouse'].search([('branch_id', '=', rec.branch_id.id)], limit=1)
-            check_id = self.env['account.move'].search([('checkup_id', '=', rec.id),('branch_id','=', rec.entry_card_id.branch_id.id)])
+            check_id = self.env['account.move'].search([('checkup_id', '=', rec.id),('company_id','=', rec.entry_card_id.company_id.id)])
             if check_id:
                 raise ValidationError(
                     "لا يمكن انشاء فاتورة مبيعات مره اخرى لنفس امر الفحص")
@@ -243,7 +244,7 @@ class xx_car_checkup(models.Model):
                     'discount': discount_perc if not rec.discount_inv_posted else False,
                      'price_unit': rec.service_type_price,
                     'tax_ids': [(6, 0, rec.service_type_id.product_id.taxes_id.ids)],
-                    'branch_id': rec.entry_card_id.branch_id.id,
+                    'branch_id': rec.entry_card_id.company_id.id,
 
                     'company_currency_id': rec.env.company.currency_id.id,
 
@@ -293,7 +294,7 @@ class xx_car_checkup(models.Model):
                         'discount': False,
                         'price_unit': rec.services_price - rec.services_price_after_discount,
 
-                        'branch_id': rec.entry_card_id.branch_id.id,
+                        'branch_id': rec.entry_card_id.company_id.id,
 
                         'company_id': rec.entry_card_id.company_id.id,
                         'currency_id': self.env.company.currency_id.id,
@@ -304,7 +305,7 @@ class xx_car_checkup(models.Model):
             if inv_line_ids:
 
                 journal_id = self.env['account.journal'].search(
-                    [('branch_id', '=', self.env.user.branch_id.id), ('type', '=', 'sale')], limit=1)
+                    [('company_id', '=', self.env.user.company_id.id), ('type', '=', 'sale')], limit=1)
                 journal_sale = ""
                 if journal_id:
                     journal_sale = journal_id.id
@@ -318,7 +319,7 @@ class xx_car_checkup(models.Model):
                         "تنبيه... لم يتم تهيئة دفتر المبيعات")
 
                 invoice = self.env['account.move'].create({
-                    'type': 'out_invoice',
+                    'move_type': 'out_invoice',
                     'journal_id': journal_sale,
                     'partner_id': rec.partner_id.id,
                     'commercial_partner_id': rec.partner_id.id,
@@ -327,10 +328,10 @@ class xx_car_checkup(models.Model):
                     'currency_id': self.env.company.currency_id.id,
                     'state': 'draft',
                     'invoice_user_id': rec.user_id.id,
-                    'invoice_payment_state': 'not_paid',
+                    'payment_state': 'not_paid',
                     'invoice_date_due': rec.entry_card_id.order_date,
                     'invoice_partner_display_name': rec.partner_id.name,
-                    'branch_id': rec.entry_card_id.branch_id.id,
+                    'company_id': rec.entry_card_id.company_id.id,
 
                     'checkup_id': rec.id,
                     'entry_card_id': rec.entry_card_id.id,
@@ -415,7 +416,7 @@ class xx_car_checkup(models.Model):
             if product_id:
                 price = 0.00
                 if rec.use_pricelist:
-                    pricelist = self.env['product.pricelist'].search([('branch_id', '=', rec.entry_card_id.branch_id.id)])
+                    pricelist = self.env['product.pricelist'].search([('company_id', '=', rec.entry_card_id.company_id.id)])
                     for line in pricelist.item_ids:
                         
                         if line.product_tmpl_id.id == product_id.product_tmpl_id.id:
@@ -438,7 +439,7 @@ class xx_car_checkup(models.Model):
             part_results = self.env['mizan.car.work.procedure.master'].search([('checkup_id', '=', rec.id)])
 
             if not part_results:
-                pricelist = self.env['product.pricelist'].search([('branch_id', '=', rec.entry_card_id.branch_id.id)])
+                pricelist = self.env['product.pricelist'].search([('company_id', '=', rec.entry_card_id.company_id.id)])
  
                 results_tmp = {
                     'partner_id': rec.partner_id.id,
@@ -454,7 +455,7 @@ class xx_car_checkup(models.Model):
                     'checkup_id': rec.id,
 
                     'entry_card_id': rec.entry_card_id.id,
-                    'branch_id': rec.entry_card_id.branch_id.id,
+                    'branch_id': rec.entry_card_id.company_id.id,
                     'pricelist_id': pricelist.id,
 
                 }
@@ -484,13 +485,13 @@ class xx_car_checkup(models.Model):
                 wo_procedure._cal_spare_parts_amounts()
                 wo_procedure._cal_services_amounts()
 
-                action = self.env.ref('qimamhd_mizan_car_13.action_work_procedure_view')
+                action = self.env.ref('yousentech_car_maintain.action_work_procedure_view')
                 result = action.read()[0]
                 result.pop('id', None)
                 # result['context'] = {'default_search_result': ''}
                 result['domain'] = [('checkup_id', '=', rec.id)]
                 if wo_procedure:
-                    res = self.env.ref('qimamhd_mizan_car_13.work_procedure_form_view', False)
+                    res = self.env.ref('yousentech_car_maintain.work_procedure_form_view', False)
                     result['views'] = [(res and res.id or False, 'form')]
                     result['res_id'] = wo_procedure.id or False
 
@@ -501,13 +502,13 @@ class xx_car_checkup(models.Model):
             wo_procedure = self.env['mizan.car.work.procedure.master'].search([('checkup_id', '=', rec.id)])
 
 
-            action = self.env.ref('qimamhd_mizan_car_13.action_work_procedure_view')
+            action = self.env.ref('yousentech_car_maintain.action_work_procedure_view')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
             result['domain'] = [('checkup_id', '=', rec.id)]
             if wo_procedure:
-                res = self.env.ref('qimamhd_mizan_car_13.work_procedure_form_view', False)
+                res = self.env.ref('yousentech_car_maintain.work_procedure_form_view', False)
                 result['views'] = [(res and res.id or False, 'form')]
                 result['res_id'] = wo_procedure.id or False
 
@@ -536,7 +537,7 @@ class xx_car_checkup(models.Model):
         for rec in self:
             payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.entry_card_id.id),('checkup_id','=', rec.id)])
 
-            action = self.env.ref('qimamhd_mizan_car_13.action_mizan_payment_view')
+            action = self.env.ref('yousentech_car_maintain.action_mizan_payment_view')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
@@ -565,11 +566,11 @@ class xx_car_checkup(models.Model):
                 'name': _('Register Payment'),
                 'view_mode': 'form',
                 'res_model': 'mizan.register.payment',
-                'view_id': self.env.ref('qimamhd_mizan_car_13.mizan_payment_view').id,
+                'view_id': self.env.ref('yousentech_car_maintain.mizan_payment_view').id,
                 'type': 'ir.actions.act_window',
                 'context': {'default_invoice_amount': rec.service_type_price,
                             'default_advanced_amount': advanced_amount,
-                            'default_remaining_amount': remaining_amount, 'default_branch_id': rec.entry_card_id.branch_id.id,
+                            'default_remaining_amount': remaining_amount, 'default_branch_id': rec.entry_card_id.company_id.id,
                             'default_payment_note': "دفعة مقدمة لامر الفحص",
 
                             'default_header_id': rec.entry_card_id.id, 'default_checkup_id': rec.id, 'default_payment_amount': remaining_amount,
@@ -588,14 +589,16 @@ class xx_car_checkup_sub_lines_line_add(models.Model):
     #     return [('technical_emp', '=', True), ('branch_id', '=', self.env.user.allowed_branch_ids.ids),]
 
     selected = fields.Boolean(string="اختيار", default=True)
-    branch_id = fields.Integer( copy=False,
+    # branch_id = fields.Integer( copy=False,
+    #                             default=lambda self: self._default_branch_id(),compute="_get_branch_id")
+    company_id = fields.Many2one( copy=False,
                                 default=lambda self: self._default_branch_id(),compute="_get_branch_id")
 
     sequence = fields.Integer(string="التسلسل", default=12)
     checkup_part_id = fields.Many2one('product.product', string="نوع /كود الفحص", copy=False,required=True,domain=[('is_checkup_product','=',True)])
     name = fields.Char(string="وصف الفحص" , copy=False,required=True)
-    technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('branch_id','=', branch_id),('state','=', 'current')]")
-    product_tmpl_id = fields.Integer(default=lambda self: self._default_product_tmpl_id(),
+    technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
+    product_tmpl_id = fields.Many2many(default=lambda self: self._default_product_tmpl_id(),
                             compute="_get_product_tmpl_id")
 
     checkup_part_result_id = fields.Many2many('mizan.default.results', string="نتيجة الفحص",
@@ -614,16 +617,16 @@ class xx_car_checkup_sub_lines_line_add(models.Model):
     @api.model
     def _default_branch_id(self):
         for rec in self:
-             return rec.header_id.entry_card_id.branch_id.id
+             return rec.header_id.entry_card_id.company_id.id
 
     @api.depends('header_id')
     def _get_branch_id(self):
         for rec in self:
             if rec.header_id:
  
-                rec.branch_id = rec.header_id.entry_card_id.branch_id.id
+                rec.company_id = rec.header_id.entry_card_id.company_id.id
             else:
-                rec.branch_id = 0
+                rec.company_id = 0
 
     @api.model
     def _default_product_tmpl_id(self):
@@ -696,9 +699,29 @@ class xx_car_checkup_compter_codes_lines(models.Model):
 
 class xx_checkup_register_payment(models.Model):
     _inherit = 'mizan.register.payment'
+    
 
+    payment_method_line_id = fields.Many2one("account.payment.method.line")
+  
+    @api.depends("journal_id")
+    def _compute_payment_method_line_id(self):
+        for wizard in self:
+            if wizard.journal_id:
+                payment_type = "inbound"
+                available_payment_method_lines = (
+                    wizard.journal_id._get_available_payment_method_lines(payment_type)
+                )
+            else:
+                available_payment_method_lines = False
 
-
+            # Select the first available one by default.
+            if available_payment_method_lines:
+                wizard.payment_method_line_id = available_payment_method_lines[
+                    0
+                ]._origin
+            else:
+                wizard.payment_method_line_id = False
+                
     def create_payment_checkup(self):
         for rec in self:
             if rec.payment_amount <= 0:
@@ -717,29 +740,51 @@ class xx_checkup_register_payment(models.Model):
             if rec.payment_amount > rec.remaining_amount:
                     raise ValidationError(
                         "المبلغ المدفوع اكبر من المبلغ المتبقي.. لا يمكن انشاء مفوعات جديدة ")
-
-            self.inbound_payment_method = self.env['account.payment.method'].create({
-                'name': 'inbound',
-                'code': 'IN',
-                'payment_type': 'inbound',
-            })
+            ################################################### :
+            # inbound_payment_method = self.env['account.payment.method'].create({
+            #     'name': 'inbound',
+            #     'code': 'IN',
+            #     'payment_type': 'inbound',
+            # })
+            # payment = self.env['account.payment'].create({
+            #     'date': self.pay_date,
+            #     'payment_method_id': inbound_payment_method.id,
+            #     'payment_type': 'inbound',
+            #     'partner_type': 'customer',
+            #     'partner_id': self.header_id.partner_id.id,
+            #     'amount': self.payment_amount,
+            #     'journal_id': self.journal_id.id,
+            #     'company_id': self.header_id.company_id.id,
+            #     'company_id': self.header_id.company_id.id,
+            #     'currency_id': self.env.company.currency_id.id,
+            #     # 'payment_difference_handling': 'reconcile',
+            #     'ref': self.payment_note,
+            #     'entry_card_id': self.header_id.id,
+            #     'checkup_id': self.header_id.checkup_id.id,
+            #       })
+            # payment.action_post()
+            ############################################################# :
+            # payment_method_line_id = fields.Many2one("account.payment.method.line")
+            
             payment = self.env['account.payment'].create({
-                'payment_date': self.pay_date,
-                'payment_method_id': self.inbound_payment_method.id,
-                'payment_type': 'inbound',
-                'partner_type': 'customer',
-                'partner_id': self.header_id.partner_id.id,
-                'amount': self.payment_amount,
-                'journal_id': self.journal_id.id,
-                'company_id': self.header_id.company_id.id,
-                'branch_id': self.header_id.branch_id.id,
-                'currency_id': self.env.company.currency_id.id,
-                'payment_difference_handling': 'reconcile',
-                'communication': self.payment_note,
+                "amount":  self.payment_amount,
+                "ref": self.payment_note,
+                "date": self.pay_date,
+                "journal_id":  self.journal_id.id,
+                "payment_method_line_id": self.payment_method_line_id.id,
+                "state": "draft",
+                "payment_type": "inbound",
+                "partner_type": "customer", 
+                "partner_id": self.header_id.partner_id.id,
+                "currency_id": self.env.company.currency_id.id,
                 'entry_card_id': self.header_id.id,
                 'checkup_id': self.header_id.checkup_id.id,
+                'company_id': self.header_id.company_id.id,
+
                   })
-            payment.post()
+            payment.action_post()
+            
+            ################################################################################
             self.write({'state': 'posted'})
 
             payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.id),('checkup_id','=', rec.header_id.checkup_id.id)])

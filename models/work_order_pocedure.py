@@ -129,8 +129,8 @@ class xx_car_checkup(models.Model):
     checkup_id = fields.Many2one('mizan.car.checkup.procedure.master', string="الفحص",copy=False)
     entry_card_id = fields.Many2one('mizan.car.entry.card.master', string="بيانات كرت الدخول",copy=False)
     vin_no = fields.Char(string="رقم الشاصي")
-    branch_id = fields.Integer(copy=False,
-                               default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+    # branch_id = fields.Integer(copy=False,
+    #                            default=lambda self: self._default_branch_id(), compute="_get_branch_id")
 
     sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('branch_id','=', branch_id),('state','=', 'current')]")
 
@@ -141,7 +141,9 @@ class xx_car_checkup(models.Model):
     add_user_spare_parts_flag = fields.Boolean(default=lambda self: self._default_add_spare_parts_flag(),
                                          compute="_get_add_spare_parts_flag")
 
-    branch_id = fields.Many2one('custom.branches', string='الفرع', readonly=True, copy=False)
+    # branch_id = fields.Many2one('custom.branches', string='الفرع', readonly=True, copy=False)
+    company_id = fields.Many2one('res.company', string='الفرع', copy=False,required=True,)
+
     no_spare_parts_flag = fields.Boolean(string="امر البيع لا يحتاج قطع مستبدلة")
     is_guarantee = fields.Boolean(string="اضافة ضمان",default=True)
     additional_services = fields.Selection([('change_of_guarantee','التغيير على الضمان'),('internal_branches_services','خدمات داخلية بين الفروع')],string="خدمات اضافية",)
@@ -162,13 +164,13 @@ class xx_car_checkup(models.Model):
     total_discount = fields.Float(string="اجمالي الخصم", compute="_cal_tot_price")
     total_all_with_tax = fields.Float(string="الاجمالي شامل الضريبة", compute="_cal_tot_price")
     advance_amount = fields.Float(string="المبلغ المدفوع")
-    technical_name = fields.Many2one('hr.technical.assignments',string="اسم الفني",domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    technical_name = fields.Many2one('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
 
     discount_type = fields.Selection([('amount', 'مبلغ'), ('percentage', 'نسبة')], string="نوع الخصم",
                                      default='percentage')
     discount_line = fields.Float(string="الخصم")
     supervisor_amount = fields.Float(string="مبلغ المشرف")
-    pricelist_id = fields.Many2one('product.pricelist',string="التسعيرة حسب", domain="[('branch_id','=',branch_id )]",
+    pricelist_id = fields.Many2one('product.pricelist',string="التسعيرة حسب", domain="[('company_id','=',company_id )]",
                                    default=lambda self: self._default_pricelist_branch()
                                    )
     use_pricelist = fields.Boolean(default=lambda self: self._default_pricelist_flag(),
@@ -187,7 +189,7 @@ class xx_car_checkup(models.Model):
     def _default_pricelist_branch(self):
         for rec in self:
            
-            pricelist = self.env['product.pricelist'].search([('branch_id','=', rec.branch_id.id)])
+            pricelist = self.env['product.pricelist'].search([('company_id','=', rec.company_id.id)])
             return pricelist
 
     # @api.model
@@ -387,15 +389,15 @@ class xx_car_checkup(models.Model):
     @api.model
     def _default_branch_id(self):
         for rec in self:
-            return rec.entry_card_id.branch_id.id
+            return rec.entry_card_id.company_id.id
 
     @api.depends('entry_card_id')
     def _get_branch_id(self):
         for rec in self:
             if rec.entry_card_id:
-                rec.branch_id = rec.entry_card_id.branch_id.id
+                rec.company_id = rec.entry_card_id.company_id.id
             else:
-                rec.branch_id = 0
+                rec.company_id = False
 
     @api.onchange('result_lines')
     def _cal_services_amounts(self):
@@ -439,7 +441,7 @@ class xx_car_checkup(models.Model):
                     "لا يمكن ان يكون مبلغ المشرف اكبر من مبلغ امر العمل")
             
             whs_id = self.env['stock.warehouse'].search(
-                [('branch_id', '=', rec.entry_card_id.branch_id.id)], limit=1)
+                [('company_id', '=', rec.entry_card_id.company_id.id)], limit=1)
             
             if not rec.use_minus_qty:
                 for line in rec.lines_spare_parts:
@@ -512,38 +514,38 @@ class xx_car_checkup(models.Model):
     @api.model
     def _default_user_technical(self):
     
-        return self.user_has_groups('qimamhd_mizan_car_13.group_technician_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_technician_priv')
 
     def _user_technical_edit_mode(self):
    
-        self.is_user_technical = self.user_has_groups('qimamhd_mizan_car_13.group_technician_priv')
+        self.is_user_technical = self.user_has_groups('yousentech_car_maintain.group_technician_priv')
 
     @api.model
     def _default_user_supervisor(self):
         
-        return self.user_has_groups('qimamhd_mizan_car_13.group_supervisor_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_supervisor_priv')
 
     def _user_supervisor_edit_mode(self):
        
-        self.is_user_supervisor = self.user_has_groups('qimamhd_mizan_car_13.group_supervisor_priv')
+        self.is_user_supervisor = self.user_has_groups('yousentech_car_maintain.group_supervisor_priv')
 
     @api.model
     def _default_user_sale_man(self):
         
-        return self.user_has_groups('qimamhd_mizan_car_13.group_sales_man_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_sales_man_priv')
 
     def _user_sale_man_edit_mode(self):
         
-        self.is_user_sale_man = self.user_has_groups('qimamhd_mizan_car_13.group_sales_man_priv')
+        self.is_user_sale_man = self.user_has_groups('yousentech_car_maintain.group_sales_man_priv')
 
     @api.model
     def _default_add_spare_parts_flag(self):
       
-        return self.user_has_groups('qimamhd_mizan_car_13.group_add_spare_parts_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_add_spare_parts_priv')
 
     def _get_add_spare_parts_flag(self):
        
-        self.add_user_spare_parts_flag = self.user_has_groups('qimamhd_mizan_car_13.group_add_spare_parts_priv')
+        self.add_user_spare_parts_flag = self.user_has_groups('yousentech_car_maintain.group_add_spare_parts_priv')
 
 
 
@@ -591,11 +593,11 @@ class xx_car_checkup(models.Model):
     is_user_allow_delete = fields.Boolean(default=lambda self: self._default_user_allow_delete(), compute="_user_allow_delete")
     @api.model
     def _default_user_allow_delete(self):
-        return self.user_has_groups('qimamhd_mizan_car_13.group_allow_delete_wo_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_allow_delete_wo_priv')
 
     def _user_allow_delete(self):
         
-        self.is_user_allow_delete = self.user_has_groups('qimamhd_mizan_car_13.group_allow_delete_wo_priv')
+        self.is_user_allow_delete = self.user_has_groups('yousentech_car_maintain.group_allow_delete_wo_priv')
 
 
     def sale_order(self):
@@ -604,7 +606,7 @@ class xx_car_checkup(models.Model):
             # rec.check_data()
             # rec.check_all_lines()
 
-            whs_id = self.env['stock.warehouse'].search([('branch_id', '=', rec.entry_card_id.branch_id.id)], limit=1)
+            whs_id = self.env['stock.warehouse'].search([('company_id', '=', rec.entry_card_id.company_id.id)], limit=1)
             rec.get_available_qty()
 
             sale_order_check = self.env['sale.order'].search([('work_order_id', '=', rec.id)])
@@ -641,7 +643,7 @@ class xx_car_checkup(models.Model):
                 'date_order': rec.entry_card_id.order_date,
                 'picking_policy': 'direct',
                 'state': 'draft',
-                'branch_id': rec.entry_card_id.branch_id.id,
+                'company_id': rec.entry_card_id.company_id.id,
                 'user_id': rec.user_id.id,
                 'warehouse_id': whs_id.id,
                 'work_order_id': rec.id,
@@ -675,8 +677,8 @@ class xx_car_checkup(models.Model):
                     sale_order_line = self.env['sale.order.line'].create({
                         'product_id': line_sale.product_id.id,
                         'name': line_sale.name,
-                        'product_rac_id': line_sale.product_id.product_rac_id_lines.filtered(
-                                           lambda m: m.branch_id.id == rec.entry_card_id.branch_id.id).product_rac_id.ids,
+                        # 'product_rac_id': line_sale.product_id.product_rac_id_lines.filtered(
+                        #                    lambda m: m.company_id.id == rec.entry_card_id.company_id.id).product_rac_id.ids,
 
                         'product_uom_qty': line_sale.qty_done,
                         'state': 'draft',
@@ -686,7 +688,7 @@ class xx_car_checkup(models.Model):
                           'tax_id': line_sale.product_tax.ids if line_sale.product_tax else [],
 
                         'order_id': sale_order.id,
-                        'branch_id': rec.entry_card_id.branch_id.id,
+                        'company_id': rec.entry_card_id.company_id.id,
                         'invoice_status': 'no',
                         'salesman_id': self.env.user.id,
                         'company_id': rec.entry_card_id.company_id.id,
@@ -696,7 +698,7 @@ class xx_car_checkup(models.Model):
                         # 'price_total': 1,
                         'qty_delivered_method': 'manual',
                         'qty_delivered': 0,
-                        'qty_delivered_manual': 0,
+                        # 'qty_delivered_manual': 0,
                         'qty_to_invoice': 0,
                         'qty_invoiced': 0,
                         'order_partner_id': rec.partner_id.id,
@@ -715,8 +717,8 @@ class xx_car_checkup(models.Model):
                 sale_order_line = self.env['sale.order.line'].create({
                     'product_id': line.product_id.id,
                     'name': line.name,
-                    'product_rac_id': line.product_id.product_rac_id_lines.filtered(
-                                           lambda m: m.branch_id.id == rec.entry_card_id.branch_id.id).product_rac_id.ids,
+                    # 'product_rac_id': line.product_id.product_rac_id_lines.filtered(
+                    #                        lambda m: m.company_id.id == rec.entry_card_id.company_id.id).product_rac_id.ids,
 
                     'product_uom_qty': 1,
                     'product_uom': line.product_id.uom_id.id,
@@ -725,7 +727,7 @@ class xx_car_checkup(models.Model):
                     'price_unit': line.unit_price,
                     'tax_id': line.product_tax.ids if line.product_tax else [],
                     'order_id': sale_order.id,
-                    'branch_id': rec.entry_card_id.branch_id.id,
+                    'company_id': rec.entry_card_id.company_id.id,
                     'invoice_status': 'no',
                     'salesman_id': self.env.user.id,
                     'company_id': rec.entry_card_id.company_id.id,
@@ -736,7 +738,7 @@ class xx_car_checkup(models.Model):
                     # 'price_total': 1,
                     'qty_delivered_method': 'manual',
                     'qty_delivered': 0,
-                    'qty_delivered_manual': 0,
+                    # 'qty_delivered_manual': 0,
                     'qty_to_invoice': 0,
                     'qty_invoiced': 0,
                     'order_partner_id': rec.partner_id.id,
@@ -755,7 +757,7 @@ class xx_car_checkup(models.Model):
                     raise ValidationError(
                         "تنبيه... نوع الخصم حسب الفاتورة يجب تهيئة الخصم من بطاقة الصنف")
 
-                if discount_product and (rec.services_price - rec.services_price_after_discount):
+                if discount_product and (rec.total_discount):
                     sale_order_line = self.env['sale.order.line'].create({
                         'product_id': discount_product.id,
                         'name': discount_product.name,
@@ -763,9 +765,9 @@ class xx_car_checkup(models.Model):
                         'state': 'draft',
                         'product_uom': discount_product.uom_id.id,
                         'discount': False,
-                        'price_unit': rec.services_price - rec.services_price_after_discount,
+                        'price_unit':rec.total_discount,
                         'order_id': sale_order.id,
-                        'branch_id': rec.entry_card_id.branch_id.id,
+                        'company_id': rec.entry_card_id.company_id.id,
                         'invoice_status': 'no',
                         'salesman_id': self.env.user.id,
                         'company_id': rec.company_id.id,
@@ -775,14 +777,14 @@ class xx_car_checkup(models.Model):
                         # 'price_total': 1,
                         'qty_delivered_method': 'manual',
                         'qty_delivered': 0,
-                        'qty_delivered_manual': 0,
+                        # 'qty_delivered_manual': 0,
                         'qty_to_invoice': 0,
                         'qty_invoiced': 0,
                         'order_partner_id': rec.partner_id.id,
                         'customer_lead': 0,
                     })
 
-            rec.sale_order_count = len(sale_order)
+            # rec.sale_order_count = len(sale_order)
             rec.write({'state': 'execute_completed'})
             rec.entry_card_id.write({'state': 'execute_completed'})
             rec.checkup_id.write({'state': 'execute_completed'})
@@ -867,7 +869,7 @@ class xx_car_checkup(models.Model):
             
 
             whs_id = self.env['stock.warehouse'].search(
-                [('branch_id', '=', rec.entry_card_id.branch_id.id)], limit=1)
+                [('company_id', '=', rec.entry_card_id.company_id.id)], limit=1)
           
             if not rec.use_minus_qty:
 
@@ -892,7 +894,7 @@ class xx_car_checkup(models.Model):
         for rec in self:
             payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.entry_card_id.id),('work_order_id','=', rec.id)])
 
-            action = self.env.ref('qimamhd_mizan_car_13.action_mizan_payment_view')
+            action = self.env.ref('yousentech_car_maintain.action_mizan_payment_view')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
@@ -919,11 +921,11 @@ class xx_car_checkup(models.Model):
                 'name': _('Register Payment'),
                 'view_mode': 'form',
                 'res_model': 'mizan.register.payment',
-                'view_id': self.env.ref('qimamhd_mizan_car_13.mizan_payment_view').id,
+                'view_id': self.env.ref('yousentech_car_maintain.mizan_payment_view').id,
                 'type': 'ir.actions.act_window',
                 'context': {'default_invoice_amount': rec.total_all_with_tax,
                             'default_advanced_amount': advanced_amount,
-                            'default_remaining_amount': remaining_amount, 'default_branch_id': rec.entry_card_id.branch_id.id,
+                            'default_remaining_amount': remaining_amount, 'default_company_id': rec.entry_card_id.company_id.id,
                             'default_payment_note': "دفعة مقدمة لامر العمل",
 
                             'default_header_id': rec.entry_card_id.id, 'default_work_order_id': rec.id, 'default_payment_amount': remaining_amount if remaining_amount else 0,
@@ -938,7 +940,7 @@ class xx_car_checkup(models.Model):
                 price = 0.00
                 if rec.use_pricelist:
                     pricelist = self.env['product.pricelist'].search(
-                        [('branch_id', '=', rec.entry_card_id.branch_id.id)])
+                        [('company_id', '=', rec.entry_card_id.company_id.id)])
                   
                     for line in pricelist.item_ids:
                     
@@ -962,7 +964,7 @@ class xx_car_checkup(models.Model):
                     message = "اجمالي المبلغ المستحق هو  [ %s ] .. هل تريد الاستمرار " % round(rec.total_all_with_tax,2)
                     message_en = " Total amount will be [ %s ] >> do you want to continue " % round(rec.total_all_with_tax,2)
 
-                    action = self.env.ref('qimamhd_mizan_car_13.message_confirm_action')
+                    action = self.env.ref('yousentech_car_maintain.message_confirm_action')
                     result = action.read()[0]
                     result.pop('id', None)
                     result['context'] = {'default_desc':message_en + message}
@@ -974,7 +976,7 @@ class xx_car_checkup(models.Model):
                 message = "اجمالي المبلغ المستحق هو  [ %s ] .. هل تريد الاستمرار " % rec.total_all_with_tax
                 message_en = " Total amount will be [ %s ] >> do you want to continue " % rec.total_all_with_tax
 
-                action = self.env.ref('qimamhd_mizan_car_13.message_confirm_action')
+                action = self.env.ref('yousentech_car_maintain.message_confirm_action')
                 result = action.read()[0]
                 result.pop('id', None)
                 result['context'] = {'default_desc': message_en + message}
@@ -996,8 +998,9 @@ class xx_car_checkup_sub_lines_line_add(models.Model):
     product_id = fields.Many2one('product.product', string="المنتج", copy=False, required=True,
                                       domain=[('discount_product_flag','!=',True),('type','!=','product')])
     name = fields.Char(string="وصف الفحص", copy=False, required=True)
-    branch_id = fields.Integer(copy=False,
-                               default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+    # branch_id = fields.Integer(copy=False,
+    #                            default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+    company_id = fields.Many2one('res.company', copy=False,default=lambda self: self._default_branch_id(), compute="_get_branch_id")
 
     discount_type = fields.Selection([('amount', 'مبلغ'), ('percentage', 'نسبة')], string="نوع الخصم",
                                      default='percentage')
@@ -1060,15 +1063,15 @@ class xx_car_checkup_sub_lines_line_add(models.Model):
     @api.model
     def _default_branch_id(self):
         for rec in self:
-            return rec.header_id.entry_card_id.branch_id.id
+            return rec.header_id.entry_card_id.company_id.id
 
     @api.depends('header_id')
     def _get_branch_id(self):
         for rec in self:
             if rec.header_id:
-                rec.branch_id = rec.header_id.entry_card_id.branch_id.id
+                rec.company_id = rec.header_id.entry_card_id.company_id.id
             else:
-                rec.branch_id = 0
+                rec.company_id = False
 
     @api.model
     def _default_tax_id(self):
@@ -1168,8 +1171,10 @@ class xx_car_checkup_spare_parts_lines(models.Model):
 
     product_id = fields.Many2one('product.product', string="القطع المستبدلة", required=True,copy=False,domain=[('type','=','product')],)
     name = fields.Char(string="وصف الخدمة", required=True,copy=False)
-    branch_id = fields.Integer(copy=False,
-                               default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+    # branch_id = fields.Integer(copy=False,
+    #                            default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+    company_id = fields.Many2one('res.company',copy=False,default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+
 
     technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('branch_id','=', branch_id),('state','=', 'current')]")
     qty = fields.Float(string="الكمية")
@@ -1212,15 +1217,15 @@ class xx_car_checkup_spare_parts_lines(models.Model):
     @api.model
     def _default_branch_id(self):
         for rec in self:
-            return rec.header_id.entry_card_id.branch_id.id
+            return rec.header_id.entry_card_id.company_id.id
 
     @api.depends('header_id')
     def _get_branch_id(self):
         for rec in self:
             if rec.header_id:
-                rec.branch_id = rec.header_id.entry_card_id.branch_id.id
+                rec.company_id = rec.header_id.entry_card_id.company_id.id
             else:
-                rec.branch_id = 0
+                rec.company_id = False
 
 
 
@@ -1248,7 +1253,7 @@ class xx_car_checkup_spare_parts_lines(models.Model):
                          rec.product_id.name))
 
     @api.constrains('qty', 'qty_done')
-    def check_qty_done(self):
+    def cons_check_qty_done(self):
         for rec in self:
          
 
@@ -1275,7 +1280,7 @@ class xx_car_checkup_spare_parts_lines(models.Model):
             qty = 0.00
             if rec.product_id:
                 whs_id = self.env['stock.warehouse'].search(
-                    [('branch_id', '=', rec.header_id.entry_card_id.branch_id.id)], limit=1)
+                    [('company_id', '=', rec.header_id.entry_card_id.company_id.id)], limit=1)
                 sql_query = "select COALESCE(sum(quantity), 0::numeric) as qty from stock_quant a where a.product_id = {} and location_id in (" \
                             "select ld.id from stock_warehouse w, stock_location ls ,stock_location ld " \
                             "where w.id={} and w.code=ls.name and ls.id=ld.location_id and ld.active=true)".format(
@@ -1340,7 +1345,28 @@ class xx_car_checkup_spare_parts_lines(models.Model):
 
 class xx_checkup_register_payment(models.Model):
     _inherit = 'mizan.register.payment'
+    
+    # payment_method_line_id = fields.Many2one("account.payment.method.line")
+  
+    # @api.depends("journal_id")
+    # def _compute_payment_method_line_id(self):
+    #     for wizard in self:
+    #         if wizard.journal_id:
+    #             payment_type = "inbound"
+    #             available_payment_method_lines = (
+    #                 wizard.journal_id._get_available_payment_method_lines(payment_type)
+    #             )
+    #         else:
+    #             available_payment_method_lines = False
 
+    #         # Select the first available one by default.
+    #         if available_payment_method_lines:
+    #             wizard.payment_method_line_id = available_payment_method_lines[
+    #                 0
+    #             ]._origin
+    #         else:
+    #             wizard.payment_method_line_id = False
+                
     def create_payment_wo(self):
         for rec in self:
             if rec.payment_amount <= 0:
@@ -1359,29 +1385,73 @@ class xx_checkup_register_payment(models.Model):
             # if rec.payment_amount > rec.remaining_amount:
             #         raise ValidationError(
             #             "المبلغ المدفوع اكبر من المبلغ المتبقي.. لا يمكن انشاء مفوعات جديدة ")
+            ########################################################################### 
+            # self.inbound_payment_method = self.env['account.payment.method'].create({
+            #     'name': 'inbound',
+            #     'code': 'IN',
+            #     'payment_type': 'inbound',
+            # })
+            # payment = self.env['account.payment'].create({
+            #     'date': self.pay_date,
+            #     'payment_method_id': self.inbound_payment_method.id,
+            #     'payment_type': 'inbound',
+            #     'partner_type': 'customer',
+            #     'partner_id': self.header_id.partner_id.id,
+            #     'amount': self.payment_amount,
+            #     'journal_id': self.journal_id.id,
+            #     'company_id': self.header_id.company_id.id,
+            #     # 'branch_id': self.header_id.branch_id.id,
+            #     'currency_id': self.env.company.currency_id.id,
+            #     ##
+            #     # 'payment_difference_handling': 'reconcile',
+            #     'ref': self.payment_note,
+            #     'entry_card_id': self.header_id.id,
+            #     'work_order_id': self.header_id.work_order_id.id,
+            #       })
+            # payment.action_post()
+            ########################## :
+            # payment_method = self.env['account.payment.method'].search([
+            #     ('code', '=', 'IN'),
+            #     ('payment_type', '=', 'inbound')
+            # ], limit=1)
 
-            self.inbound_payment_method = self.env['account.payment.method'].create({
-                'name': 'inbound',
-                'code': 'IN',
-                'payment_type': 'inbound',
-            })
+            # if not payment_method:
+            #     payment_method = self.env['account.payment.method'].create({
+            #         'name': 'Manual Inbound',
+            #         'code': 'IN',
+            #         'payment_type': 'inbound',
+            #     })
+
+            # payment_method_line = self.journal_id.inbound_payment_method_line_ids.filtered(
+            #     lambda line: line.payment_method_id == payment_method
+            # )
+
+            # if not payment_method_line:
+            #     payment_method_line = self.env['account.payment.method.line'].create({
+            #         'name': payment_method.name,
+            #         'payment_method_id': payment_method.id,
+            #         'journal_id': self.journal_id.id,
+            #     })
+            # else:
+            #     payment_method_line = payment_method_line[0]
+
             payment = self.env['account.payment'].create({
-                'payment_date': self.pay_date,
-                'payment_method_id': self.inbound_payment_method.id,
+                'date': self.pay_date,
+                'payment_method_line_id': self.payment_method_line_id.id,  
                 'payment_type': 'inbound',
                 'partner_type': 'customer',
                 'partner_id': self.header_id.partner_id.id,
                 'amount': self.payment_amount,
                 'journal_id': self.journal_id.id,
                 'company_id': self.header_id.company_id.id,
-                'branch_id': self.header_id.branch_id.id,
                 'currency_id': self.env.company.currency_id.id,
-                'payment_difference_handling': 'reconcile',
-                'communication': self.payment_note,
+                'ref': self.payment_note,
                 'entry_card_id': self.header_id.id,
                 'work_order_id': self.header_id.work_order_id.id,
-                  })
-            payment.post()
+            })
+
+            payment.action_post()
+            ###############################################
             self.write({'state': 'posted'})
 
             payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.id),('work_order_id','=', rec.header_id.work_order_id.id)])

@@ -30,7 +30,7 @@ class CustomProduct_qty_cost(models.Model):
      
     supervisor_id = fields.Many2one('hr.supervisor.assignments', string='المشرف', readonly=True)
     
-    product_categ_id = fields.Many2one('product.categories', string='المجموعة المخزنية', readonly=True)     
+    product_categ_id = fields.Many2one('product.category', string='المجموعة المخزنية', readonly=True)     
     price_include = fields.Boolean(string='مشمولة السعر', readonly=True) 
 
     def init(self):

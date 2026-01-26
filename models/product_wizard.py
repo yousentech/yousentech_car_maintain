@@ -8,7 +8,7 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 class ProductWizard(models.TransientModel):
     _name = 'mizan.product.wizard'
     _description ='Product Wizard'
-
+    ##
     product_ids = fields.Many2many('product.product', string='Products',domain=[('is_checkup_product','=',True)])
 
     def add_products(self):

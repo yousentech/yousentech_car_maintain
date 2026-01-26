@@ -8,17 +8,17 @@
                 <form string="اجراء الفحص" create="0">
                     <header>
                         <button name="create_invoice_mannually" string="انشاء فاتورة مبيعات" type="object" class="oe_highlight"
-                                    attrs="{'invisible':['|',('create_invoice_manually_id','!=', False),('state','in',['cancel_order'])]}"
-                                    groups="qimamhd_mizan_car_13.group_sales_man_priv"
+                                    invisible="['|',('create_invoice_manually_id','!=', False),('state','in',['cancel_order'])]"
+                                    groups="yousentech_car_maintain.group_sales_man_priv"
                         />
                           <button name="create_work_order_procedure" string="انشاء امر العمل" type="object" class="oe_highlight"
-                                    attrs="{'invisible':['|',('work_order_id','!=', False),('state','in',['cancel_order'])]}"
-                                    groups="qimamhd_mizan_car_13.group_sales_man_priv"
+                                    invisible="['|',('work_order_id','!=', False),('state','in',['cancel_order'])]"
+                                    groups="yousentech_car_maintain.group_sales_man_priv"
                         />
 
                           <button name="register_payment" string="تسجيل دفعة" type="object" class="oe_highlight"
-                                    attrs="{'invisible':[('state','in',['cancel_order'])]}"
-                                    groups="qimamhd_mizan_car_13.group_sales_man_priv"
+                                    invisible="[('state','in',['cancel_order'])]"
+                                    groups="yousentech_car_maintain.group_sales_man_priv"
                         />
 
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order"/>
@@ -32,7 +32,7 @@
                                     name="call_wo_procedure"
                                     class="oe_stat_button"
                                      string="امر العمل"
-                                    attrs="{'invisible':[('work_order_id','=', False)]}"
+                                    invisible="[('work_order_id','=', False)]"
 
                                        icon="fa-pencil-square-o"
                                 />
@@ -40,7 +40,7 @@
                                     name="call_invoice"
                                     class="oe_stat_button"
                                      string="فاتورة المبيعات"
-                                    attrs="{'invisible':[('create_invoice_manually_id','=', False)]}"
+                                    invisible="[('create_invoice_manually_id','=', False)]"
 
                                        icon="fa-pencil-square-o"
                                 />
@@ -79,15 +79,15 @@
                                 </group>
                                 <group>
 <!--                                      <field name="state"  readonly="1" />-->
-                                      <field name="end_date"  attrs="{'readonly':['|','|', ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]}"/>
+                                      <field name="end_date"  readonly="['|','|', ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]"/>
                                       <field name="car_model" readonly="1"  />
                                       <field name="car_type_id" readonly="1"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
                                       <field name="vin_no" readonly="1"  />
 
-                                      <field name="service_type_id"  attrs="{'readonly':['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order'])]}" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-                                      <field name="service_type_price" attrs="{'readonly':['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order'])]}" />
+                                      <field name="service_type_id"  readonly="['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order'])]" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
+                                      <field name="service_type_price" readonly="['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order'])]" />
 
-                                      <field name="pay_type" attrs="{'readonly':['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]}" />
+                                      <field name="pay_type" readonly="['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]" />
                                         <field name="advance_amount" readonly="1"  />
 
                                     <field name="create_invoice_manually_id" invisible="1" />
@@ -99,11 +99,11 @@
 
                             <notebook>
                                 <page string="ادخال النتائج" >
-                                     <button name="%(qimamhd_mizan_car_13.multi_mizan_product_wizard_action)d" type="action" string="Add Multi Products"
-                                            attrs="{'readonly':['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]}" class="oe_highlight" />
+                                     <button name="%(yousentech_car_maintain.multi_mizan_product_wizard_action)d" type="action" string="Add Multi Products"
+                                            readonly="['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]" class="oe_highlight" />
 
 
-                                    <field name="result_lines" attrs="{'readonly':['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]}">
+                                    <field name="result_lines" readonly="['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]">
 
                                         <tree editable="bottom"  limit="100">
                                             <field name="sequence"  widget="handle" />
@@ -116,7 +116,7 @@
 
                                             <field name="checkup_part_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
                                               <field name="product_tmpl_id" invisible="1"/>
-                                             <field name="branch_id" invisible="1"  />
+                                             <field name="company_id" invisible="1"  />
 
                                              <field name="checkup_part_result_id" widget="many2many_tags"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
 
@@ -133,7 +133,7 @@
                                  </page>
                                 <page string="فحص الكمبيوتر">
                                      <group >
-                                        <field name="lines_computer" attrs="{'readonly':['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]}"  nolabel="1">
+                                        <field name="lines_computer" readonly="['|','|','|',('create_invoice_manually_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','work_order_started'])]"  nolabel="1">
                                             <tree editable="bottom" >
                                                  <field name="sequence"  widget="handle" />
 

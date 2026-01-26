@@ -36,12 +36,12 @@
                    </field>
                     <xpath expr="//button[@name='button_validate']" position="after">
                              <button string="ارسال الى امر العمل" name="send_products_to_wo"  type="object" class="oe_highlight"
-                                attrs="{'invisible': [('state', 'not in', ['done'])]}"/>
+                                invisible="[('state', 'not in', ['done'])]"/>
 
                       </xpath>
                      <xpath expr="//button[@name='button_validate']" position="after">
                              <button string="ازالة الشحنة من امر العمل" name="delete_products_from_wo"  type="object" class="oe_highlight"
-                                attrs="{'invisible': [('state', 'not in', ['done'])]}"/>
+                                invisible="[('state', 'not in', ['done'])]"/>
 
                       </xpath>
                   <xpath expr = "//field[@name = 'move_ids_without_package']/tree/field[@name = 'product_uom']"  position="after">
@@ -57,7 +57,7 @@
                  <field name="group_id" position="after">
                          <field name="scheduled_date" />
                          <field name="origin" />
-                         <field name="branch_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                         <field name="company_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
 
 

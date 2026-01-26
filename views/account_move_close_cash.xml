@@ -6,7 +6,7 @@
 		<field name="inherit_id" ref="account.view_move_form" />
 		<field name="arch" type="xml">
                    <xpath expr="//field[@name='to_check']" position="after">
-                            <field name="type" invisible="1"/>
+                            <field name="move_type" invisible="1"/>
                              <field name="cash_close_id"  readonly="1" />
 
                    </xpath>
@@ -19,9 +19,9 @@
 		<field name="inherit_id" ref="account.view_invoice_tree" />
 		<field name="arch" type="xml">
                    <xpath expr="//field[@name='ref']" position="after">
-                       <field name="type" invisible="1"/>
+                       <field name="move_type" invisible="1"/>
 
-                       <field name="cash_close_id" attrs="{'invisible': [('type','!=', 'entry')]}"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مندوب نظام الصيانة"/>
+                       <field name="cash_close_id" invisible="[('move_type','!=', 'entry')]"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مندوب نظام الصيانة"/>
 
                    </xpath>
         </field>
@@ -33,9 +33,9 @@
                     <field name="arch" type="xml">
 
                         <xpath expr="//search" position="inside">
-                            <field name="type" invisible="1"/>
+                            <field name="move_type" invisible="1"/>
 
-                            <field name="cash_close_id" attrs="{'invisible': [('type','!=', 'entry')]}"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مندوب نظام الصيانة"/>
+                            <field name="cash_close_id" invisible="[('move_type','!=', 'entry')]"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مندوب نظام الصيانة"/>
                         </xpath>
 
                     </field>

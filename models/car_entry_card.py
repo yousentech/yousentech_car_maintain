@@ -12,10 +12,17 @@ class xx_car_checkup(models.Model):
 
     _rec_name = 'seq'
 
+    # def _get_default_supervisor(self):
+    #     company_id = self.env.context.get('default_company_id', self.env.company.id)
+    #     return [('supervisor_emp', '=', True), ('branch_id', 'in',  self.env.user.allowed_branch_ids.ids),
+    #         ('company_id', '=', company_id)]
+   
+    ##
     def _get_default_supervisor(self):
         company_id = self.env.context.get('default_company_id', self.env.company.id)
-        return [('supervisor_emp', '=', True), ('branch_id', 'in',  self.env.user.allowed_branch_ids.ids),
+        return [('supervisor_emp', '=', True), ('company_id', 'in',  self.env.companies.ids),
             ('company_id', '=', company_id)]
+
 
 
     # ===========================================================================================
@@ -27,9 +34,11 @@ class xx_car_checkup(models.Model):
         default=lambda self: self._get_sequence(),)
 
     def _get_sequence(self):
-        branch_id = self.env.user.branch_id.id
+        # branch_id = self.env.user.branch_id.id
+        branch_id = self.env.user.company_id.id
+
         if branch_id:
-            sql_query = "select max(COALESCE(seq,0)) as seq from mizan_car_entry_card_master where branch_id=%s" % (branch_id)
+            sql_query = "select max(COALESCE(seq,0)) as seq from mizan_car_entry_card_master where company_id=%s" % (branch_id)
 
 
             self.env.cr.execute(sql_query)
@@ -69,9 +78,9 @@ class xx_car_checkup(models.Model):
                               ], default='draft', readonly=True,copy=False)
 
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
-    branch_id = fields.Many2one('custom.branches', string='الفرع', readonly=True, copy=False,
-                                default=lambda self: self.env.user.branch_id.id)
-    supervisor_name = fields.Many2one('hr.supervisor.assignments',string="اسم المشرف",copy=False,domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    # branch_id = fields.Many2one('custom.branches', string='الفرع', readonly=True, copy=False,
+    #                             default=lambda self: self.env.user.branch_id.id)
+    supervisor_name = fields.Many2one('hr.supervisor.assignments',string="اسم المشرف",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
 
     is_user_technical = fields.Boolean(default=lambda self: self._default_user_technical(),compute="_user_technical_edit_mode")
 
@@ -83,7 +92,7 @@ class xx_car_checkup(models.Model):
     
 
 
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
 
     commission = fields.Float(string="عمولة الفحص")
     pay_type = fields.Selection([('cash','نقدا'),('bank','بنكي'),('transfer','تحويل')],string="طريقة الدفع")
@@ -121,20 +130,21 @@ class xx_car_checkup(models.Model):
                      'vin_no': rec.vin_no,
                     'sale_man_id': rec.sale_man_id.id, })
 
-    @api.onchange('branch_id')
+    # @api.onchange('branch_id')
+    @api.onchange('company_id')
     def _default_customer(self):
 
         for rec in self:
-            default_cus = self.env['res.partner'].search([('branch_id','=', rec.branch_id.id),('category_id.name','=', 'DC')],limit=1)
+            default_cus = self.env['res.partner'].search([('company_id','=', rec.company_id.id),('category_id.name','=', 'DC')],limit=1)
  
             if default_cus:
                 rec.partner_id= default_cus.id
+    ##
+    # @api.onchange('car_size_id')
+    # def get_car_image(self):
 
-    @api.onchange('car_size_id')
-    def get_car_image(self):
-
-        for rec in self:
-            rec.body_image = rec.car_size_id.body_image if rec.car_size_id.body_image else False
+    #     for rec in self:
+    #         rec.body_image = rec.car_size_id.body_image if rec.car_size_id.body_image else False
 
     user_id = fields.Many2one(
         'res.users', string='مدخل البيانات/مسئول المبيعات', readonly=True,copy=False,
@@ -143,7 +153,7 @@ class xx_car_checkup(models.Model):
 
     _sql_constraints = [
         ("sequence_by_branch_unique",
-         "UNIQUE(seq, branch_id)",
+         "UNIQUE(seq, company_id)",
          "لا يمكن تكرار رقم العملية"),
     ]
 
@@ -256,38 +266,38 @@ class xx_car_checkup(models.Model):
 
     @api.model
     def _default_user_technical(self):
-        return self.user_has_groups('qimamhd_mizan_car_13.group_technician_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_technician_priv')
 
     def _user_technical_edit_mode(self):
-        self.is_user_technical = self.user_has_groups('qimamhd_mizan_car_13.group_technician_priv')
+        self.is_user_technical = self.user_has_groups('yousentech_car_maintain.group_technician_priv')
 
 
     @api.model
     def _default_user_supervisor(self):
-         return self.user_has_groups('qimamhd_mizan_car_13.group_supervisor_priv')
+         return self.user_has_groups('yousentech_car_maintain.group_supervisor_priv')
 
 
     def _user_supervisor_edit_mode(self):
-         self.is_user_supervisor = self.user_has_groups('qimamhd_mizan_car_13.group_supervisor_priv')
+         self.is_user_supervisor = self.user_has_groups('yousentech_car_maintain.group_supervisor_priv')
 
     @api.model
     def _default_user_sale_man(self):
 
-        return self.user_has_groups('qimamhd_mizan_car_13.group_sales_man_priv')
+        return self.user_has_groups('yousentech_car_maintain.group_sales_man_priv')
 
     def _user_sale_man_edit_mode(self):
 
-         self.is_user_sale_man = self.user_has_groups('qimamhd_mizan_car_13.group_sales_man_priv')
+         self.is_user_sale_man = self.user_has_groups('yousentech_car_maintain.group_sales_man_priv')
     
     # ========================================================================================================================== 
     is_user_allow_delete = fields.Boolean(default=lambda self: self._default_user_allow_delete(), compute="_user_allow_delete")
     @api.model
     def _default_user_allow_delete(self):
-         return self.user_has_groups('qimamhd_mizan_car_13.group_allow_delete_wo_priv')
+         return self.user_has_groups('yousentech_car_maintain.group_allow_delete_wo_priv')
 
     def _user_allow_delete(self):
         for rec in self:
-             rec.is_user_allow_delete = self.user_has_groups('qimamhd_mizan_car_13.group_allow_delete_wo_priv')
+             rec.is_user_allow_delete = self.user_has_groups('yousentech_car_maintain.group_allow_delete_wo_priv')
 
     @api.onchange('partner_id')
     def get_partner_mobile(self):
@@ -376,13 +386,13 @@ class xx_car_checkup(models.Model):
                         rec.write({'state': 'execute_started'})
 
 
-                        action = self.env.ref('qimamhd_mizan_car_13.action_car_checkup_procedure_view')
+                        action = self.env.ref('yousentech_car_maintain.action_car_checkup_procedure_view')
                         result = action.read()[0]
                         result.pop('id', None)
                         # result['context'] = {'default_search_result': ''}
                         result['domain'] = [('entry_card_id', '=', rec.id)]
                         if checkup_procedure:
-                            res = self.env.ref('qimamhd_mizan_car_13.checkup_procedure_form_view', False)
+                            res = self.env.ref('yousentech_car_maintain.checkup_procedure_form_view', False)
                             result['views'] = [(res and res.id or False, 'form')]
                             result['res_id'] = checkup_procedure.id or False
 
@@ -392,13 +402,13 @@ class xx_car_checkup(models.Model):
         for rec in self:
             checkup_procedure = self.env['mizan.car.checkup.procedure.master'].search([('entry_card_id', '=', rec.id)])
 
-            action = self.env.ref('qimamhd_mizan_car_13.action_car_checkup_procedure_view')
+            action = self.env.ref('yousentech_car_maintain.action_car_checkup_procedure_view')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
             result['domain'] = [('entry_card_id', '=', rec.id)]
             if checkup_procedure:
-                res = self.env.ref('qimamhd_mizan_car_13.checkup_procedure_form_view', False)
+                res = self.env.ref('yousentech_car_maintain.checkup_procedure_form_view', False)
                 result['views'] = [(res and res.id or False, 'form')]
                 result['res_id'] = checkup_procedure.id or False
             return result
@@ -409,13 +419,13 @@ class xx_car_checkup(models.Model):
             wo_procedure = self.env['mizan.car.work.procedure.master'].search([('entry_card_id', '=', rec.id)])
 
 
-            action = self.env.ref('qimamhd_mizan_car_13.action_work_procedure_view')
+            action = self.env.ref('yousentech_car_maintain.action_work_procedure_view')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
             result['domain'] = [('entry_card_id', '=', rec.id)]
             if wo_procedure:
-                res = self.env.ref('qimamhd_mizan_car_13.work_procedure_form_view', False)
+                res = self.env.ref('yousentech_car_maintain.work_procedure_form_view', False)
                 result['views'] = [(res and res.id or False, 'form')]
                 result['res_id'] = wo_procedure.id or False
             return result
@@ -425,7 +435,7 @@ class xx_car_checkup(models.Model):
             payment = self.env['mizan.register.payment'].search(
                 [('header_id', '=', rec.id)])
 
-            action = self.env.ref('qimamhd_mizan_car_13.action_mizan_payment_view')
+            action = self.env.ref('yousentech_car_maintain.action_mizan_payment_view')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
@@ -451,7 +461,9 @@ class xx_car_installation_order_register_payment(models.Model):
     advanced_amount = fields.Float(string="المبلغ المقدم",readonly=True)
     remaining_amount = fields.Float(string="المبلغ المتبقي",readonly=True)
     payment_amount = fields.Float(string="المبلغ المدفوع", reqiured=True)
-    branch_id= fields.Many2one('custom.branches')
+    # branch_id= fields.Many2one('custom.branches')
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company,)
+
     payment_note = fields.Char(string="البيان")
     header_id = fields.Many2one('mizan.car.entry.card.master',string="رقم كرت الدخول", copy=False)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True,

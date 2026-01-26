@@ -13,7 +13,7 @@
                     <group >
                          <group>
                              <field name="supervisor_emp_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-                                <field name="branch_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="company_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
                             <field name="assign_date"  />
 
@@ -36,7 +36,7 @@
             <tree >
                          <field name="supervisor_emp_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                         <field name="assign_date"  />
-                        <field name="branch_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                        <field name="company_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                         <field name="state"  />
                         <field name="close_date"  />
             </tree>
@@ -51,14 +51,14 @@
             <search >
                          <field name="supervisor_emp_id"  />
                         <field name="assign_date"  />
-                        <field name="branch_id"  />
+                        <field name="company_id"  />
                         <field name="state"  />
                         <field name="close_date"  />
                        <separator/>
                        <group expand='0' string='Filters'>
                             <filter string="حسب الفني" name="supervisor_filter" domain="[]" context="{'group_by': 'supervisor_emp_id'}"/>
 
-                           <filter string="حسب الفرع" name="branch_filter" domain="[]" context="{'group_by': 'branch_id'}"/>
+                           <filter string="حسب الفرع" name="branch_filter" domain="[]" context="{'group_by': 'company_id'}"/>
 
                            <filter string="حسب الحالة" name="state_filter" domain="[]" context="{'group_by': 'state'}"/>
 

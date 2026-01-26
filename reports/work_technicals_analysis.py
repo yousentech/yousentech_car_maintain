@@ -30,7 +30,7 @@ class CustomProduct_qty_cost(models.Model):
      
     supervisor_id = fields.Many2one('hr.supervisor.assignments', string='المشرف', readonly=True)
     
-    product_categ_id = fields.Many2one('product.categories', string='المجموعة المخزنية', readonly=True)     
+    product_categ_id = fields.Many2one('product.category', string='المجموعة المخزنية', readonly=True)     
     technical_count = fields.Integer( string='عدد الفنيين في الخدمة',default=0)
     hr_technical_assignments_id = fields.Many2one('hr.technical.assignments', string='الفني', readonly=True)
     time_difference = fields.Char( string='مدة انجاز امر العمل', readonly=True)

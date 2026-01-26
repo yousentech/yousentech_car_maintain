@@ -7,8 +7,8 @@ class xx_specialist_emp(models.Model):
 
     supervisor_emp = fields.Boolean(string="المشرف الفني")
     technical_emp = fields.Boolean(string="فني تركيب")
-    branch_id = fields.Many2one('custom.branches', string='الفرع', copy=False,
-                                default=lambda self: self.env.user.branch_id.id)
+    # branch_id = fields.Many2one('custom.branches', string='الفرع', copy=False,
+    #                             default=lambda self: self.env.user.branch_id.id)
     face_features_line_id = fields.One2many('emp.face.features','employee_id',copy=False ,ondelete='cascade')
     
   

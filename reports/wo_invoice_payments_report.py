@@ -49,10 +49,10 @@ class haraj_report(models.TransientModel):
 
         # use `module_name.report_id` as reference.
         # `report_action()` will call `_get_report_values()` and pass `data` automatically.
-        return self.env.ref('qimamhd_mizan_car_13.print_wo_inv_pay_rpt').report_action(self, data=data)
+        return self.env.ref('yousentech_car_maintain.print_wo_inv_pay_rpt').report_action(self, data=data)
 
 class ReportAttendanceRecap(models.AbstractModel):
-    _name = 'report.qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view'
+    _name = 'report.yousentech_car_maintain.print_wo_inv_pay_rpt_view'
 
     @api.model
     def _get_report_values(self, docids, data=None):

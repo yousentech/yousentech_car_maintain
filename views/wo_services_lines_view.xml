@@ -17,7 +17,7 @@
                     <field name="complete_date"  readonly="1"/>
                     <field name="technical_is_done"   readonly="1"/>
 
-                    <field name="branch_id" invisible="1"  />
+                    <field name="company_id" invisible="1"  />
                     <field name="name"  optional="hide" />
                     <field name="unit_price" optional="hide"/>
                     <field name="discount_type" optional="hide" />
@@ -56,7 +56,7 @@
                 <field name="complete_date"  readonly="1"/>
                 <field name="technical_is_done"   readonly="1"/>
 
-                <field name="branch_id" invisible="1"  />
+                <field name="company_id" invisible="1"  />
                 <field name="name"  optional="hide" />
                 <field name="unit_price" optional="hide"/>
                 <field name="discount_type" optional="hide" />

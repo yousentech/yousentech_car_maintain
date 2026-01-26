@@ -14,7 +14,7 @@ class xx_account_move(models.Model):
 
     def unlink(self):
         for rec in self:
-            if rec.type== 'entry':
+            if rec.move_type== 'entry':
                 if rec.cash_close_id:
                     rec.cash_close_id.write({'account_move_id': False})
                     rec.cash_close_id.write({'closed_flag': False})
@@ -46,9 +46,9 @@ class pl_closed(models.Model):
 
     def _get_sequence(self):
         # print(self.env.context.get('report_name', False))
-        branch_id = self.env.user.branch_id.id
+        branch_id = self.env.user.company_id.id
         if branch_id:
-            sql_query = "select max(COALESCE(seq,0)) as seq from cash_close_closed where branch_id=%s" % (branch_id)
+            sql_query = "select max(COALESCE(seq,0)) as seq from cash_close_closed where company_id=%s" % (branch_id)
 
 
             self.env.cr.execute(sql_query)
@@ -63,9 +63,11 @@ class pl_closed(models.Model):
 
     order_date = fields.Date(string="تاريخ الاقفال", required=True, default=fields.Date.today,copy=False)
 
-    branch_id = fields.Many2one('custom.branches', string='الفرع', readonly=True, copy=False,
-                                default=lambda self: self.env.user.branch_id.id)
-    branch_cash_journal_id = fields.Many2one('account.journal',required=True,string="صندوق النقدية للفرع",domain="[('type','=', 'cash'),('branch_id','=', branch_id)]",
+    # branch_id = fields.Many2one('custom.branches', string='الفرع', readonly=True, copy=False,
+    #                             default=lambda self: self.env.user.branch_id.id)
+   
+
+    branch_cash_journal_id = fields.Many2one('account.journal',required=True,string="صندوق النقدية للفرع",domain="[('type','=', 'cash'),('company_id','=', company_id)]",
                                     default=lambda self: self._default_cash_close())
     main_cash_journal_id = fields.Many2one('account.journal', required=True, string="صندوق النقدية المركز الرئيسي",
                                              domain=[('type','=', 'cash'),('use_main_cash_close','=',True)],default=lambda self: self._default_main_cash_close())
@@ -85,7 +87,7 @@ class pl_closed(models.Model):
 
     def _default_cash_close(self):
 
-        journal_id = self.env['account.journal'].search([('type', '=', 'cash'), ('branch_id', '=', self.branch_id.id)],
+        journal_id = self.env['account.journal'].search([('type', '=', 'cash'), ('company_id', '=', self.company_id.id)],
                                                         limit=1)
 
         return journal_id
@@ -102,12 +104,12 @@ class pl_closed(models.Model):
             rec.write({'matched_flag': True})
     
     def write(self, vals):
-        if not self.user_has_groups('qimamhd_mizan_car_13.group_allow_matched_cash_priv'):
+        if not self.user_has_groups('yousentech_car_maintain.group_allow_matched_cash_priv'):
             raise ValidationError(
                     "تنبيه .. لا توجد لديك صلاحية التعديل.. تواصل مع مدير النظام ")
         res = super(pl_closed, self).write(vals)
         return  res
-
+    ##
     def closed_cash(self):
         for rec in self:
 
@@ -130,10 +132,13 @@ class pl_closed(models.Model):
                                 # 'balance': payment.local_amount if payment.check_multi_currency else payment.payment_amount,
                                 'date': rec.order_date,
                                 'date_maturity': rec.order_date,
-                                'account_id': rec.branch_cash_journal_id.default_credit_account_id.id,
-                                'account_internal_type': rec.branch_cash_journal_id.default_credit_account_id.internal_type,
+                                ##
+                                # 'account_id': rec.branch_cash_journal_id.default_credit_account_id.id,
+                                # 'account_internal_type': rec.branch_cash_journal_id.default_credit_account_id.internal_type,
+                                'account_id': rec.branch_cash_journal_id.default_account_id.id,
+                                # 'account_internal_type':rec.branch_cash_journal_id.default_credit_account_id.internal_type,
                                 # 'parent_state': 'posted',
-                                'ref': 'اقفال صندوق الفرع : ' + str(rec.branch_id.name),
+                                'ref': 'اقفال صندوق الفرع : ' + str(rec.company_id.name),
                                 'journal_id': rec.main_cash_journal_id.id,
                                 'company_id': rec.company_id.id,
                                 'quantity': 1,
@@ -151,10 +156,13 @@ class pl_closed(models.Model):
                                 # 'balance': -(line.l_local_amount) if payment.check_multi_currency else -(line.l_payment_amount),
                                 'date': rec.order_date,
                                 'date_maturity': rec.order_date,
-                                'account_id': rec.main_cash_journal_id.default_debit_account_id.id,
-                                'account_internal_type': rec.main_cash_journal_id.default_debit_account_id.internal_type,
+                                ##
+                                # 'account_id': rec.main_cash_journal_id.default_debit_account_id.id,
+                                # 'account_internal_type': rec.main_cash_journal_id.default_debit_account_id.internal_type,
+                                'account_id': rec.main_cash_journal_id.default_account_id.id,
+                                # 'account_internal_type': rec.main_cash_journal_id.default_debit_account_id.internal_type,
                                 # 'parent_state': 'posted',
-                                'ref': 'اقفال صندوق الفرع : ' + str(rec.branch_id.name),
+                                'ref': 'اقفال صندوق الفرع : ' + str(rec.company_id.name),
                                 'journal_id': rec.main_cash_journal_id.id,
                                 'company_id':rec.company_id.id,
                                 'quantity': 1,
@@ -163,7 +171,7 @@ class pl_closed(models.Model):
 
                             line_ids.append(debit_vals, )
                     if line_ids:
-                        ref =  'اقفال صندوق الفرع : ' + str(rec.branch_id.name),
+                        ref =  'اقفال صندوق الفرع : ' + str(rec.company_id.name),
                         mov_vals = {
                             'date': rec.order_date,
                             'ref': ref,
@@ -211,6 +219,8 @@ class pl_closed(models.Model):
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
-            result['domain'] = [('cash_close_id', '=', rec.id), ('type', '=', 'entry')
+            # result['domain'] = [('cash_close_id', '=', rec.id), ('type', '=', 'entry')
+            #                     ]
+            result['domain'] = [('cash_close_id', '=', rec.id), ('move_type', '=', 'entry')
                                 ]
             return result

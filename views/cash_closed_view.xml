@@ -8,122 +8,140 @@
                 <form>
                     <header>
                         <button name="closed_cash" string="اقفال" type="object" class="oe_highlight"
-                                     groups="qimamhd_mizan_car_13.group_sales_man_priv"
-                                 attrs="{'invisible': [('account_move_id','!=', False)]}"
+                            groups="yousentech_car_maintain.group_sales_man_priv"
+                            invisible="[('account_move_id','!=', False)]"
                         />
-                          <button name="un_closed_cash" string="الغاء الاقفال" type="object" class="oe_highlight"
-                                     groups="qimamhd_mizan_car_13.group_un_close_cash_priv"
-                                  attrs="{'invisible': [('account_move_id','=', False)]}"
+                        <button name="un_closed_cash" string="الغاء الاقفال" type="object"
+                            class="oe_highlight"
+                            groups="yousentech_car_maintain.group_un_close_cash_priv"
+                            invisible="[('account_move_id','=', False)]"
+                        />
+                        <button name="matching_cah_btn" string="مطابقة الصندوق" type="object"
+                            class="oe_highlight"
+                            groups="yousentech_car_maintain.group_allow_matched_cash_priv"
+                            invisible="[('matched_flag','=', True)]"
+                        />
 
-                        />
-                        <button name="matching_cah_btn" string="مطابقة الصندوق" type="object" class="oe_highlight"
-                            groups="qimamhd_mizan_car_13.group_allow_matched_cash_priv"
-                            attrs="{'invisible': [('matched_flag','=', True)]}"
-
-                        />
-                        
-                         </header>
+                    </header>
                     <sheet>
-                         <div class="oe_button_box" name="button_box">
-                             <button type="object"
-                                    name="call_entry"
-                                    class="oe_stat_button"
-                                     string="قيد الاقفال"
-                                     groups="qimamhd_mizan_car_13.group_sales_man_priv"
-
-                                    attrs="{'invisible':[('account_move_id','=', False)]}"
-                                    icon="fa-arrow-right" >
-                             </button>
-
-
-                         </div>
-
-                          <br></br>
-                                   <group>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object"
+                                name="call_entry"
+                                class="oe_stat_button"
+                                string="قيد الاقفال"
+                                groups="yousentech_car_maintain.group_sales_man_priv"
+                                invisible="[('account_move_id','=', False)]"
+                                icon="fa-arrow-right">
+                            </button>
 
 
-                                              <group>
-                                                    <field name="seq" readonly="1" string="رقم الطلب"/>
-
-                                                <field name="order_date" attrs="{'readonly': [('closed_flag','=', True)]}"/>
-
-                                                 <field name="branch_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="الفرع" />
-
-                                                <field name="branch_cash_journal_id"  attrs="{'readonly': [('closed_flag','=', True)]}"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                                            </group>
-                                             <group>
-<!--                                                <field name="main_cash_journal_id"  attrs="{'readonly': [('closed_flag','=', True)]}" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>-->
-
-                                                <field name="description"  attrs="{'readonly': [('closed_flag','=', True)]}"/>
-
-                                                <field name="closed_flag"  readonly="1"/>
- 
-                                                <field name="amount"  attrs="{'readonly': [('closed_flag','=', True)]}"/>
-                                            </group>
-                                            <group>
-                                                   <field name="user_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مسئول المبيعات" />
-                                                <field name="id" readonly="1" string="رقم التسلسلي"/>
-
-                                                   <field name="company_id" string="الشركة" readonly="1" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" groups="base.group_multi_company"/>
-
-
-                                                <field name="account_move_id" invisible="1" />
-                                            </group>
-                                            <group>
-                                            
-                                                <field name="matched_amount"  attrs="{'readonly': [('matched_flag','=', True)]}"/>
-                                                <field name="remaining_matched_amount"  />
-
-                                                <field name="matched_flag"  readonly="1"/>
-
-                                             </group>
-
-
-
-
-                                 </group>
-
-
-
-                       </sheet>
-                    <div class="oe_chatter">
-                             <field name="message_follower_ids" widget="mail_followers"/>
-    <!--                        <field name="activity_ids" widget="mail_activity"/>-->
-                            <field name="message_ids" widget="mail_thread"/>
                         </div>
-                   </form>
+
+                        <br></br>
+                        <group>
+
+
+                            <group>
+                                <field name="seq" readonly="1" string="رقم الطلب" />
+
+                                <field name="order_date"
+                                    readonly="[('closed_flag','=', True)]" />
+
+                                <field name="company_id"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                                    readonly="1" string="الفرع" />
+
+                                <field name="branch_cash_journal_id"
+                                    readonl="[('closed_flag','=', True)]"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                            </group>
+                            <group>
+                                <!--                                                <field name="main_cash_journal_id"  attrs="{'readonly':
+                                [('closed_flag','=', True)]}"
+                                options="{'no_quick_create':True,'no_create_edit':True,'no_open':
+                                True,'no_create': True}"/>-->
+
+                                <field name="description"
+                                    readonly="[('closed_flag','=', True)] " />
+
+                                <field name="closed_flag" readonly="1" />
+
+                                <field name="amount"
+                                    readonly="[('closed_flag','=', True)]" />
+                            </group>
+                            <group>
+                                <field name="user_id"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                                    readonly="1" string="مسئول المبيعات" />
+                                <field name="id" readonly="1" string="رقم التسلسلي" />
+
+                                <field name="company_id" string="الشركة" readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                                    groups="base.group_multi_company" />
+
+
+                                <field name="account_move_id" invisible="1" />
+                            </group>
+                            <group>
+
+                                <field name="matched_amount"
+                                    readonly="[('matched_flag','=', True)]" />
+                                <field name="remaining_matched_amount" />
+
+                                <field name="matched_flag" readonly="1" />
+
+                            </group>
+
+
+                        </group>
+
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <!--                        <field name="activity_ids" widget="mail_activity"/>-->
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
             </field>
         </record>
-      <!--make products Tree View-->
+        <!--make
+        products Tree View-->
         <record id="cash_close_closed_tree_view" model="ir.ui.view">
             <field name="name">cash.close.closed.tree</field>
             <field name="model">cash.close.closed</field>
             <field name="arch" type="xml">
-                <tree   default_order="branch_id, seq desc">
+                <tree default_order="company_id, seq desc">
 
-                                          <field name="seq" readonly="1" string="رقم الطلب"/>
+                    <field name="seq" readonly="1" string="رقم الطلب" />
 
-                                                <field name="order_date" />
+                    <field name="order_date" />
 
-                                                 <field name="branch_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="الفرع" />
+                    <field name="company_id"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        readonly="1" string="الفرع" />
 
-                                                <field name="branch_cash_journal_id" />
+                    <field name="branch_cash_journal_id" />
 
-<!--                                                <field name="main_cash_journal_id" />-->
+                    <!--                                                <field name="main_cash_journal_id" />-->
 
-                                                <field name="description" />
+                    <field name="description" />
 
-                                                <field name="closed_flag" />
-                                                <field name="matched_flag" />
-                                                <field name="amount" />
+                    <field name="closed_flag" />
+                    <field name="matched_flag" />
+                    <field name="amount" />
 
-                                                   <field name="user_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مسئول المبيعات" />
+                    <field name="user_id"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        readonly="1" string="مسئول المبيعات" />
 
-                                                   <field name="company_id" string="الشركة" readonly="1" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" groups="base.group_multi_company"/>
+                    <field name="company_id" string="الشركة" readonly="1"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        groups="base.group_multi_company" />
 
-                                                <field name="id" readonly="1" string="رقم التسلسلي"/>
+                    <field name="id" readonly="1" string="رقم التسلسلي" />
 
-                                                <field name="account_move_id" invisible="1" />
+                    <field name="account_move_id" invisible="1" />
 
                 </tree>
             </field>
@@ -131,56 +149,61 @@
         <record id="cash_close_closed_search_view" model="ir.ui.view">
             <field name="name">البحث في</field>
             <field name="model">cash.close.closed</field>
-            <field eval="10" name="priority"/>
+            <field eval="10" name="priority" />
             <field name="arch" type="xml">
                 <search string=" البحث في ">
 
 
-                                          <field name="seq" readonly="1" string="رقم الطلب"/>
+                    <field name="seq" readonly="1" string="رقم الطلب" />
 
-                                                <field name="order_date" />
+                    <field name="order_date" />
 
-                                                 <field name="branch_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="الفرع" />
+                    <field name="company_id"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        readonly="1" string="الفرع" />
 
-                                                <field name="branch_cash_journal_id" />
+                    <field name="branch_cash_journal_id" />
 
-<!--                                                <field name="main_cash_journal_id" />-->
+                    <!--                                                <field name="main_cash_journal_id" />-->
 
-                                                <field name="description" />
+                    <field name="description" />
 
-                                                <field name="closed_flag" />
-                                            <field name="matched_flag" />
-                                                <field name="amount" />
+                    <field name="closed_flag" />
+                    <field name="matched_flag" />
+                    <field name="amount" />
 
-                                                   <field name="user_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مسئول المبيعات" />
+                    <field name="user_id"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        readonly="1" string="مسئول المبيعات" />
 
-                                                   <field name="company_id" string="الشركة" readonly="1" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" groups="base.group_multi_company"/>
+                    <field name="company_id" string="الشركة" readonly="1"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        groups="base.group_multi_company" />
 
-                                                <field name="id" readonly="1" string="رقم التسلسلي"/>
+                    <field name="id" readonly="1" string="رقم التسلسلي" />
 
-                                                <field name="account_move_id" invisible="1" />
+                    <field name="account_move_id" invisible="1" />
 
 
                 </search>
             </field>
         </record>
-       <record id="action_cash_close_closed_view" model="ir.actions.act_window">
+        <record id="action_cash_close_closed_view" model="ir.actions.act_window">
             <field name="name">اقفال الصندوق</field>
             <field name="res_model">cash.close.closed</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="cash_close_closed_tree_view"/>
-             <field name="target">current</field>
+            <field name="view_id" ref="cash_close_closed_tree_view" />
+            <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new
                 </p>
             </field>
         </record>
 
-      <menuitem id="close_cash_menu" name="اقفال الصناديق"  parent="mizan_car_entry_menu"
-                              sequence="2"
-
-              action="action_cash_close_closed_view"/>
+        <menuitem id="close_cash_menu" name="اقفال الصناديق" parent="mizan_car_entry_menu"
+            sequence="2"
+            action="action_cash_close_closed_view" />
     </data>
 
 </odoo>

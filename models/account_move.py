@@ -35,13 +35,13 @@ class xx_account_move(models.Model):
                 raise ValidationError(
                     "تنبيه .. يجب تمرير طريقه الدفع للفنكشن [cash, bank]   ")
 
-            if self.type == 'out_invoice':
+            if self.move_type == 'out_invoice':
                 if pay_type == 'cash':
                    sql_query = """
                                 select COALESCE(sum(r.amount),0):: numeric  as amount from  account_partial_reconcile r, account_move_line rl
                                 ,account_move am,account_move_line l,
                                 account_journal j
-                                where r.credit_move_id=rl.id and rl.journal_id=j.id and j.type='cash' and r.debit_move_id=l.id
+                                where r.credit_move_id=rl.id and rl.journal_id=j.id and j.move_type='cash' and r.debit_move_id=l.id
                                 and l.move_id=am.id
                                  and am.id ={}
                             """.format(self.id)
@@ -50,18 +50,18 @@ class xx_account_move(models.Model):
                                    select COALESCE(sum(r.amount),0):: numeric  as amount from  account_partial_reconcile r, account_move_line rl
                                    ,account_move am,account_move_line l,
                                    account_journal j
-                                   where r.credit_move_id=rl.id and rl.journal_id=j.id and j.type='bank' and r.debit_move_id=l.id
+                                   where r.credit_move_id=rl.id and rl.journal_id=j.id and j.move_type='bank' and r.debit_move_id=l.id
                                    and l.move_id=am.id
                                     and am.id ={}
                                """.format(self.id)
 
-            if self.type == 'out_refund':
+            if self.move_type == 'out_refund':
                 if pay_type == 'cash':
                     sql_query = """
                                 select COALESCE(sum(r.amount) * -1,0):: numeric   as amount from  account_partial_reconcile r, account_move_line rl
                                 ,account_move am,account_move_line l,
                                 account_journal j
-                                where r.credit_move_id=rl.id and rl.journal_id=j.id and j.type='cash' and r.debit_move_id=l.id
+                                where r.credit_move_id=rl.id and rl.journal_id=j.id and j.move_type='cash' and r.debit_move_id=l.id
                                 and l.move_id=am.id
                                  and am.id ={}
                             """.format(self.id)
@@ -70,7 +70,7 @@ class xx_account_move(models.Model):
                                    select  COALESCE(sum(r.amount) * -1,0):: numeric  as amount from  account_partial_reconcile r, account_move_line rl
                                    ,account_move am,account_move_line l,
                                    account_journal j
-                                   where r.credit_move_id=rl.id and rl.journal_id=j.id and j.type='bank' and r.debit_move_id=l.id
+                                   where r.credit_move_id=rl.id and rl.journal_id=j.id and j.move_type='bank' and r.debit_move_id=l.id
                                    and l.move_id=am.id
                                     and am.id ={}
                                """.format(self.id)

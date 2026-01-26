@@ -47,7 +47,7 @@ class xx_car_checkup(models.Model):
                         'car_type':header.car_type_id.name,
                         'car_type_id':header.car_type_id.id,
                         'car_panel_no':header.car_panel_no,
-                        'branch_name':header.branch_id.name,
+                        'branch_name':header.company_id.name,
                         }
             select.append(car_data)
         return select

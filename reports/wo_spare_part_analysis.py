@@ -33,7 +33,7 @@ class CustomProduct_qty_cost(models.Model):
    
     supervisor_id = fields.Many2one('hr.supervisor.assignments', string='المشرف', readonly=True)
     
-    product_categ_id = fields.Many2one('product.categories', string='المجموعة المخزنية', readonly=True)     
+    product_categ_id = fields.Many2one('product.category', string='المجموعة المخزنية', readonly=True)     
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'wo_spare_part_analysis_view')

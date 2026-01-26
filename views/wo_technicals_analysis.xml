@@ -15,7 +15,7 @@
                    <field name="create_date"  readonly="1" />
                <field name="end_date"  readonly="1" />
                   <field name="time_difference"  readonly="1" />
-                   <field name="branch_id"  readonly="1" />
+                   <field name="company_id"  readonly="1" />
                    <field name="invoice_no"  readonly="1" />
                    <field name="car_panel_no"  readonly="1" />
                    <field name="partner_mobile"  readonly="1" />
@@ -51,7 +51,7 @@
                <field name="partner_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
                 <field name="order_date"  />
                 <field name="create_date"  readonly="1" />
-                <field name="branch_id"  readonly="1" />
+                <field name="company_id"  readonly="1" />
                 <field name="invoice_no"  readonly="1" />
                 <field name="car_panel_no"  readonly="1" />
                 <field name="partner_mobile"  readonly="1" />

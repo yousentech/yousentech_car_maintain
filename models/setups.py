@@ -224,7 +224,7 @@ class xx_sales_man(models.Model):
     sale_man_type = fields.Selection([('external', 'مندوب خارجي'),
                                     ('internal', 'مندوب داخلي')], string='نوع المندوب', required=True)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
-    branch_id = fields.Many2one('custom.branches', required=True, string="الفرع")
+    # branch_id = fields.Many2one('custom.branches', required=True, string="الفرع")
     salesman_side = fields.Many2one('mizan.salesman.sides',  string="جهة المندوب الخارجي")
     sale_user = fields.Many2one('res.users', string='مسئول المبيعات', index=True, track_visibility='onchange',
                                   track_sequence=2)
@@ -248,4 +248,5 @@ class xx_picking_types(models.Model):
     _rec_name = 'name'
 
     name = fields.Char(string="الورشة",required=True)
-    branch_id = fields.Many2one('custom.branches', required=True, string="الفرع")
+    # branch_id = fields.Many2one('custom.branches', required=True, string="الفرع")
+    company_id = fields.Many2one('res.company', required=True,string="الفرع")

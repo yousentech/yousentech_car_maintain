@@ -47,7 +47,7 @@ class xx_mizan_product_results_lines2(models.Model):
                                               copy=False, required=True)
 
     product_service_id = fields.Many2one('product.product', string="الخدمة المنجزة",
-                                         domain=[('discount_product_flag', '!=', True), ('type', '!=', 'product')],
+                                         domain=[('discount_product_flag', '!=', True), ('detailed_type', '!=', 'product')],
                                          copy=False, required=True)
 
     default_result = fields.Boolean(string="النتيجة الافتراضية")

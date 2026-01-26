@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'yousentech_car_maintain',
-	'version': '13.0.1.0.0',
+	'version': '17.0.1.0.0',
 	'summary': 'yousentech_car_maintain',
 	'category': 'Tools',
 	'author': 'Developers team',
@@ -16,7 +16,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','hr'],
+    'depends': ['base','account','hr','stock','sale'],
 
     # always loaded
     'data': [
