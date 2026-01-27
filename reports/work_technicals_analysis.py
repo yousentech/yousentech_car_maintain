@@ -14,7 +14,7 @@ class CustomProduct_qty_cost(models.Model):
     order_date = fields.Date( string='تاريخ الطلب',)
     create_date = fields.Datetime( string='تاريخ البدء العمل',)
     end_date = fields.Datetime( string='تاريخ انتهاء العمل',)
-    branch_id= fields.Many2one('custom.branches',string='الفرع',)
+    company_id= fields.Many2one('res.company',string='الفرع',)
     invoice_no= fields.Many2one('account.move', string='رقم الفاتورة',)
     car_panel_no = fields.Char( string='رقم اللوحة',)
     partner_mobile = fields.Char( string='جوال العميل',)
@@ -48,7 +48,7 @@ class CustomProduct_qty_cost(models.Model):
     wo.order_date,
     wo.create_date, 
     wo.end_date, 
-    wo.branch_id,
+    wo.company_id,
     wo.invoice_no,
     wo.car_panel_no, 
     wo.partner_mobile, 
@@ -62,7 +62,7 @@ class CustomProduct_qty_cost(models.Model):
     wo.amount_tax, 
     wo.amount_with_tax, 
     wo.supervisor_id,
-    t.product_categ_id, 
+    t.categ_id, 
     wo.technical_count,
     wo.hr_technical_assignments_id,
 
@@ -79,7 +79,7 @@ FROM (
         en.order_date,
         m.create_date,
         m.end_date,
-        m.branch_id,
+        m.company_id,
         m.create_invoice_manually_id AS invoice_no,
         m.car_panel_no,
         m.partner_mobile,
@@ -113,7 +113,7 @@ FROM (
         en.order_date, 
         m.create_date, 
         m.end_date, 
-        m.branch_id, 
+        m.company_id, 
         m.create_invoice_manually_id, 
         m.car_panel_no, 
         m.partner_mobile, 

@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <odoo>
     <record id="view_mizan_product_wizard_form" model="ir.ui.view">
         <field name="name">mizan.product.wizard.form</field>

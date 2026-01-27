@@ -33,7 +33,7 @@
 
 
                      <group>
-                         <field name="branch_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+                         <field name="company_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
                           <field name="company_ids1" groups="base.group_multi_company" string="الشركة"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
                 </group>
@@ -55,7 +55,9 @@
 
       <menuitem action="action_mizan_wo_report"
           id="menu_mizan_wo_report"
+          name="اوامر العمل"
            sequence="1"
+
           parent="mizan_report_menu"/>
 
 <!--  invoice payments-->
@@ -96,7 +98,7 @@
 
 
                      <group>
-                         <field name="branch_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+                         <field name="company_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
                           <field name="company_ids1" groups="base.group_multi_company" string="الشركة"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
                 </group>
@@ -118,6 +120,7 @@
 
       <menuitem action="action_mizan_wo_invoice_payments_rpt"
           id="menu_mizan_wo_invoice_payments_rpt"
+          name="اوامر العمل المكتملة"
            sequence="2"
           parent="mizan_report_menu"/>
 
@@ -159,7 +162,7 @@
                             <field name="display_type"   widget="radio"  />
                         </group>
                            <group>
-                        <field name="branch_ids"  widget="many2many_tags" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+                        <field name="company_ids"  widget="many2many_tags" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
                      </group>
                     </group>
                 
@@ -181,6 +184,7 @@
 
     <menuitem action="action_mizan_wo_tehnical_rpt"
         id="menu_mizan_wo_tehnical_rpt"
+        ىشةث="الفنيين"
         sequence="3"
         parent="mizan_report_menu"/>
 

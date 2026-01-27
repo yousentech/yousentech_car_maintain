@@ -19,7 +19,7 @@
                     <field name="partner_mobile"  readonly="1" />
                     <field name="state"  readonly="1" />
                     <field name="invoice_no"  readonly="1" />
-                    <field name="branch_name"  readonly="1" />
+                    <field name="company_id"  readonly="1" />
                   
                     <field name="unit_price"  readonly="1" />
                     <field name="qty"  readonly="1" />
@@ -58,8 +58,8 @@
              <field name="partner_mobile"  readonly="1" />
              <field name="state"  readonly="1" />
              <field name="invoice_no"  readonly="1" />
-             <field name="branch_name"  readonly="1" />
-             <field name="branch_name"  readonly="1" />
+             <field name="company_id"  readonly="1" />
+             <field name="company_id"  readonly="1" />
              <field name="unit_price"  readonly="1" />
              <field name="qty"  readonly="1" />
              <field name="total"  readonly="1" />

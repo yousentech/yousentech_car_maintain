@@ -34,7 +34,7 @@
 
                      </xpath>
                     <notebook>
-                        <page string="النتائج الافتراضية"  invisible="[('is_checkup_product', '=', False)]">
+                        <page string="النتائج الافتراضية"  invisible="is_checkup_product == False ">
                                  <field name="results_lines">
                                       <tree editable="bottom">
                                             <field name="checkup_part_result_id"/>

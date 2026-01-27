@@ -14,7 +14,7 @@ class CustomProduct_qty_cost(models.Model):
     partner_id = fields.Many2one('res.partner', string='العميل', readonly=True)
     order_date = fields.Date( string='تاريخ الطلب',)
     create_date = fields.Datetime( string='تاريخ البدء',)
-    branch_id= fields.Many2one('custom.branches',string='الفرع',)
+    company_id= fields.Many2one('res.company',string='الفرع',)
     invoice_no= fields.Many2one('account.move', string='رقم الفاتورة',)
     car_panel_no = fields.Char( string='رقم اللوحة',)
     partner_mobile = fields.Char( string='جوال العميل',)
@@ -43,7 +43,7 @@ class CustomProduct_qty_cost(models.Model):
                                 wo.partner_id,  
                                 order_date,
                                 wo.create_date, 
-                                wo.branch_id,
+                                wo.company_id,
                                 wo.invoice_no,
                                 wo.car_panel_no, 
                                 wo.partner_mobile, 
@@ -61,11 +61,11 @@ class CustomProduct_qty_cost(models.Model):
                                 round((total_base::numeric - (total_base * (discount_perc/100))::numeric) + amount_tax::numeric,2) as amount_with_tax, 
                               
                                  supervisor_id ,
-                                   (select t.product_categ_id  from product_product p , product_template t   
+                                   (select t.categ_id  from product_product p , product_template t   
                                  where p.product_tmpl_id=t.id and p.id=wo.product_id) as product_categ_id 
                             from (
                             select  m.id as header_id,
-                            m.partner_id,en.order_date, m.create_date,m.branch_id,
+                            m.partner_id,en.order_date, m.create_date,m.company_id,
                             m.create_invoice_manually_id as invoice_no,m.car_panel_no , m.partner_mobile , m.state,
                             
                             s.product_id,round(s.unit_price::numeric,2) as unit_price , 1 as qty,

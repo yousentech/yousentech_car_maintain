@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'yousentech_car_maintain',
-	'version': '17.0.1.0.0',
+	# 'version': '17.0.1.0.0',
 	'summary': 'yousentech_car_maintain',
 	'category': 'Tools',
 	'author': 'Developers team',
@@ -12,11 +12,11 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
+    # 'category': 'Uncategorized',
+    # 'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','hr','stock','sale'],
+    'depends': ['base','account','hr','stock','sale','yousentech_inventory_minus_quantity'],
 
     # always loaded
     'data': [
@@ -70,7 +70,11 @@
     'demo': [
         
     ],
+    'license': 'LGPL-3',
+    'images': [],
+    'sequence': '-100',
     'installable': True,
     'auto_install': False,
     'application': True,
+
 }

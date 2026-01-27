@@ -62,8 +62,8 @@ class xx_sale_order(models.Model):
         return invoice_vals
 
     def action_confirm(self):
-
-        self.check_available_qty()
+        ##
+        # self.check_available_qty()
         sale_order_confirm = super(xx_sale_order, self).action_confirm()
 
         return sale_order_confirm
@@ -164,6 +164,9 @@ class xx_car_checkup(models.Model):
     total_discount = fields.Float(string="اجمالي الخصم", compute="_cal_tot_price")
     total_all_with_tax = fields.Float(string="الاجمالي شامل الضريبة", compute="_cal_tot_price")
     advance_amount = fields.Float(string="المبلغ المدفوع")
+    ##
+    # technical_name = fields.Many2one('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
+
     technical_name = fields.Many2one('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
 
     discount_type = fields.Selection([('amount', 'مبلغ'), ('percentage', 'نسبة')], string="نوع الخصم",
@@ -434,7 +437,7 @@ class xx_car_checkup(models.Model):
         for rec in self:
           
             for line in rec.lines_spare_parts:
-                line.product_id.product_tmpl_id.check_product_price_from_cost(line.unit_price)
+                line.product_id.product_tmpl_id.check_product_price_from_cost(line.unit_price,line.unit_cost)
             
             if rec.supervisor_amount > rec.services_amt_after_tax:
                 raise ValidationError(
@@ -442,24 +445,24 @@ class xx_car_checkup(models.Model):
             
             whs_id = self.env['stock.warehouse'].search(
                 [('company_id', '=', rec.entry_card_id.company_id.id)], limit=1)
-            
-            if not rec.use_minus_qty:
-                for line in rec.lines_spare_parts:
-                    if not line.product_id.categ_id.temp_categ_flag:
-                        if line.qty_done and line.product_id and line.product_id.name.upper() != "DISCOUNT" and line.product_id.type == 'product':
+            ##
+            # if not rec.use_minus_qty:
+            #     for line in rec.lines_spare_parts:
+            #         if not line.product_id.categ_id.temp_categ_flag:
+            #             if line.qty_done and line.product_id and line.product_id.name.upper() != "DISCOUNT" and line.product_id.type == 'product':
 
-                            sql_query = "select COALESCE(sum(quantity), 0::numeric) as qty from stock_quant a where a.product_id = {} and location_id in (" \
-                                        "select ld.id from stock_warehouse w, stock_location ls ,stock_location ld " \
-                                        "where w.id={} and w.code=ls.name and ls.id=ld.location_id and ld.active=true)".format(
-                                line.product_id.id, whs_id.id)
+            #                 sql_query = "select COALESCE(sum(quantity), 0::numeric) as qty from stock_quant a where a.product_id = {} and location_id in (" \
+            #                             "select ld.id from stock_warehouse w, stock_location ls ,stock_location ld " \
+            #                             "where w.id={} and w.code=ls.name and ls.id=ld.location_id and ld.active=true)".format(
+            #                     line.product_id.id, whs_id.id)
 
-                            self.env.cr.execute(sql_query)
-                            aval_qty = self.env.cr.fetchone()[0]
-                            if line.qty_done > aval_qty:
-                                raise ValidationError(
-                                    "Warning: No enough Qty For product <<<<لا توجد كمية متوفر للصنف المحدد[ {} ][ "
-                                    "{} ] .. الكمية المتوفره للصنف [ {} ]".format(
-                                        line.product_id.name, line.product_id.default_code, aval_qty))
+            #                 self.env.cr.execute(sql_query)
+            #                 aval_qty = self.env.cr.fetchone()[0]
+            #                 if line.qty_done > aval_qty:
+            #                     raise ValidationError(
+            #                         "Warning: No enough Qty For product <<<<لا توجد كمية متوفر للصنف المحدد[ {} ][ "
+            #                         "{} ] .. الكمية المتوفره للصنف [ {} ]".format(
+            #                             line.product_id.name, line.product_id.default_code, aval_qty))
                 
             
 
@@ -1018,7 +1021,7 @@ class xx_car_checkup_sub_lines_line_add(models.Model):
 
     total_tax = fields.Float(string="الاجمالي بعد الضريبة", compute="_calc_total", readonly=True)
 
-    technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
     unit_price = fields.Float(string="السعر",required=True)
     is_guarantee_flag = fields.Boolean(default=False)
     product_has_guarantee_flag = fields.Boolean(string="الضمان",default=False)
@@ -1176,7 +1179,7 @@ class xx_car_checkup_spare_parts_lines(models.Model):
     company_id = fields.Many2one('res.company',copy=False,default=lambda self: self._default_branch_id(), compute="_get_branch_id")
 
 
-    technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
     qty = fields.Float(string="الكمية")
     qty_done = fields.Float(string="الكمية الفعلية")
     unit_price = fields.Float(string="السعر")

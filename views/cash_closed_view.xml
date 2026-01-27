@@ -9,17 +9,17 @@
                     <header>
                         <button name="closed_cash" string="اقفال" type="object" class="oe_highlight"
                             groups="yousentech_car_maintain.group_sales_man_priv"
-                            invisible="[('account_move_id','!=', False)]"
+                            invisible="account_move_id != False"
                         />
                         <button name="un_closed_cash" string="الغاء الاقفال" type="object"
                             class="oe_highlight"
                             groups="yousentech_car_maintain.group_un_close_cash_priv"
-                            invisible="[('account_move_id','=', False)]"
+                            invisible="account_move_id == False"
                         />
                         <button name="matching_cah_btn" string="مطابقة الصندوق" type="object"
                             class="oe_highlight"
                             groups="yousentech_car_maintain.group_allow_matched_cash_priv"
-                            invisible="[('matched_flag','=', True)]"
+                            invisible="matched_flag == True"
                         />
 
                     </header>
@@ -30,7 +30,7 @@
                                 class="oe_stat_button"
                                 string="قيد الاقفال"
                                 groups="yousentech_car_maintain.group_sales_man_priv"
-                                invisible="[('account_move_id','=', False)]"
+                                invisible="account_move_id == False"
                                 icon="fa-arrow-right">
                             </button>
 
@@ -45,14 +45,14 @@
                                 <field name="seq" readonly="1" string="رقم الطلب" />
 
                                 <field name="order_date"
-                                    readonly="[('closed_flag','=', True)]" />
+                                    readonly="closed_flag == True" />
 
                                 <field name="company_id"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
                                     readonly="1" string="الفرع" />
 
                                 <field name="branch_cash_journal_id"
-                                    readonl="[('closed_flag','=', True)]"
+                                    readonly="closed_flag == True"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                             </group>
                             <group>
@@ -62,12 +62,12 @@
                                 True,'no_create': True}"/>-->
 
                                 <field name="description"
-                                    readonly="[('closed_flag','=', True)] " />
+                                    readonly="closed_flag == True" />
 
                                 <field name="closed_flag" readonly="1" />
 
                                 <field name="amount"
-                                    readonly="[('closed_flag','=', True)]" />
+                                    readonly="closed_flag == True" />
                             </group>
                             <group>
                                 <field name="user_id"
@@ -85,7 +85,7 @@
                             <group>
 
                                 <field name="matched_amount"
-                                    readonly="[('matched_flag','=', True)]" />
+                                    readonly="matched_flag == True" />
                                 <field name="remaining_matched_amount" />
 
                                 <field name="matched_flag" readonly="1" />

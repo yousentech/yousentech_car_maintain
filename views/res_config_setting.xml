@@ -5,68 +5,72 @@
             <field name="name">checkup.res.config.settings.view.form.inherit</field>
             <field name="model">res.config.settings</field>
             <field name="priority" eval="109"/>
-            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+            <field name="inherit_id" ref="yousentech_invoicing.res_config_settings_invoicing_form" />
             <field name="arch" type="xml">
-	                <div id="business_documents" position="after">
-                         <h2>اعدادات نظام الفحص</h2>
-	                     <div class="row mt16 o_settings_container" name="work_order">
+                
+          <xpath expr="/form" position="inside">
+                <app data-string="Work Order" string="Work Order" name="work_order_car">
+                    <block title="Work Order" name="work_order_container">
+                       <div id="business_documents" position="after">
+                    <h2>اعدادات نظام الفحص</h2>
+                    <div class="row mt16 o_settings_container" name="work_order">
 
-                             <!--                                technician_commission_mislead_types  -->
+                        <!--                                technician_commission_mislead_types  -->
 
-                              <!--discount_posted-->
-	                    	<div class="col-12 col-lg-6 o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="discount_posted"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="discount_posted"/>
-                                    <div class="text-muted">ترحيل الخصم على مستوى الفاتورة من امر الفحص الى ام البيع</div>
-                                </div>
+                        <!--discount_posted-->
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="discount_posted"/>
                             </div>
+                            <div class="o_setting_right_pane">
+                                <label for="discount_posted"/>
+                                <div class="text-muted">ترحيل الخصم على مستوى الفاتورة من امر الفحص الى ام البيع</div>
+                            </div>
+                        </div>
 
 <!--                             car no -->
-                             <div class="col-12 col-lg-6 o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="car_no"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="car_no"/>
-                                    <div class="text-muted">السماح بادخال رقم لوحة السيارة</div>
-                                </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="car_no"/>
                             </div>
+                            <div class="o_setting_right_pane">
+                                <label for="car_no"/>
+                                <div class="text-muted">السماح بادخال رقم لوحة السيارة</div>
+                            </div>
+                        </div>
 <!--                    vin_no     -->
-                           <div class="col-12 col-lg-6 o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="vin_no"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="vin_no"/>
-                                    <div class="text-muted">السماح بادخال رقم الشاصي للسيارة</div>
-                                </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="vin_no"/>
                             </div>
+                            <div class="o_setting_right_pane">
+                                <label for="vin_no"/>
+                                <div class="text-muted">السماح بادخال رقم الشاصي للسيارة</div>
+                            </div>
+                        </div>
 
- <!--compelete_done_date_not_required-->
-	                    	<div class="col-12 col-lg-6 o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="compelete_done_date_not_required"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="compelete_done_date_not_required"/>
-                                    <div class="text-muted">تاريخ اكتمال التفيذ غير اجباري</div>
-                                </div>
+<!--compelete_done_date_not_required-->
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="compelete_done_date_not_required"/>
                             </div>
+                            <div class="o_setting_right_pane">
+                                <label for="compelete_done_date_not_required"/>
+                                <div class="text-muted">تاريخ اكتمال التفيذ غير اجباري</div>
+                            </div>
+                        </div>
 <!--                  partner_mobile_not_required    -->
-                           <div class="col-12 col-lg-6 o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="partner_mobile_not_required"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="partner_mobile_not_required"/>
-                                    <div class="text-muted">ادخال رقم جوال العميل</div>
-                                </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="partner_mobile_not_required"/>
                             </div>
+                            <div class="o_setting_right_pane">
+                                <label for="partner_mobile_not_required"/>
+                                <div class="text-muted">ادخال رقم جوال العميل</div>
+                            </div>
+                        </div>
 
-                             <!--                  create_so_flag    -->
+                        <!--                  create_so_flag    -->
 <!--                           <div class="col-12 col-lg-6 o_setting_box">-->
 <!--                                <div class="o_setting_left_pane">-->
 <!--                                    <field name="create_so_flag"/>-->
@@ -87,44 +91,47 @@
 <!--                                </div>-->
 <!--                            </div>-->
 <!--                                                  l_collecting_products    -->
-                           <div class="col-12 col-lg-6 o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="collecting_products"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="collecting_products"/>
-                                    <div class="text-muted">طباعة اصناف الفاتورة</div>
-                                </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="collecting_products"/>
                             </div>
-
-                                    <!--                  create_inv_flag    -->
-                           <div class="col-12 col-lg-6 o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="service_price_include_tax"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="service_price_include_tax"/>
-                                    <div class="text-muted">طريقة احتساب الضريبة في نظام الفحص</div>
-                                </div>
+                            <div class="o_setting_right_pane">
+                                <label for="collecting_products"/>
+                                <div class="text-muted">طباعة اصناف الفاتورة</div>
                             </div>
+                        </div>
 
-           <!--                  car_type    -->
-                           <div class="col-12 col-lg-6 o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="car_type"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="car_type"/>
-                                    <div class="text-muted">نوع السيارة</div>
-                                </div>
+                                <!--                  create_inv_flag    -->
+                    <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="service_price_include_tax"/>
                             </div>
+                            <div class="o_setting_right_pane">
+                                <label for="service_price_include_tax"/>
+                                <div class="text-muted">طريقة احتساب الضريبة في نظام الفحص</div>
+                            </div>
+                        </div>
 
-
-
+    <!--                  car_type    -->
+                    <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="car_type"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="car_type"/>
+                                <div class="text-muted">نوع السيارة</div>
+                            </div>
                         </div>
 
 
-               </div>
+
+                    </div>
+
+
+                </div>
+                    </block>
+                </app>
+            </xpath>
             </field>
         </record>
 

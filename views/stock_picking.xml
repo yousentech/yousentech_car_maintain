@@ -41,7 +41,7 @@
                       </xpath>
                      <xpath expr="//button[@name='button_validate']" position="after">
                              <button string="ازالة الشحنة من امر العمل" name="delete_products_from_wo"  type="object" class="oe_highlight"
-                                invisible="[('state', 'not in', ['done'])]"/>
+                                invisible="state not in ['done']"/>
 
                       </xpath>
                   <xpath expr = "//field[@name = 'move_ids_without_package']/tree/field[@name = 'product_uom']"  position="after">

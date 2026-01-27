@@ -29,15 +29,37 @@ class view_mizan_picking(models.Model):
         #                      from mizan_car_work_procedure_master wo, mizan_car_entry_card_master en, custom_branches b
         #                         where wo.sale_order_id is null and en.id = wo.entry_card_id and b.id= en.branch_id and wo.state not in ('execute_completed','cancel_order'));
         #                             """)
-        
+        ##
+        # self._cr.execute("""CREATE OR REPLACE VIEW mizan_wo_picking AS
+        #                 (select wo.id,'[ '|| 'ID ' || wo.id::text ||' ] '|| '[ '|| (select p.name from res_partner p where p.id=wo.partner_id)|| ' ] '||
+        #                          case when  wo.car_panel_no is not null then ' [ ' ||  wo.car_panel_no ||' ] 'else ' ' end || ' [ ' || p.name || ']'
+        #                       as name, en.company_id as company_id
+        #                      from mizan_car_work_procedure_master wo, mizan_car_entry_card_master en
+        #                         where wo.sale_order_id is null and en.id = wo.entry_card_id and wo.state not in ('execute_completed','cancel_order'));
+        #                             """)
         self._cr.execute("""CREATE OR REPLACE VIEW mizan_wo_picking AS
-                        (select wo.id,'[ '|| 'ID ' || wo.id::text ||' ] '|| '[ '|| (select p.name from res_partner p where p.id=wo.partner_id)|| ' ] '||
-                                 case when  wo.car_panel_no is not null then ' [ ' ||  wo.car_panel_no ||' ] 'else ' ' end || ' [ ' || b.name || ']'
-                              as name, en.branch_id as branch_id
-                             from mizan_car_work_procedure_master wo, mizan_car_entry_card_master en
-                                where wo.sale_order_id is null and en.id = wo.entry_card_id and wo.state not in ('execute_completed','cancel_order'));
-                                    """)
-
+            SELECT 
+                wo.id,
+                '[ID ' || wo.id::text || '] ' || 
+                COALESCE(pt.name, 'No Partner') ||
+                CASE 
+                    WHEN wo.car_panel_no IS NOT NULL THEN ' [' || wo.car_panel_no || ']' 
+                    ELSE '' 
+                END ||
+                ' [' || COALESCE(c.name, 'No Company') || ']' as name,
+                en.company_id as company_id
+            FROM 
+                mizan_car_work_procedure_master wo
+            JOIN 
+                mizan_car_entry_card_master en ON en.id = wo.entry_card_id
+            LEFT JOIN 
+                res_partner pt ON pt.id = wo.partner_id
+            LEFT JOIN 
+                res_company c ON c.id = en.company_id
+            WHERE 
+                wo.sale_order_id IS NULL 
+                AND wo.state NOT IN ('execute_completed', 'cancel_order');
+        """)
 
 class xx_stock_workstation_location(models.Model):
     _inherit = 'stock.location'
@@ -70,7 +92,7 @@ class xx_stock_picking(models.Model):
     send_done_wo = fields.Boolean(string="تم ارسال الى امر العمل", readonly=True)
 
     workstation_id = fields.Many2one('mizan.picking.workstation', string="الورشة")
-    ##
+
     workstation_flag_id = fields.Integer(default=lambda self: self._default_workstation_id(),
                                      compute="_get_workstation_id")
 
@@ -98,7 +120,7 @@ class xx_stock_picking(models.Model):
                         "تنبيه.. الفروع غير متوافقة بين امر العمل والوشة ")
 
             for line in rec.move_ids_without_package:
-                line.product_id.product_tmpl_id.check_product_price_from_cost(line.unit_price)
+                line.product_id.product_tmpl_id.check_product_price_from_cost(line.unit_price,line.unit_cost)
 
             for line in rec.move_ids_without_package:
                 if not line.product_uom_qty:
@@ -409,7 +431,7 @@ class xx_stock_move(models.Model):
         for rec in self:
          
             if rec.product_id and rec.unit_price:
-                rec.product_id.product_tmpl_id.check_product_price_from_cost(rec.unit_price)
+                rec.product_id.product_tmpl_id.check_product_price_from_cost(rec.unit_price,rec.unit_cost)
 
     # @api.onchange('product_uom_qty','aval_qty','quantity_done')
     # def chk_price_of_product(self):

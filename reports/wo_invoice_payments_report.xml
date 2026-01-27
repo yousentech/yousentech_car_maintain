@@ -32,9 +32,9 @@
 			<div class="header">
                 <div class="row mt32 mb32">
                     <div class="col-6">
-						<t t-if="not user_id.branch_id.no_header_report_account">
-							<t t-if="user_id.branch_id.branch_header">
-								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_header)"
+						<t t-if="not user_id.company_id.no_header_report_account">
+							<t t-if="user_id.company_id.branch_header">
+								<img t-if="user_id.company_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_header)"
 									style="max-height: 200px;"/>
 							</t>
 							<t t-else="">
@@ -50,9 +50,9 @@
             <div class="footer">
                 <div class="row mt32 mb32">
                     <div class="col-12">
-						<t t-if="not user_id.branch_id.no_header_report_account">
-							<t t-if="user_id.branch_id.branch_footer">
- 								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_footer)"
+						<t t-if="not user_id.company_id.no_header_report_account">
+							<t t-if="user_id.company_id.branch_footer">
+ 								<img t-if="user_id.company_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_footer)"
 									style="max-height: 200px;"/>
 									<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
 									<br />

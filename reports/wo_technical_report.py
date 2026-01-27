@@ -13,7 +13,7 @@ class haraj_report(models.TransientModel):
     display_type = fields.Selection([('detail', 'تحليلي'),
                                      ('summary', 'اجمالي')], string='عرض التقرير', required=True,
                                     default='detail')
-    branch_ids = fields.Many2many('custom.branches', string="الفرع", required=True, default=lambda self: self.env.user.allowed_branch_ids.ids)
+    company_ids = fields.Many2many('res.company', string="الفرع", required=True, default=lambda self: self.env.user.company_ids.ids)
     technical_ids = fields.Many2many('hr.technical.assignments',string="اسم الفني" )
     product_ids = fields.Many2many('product.product', string="الخدمة", copy=False,  
                                       domain=[('discount_product_flag','!=',True),('type','!=','product')])
@@ -36,7 +36,7 @@ class haraj_report(models.TransientModel):
                 'date_end': self.date_end,
                 'partner_id': [(i['id']) for i in self.partner_id],
                 'wo_ids': [(i['id']) for i in self.wo_ids],
-                'branch_ids': [(i['id']) for i in self.branch_ids],
+                'company_ids': [(i['id']) for i in self.company_ids],
                 'technical_ids': [(i['id']) for i in self.technical_ids],
                 'product_ids': [(i['id']) for i in self.product_ids],
                 'display_type': self.display_type,
@@ -47,10 +47,10 @@ class haraj_report(models.TransientModel):
 
         # use `module_name.report_id` as reference.
         # `report_action()` will call `_get_report_values()` and pass `data` automatically.
-        return self.env.ref('qimamhd_mizan_car_13.print_wo_technical_report').report_action(self, data=data)
+        return self.env.ref('yousentech_car_maintain.print_wo_technical_report').report_action(self, data=data)
 
 class ReportAttendanceRecap(models.AbstractModel):
-    _name = 'report.qimamhd_mizan_car_13.print_wo_technical_report_view'
+    _name = 'report.yousentech_car_maintain.print_wo_technical_report_view'
 
     @api.model
     def _get_report_values(self, docids, data=None):
@@ -59,7 +59,7 @@ class ReportAttendanceRecap(models.AbstractModel):
         date_end = data['form']['date_end']
         l_partner_id = data['form']['partner_id']
         l_wo_ids = data['form']['wo_ids']
-        l_branch_ids = data['form']['branch_ids']
+        l_company_ids = data['form']['company_ids']
         l_technical_ids = data['form']['technical_ids']
         l_product_ids = data['form']['product_ids']
         l_display_type = data['form']['display_type']
@@ -74,11 +74,11 @@ class ReportAttendanceRecap(models.AbstractModel):
         if l_wo_ids:
             domain.append(('header_id', 'in', l_wo_ids))
 
-        if l_branch_ids:
-            domain.append(('header_id.entry_card_id.branch_id', 'in', l_branch_ids))
+        if l_company_ids:
+            domain.append(('header_id.entry_card_id.company_id', 'in', l_company_ids))
       
-        if l_branch_ids:
-            domain.append(('header_id.branch_id', 'in', l_branch_ids))
+        if l_company_ids:
+            domain.append(('header_id.company_id', 'in', l_company_ids))
              
         if l_partner_id:
             domain.append(('partner_id', '=', l_partner_id))
@@ -93,7 +93,7 @@ class ReportAttendanceRecap(models.AbstractModel):
         mizan_wo = self.env['mizan.car.work.procedure.line'].search(domain)
         print(mizan_wo)
         if mizan_wo:
-            l_branchs = self.env['custom.branches'].search([('id', 'in', l_branch_ids)])
+            l_companies = self.env['res.company'].search([('id', 'in', l_company_ids)])
             l_partner = self.env['res.partner'].search([('id', 'in', l_partner_id)])
             l_products = self.env['product.product'].search([('id', 'in', l_product_ids)])
             l_technicals = self.env['hr.technical.assignments'].search([('id', 'in', l_technical_ids)])
@@ -103,7 +103,7 @@ class ReportAttendanceRecap(models.AbstractModel):
                 'doc_model': data['model'],
                 'date_start': date_start,
                 'date_end': date_end,
-                'branchs': l_branchs,
+                'company': l_companies,
                 'customers': l_partner,
                 'technical_ids': l_technicals,
                 'products': l_products,

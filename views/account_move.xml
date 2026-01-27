@@ -8,14 +8,14 @@
                    <xpath expr="//field[@name='ref']" position="after">
                             <field name="move_type" invisible="1"/>
 
-                            <field name="partner_mobile" readonly="1"  invisible ="[('move_type','not in', ['out_invoice','out_refund'])]"/>
-                            <field name="car_panel_no" readonly="1" invisible="[('move_type','not in', ['out_invoice','out_refund'])]"/>
-                            <field name="car_type"  readonly="1" invisible="[('move_type','not in', ['out_invoice','out_refund'])]"/>
-                            <field name="is_guarantee"  readonly="1" invisible="[('move_type','not in', ['out_invoice','out_refund'])]"/>
-                            <field name="work_order_id"  readonly="1" invisible="[('move_type','not in', ['out_invoice','out_refund'])]"/>
+                            <field name="partner_mobile" readonly="1"  invisible ="move_type not in ['out_invoice','out_refund']"/>
+                            <field name="car_panel_no" readonly="1" invisible="move_type not in ['out_invoice','out_refund']"/>
+                            <field name="car_type"  readonly="1" invisible="move_type not in ['out_invoice','out_refund']"/>
+                            <field name="is_guarantee"  readonly="1" invisible="move_type not in ['out_invoice','out_refund']"/>
+                            <field name="work_order_id"  readonly="1" invisible="move_type not in ['out_invoice','out_refund']"/>
                             <field name="collecting_products_report_flag" invisible="1"/>
 
-                             <field name="sale_man_id"   invisible="[('move_type','not in', ['out_invoice','out_refund'])]"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مندوب نظام الصيانة"/>
+                             <field name="sale_man_id"   invisible="move_type not in ['out_invoice','out_refund']"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مندوب نظام الصيانة"/>
 
                    </xpath>
 <!--                      <xpath expr="//button[@name='action_post']" position="attributes">-->
@@ -30,11 +30,11 @@
 		<field name="inherit_id" ref="account.view_invoice_tree" />
 		<field name="arch" type="xml">
                    <xpath expr="//field[@name='ref']" position="after">
-                        <field name="partner_mobile"  invisible="[('move_type','not in', ['out_invoice','out_refund'])]"/>
-                        <field name="car_panel_no"  invisible="[('move_type','not in', ['out_invoice','out_refund'])]"/>
-                       <field name="car_type"  invisible="[('move_type','not in', ['out_invoice','out_refund'])]"/>
+                        <field name="partner_mobile"  invisible="move_type not in ['out_invoice','out_refund']"/>
+                        <field name="car_panel_no"  invisible="move_type not in ['out_invoice','out_refund']"/>
+                       <field name="car_type"  invisible="move_type not in ['out_invoice','out_refund']"/>
 
-                        <field name="work_order_id"  invisible="[('move_type','not in', ['out_invoice','out_refund'])]"/>
+                        <field name="work_order_id"  invisible="move_type not in ['out_invoice','out_refund']"/>
                    </xpath>
         </field>
 	</record>

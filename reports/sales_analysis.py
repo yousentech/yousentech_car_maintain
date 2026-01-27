@@ -60,7 +60,7 @@ class CustomProduct_qty_cost(models.Model):
                                 wo.state, 
                                 wo.create_invoice_manually_id as invoice_no,
                                 
-                                wo.branch_id  as branch_name,
+                                wo.company_id  as branch_name,
                                 wo.unit_price,
                                 wo.qty,
                                 
@@ -78,9 +78,9 @@ class CustomProduct_qty_cost(models.Model):
                             
                                 wo.product_id, 
                                 p.type, 
-                                p.product_categ_id 
+                                p.categ_id 
                             from 
-                            (select  s.header_id , m.partner_id , m.branch_id, m.create_invoice_manually_id 
+                            (select  s.header_id , m.partner_id , m.company_id, m.create_invoice_manually_id 
                             ,(s.unit_price / 1.15) as untaxed_amount, s.discount_amount as discount, s.amount_tax as amount_tax, 
                             (SELECT string_agg( emp.name::text, ' , ')
                             FROM 
@@ -92,10 +92,10 @@ class CustomProduct_qty_cost(models.Model):
                             where m.id =s.header_id 
                             group by s.header_id , m.partner_id ,m.entry_card_id , m.car_panel_no , m.partner_mobile , m.state ,s.id,
                             m.create_date ,s.product_id ,s.name ,s.unit_price , s.amount_tax , 
-                            m.create_invoice_manually_id ,m.branch_id
+                            m.create_invoice_manually_id ,m.company_id
 
                             union all 
-                            select  s.header_id , m.partner_id ,  m.branch_id , m.create_invoice_manually_id 
+                            select  s.header_id , m.partner_id ,  m.company_id , m.create_invoice_manually_id 
                              ,((s.qty_done * s.unit_price) / 1.15) as untaxed_amount, s.discount_amount as discount, s.amount_tax  ,
                             
                             (SELECT string_agg( emp.name::text, ' , ')
@@ -109,9 +109,9 @@ class CustomProduct_qty_cost(models.Model):
                             group by  s.header_id , m.partner_id ,m.entry_card_id ,s.id,
                             m.car_panel_no , m.partner_mobile , m.state ,
                             m.create_date ,s.product_id ,s.name ,s.unit_price , s.amount_tax , s.unit_price,  
-                            m.create_invoice_manually_id  ,m.branch_id
+                            m.create_invoice_manually_id  ,m.company_id
                             ) wo  ,
-                            (select p.id, t.name , t.product_categ_id , (select name from product_category pc where pc.id=t.product_categ_id) as category_name  , t.type
+                            (select p.id, t.name , t.categ_id , (select name from product_category pc where pc.id=t.categ_id) as category_name  , t.type
                             from product_product p , product_template t
                             where p.product_tmpl_id=t.id
                             ) p

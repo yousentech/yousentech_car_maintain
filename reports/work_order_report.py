@@ -17,14 +17,14 @@ class haraj_report(models.TransientModel):
                                     default='by_date')
     company_ids1 = fields.Many2many(comodel_name="res.company", string="الشركة", required=True,
                                     default=lambda self: self.env.user.company_ids.ids)
-    branch_id = fields.Many2one('custom.branches', string="الفرع", required=True, default=lambda self: self.env.user.branch_id.id)
-    supervisor_id = fields.Many2one('hr.supervisor.assignments', string="المشرف",copy=False,domain="[('branch_id','=', branch_id)]")
+    company_id = fields.Many2one('res.company', string="الفرع", required=True, default=lambda self: self.env.user.company_id.id)
+    supervisor_id = fields.Many2one('hr.supervisor.assignments', string="المشرف",copy=False,domain="[('company_id','=', company_id)]")
 
     @api.onchange('company_ids1')
     def _get_allowed_branch_ids(self):
-        print(self.env.user.sudo().allowed_branch_ids)
-        select = [(i['id']) for i in self.env.user.sudo().allowed_branch_ids]
-        return {'domain': {'branch_id': [('id', 'in', select)]}}
+        print(self.env.user.sudo().company_ids)
+        select = [(i['id']) for i in self.env.user.sudo().company_ids]
+        return {'domain': {'company_id': [('id', 'in', select)]}}
 
     def get_report(self):
         """Call when button 'Get Report' clicked.
@@ -37,7 +37,7 @@ class haraj_report(models.TransientModel):
                 'date_end': self.date_end,
                 'partner_id': [(i['id']) for i in self.partner_id],
                 'company_ids1': [(i['id']) for i in self.company_ids1],
-                'branch_id': [(i['id']) for i in self.branch_id],
+                'company_id': [(i['id']) for i in self.company_id],
                 'supervisor_id': [(i['id']) for i in self.supervisor_id],
                 'cancel_state': self.cancel_state,
                 'hide_uncompleted_orders': self.hide_uncompleted_orders,
@@ -48,10 +48,10 @@ class haraj_report(models.TransientModel):
 
         # use `module_name.report_id` as reference.
         # `report_action()` will call `_get_report_values()` and pass `data` automatically.
-        return self.env.ref('qimamhd_mizan_car_13.print_wo_sum_report').report_action(self, data=data)
+        return self.env.ref('yousentech_car_maintain.print_wo_sum_report').report_action(self, data=data)
 
 class ReportAttendanceRecap(models.AbstractModel):
-    _name = 'report.qimamhd_mizan_car_13.work_order_sum_report_view'
+    _name = 'report.yousentech_car_maintain.work_order_sum_report_view'
 
     @api.model
     def _get_report_values(self, docids, data=None):
@@ -60,7 +60,7 @@ class ReportAttendanceRecap(models.AbstractModel):
         date_end = data['form']['date_end']
         l_partner_id = data['form']['partner_id']
         l_company_ids1 = data['form']['company_ids1']
-        l_branch_id = data['form']['branch_id']
+        l_company_id = data['form']['company_id']
         l_supervisor_id = data['form']['supervisor_id']
         l_cancel_state = data['form']['cancel_state']
         l_hide_uncompleted_orders = data['form']['hide_uncompleted_orders']
@@ -80,9 +80,9 @@ class ReportAttendanceRecap(models.AbstractModel):
             domain_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
             domain_un_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
 
-        if l_branch_id:
-            domain_compelete.append(('branch_id', 'in', l_branch_id))
-            domain_un_compelete.append(('branch_id', 'in', l_branch_id))
+        if l_company_id:
+            domain_compelete.append(('company_id', 'in', l_company_id))
+            domain_un_compelete.append(('company_id', 'in', l_company_id))
 
         if l_partner_id:
             domain_compelete.append(('partner_id', '=', l_partner_id))
@@ -104,7 +104,7 @@ class ReportAttendanceRecap(models.AbstractModel):
         if harajs_compelete or harajs_un_compelete:
 
             l_companys = self.env['res.company'].search([('id', 'in', l_company_ids1)])
-            l_branchs = self.env['custom.branches'].search([('id', 'in', l_branch_id)])
+            l_company = self.env['res.company'].search([('id', 'in', l_company_id)])
 
             l_partner = self.env['res.partner'].search([('id', 'in', l_partner_id)])
 
@@ -116,7 +116,7 @@ class ReportAttendanceRecap(models.AbstractModel):
                 'date_start': date_start,
                 'date_end': date_end,
                 'companys': l_companys,
-                'branchs': l_branchs,
+                'company': l_company,
                 'customers': l_partner,
                 'group_by_type':l_group_by_type,
                 'supervisors': l_supervisors,

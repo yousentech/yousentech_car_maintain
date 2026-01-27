@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class xx_categorys_in_product(models.Model):
@@ -38,6 +39,13 @@ class xx_categorys_in_product(models.Model):
 #
 #
 #     product_id = fields.Many2one('product.template')
+
+
+    def check_product_price_from_cost(self, sale_price,cost):
+        self.ensure_one()
+        if sale_price < cost:
+            raise ValidationError(_("Sale price must be greater than product cost!"))
+
 class xx_mizan_product_results_lines2(models.Model):
     _name = 'mizan.default.results'
 
