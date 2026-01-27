@@ -22,7 +22,7 @@ class xx_account_move(models.Model):
     partner_mobile = fields.Char(string="رقم الجوال")
     vin_no = fields.Char(string="رقم الشاصي")
     car_type = fields.Char(string="نوع السيارة")
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
     pay_type = fields.Selection([('cash','نقدا'),('bank','بنكي'),('transfer','تحويل')],string="طريقة الدفع")
     entry_card_id = fields.Many2one('mizan.car.entry.card.master', string="رقم كرت الدخول", readony=True,copy=False)
     is_guarantee = fields.Boolean(string="اضافة ضمان",default=False)
@@ -61,10 +61,10 @@ class xx_car_checkup(models.Model):
     service_type_id = fields.Many2one('mizan.services.types', string="نوع الخدمة",)
     service_type_price = fields.Float(string="سعر الخدمة", )
     advance_amount = fields.Float(string="المبلغ المدفوع")
-    branch_id = fields.Integer(copy=False,
+    company_id = fields.Many2one('res.company',copy=False,
                                default=lambda self: self._default_branch_id(), compute="_get_branch_id")
 
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
 
     ##
     services_price = fields.Float(string="الاجمالي", store=True,
@@ -118,9 +118,9 @@ class xx_car_checkup(models.Model):
         for rec in self:
             if rec.entry_card_id:
  
-                rec.branch_id = rec.entry_card_id.company_id.id
+                rec.company_id = rec.entry_card_id.company_id.id
             else:
-                rec.branch_id = 0
+                rec.company_id = False
 
     def _get_discount_posted_flag(self):
 
@@ -244,7 +244,7 @@ class xx_car_checkup(models.Model):
                     'discount': discount_perc if not rec.discount_inv_posted else False,
                      'price_unit': rec.service_type_price,
                     'tax_ids': [(6, 0, rec.service_type_id.product_id.taxes_id.ids)],
-                    'branch_id': rec.entry_card_id.company_id.id,
+                    'company_id': rec.entry_card_id.company_id.id,
 
                     'company_currency_id': rec.env.company.currency_id.id,
 
@@ -294,7 +294,7 @@ class xx_car_checkup(models.Model):
                         'discount': False,
                         'price_unit': rec.services_price - rec.services_price_after_discount,
 
-                        'branch_id': rec.entry_card_id.company_id.id,
+                        # 'company_id': rec.entry_card_id.company_id.id,
 
                         'company_id': rec.entry_card_id.company_id.id,
                         'currency_id': self.env.company.currency_id.id,
@@ -455,7 +455,7 @@ class xx_car_checkup(models.Model):
                     'checkup_id': rec.id,
 
                     'entry_card_id': rec.entry_card_id.id,
-                    'branch_id': rec.entry_card_id.company_id.id,
+                    'company_id': rec.entry_card_id.company_id.id,
                     'pricelist_id': pricelist.id,
 
                 }
@@ -570,7 +570,7 @@ class xx_car_checkup(models.Model):
                 'type': 'ir.actions.act_window',
                 'context': {'default_invoice_amount': rec.service_type_price,
                             'default_advanced_amount': advanced_amount,
-                            'default_remaining_amount': remaining_amount, 'default_branch_id': rec.entry_card_id.company_id.id,
+                            'default_remaining_amount': remaining_amount, 'default_company_id': rec.entry_card_id.company_id.id,
                             'default_payment_note': "دفعة مقدمة لامر الفحص",
 
                             'default_header_id': rec.entry_card_id.id, 'default_checkup_id': rec.id, 'default_payment_amount': remaining_amount,
@@ -626,7 +626,7 @@ class xx_car_checkup_sub_lines_line_add(models.Model):
  
                 rec.company_id = rec.header_id.entry_card_id.company_id.id
             else:
-                rec.company_id = 0
+                rec.company_id = False
 
     @api.model
     def _default_product_tmpl_id(self):

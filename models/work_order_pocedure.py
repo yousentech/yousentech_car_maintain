@@ -42,7 +42,7 @@ class xx_sale_order(models.Model):
     pay_type = fields.Selection([('cash','نقدا'),('bank','بنكي'),('transfer','تحويل')],string="طريقة الدفع")
     vin_no = fields.Char(string="رقم الشاصي")
     car_type = fields.Char(string="نوع السيارة")
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
     is_guarantee = fields.Boolean(string="اضافة ضمان",default=False)
 
 
@@ -132,7 +132,7 @@ class xx_car_checkup(models.Model):
     # branch_id = fields.Integer(copy=False,
     #                            default=lambda self: self._default_branch_id(), compute="_get_branch_id")
 
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('branch_id','=', branch_id),('state','=', 'current')]")
+    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
 
     result_lines = fields.One2many('mizan.car.work.procedure.line', 'header_id', ondelete='cascade', copy=False)
     lines_spare_parts = fields.One2many('mizan.car.spare.parts.lines', 'header_id', ondelete='cascade', copy=False)

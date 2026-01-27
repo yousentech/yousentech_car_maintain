@@ -6,7 +6,7 @@
 		<field name="inherit_id" ref="account.view_account_journal_form" />
 		<field name="arch" type="xml">
 
-							   <xpath expr="//field[@name='default_credit_account_id']" position="after">
+							   <xpath expr="//field[@name='default_account_id']" position="after">
 
 									<group>
 									 <field name="use_main_cash_close"   />

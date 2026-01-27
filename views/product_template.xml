@@ -91,8 +91,9 @@
                             </p>
                         </field>
               </record>
-                <menuitem id="mizan_product_menu" name="المنتجات" sequence="2"  parent="mizan_car_system_menu"
-              action="action_mizan_product_view"/>
+                  <!-- <menuitem id="mizan_car_system_menu" name="المنتجات" /> -->
+                <menuitem id="mizan_product_menu" name="المنتجات" parent="mizan_car_system_menu"
+              action="action_mizan_product_view" sequence="2" />
 
     </data>
 
