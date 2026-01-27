@@ -8,14 +8,11 @@
 			 <field name = 'parent_id' position = "after" >
                  <field name = "supervisor_emp" />
 				 <field name = "technical_emp" />
-<!--				 <field name = "salesman_type" widget="radio"/>-->
 				 <field name = "company_id" />
-			 
 			 </field>
 			 <notebook>
 				<page name="name" string="string">
 					<field name="face_features_line_id" readonly="1" >
-
 						<tree editable="bottom"   >
 							<field name="botton_mouth_x"/>
 							<field name="botton_mouth_y"/>

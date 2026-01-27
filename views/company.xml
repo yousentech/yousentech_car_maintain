@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="res_company_task_app_view" model="ir.ui.view">
             <field name="name">res_company_task_app_view</field>
             <field name="model">res.company</field>
@@ -15,8 +14,7 @@
                       </group>
                 </page>
                     
-                </notebook>
-                 
+                </notebook>  
             </field>
         </record>
            

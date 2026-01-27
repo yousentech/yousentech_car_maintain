@@ -1,87 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-<!--sales man-->
-       <record id="wo_work_order_analysis_tree_view" model="ir.ui.view">
-            <field name="name">wo_work_order_analysis_tree_view</field>
-            <field name="model">wo.work.order.analysis.view</field>
-            <field name="arch" type="xml">
-                <tree create="0" default_order="header_id desc">
-                  <field name="id"  widget="handle" />
-                  <field name="header_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                  
-                    <field name="partner_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                    <field name="order_date"  />
-                    <field name="create_date"  readonly="1" />
-                    <field name="company_id"  readonly="1" />
-                    <field name="invoice_no"  readonly="1" />
-                    <field name="car_panel_no"  readonly="1" />
-                    <field name="partner_mobile"  readonly="1" />
-                    <field name="state"  readonly="1" />
-                 
-                        <field name="invoice_amout_total"  readonly="1" />
-                    <field name="services_amt_before_tax"  readonly="1" />
-                    <field name="services_discount"  readonly="1" />
-                    <field name="services_amt_tax"  readonly="1" />
-                    <field name="services_amt_after_tax"  readonly="1" />
-                     <field name="spare_parts_amt_before_tax"  readonly="1" />
-                      <field name="spare_parts_discount"  readonly="1" />
-                   <field name="spare_parts_amt_tax"  readonly="1" />
-                    <field name="spare_parts_amt_after_tax"  readonly="1" />
+  <data>
+    <record id="wo_work_order_analysis_tree_view" model="ir.ui.view">
+      <field name="name">wo_work_order_analysis_tree_view</field>
+      <field name="model">wo.work.order.analysis.view</field>
+      <field name="arch" type="xml">
+        <tree create="0" default_order="header_id desc">
+          <field name="id" widget="handle" />
+          <field name="header_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
-                    <field name="supervisor_amount"  readonly="1" />
-                      <field name="supervisor_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-                 
-                 </tree>
-            </field>
-      </record>
-      <record id="wo_work_order_analysis_search_view" model="ir.ui.view">
-        <field name="name">البحث في </field>
-        <field name="model">wo.work.order.analysis.view</field>
-          
+          <field name="partner_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="order_date" />
+          <field name="create_date" readonly="1" />
+          <field name="company_id" readonly="1" />
+          <field name="invoice_no" readonly="1" />
+          <field name="car_panel_no" readonly="1" />
+          <field name="partner_mobile" readonly="1" />
+          <field name="state" readonly="1" />
+          <field name="invoice_amout_total" readonly="1" />
+          <field name="services_amt_before_tax" readonly="1" />
+          <field name="services_discount" readonly="1" />
+          <field name="services_amt_tax" readonly="1" />
+          <field name="services_amt_after_tax" readonly="1" />
+          <field name="spare_parts_amt_before_tax" readonly="1" />
+          <field name="spare_parts_discount" readonly="1" />
+          <field name="spare_parts_amt_tax" readonly="1" />
+          <field name="spare_parts_amt_after_tax" readonly="1" />
+          <field name="supervisor_amount" readonly="1" />
+          <field name="supervisor_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
-        <field name="arch" type="xml">
-             <search string=" البحث في ">
-                
-                    <field name="header_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                   <field name="partner_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                    <field name="order_date"  />
-                    <field name="create_date"  readonly="1" />
-                    <field name="company_id"  readonly="1" />
-                    <field name="invoice_no"  readonly="1" />
-                    <field name="car_panel_no"  readonly="1" />
-                    <field name="partner_mobile"  readonly="1" />
-                    <field name="state"  readonly="1" />
-                   
-                    <field name="invoice_amout_total"  readonly="1" />
-                    <field name="services_amt_before_tax"  readonly="1" />
-                    <field name="services_discount"  readonly="1" />
-                    <field name="services_amt_tax"  readonly="1" />
-                    <field name="services_amt_after_tax"  readonly="1" />
-                     <field name="spare_parts_amt_before_tax"  readonly="1" />
-                      <field name="spare_parts_discount"  readonly="1" />
-                   <field name="spare_parts_amt_tax"  readonly="1" />
-                    <field name="spare_parts_amt_after_tax"  readonly="1" />
-                    <field name="supervisor_amount"  readonly="1" />
-                      <field name="supervisor_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-                 
-            
+        </tree>
+      </field>
+    </record>
 
-                </search>
-            </field>
-        </record>
-      <record id="action_work_order_analysis_view" model="ir.actions.act_window">
-            <field name="name">تحليل اوامر العمل </field>
-            <field name="res_model">wo.work.order.analysis.view</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="wo_work_order_analysis_tree_view"/>
-     
-            <field name="target">current</field>
-        </record>
+    <record id="wo_work_order_analysis_search_view" model="ir.ui.view">
+      <field name="name">البحث في </field>
+      <field name="model">wo.work.order.analysis.view</field>
+      <field name="arch" type="xml">
+        <search string=" البحث في ">
 
-      <menuitem id="menu_wo_work_order_analysis_view" name="تحليل اوامر العمل"  parent="mizan_report_menu" sequence="90"
-              action="action_work_order_analysis_view"
-          />
-    </data>
+          <field name="header_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="partner_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="order_date" />
+          <field name="create_date" readonly="1" />
+          <field name="company_id" readonly="1" />
+          <field name="invoice_no" readonly="1" />
+          <field name="car_panel_no" readonly="1" />
+          <field name="partner_mobile" readonly="1" />
+          <field name="state" readonly="1" />
+          <field name="invoice_amout_total" readonly="1" />
+          <field name="services_amt_before_tax" readonly="1" />
+          <field name="services_discount" readonly="1" />
+          <field name="services_amt_tax" readonly="1" />
+          <field name="services_amt_after_tax" readonly="1" />
+          <field name="spare_parts_amt_before_tax" readonly="1" />
+          <field name="spare_parts_discount" readonly="1" />
+          <field name="spare_parts_amt_tax" readonly="1" />
+          <field name="spare_parts_amt_after_tax" readonly="1" />
+          <field name="supervisor_amount" readonly="1" />
+          <field name="supervisor_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+        </search>
+      </field>
+    </record>
+
+    <record id="action_work_order_analysis_view" model="ir.actions.act_window">
+      <field name="name">تحليل اوامر العمل </field>
+      <field name="res_model">wo.work.order.analysis.view</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="wo_work_order_analysis_tree_view" />
+      <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_wo_work_order_analysis_view" name="تحليل اوامر العمل"
+      parent="mizan_report_menu" sequence="90"
+      action="action_work_order_analysis_view"
+    />
+    
+  </data>
 </odoo>

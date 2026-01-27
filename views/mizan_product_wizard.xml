@@ -4,7 +4,7 @@
         <field name="model">mizan.product.wizard</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form >
+            <form>
                 <group string="Products">
                     <field name="product_ids" nolabel="1" />
                 </group>

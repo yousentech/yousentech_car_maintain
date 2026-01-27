@@ -1,250 +1,288 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-        <menuitem id="mizan_car_entry_menu" name="المدخلات" sequence="1" parent="mizan_car_system_menu" />
+  <data>
+    <menuitem id="mizan_car_entry_menu" name="المدخلات" sequence="1" parent="mizan_car_system_menu" />
 
-        <record id="entry_card_form_view" model="ir.ui.view">
-            <field name="name">mizan.car.entry.card.master.form</field>
-            <field name="model">mizan.car.entry.card.master</field>
-            <field name="arch" type="xml">
-                <form>
-                    <header>
-                        <button name="confirm_btn" string="دخول السيارة" type="object" class="oe_highlight"
-                                    invisible="state not in ['draft']"
-                                    groups="yousentech_car_maintain.group_sales_man_priv"
-                        />
-                        <button name="create_checkup_procedure" string="بدء الفحص" type="object" class="oe_highlight"
-                                    invisible="checkup_id != False or state in ['not_checkup_car','draft','cancel_order']"
-                                    groups="yousentech_car_maintain.group_sales_man_priv"
-                        />
-                         <button name="not_checkup_car" string="الخروج بدون فحص" type="object" class="oe_highlight"
-                                    invisible="checkup_id != False or state in ['not_checkup_car','draft','cancel_order']"
-                                    groups="yousentech_car_maintain.group_allow_delete_wo_priv"
-                        />
-                         <button name="execute_completed" string="اكتمال التنفيذ" type="object" class="oe_highlight"
-                                    invisible="state not in ['execute_started','work_order_started']"
-                                    groups="yousentech_car_maintain.group_supervisor_priv,yousentech_car_maintain.group_sales_man_priv"
-                          />
-                        <button name="return_to_modify" string="استعادة للتعديل" type="object" class="oe_highlight"
-                                    invisible="state not in ['confirm','execute_started','work_order_started']"
-                                    groups="yousentech_car_maintain.group_supervisor_priv,yousentech_car_maintain.group_sales_man_priv"
-                        />
-
-
-                       <button name="cancel_order_btn" string="الغاء امر التركيب" type="object" class="oe_highlight"
-                               invisible="state in ['cancel_order']"
-
-                                    groups="yousentech_car_maintain.group_sales_man_priv"
-                        />
-
-                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order"/>
-                    </header>
-                    <sheet>
-                         <div class="oe_button_box" name="button_box">
-                             <button type="object"
-                                    name="call_checkup_procedure"
-                                    class="oe_stat_button"
-                                     string="اجراء الفحص"
-                                    invisible="checkup_id == False"
-                                    icon="fa-arrow-right" >
-                             </button>
-                               <button type="object"
-                                    name="call_wo_procedure"
-                                    class="oe_stat_button"
-                                     string="امر العمل"
-                                    invisible="work_order_id == False"
-
-                                       icon="fa-pencil-square-o"
-                                />
-                             <button type="object"
-                                    name="action_register_payment"
-                                    class="oe_stat_button"
-                                    string="الدفعات المقدمة"
-                                     icon="fa-history" >
-
-<!--                                <field name="payment_count"  widget="statinfo"/>-->
-                            </button>
+    <record id="entry_card_form_view" model="ir.ui.view">
+      <field name="name">mizan.car.entry.card.master.form</field>
+      <field name="model">mizan.car.entry.card.master</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button name="confirm_btn" string="دخول السيارة" type="object" class="oe_highlight"
+              invisible="state not in ['draft']"
+              groups="yousentech_car_maintain.group_sales_man_priv"
+            />
+            <button name="create_checkup_procedure" string="بدء الفحص" type="object"
+              class="oe_highlight"
+              invisible="checkup_id != False or state in ['not_checkup_car','draft','cancel_order']"
+              groups="yousentech_car_maintain.group_sales_man_priv"
+            />
+            <button name="not_checkup_car" string="الخروج بدون فحص" type="object"
+              class="oe_highlight"
+              invisible="checkup_id != False or state in ['not_checkup_car','draft','cancel_order']"
+              groups="yousentech_car_maintain.group_allow_delete_wo_priv"
+            />
+            <button name="execute_completed" string="اكتمال التنفيذ" type="object"
+              class="oe_highlight"
+              invisible="state not in ['execute_started','work_order_started']"
+              groups="yousentech_car_maintain.group_supervisor_priv,yousentech_car_maintain.group_sales_man_priv"
+            />
+            <button name="return_to_modify" string="استعادة للتعديل" type="object"
+              class="oe_highlight"
+              invisible="state not in ['confirm','execute_started','work_order_started']"
+              groups="yousentech_car_maintain.group_supervisor_priv,yousentech_car_maintain.group_sales_man_priv"
+            />
 
 
-                         </div>
-                         <h1>
-                              <strong>كرت الدخول</strong>
+            <button name="cancel_order_btn" string="الغاء امر التركيب" type="object"
+              class="oe_highlight"
+              invisible="state in ['cancel_order']"
+              groups="yousentech_car_maintain.group_sales_man_priv"
+            />
 
-                          </h1>
-                          <br></br>
-                            <group>
-                                  <group>
+            <field name="state" widget="statusbar"
+              statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order" />
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button type="object"
+                name="call_checkup_procedure"
+                class="oe_stat_button"
+                string="اجراء الفحص"
+                invisible="checkup_id == False"
+                icon="fa-arrow-right">
+              </button>
+              <button type="object"
+                name="call_wo_procedure"
+                class="oe_stat_button"
+                string="امر العمل"
+                invisible="work_order_id == False"
+                icon="fa-pencil-square-o"
+              />
+              <button type="object"
+                name="action_register_payment"
+                class="oe_stat_button"
+                string="الدفعات المقدمة"
+                icon="fa-history">
 
-
-                                        <field name="compelete_done_date_not_required_flag"  invisible="1"/>
-                                      <field name="car_no_required"  invisible="1"/>
-                                        <field name="vin_no_required"  invisible="1"/>
-                                        <field name="car_type_required"  invisible="1"/>
-
-                                        <field name="partner_mobile_not_required"  invisible="1"/>
-                                        <field name="is_user_technical"  invisible="1"/>
-                                        <field name="is_user_supervisor"  invisible="1"/>
-                                        <field name="is_user_sale_man"  invisible="1"/>
-                                         <field name="checkup_id"  invisible="1"/>
-                                         <field name="work_order_id"  invisible="1"/>
-
-                                            <field name="is_user_sale_man"  invisible="1"/>
-
-<!--                                         <field name="sale_order_id" invisible="1"/>-->
-                                          <field name="seq" readonly="1" string="رقم الطلب"/>
-
-
-                                          <field name="partner_id"   readonly="is_user_sale_man == False or state in ['execute_request','execute_started','execute_completed','cancel_order','work_order_started']"/>
-                                          <field name="partner_mobile" required="partner_mobile_not_required == False" readonly="is_user_sale_man == False or state in ['execute_request','execute_started','execute_completed','cancel_order','work_order_started']"/>
-                                         <field name="car_panel_no"   required="car_no_required == True" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"/>
-                                          <field name="car_manuf_id" invisible="1" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-
-                                            <field name="car_type_id" required="car_type_required == True" readonly="is_user_sale_man ==False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"/>
-
-                                          <field name="supervisor_name" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"/>
-                                            <field name="sale_man_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','complete_work','work_order_started']"/>
-
-                                            <field name="checkup_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  readonly="1"/>
-                                            <field name="work_order_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  readonly="1"/>
+              </button>
 
 
+            </div>
+            <h1>
+              <strong>كرت الدخول</strong>
 
-                                      </group>
-                                         <group>
-                                             <field name="order_date" string="تاريخ الطلب" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"/>
-
-                                         <field name="car_size_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"/>
-
-                                              <field name="car_model" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-
-                                             <field name="gear_type" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+            </h1>
+            <br></br>
+            <group>
+              <group>
 
 
+                <field name="compelete_done_date_not_required_flag" invisible="1" />
+                <field name="car_no_required" invisible="1" />
+                <field name="vin_no_required" invisible="1" />
+                <field name="car_type_required" invisible="1" />
+
+                <field name="partner_mobile_not_required" invisible="1" />
+                <field name="is_user_technical" invisible="1" />
+                <field name="is_user_supervisor" invisible="1" />
+                <field name="is_user_sale_man" invisible="1" />
+                <field name="checkup_id" invisible="1" />
+                <field name="work_order_id" invisible="1" />
+
+                <field name="is_user_sale_man" invisible="1" />
+
+                <field name="seq" readonly="1" string="رقم الطلب" />
 
 
-                                           <field name="vin_no" required="vin_no_required == True" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"/>
-                                           <field name="drum_counter" readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"/>
+                <field name="partner_id"
+                  readonly="is_user_sale_man == False or state in ['execute_request','execute_started','execute_completed','cancel_order','work_order_started']" />
+                <field name="partner_mobile" required="partner_mobile_not_required == False"
+                  readonly="is_user_sale_man == False or state in ['execute_request','execute_started','execute_completed','cancel_order','work_order_started']" />
+                <field name="car_panel_no" required="car_no_required == True"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                <field name="car_manuf_id" invisible="1"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
-                                         <field name="id" readonly="1" string="رقم التسلسلي"/>
+                <field name="car_type_id" required="car_type_required == True"
+                  readonly="is_user_sale_man ==False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
 
-                                                 <field name="company_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="الفرع" />
-                                                   <field name="user_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مسئول المبيعات" />
+                <field name="supervisor_name"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                <field name="sale_man_id"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','complete_work','work_order_started']" />
 
-                                                   <field name="company_id" string="الشركة"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" groups="base.group_multi_company"/>
-
-
-                                 </group>
-
-
-                                </group>
-
-
-                       </sheet>
-                    <div class="oe_chatter">
-                             <field name="message_follower_ids" widget="mail_followers"/>
-    <!--                        <field name="activity_ids" widget="mail_activity"/>-->
-                            <field name="message_ids" widget="mail_thread"/>
-                        </div>
-                   </form>
-            </field>
-        </record>
-      <!--make products Tree View-->
-        <record id="entry_card_master_tree_view" model="ir.ui.view">
-            <field name="name">mizan.car.entry.card.master.tree</field>
-            <field name="model">mizan.car.entry.card.master</field>
-            <field name="arch" type="xml">
-                <tree   default_order="company_id, seq desc">
-
-                    <field name="id" readonly="1" string="رقم التسلسلي"/>
-                    <field name="seq" readonly="1" string="رقم الطلب"/>
-
-                     <field name="order_date" string="تاريخ الطلب"/>
-                      <field name="partner_id" />
-                      <field name="partner_mobile"/>
-                      <field name="car_type_id"/>
-
-                     <field name="supervisor_name" string="المشرف"/>
-                     <field name="car_size_id" />
-                    <field name="work_order_id" />
-                    <field name="car_panel_no" />
-
-                     <field name="vin_no" optional="hide"/>
-                     <field name="drum_counter"  optional="hide"/>
-                      <field name="sale_man_id"/>
+                <field name="checkup_id"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                  readonly="1" />
+                <field name="work_order_id"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                  readonly="1" />
 
 
-                    <field name="state"/>
- <!--                      <field name="service_type_protection" options="{'no_create': True}" />-->
+              </group>
+              <group>
+                <field name="order_date" string="تاريخ الطلب"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
 
-                     <field name="company_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="الفرع" />
-                       <field name="user_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مسئول المبيعات" />
+                <field name="car_size_id"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
 
-                     <field name="company_id" string="الشركة" options="{'no_create': True}" groups="base.group_multi_company"/>
+                <field name="car_model"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                <field name="gear_type"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
 
+                <field name="vin_no" required="vin_no_required == True"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                <field name="drum_counter"
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
 
-                </tree>
-            </field>
-        </record>
-        <record id="entry_card_master_search_view" model="ir.ui.view">
-            <field name="name">البحث في</field>
-            <field name="model">mizan.car.entry.card.master</field>
-            <field eval="10" name="priority"/>
-            <field name="arch" type="xml">
-                <search string=" البحث في ">
-                    <field name="work_order_id" />
-                    <field name="car_panel_no" />
-                      <field name="partner_mobile"/>
-                      <field name="car_type_id"/>
+                <field name="id" readonly="1" string="رقم التسلسلي" />
 
-                    <field name="id" readonly="1" string="رقم التسلسلي"/>
-                    <field name="seq" readonly="1" string="رقم الطلب"/>
-                     <field name="order_date" string="تاريخ الطلب"/>
-                      <field name="partner_id" />
+                <field name="company_id"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                  readonly="1" string="الفرع" />
+                <field name="user_id"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                  readonly="1" string="مسئول المبيعات" />
 
-                     <field name="supervisor_name" string="المشرف"/>
-                     <field name="car_size_id" />
-                     <field name="vin_no"/>
-                     <field name="drum_counter"/>
-                      <field name="sale_man_id"/>
+                <field name="company_id" string="الشركة"
+                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                  groups="base.group_multi_company" />
 
-                       <field name="state"/>
 
-                       <field name="company_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="الفرع" />
-                       <field name="user_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" string="مسئول المبيعات" />
+              </group>
 
-                    <field name="company_id" string="الشركة" options="{'no_create': True}" groups="base.group_multi_company"/>
 
-                   <group expand='0' string='Filters'>
-                            <filter string="الاعمال الغير مغلقة" name="unclosed_works" domain="[('state', 'not in', ['cancel_order','execute_completed'])]"/>
+            </group>
 
-                           <filter string="الاعمال المغلقة" name="closed_works" domain="[('state', 'in', ['execute_completed'])]"/>
 
-                           <filter string="الاعمال لم يتم البدء" name="initial_works" domain="[('state', 'in', ['draft'])]"/>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" />
+            <field name="message_ids" widget="mail_thread" />
+          </div>
+        </form>
+      </field>
+    </record>
 
-                    </group>
+    <record id="entry_card_master_tree_view" model="ir.ui.view">
+      <field name="name">mizan.car.entry.card.master.tree</field>
+      <field name="model">mizan.car.entry.card.master</field>
+      <field name="arch" type="xml">
+        <tree default_order="company_id, seq desc">
 
-                </search>
-            </field>
-        </record>
-       <record id="action_entry_card_view" model="ir.actions.act_window">
-            <field name="name">كرت الدخول</field>
-            <field name="res_model">mizan.car.entry.card.master</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="entry_card_master_tree_view"/>
-            <field name="context">{'default_state': 'draft','search_default_unclosed_works': ['execute_completed']} </field>
-            <field name="target">current</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">Click to create new
-                </p>
-            </field>
-        </record>
+          <field name="id" readonly="1" string="رقم التسلسلي" />
+          <field name="seq" readonly="1" string="رقم الطلب" />
 
-      <menuitem id="car_checkup_menu" name="طلبات الفحص"  parent="mizan_car_entry_menu"
-                              sequence="1"
+          <field name="order_date" string="تاريخ الطلب" />
+          <field name="partner_id" />
+          <field name="partner_mobile" />
+          <field name="car_type_id" />
 
-              action="action_entry_card_view"/>
-    </data>
+          <field name="supervisor_name" string="المشرف" />
+          <field name="car_size_id" />
+          <field name="work_order_id" />
+          <field name="car_panel_no" />
+
+          <field name="vin_no" optional="hide" />
+          <field name="drum_counter" optional="hide" />
+          <field name="sale_man_id" />
+
+
+          <field name="state" />
+        
+          <field name="company_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+            readonly="1" string="الفرع" />
+          <field name="user_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+            readonly="1" string="مسئول المبيعات" />
+
+          <field name="company_id" string="الشركة" options="{'no_create': True}"
+            groups="base.group_multi_company" />
+
+
+        </tree>
+      </field>
+    </record>
+    <record id="entry_card_master_search_view" model="ir.ui.view">
+      <field name="name">البحث في</field>
+      <field name="model">mizan.car.entry.card.master</field>
+      <field eval="10" name="priority" />
+      <field name="arch" type="xml">
+        <search string=" البحث في ">
+          <field name="work_order_id" />
+          <field name="car_panel_no" />
+          <field name="partner_mobile" />
+          <field name="car_type_id" />
+
+          <field name="id" readonly="1" string="رقم التسلسلي" />
+          <field name="seq" readonly="1" string="رقم الطلب" />
+          <field name="order_date" string="تاريخ الطلب" />
+          <field name="partner_id" />
+
+          <field name="supervisor_name" string="المشرف" />
+          <field name="car_size_id" />
+          <field name="vin_no" />
+          <field name="drum_counter" />
+          <field name="sale_man_id" />
+
+          <field name="state" />
+
+          <field name="company_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+            readonly="1" string="الفرع" />
+          <field name="user_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+            readonly="1" string="مسئول المبيعات" />
+
+          <field name="company_id" string="الشركة" options="{'no_create': True}"
+            groups="base.group_multi_company" />
+
+          <group expand='0' string='Filters'>
+            <filter string="الاعمال الغير مغلقة" name="unclosed_works"
+              domain="[('state', 'not in', ['cancel_order','execute_completed'])]" />
+
+            <filter string="الاعمال المغلقة" name="closed_works"
+              domain="[('state', 'in', ['execute_completed'])]" />
+
+            <filter string="الاعمال لم يتم البدء" name="initial_works"
+              domain="[('state', 'in', ['draft'])]" />
+
+          </group>
+
+        </search>
+      </field>
+    </record>
+    <record id="action_entry_card_view" model="ir.actions.act_window">
+      <field name="name">كرت الدخول</field>
+      <field name="res_model">mizan.car.entry.card.master</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="entry_card_master_tree_view" />
+      <field name="context">{'default_state': 'draft','search_default_unclosed_works':
+        ['execute_completed']} </field>
+      <field name="target">current</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">Click to create new
+        </p>
+      </field>
+    </record>
+
+    <menuitem id="car_checkup_menu" name="طلبات الفحص" parent="mizan_car_entry_menu"
+      sequence="1"
+      action="action_entry_card_view" />
+  </data>
 
 </odoo>

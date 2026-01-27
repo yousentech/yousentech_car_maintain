@@ -6,16 +6,12 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
-
-
-                 <xpath expr="//field[@name='partner_id']" position="after">
-                            <field name="partner_mobile"/>
-                             <field name="sale_man_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  readonly="1" string="مندوب نظام الصيانة"/>
-
-
-                   </xpath>
-
-
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="partner_mobile" />
+                    <field name="sale_man_id"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        readonly="1" string="مندوب نظام الصيانة" />
+                </xpath>
             </field>
         </record>
     </data>

@@ -1,295 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-          <menuitem id="mizan_car_system_menu" name="نظام الصيانة"
-              />
-          <menuitem id="mizan_car_setup_menu" name="تهيئة نظام الصيانة" sequence="4" parent="mizan_car_system_menu"/>
-           <menuitem id="mizan_report_menu" name="التقارير" parent="mizan_car_system_menu" sequence="4" />
+        <menuitem id="mizan_car_system_menu" name="نظام الصيانة"
+        />
+        <menuitem id="mizan_car_setup_menu" name="تهيئة نظام الصيانة" sequence="4"
+            parent="mizan_car_system_menu" />
+        <menuitem id="mizan_report_menu" name="التقارير" parent="mizan_car_system_menu" sequence="4" />
 
 
-<!-- mizan.service.areas-->
-
-<!--         <record model="ir.ui.view" id="mizan_service_areas_view">-->
-<!--            <field name="name">mizan.service.areas.view</field>-->
-<!--            <field name="model">mizan.service.areas</field>-->
-<!--            <field name="type">form</field>-->
-<!--              <field name="arch" type="xml">-->
-<!--                    <form string="مناطق الخدمة">-->
-<!--                        <sheet>-->
-<!--                            <group>-->
-<!--                                 <group>-->
-<!--                                    <field name="name" />-->
-
-<!--                                   <field name="en_name" />-->
-
-<!--                                     <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>-->
-<!--                                </group>-->
-<!--                                <group>-->
-<!--                                       <field name="area_image" widget="image"  class="oe_avatar" options="{'image_preview': 'image_128'}"/>-->
-
-<!--                                </group>-->
-
-<!--                            </group>-->
-
-
-<!--                        </sheet>-->
-
-<!--                     </form>-->
-<!--              </field>-->
-<!--        </record>-->
-
-<!--        <record id="mizan_service_areas_search" model="ir.ui.view">-->
-<!--            <field name="name">mizan.service.areas.search</field>-->
-<!--            <field name="model">mizan.service.areas</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <search string="البحث">-->
-<!--                     <field name="name" />-->
-<!--                    <field name="en_name" />-->
-
-
-<!--                 </search>-->
-<!--             </field>-->
-<!--        </record>-->
-
-<!--        <record id="mizan_service_areas_tree_view" model="ir.ui.view">-->
-<!--            <field name="name">mizan.service.areas.tree</field>-->
-<!--            <field name="model">mizan.service.areas</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <tree string="مناطق الخدمة">-->
-<!--                     <field name="name" />-->
-<!--                               <field name="en_name" />-->
-
-<!-- 					 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>-->
-<!--                </tree>-->
-<!--            </field>-->
-<!--        </record>-->
-<!--          <record id="action_mizan_service_areas_view" model="ir.actions.act_window">-->
-<!--            <field name="name">مناطق الخدمة</field>-->
-<!--            <field name="res_model">mizan.service.areas</field>-->
-<!--            <field name="type">ir.actions.act_window</field>-->
-<!--            <field name="view_mode">tree,form</field>-->
-<!--            <field name="view_id" ref="mizan_service_areas_tree_view"/>-->
-<!--            <field name="target">current</field>-->
-<!--            <field name="help" type="html">-->
-<!--                <p class="oe_view_nocontent_create">Click to create new Car Parts-->
-<!--                </p>-->
-<!--            </field>-->
-<!--          </record>-->
-
-<!--           <menuitem id="mizan_service_areas_menu" name="مناطق الخدمة" parent="mizan_car_setup_menu" sequence="1"-->
-<!--                   action="action_mizan_service_areas_view" />-->
-
-
-<!-- mizan.service.areas relation-->
-
-<!--         <record model="ir.ui.view" id="mizan_service_areas_relation_view">-->
-<!--            <field name="name">mizan.service.areas.relation.view</field>-->
-<!--            <field name="model">mizan.service.areas.relation</field>-->
-<!--            <field name="type">form</field>-->
-<!--              <field name="arch" type="xml">-->
-<!--                    <form string="مناطق الخدمة">-->
-<!--                        <sheet>-->
-<!--                            <group>-->
-<!--                                <field name="service_area_id" />-->
-
-<!--                                <field name="parent_id" />-->
-
-<!--                                 <field name="have_parts" />-->
-
-<!--                                 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>-->
-<!--                            </group>-->
-<!--                            <group>-->
-<!--                                <notebook>-->
-<!--                                  <page string="انواع الفحص المرتبطة بمنطقة الخدمة">-->
-<!--                                    <field name="parts_lines" attrs="{'invisible':[('have_parts','=', False)]}" >-->
-<!--                                        <tree editable="bottom" limit="100">-->
-<!--                                            <field name="sequence"  widget="handle" />-->
-<!--                                             <field name="part_id" required="1" />-->
-<!--                                             <field name="description" readonly="1"/>-->
-
-<!--                                             <field name="header_id" invisible="1"/>-->
-
-<!--                                        </tree>-->
-<!--                                    </field>-->
-<!--                                  </page>-->
-<!--                                </notebook>-->
-<!--                                 <notebook>-->
-<!--                                  <page string="الفني المرتبطة بمنطقة الخدمة حسب الفرع"  attrs="{'invisible':[('have_parts','=', False)]}">-->
-<!--                                    <field name="technicals_lines" attrs="{'invisible':[('have_parts','=', False)]}">-->
-<!--                                        <tree editable="bottom" limit="100">-->
-<!--                                            <field name="id"  widget="handle" />-->
-<!--                                              <field name="branch_id" />-->
-
-<!--                                             <field name="technical_id" />-->
-
-<!--                                             <field name="header_id" invisible="1"/>-->
-
-<!--                                        </tree>-->
-<!--                                    </field>-->
-<!--                                  </page>-->
-<!--                                </notebook>-->
-
-<!--                            </group>-->
-
-
-<!--                        </sheet>-->
-
-<!--                     </form>-->
-<!--              </field>-->
-<!--        </record>-->
-
-<!--        <record id="mizan_service_areas_relation_search" model="ir.ui.view">-->
-<!--            <field name="name">mizan.service.areas.relation.search</field>-->
-<!--            <field name="model">mizan.service.areas.relation</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <search string="البحث">-->
-<!--                     <field name="service_area_id" />-->
-<!--                     <field name="parent_id" />-->
-<!--                    <field name="have_parts" />-->
-
-<!--                     <group expand="0" string="Group By">-->
-<!--                        <filter name="group_parent_service" string="حسب منطقة الخدمة الرئيسي" domain="[]" context="{'group_by': 'parent_id'}"/>-->
-
-<!--                    </group>-->
-<!--                    <searchpanel>-->
-<!--                         <field name="parent_id" icon="fa-users"/>-->
-<!--                    </searchpanel>-->
-<!--                </search>-->
-<!--             </field>-->
-<!--        </record>-->
-
-<!--        <record id="mizan_service_areas_relation_tree_view" model="ir.ui.view">-->
-<!--            <field name="name">mizan.service.areas.relation.tree</field>-->
-<!--            <field name="model">mizan.service.areas.relation</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <tree string="مناطق الخدمة" default_order="have_parts,parent_id desc">-->
-<!--                     <field name="service_area_id" />-->
-<!--&lt;!&ndash;                     <field name="product_id" />&ndash;&gt;-->
-<!--                    <field name="parent_id" />-->
-<!--                    <field name="have_parts" />-->
-<!--					 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>-->
-<!--                </tree>-->
-<!--            </field>-->
-<!--        </record>-->
-<!--          <record id="action_mizan_service_areas_relation_view" model="ir.actions.act_window">-->
-<!--            <field name="name">مناطق الخدمة</field>-->
-<!--            <field name="res_model">mizan.service.areas.relation</field>-->
-<!--            <field name="type">ir.actions.act_window</field>-->
-<!--            <field name="view_mode">tree,form</field>-->
-<!--            <field name="view_id" ref="mizan_service_areas_relation_tree_view"/>-->
-<!--            <field name="target">current</field>-->
-<!--            <field name="help" type="html">-->
-<!--                <p class="oe_view_nocontent_create">Click to create new Car Parts-->
-<!--                </p>-->
-<!--            </field>-->
-<!--          </record>-->
-
-<!--           <menuitem id="mizan_service_areas_relation_menu" name="ربط مناطق الخدمة" parent="mizan_car_setup_menu"  sequence="2"-->
-<!--                   action="action_mizan_service_areas_relation_view" />-->
-
-<!--  mizan.parts    -->
-<!--        <record model="ir.ui.view" id="mizan_parts_view">-->
-<!--            <field name="name">mizan.parts.view</field>-->
-<!--            <field name="model">mizan.parts</field>-->
-<!--            <field name="type">form</field>-->
-<!--              <field name="arch" type="xml">-->
-<!--                    <form string="انواع الفحص">-->
-<!--                        <sheet>-->
-<!--                            <group>-->
-<!--                                <field name="name" />-->
-<!--                                  <field name="en_name" />-->
-
-<!--                                <field name="description" />-->
-
-<!--                                 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>-->
-
-<!--                            </group>-->
-<!--                            <group>-->
-<!--                                <notebook>-->
-<!--                                <page string="انواع نتائج الفحص">-->
-<!--                                    <field name="result_lines">-->
-<!--                                        <tree editable="bottom" limit="100">-->
-<!--                                            <field name="id"  widget="handle" />-->
-<!--                                             <field name="main_result_id" />-->
-<!--                                              <field name="set_default_result" />-->
-<!--                                              <field name="description" />-->
-<!--                                             <field name="header_id" invisible="1"/>-->
-
-<!--                                        </tree>-->
-<!--                                    </field>-->
-<!--                                </page>-->
-
-<!--                                </notebook>-->
-<!--                                <notebook>-->
-<!--                                    <page string="نتائج الفرعية للفحص">-->
-<!--                                        <field name="sub_result_id">-->
-<!--                                            <tree editable="bottom" limit="100">-->
-<!--                                                <field name="id"  widget="handle" />-->
-<!--                                                 <field name="name" />-->
-
-<!--                                                 <field name="header_id" invisible="1"/>-->
-
-<!--                                            </tree>-->
-<!--                                        </field>-->
-<!--                                    </page>-->
-<!--                                </notebook>-->
-<!--                            </group>-->
-
-<!--                        </sheet>-->
-<!--                     </form>-->
-<!--              </field>-->
-<!--         </record>-->
-
-<!--        <record id="mizan_parts_tree_view" model="ir.ui.view">-->
-<!--            <field name="name">mizan.parts.tree</field>-->
-<!--            <field name="model">mizan.parts</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <tree string="انواع الفحص">-->
-<!--                    <field name="name" />-->
-<!--                    <field name="en_name" />-->
-
-<!--                      <field name="description" />-->
-
-<!--                 </tree>-->
-<!--            </field>-->
-<!--        </record>-->
-<!--          <record id="action_mizan_parts_view" model="ir.actions.act_window">-->
-<!--            <field name="name">انواع الفحص</field>-->
-<!--            <field name="res_model">mizan.parts</field>-->
-<!--            <field name="type">ir.actions.act_window</field>-->
-<!--            <field name="view_mode">tree,form</field>-->
-<!--            <field name="view_id" ref="mizan_parts_tree_view"/>-->
-<!--            <field name="target">current</field>-->
-<!--            <field name="help" type="html">-->
-<!--                <p class="oe_view_nocontent_create">Click to create new service Type-->
-<!--                </p>-->
-<!--            </field>-->
-<!--          </record>-->
-
-
-
-<!--           <menuitem id="mizan_parts_menu" name="انواع الفحص" parent="mizan_car_setup_menu" sequence="3"-->
-<!--                   action="action_mizan_parts_view" />-->
-
-<!--  mizan.result parts    -->
         <record model="ir.ui.view" id="mizan_parts_result_view">
             <field name="name">mizan.parts.results.view</field>
             <field name="model">mizan.parts.results</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form string="انواع الفحص">
-                        <sheet>
-                            <group>
-                                <field name="name" />
-                               <field name="en_name" />
-
-
-                            </group>
-
-                        </sheet>
-                     </form>
-              </field>
-         </record>
+            <field name="arch" type="xml">
+                <form string="انواع الفحص">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="en_name" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_parts_result_tree_view" model="ir.ui.view">
             <field name="name">mizan.parts.result.tree</field>
@@ -297,115 +30,110 @@
             <field name="arch" type="xml">
                 <tree string="نتائج الفحص">
                     <field name="name" />
-                               <field name="en_name" />
-
-                 </tree>
+                    <field name="en_name" />
+                </tree>
             </field>
         </record>
-          <record id="action_mizan_parts_result_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_parts_result_view" model="ir.actions.act_window">
             <field name="name">انواع الفحص</field>
             <field name="res_model">mizan.parts.results</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_parts_result_tree_view"/>
+            <field name="view_id" ref="mizan_parts_result_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new service Type
                 </p>
             </field>
-          </record>
+        </record>
 
+        <menuitem id="mizan_parts_result_lines_menu" name="نتائج الفحص"
+            parent="mizan_car_setup_menu" sequence="4"
+            action="action_mizan_parts_result_view" />
 
-
-           <menuitem id="mizan_parts_result_lines_menu" name="نتائج الفحص" parent="mizan_car_setup_menu" sequence="4"
-                   action="action_mizan_parts_result_view" />
-
-
-        <!--        الخدمات                 -->
         <record model="ir.ui.view" id="mizan_services_types_view">
             <field name="name">services.types.view</field>
             <field name="model">mizan.services.types</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form string="انواع الخدمات">
-                        <sheet>
-                            <group>
-                                <field name="name" />
-                               <field name="en_name" />
+            <field name="arch" type="xml">
+                <form string="انواع الخدمات">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="en_name" />
+                            <field name="product_id" />
+                            <field name="price" />
 
-                                <field name="product_id" />
-                                <field name="price" />
+                            <field name="company_id" string="الشركة" options="{'no_create': True}"
+                                groups="base.group_multi_company" />
+                        </group>
 
-                                 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
-                            </group>
-
-                         </sheet>
-                     </form>
-              </field>
-         </record>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_services_types_tree_view" model="ir.ui.view">
             <field name="name">services.types.tree</field>
             <field name="model">mizan.services.types</field>
             <field name="arch" type="xml">
                 <tree string="انواع الخدمات">
-                     <field name="name" />
-                      <field name="en_name" />
-
-					<field name="product_id" />
-					 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
+                    <field name="name" />
+                    <field name="en_name" />
+                    <field name="product_id" />
+                    <field name="company_id" string="الشركة" options="{'no_create': True}"
+                        groups="base.group_multi_company" />
                 </tree>
             </field>
         </record>
-          <record id="action_mizan_services_types_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_services_types_view" model="ir.actions.act_window">
             <field name="name">انواع الخدمات</field>
             <field name="res_model">mizan.services.types</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_services_types_tree_view"/>
+            <field name="view_id" ref="mizan_services_types_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new service Type
                 </p>
             </field>
-          </record>
+        </record>
 
 
-
-           <menuitem id="mizan_services_types_menu" name="انواع الخدمات" parent="mizan_car_setup_menu" sequence="0"
-                   action="action_mizan_services_types_view" />
-
-<!--      car manufactory   -->
+        <menuitem id="mizan_services_types_menu" name="انواع الخدمات" parent="mizan_car_setup_menu"
+            sequence="0"
+            action="action_mizan_services_types_view" />
 
         <record model="ir.ui.view" id="mizan_car_manufactory_view">
             <field name="name">mizan.car.manufactory.view</field>
             <field name="model">mizan.car.manufactory</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form>
-                        <sheet>
-                            <group>
-                                <field name="name" />
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="company_id" string="الشركة" options="{'no_create': True}"
+                                groups="base.group_multi_company" />
 
-                                 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
-
-                            </group>
-                             <notebook>
-                                <page string="انواع السيارات المرتبطة">
-                                    <field name="car_types_lines">
-                                        <tree editable="bottom" limit="100">
-                                            <field name="id"  widget="handle" />
-                                             <field name="name" />
-                                             <field name="header_id" invisible="1"/>
-
-                                        </tree>
-                                    </field>
-                                </page>
-                            </notebook>
-                        </sheet>
-                     </form>
-              </field>
-         </record>
+                        </group>
+                        <notebook>
+                            <page string="انواع السيارات المرتبطة">
+                                <field name="car_types_lines">
+                                    <tree editable="bottom" limit="100">
+                                        <field name="id" widget="handle" />
+                                        <field name="name" />
+                                        <field name="header_id" invisible="1" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_car_manufactory_tree_view" model="ir.ui.view">
             <field name="name">mizan.car.manufactory.tree</field>
@@ -413,50 +141,46 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name" />
-
-                 </tree>
+                </tree>
             </field>
         </record>
-          <record id="action_mizan_car_manufactory_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_car_manufactory_view" model="ir.actions.act_window">
             <field name="name">الشركة المصنعة للسيارات</field>
             <field name="res_model">mizan.car.manufactory</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_car_manufactory_tree_view"/>
+            <field name="view_id" ref="mizan_car_manufactory_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new service Type
                 </p>
             </field>
-          </record>
+        </record>
 
 
+        <menuitem id="mizan_car_manufactory_menu" name="الشركة المصنعة للسيارات"
+            parent="mizan_car_setup_menu"
+            action="action_mizan_car_manufactory_view" />
 
-           <menuitem id="mizan_car_manufactory_menu" name="الشركة المصنعة للسيارات" parent="mizan_car_setup_menu"
-                   action="action_mizan_car_manufactory_view" />
-
-
-
-<!--      car types   -->
 
         <record model="ir.ui.view" id="mizan_car_types_view">
             <field name="name">mizan.car.types.view</field>
             <field name="model">mizan.car.types</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form>
-                        <sheet>
-                            <group>
-                                <field name="name" />
-                                <field name="header_id" />
-
-                                 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
-
-                            </group>
-                        </sheet>
-                     </form>
-              </field>
-         </record>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="header_id" />
+                            <field name="company_id" string="الشركة" options="{'no_create': True}"
+                                groups="base.group_multi_company" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_car_types_tree_view" model="ir.ui.view">
             <field name="name">mizan.car.types.tree</field>
@@ -464,49 +188,47 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name" />
-
-                 </tree>
+                </tree>
             </field>
         </record>
-          <record id="action_mizan_car_types_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_car_types_view" model="ir.actions.act_window">
             <field name="name">انواع السيارات</field>
             <field name="res_model">mizan.car.types</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_car_types_tree_view"/>
+            <field name="view_id" ref="mizan_car_types_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new service Type
                 </p>
             </field>
-          </record>
+        </record>
 
 
-
-           <menuitem id="mizan_car_types_menu" name="انواع السيارات" parent="mizan_car_setup_menu"
-                   action="action_mizan_car_types_view" />
-
-
-<!--      car size   -->
+        <menuitem id="mizan_car_types_menu" name="انواع السيارات" parent="mizan_car_setup_menu"
+            action="action_mizan_car_types_view" />
 
         <record model="ir.ui.view" id="mizan_car_size_view">
             <field name="name">mizan.car.size.view</field>
             <field name="model">mizan.car.size</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form>
-                        <sheet>
-                            <group>
-                                <field name="name" />
-                                 <field name="body_image" widget="image"  options="{'image_preview': 'image_128'}"/>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="body_image" widget="image"
+                                options="{'image_preview': 'image_128'}" />
 
-                                 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
+                            <field name="company_id" string="الشركة" options="{'no_create': True}"
+                                groups="base.group_multi_company" />
 
-                            </group>
-                        </sheet>
-                     </form>
-              </field>
-         </record>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_car_size_tree_view" model="ir.ui.view">
             <field name="name">mizan.car.size.tree</field>
@@ -514,48 +236,43 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name" />
-
-                 </tree>
+                </tree>
             </field>
         </record>
-          <record id="action_mizan_car_size_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_car_size_view" model="ir.actions.act_window">
             <field name="name">احجام السيارات</field>
             <field name="res_model">mizan.car.size</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_car_size_tree_view"/>
+            <field name="view_id" ref="mizan_car_size_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new service Type
                 </p>
             </field>
-          </record>
+        </record>
 
 
-
-           <menuitem id="mizan_car_size_menu" name="احجام السيارات" parent="mizan_car_setup_menu"
-                   action="action_mizan_car_size_view" />
-
-
-<!--      mizan.salesman.sides   -->
+        <menuitem id="mizan_car_size_menu" name="احجام السيارات" parent="mizan_car_setup_menu"
+            action="action_mizan_car_size_view" />
 
         <record model="ir.ui.view" id="mizan_salesman_sides_view">
             <field name="name">mizan.salesman.sides.view</field>
             <field name="model">mizan.salesman.sides</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form>
-                        <sheet>
-                            <group>
-                                <field name="name" />
-
-                                 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
-
-                            </group>
-                        </sheet>
-                     </form>
-              </field>
-         </record>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="company_id" string="الشركة" options="{'no_create': True}"
+                                groups="base.group_multi_company" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_salesman_sides_tree_view" model="ir.ui.view">
             <field name="name">mizan.salesman.sides.tree</field>
@@ -563,119 +280,112 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name" />
-
-                 </tree>
+                </tree>
             </field>
         </record>
-          <record id="action_mizan_salesman_sides_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_salesman_sides_view" model="ir.actions.act_window">
             <field name="name">جهات المندوبين</field>
             <field name="res_model">mizan.salesman.sides</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_salesman_sides_tree_view"/>
+            <field name="view_id" ref="mizan_salesman_sides_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new service Type
                 </p>
             </field>
-          </record>
+        </record>
 
 
-
-           <menuitem id="mizan_salesman_sides_menu" name="جهات المندوبين" parent="mizan_car_setup_menu"
-                   action="action_mizan_salesman_sides_view" />
-
-
-
-<!--      mizan.salesman.sides   -->
+        <menuitem id="mizan_salesman_sides_menu" name="جهات المندوبين" parent="mizan_car_setup_menu"
+            action="action_mizan_salesman_sides_view" />
 
         <record model="ir.ui.view" id="mizan_salesman_view">
             <field name="name">mizan.salesman.view</field>
             <field name="model">mizan.sales.man</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form>
-                        <sheet>
-                            <group>
-                                <field name="name" />
-                                <field name="sale_man_type" />
-                                <field name="salesman_side" />
-                                <field name="company_id" />
-                                <field name="sale_user" />
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="sale_man_type" />
+                            <field name="salesman_side" />
+                            <field name="company_id" />
+                            <field name="sale_user" />
 
-                                 <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
+                            <field name="company_id" string="الشركة" options="{'no_create': True}"
+                                groups="base.group_multi_company" />
 
-                            </group>
-                        </sheet>
-                     </form>
-              </field>
-         </record>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_salesman_tree_view" model="ir.ui.view">
             <field name="name">mizan.salesman.tree</field>
             <field name="model">mizan.sales.man</field>
             <field name="arch" type="xml">
                 <tree>
-                     <field name="name" />
+                    <field name="name" />
                     <field name="sale_man_type" />
                     <field name="salesman_side" />
                     <field name="company_id" />
                     <field name="sale_user" />
 
-                     <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
+                    <field name="company_id" string="الشركة" options="{'no_create': True}"
+                        groups="base.group_multi_company" />
 
-                 </tree>
+                </tree>
             </field>
         </record>
-          <record id="action_mizan_salesman_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_salesman_view" model="ir.actions.act_window">
             <field name="name">المندوبين</field>
             <field name="res_model">mizan.sales.man</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_salesman_tree_view"/>
+            <field name="view_id" ref="mizan_salesman_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new service Type
                 </p>
             </field>
-          </record>
+        </record>
 
-
-
-           <menuitem id="mizan_salesman_menu" name="المندوبين" parent="mizan_car_setup_menu"
-                   action="action_mizan_salesman_view" />
-
-
-
-<!--      mizan.computers.codes   -->
+        <menuitem id="mizan_salesman_menu" name="المندوبين" parent="mizan_car_setup_menu"
+            action="action_mizan_salesman_view" />
 
         <record model="ir.ui.view" id="mizan_computers_codes_view">
             <field name="name">mizan.computers.codes.view</field>
             <field name="model">mizan.computers.codes</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form>
-                        <sheet>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
                             <group>
-                                <group>
-                                     <field name="name" />
-                                     <field name="desc_ar" />
-                                    <field name="active_code" />
-
-                                </group>
-                                <group>
-                                      <field name="desc_en" />
-                                        <field name="notes" />
-                                         <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
-
-                                </group>
-
+                                <field name="name" />
+                                <field name="desc_ar" />
+                                <field name="active_code" />
 
                             </group>
-                        </sheet>
-                     </form>
-              </field>
-         </record>
+                            <group>
+                                <field name="desc_en" />
+                                <field name="notes" />
+                                <field name="company_id" string="الشركة"
+                                    options="{'no_create': True}" groups="base.group_multi_company" />
+
+                            </group>
+
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_computers_codes_tree_view" model="ir.ui.view">
             <field name="name">mizan.computers.codes.tree</field>
@@ -683,115 +393,105 @@
             <field name="arch" type="xml">
                 <tree>
 
-                         <field name="name" />
-                         <field name="desc_ar" />
-                          <field name="desc_en" />
-                            <field name="active_code" />
-
-                            <field name="notes" />
-                             <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
-
-
-                 </tree>
+                    <field name="name" />
+                    <field name="desc_ar" />
+                    <field name="desc_en" />
+                    <field name="active_code" />
+                    <field name="notes" />
+                    <field name="company_id" string="الشركة" options="{'no_create': True}"
+                        groups="base.group_multi_company" />
+                </tree>
             </field>
         </record>
+
         <record id="mizan_computers_codes_search" model="ir.ui.view">
             <field name="name">mizan.computers.codes.search</field>
             <field name="model">mizan.computers.codes</field>
             <field name="arch" type="xml">
                 <search string="البحث">
-                       <field name="name" />
-                         <field name="desc_ar" />
-                          <field name="desc_en" />
-                            <field name="active_code" />
-
-                            <field name="notes" />
-                             <field name="company_id" string="الشركة"  options="{'no_create': True}" groups="base.group_multi_company"/>
-
-
-                 </search>
-             </field>
+                    <field name="name" />
+                    <field name="desc_ar" />
+                    <field name="desc_en" />
+                    <field name="active_code" />
+                    <field name="notes" />
+                    <field name="company_id" string="الشركة" options="{'no_create': True}"
+                        groups="base.group_multi_company" />
+                </search>
+            </field>
         </record>
-          <record id="action_mizan_computers_codes_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_computers_codes_view" model="ir.actions.act_window">
             <field name="name">اكواد الكمبيوتر</field>
             <field name="res_model">mizan.computers.codes</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_computers_codes_tree_view"/>
+            <field name="view_id" ref="mizan_computers_codes_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new
                 </p>
             </field>
-          </record>
+        </record>
 
 
-
-           <menuitem id="mizan_computers_codes_menu" name="اكواد الكمبيوتر" parent="mizan_car_setup_menu"
-                   action="action_mizan_computers_codes_view" />
-
-        <!--      mizan.workstation   -->
+        <menuitem id="mizan_computers_codes_menu" name="اكواد الكمبيوتر"
+            parent="mizan_car_setup_menu"
+            action="action_mizan_computers_codes_view" />
 
         <record model="ir.ui.view" id="mizan_workstation_view">
             <field name="name">mizan.workstation.view</field>
             <field name="model">mizan.picking.workstation</field>
             <field name="type">form</field>
-              <field name="arch" type="xml">
-                    <form>
-                        <sheet>
-                            <group>
-                                     <field name="name" />
-                                     <field name="company_id" />
-
-                            </group>
-                        </sheet>
-                     </form>
-              </field>
-         </record>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="company_id" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="mizan_workstation_tree_view" model="ir.ui.view">
             <field name="name">mizan.workstation.tree</field>
             <field name="model">mizan.picking.workstation</field>
             <field name="arch" type="xml">
                 <tree>
-
-                         <field name="name" />
-                                     <field name="company_id" />
-
-
-                 </tree>
+                    <field name="name" />
+                    <field name="company_id" />
+                </tree>
             </field>
         </record>
+
         <record id="mizan_workstation_search" model="ir.ui.view">
             <field name="name">mizan.workstation.search</field>
             <field name="model">mizan.picking.workstation</field>
             <field name="arch" type="xml">
                 <search string="البحث">
-                       <field name="name" />
-
-                                     <field name="company_id" />
-
-                 </search>
-             </field>
+                    <field name="name" />
+                    <field name="company_id" />
+                </search>
+            </field>
         </record>
-          <record id="action_mizan_workstation_view" model="ir.actions.act_window">
+
+        <record id="action_mizan_workstation_view" model="ir.actions.act_window">
             <field name="name">الورش</field>
             <field name="res_model">mizan.picking.workstation</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mizan_workstation_tree_view"/>
+            <field name="view_id" ref="mizan_workstation_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new
                 </p>
             </field>
-          </record>
+        </record>
 
 
-
-           <menuitem id="mizan_workstation_menu" name="الورش" parent="mizan_car_setup_menu"
-                   action="action_mizan_workstation_view" />
-
+        <menuitem id="mizan_workstation_menu" name="الورش" parent="mizan_car_setup_menu"
+            action="action_mizan_workstation_view" />
 
     </data>
 </odoo>

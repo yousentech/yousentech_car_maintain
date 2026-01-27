@@ -1,100 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-         <record id="product_checkup_view" model="ir.ui.view">
-                <field name="name">product.template.checkup</field>
-                <field name="model">product.template</field>
-                <field name="inherit_id" ref="product.product_template_only_form_view" />
-                <field name="arch" type="xml">
-                    <xpath expr="//div[@name='options']" position="before">
-                       <div>
-                            <field name="en_name"/>
-                            <label for="en_name"/>
-                       </div>
+  <data>
+    <record id="product_checkup_view" model="ir.ui.view">
+      <field name="name">product.template.checkup</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view" />
+      <field name="arch" type="xml">
+        <xpath expr="//div[@name='options']" position="before">
+          <div>
+            <field name="en_name" />
+            <label for="en_name" />
+          </div>
 
-                     </xpath>
-                    <xpath expr="//div[@name='options']" position="after">
-                       <div>
-                            <field name="discount_product_flag"/>
-                            <label for="discount_product_flag"/>
-                       </div>
-                       <div>
-                            <field name="is_checkup_product"/>
-                            <label for="is_checkup_product"/>
-                       </div>
-                          <div>
-                            <field name="guarantee_product"/>
-                            <label for="guarantee_product"/>
-                       </div>
-                     </xpath>
-                   <xpath expr="//field[@name='barcode']" position="after">
+        </xpath>
+        <xpath expr="//div[@name='options']" position="after">
+          <div>
+            <field name="discount_product_flag" />
+            <label for="discount_product_flag" />
+          </div>
+          <div>
+            <field name="is_checkup_product" />
+            <label for="is_checkup_product" />
+          </div>
+          <div>
+            <field name="guarantee_product" />
+            <label for="guarantee_product" />
+          </div>
+        </xpath>
+        <xpath expr="//field[@name='barcode']" position="after">
+          <field name="guarantee_able" />
+        </xpath>
+        <notebook>
+          <page string="النتائج الافتراضية" invisible="is_checkup_product == False ">
+            <field name="results_lines">
+              <tree editable="bottom">
+                <field name="checkup_part_result_id" />
+                <field name="product_service_id" />
+                <field name="default_result" />
 
-                            <field name="guarantee_able"/>
+                <field name="product_id" invisible="1" />
+              </tree>
+            </field>
+          </page>
+        </notebook>
 
+      </field>
+    </record>
+    <record id="mizan_product_template_search_view" model="ir.ui.view">
+      <field name="name">mizan.product.template.search</field>
+      <field name="model">product.template</field>
+      <field name="mode">primary</field>
+      <field name="inherit_id" ref="product.product_template_search_view" />
+      <field name="arch" type="xml">
+        <xpath expr="//search" position="inside">
+          <separator />
+          <field name="is_checkup_product" />
 
-                     </xpath>
-                    <notebook>
-                        <page string="النتائج الافتراضية"  invisible="is_checkup_product == False ">
-                                 <field name="results_lines">
-                                      <tree editable="bottom">
-                                            <field name="checkup_part_result_id"/>
-                                            <field name="product_service_id"/>
-                                            <field name="default_result"/>
-
-                                            <field name="product_id" invisible="1"/>
-                                      </tree>
-                                 </field>
-                        </page>
-<!--                        <page string="النتائج الافتراضي2ة"  attrs="{'invisible':[('is_checkup_product', '=', False)]}">-->
-<!--                                 <field name="results_lines2">-->
-<!--                                      <tree editable="bottom">-->
-<!--                                            <field name="checkup_part_result_id"/>-->
-<!--                                            <field name="product_service_id"/>-->
-<!--                                            <field name="default_result"/>-->
-
-<!--                                            <field name="product_id" invisible="1"/>-->
-<!--                                      </tree>-->
-<!--                                 </field>-->
-<!--                        </page>-->
-
-                    </notebook>
-
-                </field>
-         </record>
-                <record id="mizan_product_template_search_view" model="ir.ui.view">
-                    <field name="name">mizan.product.template.search</field>
-                    <field name="model">product.template</field>
-                    <field name="mode">primary</field>
-                    <field name="inherit_id" ref="product.product_template_search_view"/>
-                    <field name="arch" type="xml">
-                        <xpath expr="//search" position="inside">
-                            <separator/>
-                              <field name="is_checkup_product"/>
-
-                            <filter string="اصناف الفحص" name="checkup_products" domain="[('is_checkup_product', '=', True)]"/>
-                         </xpath>
-                    </field>
-                </record>
+          <filter string="اصناف الفحص" name="checkup_products"
+            domain="[('is_checkup_product', '=', True)]" />
+        </xpath>
+      </field>
+    </record>
 
 
-               <record id="action_mizan_product_view" model="ir.actions.act_window">
-                        <field name="name">المنتجات</field>
-                        <field name="res_model">product.template</field>
-                        <field name="type">ir.actions.act_window</field>
-                        <field name="view_mode">kanban,form</field>
-                        <field name="view_id" ref="product.product_template_kanban_view"/>
-                         <field name="context">{'search_default_checkup_products': 1} </field>
+    <record id="action_mizan_product_view" model="ir.actions.act_window">
+      <field name="name">المنتجات</field>
+      <field name="res_model">product.template</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="view_mode">kanban,form</field>
+      <field name="view_id" ref="product.product_template_kanban_view" />
+      <field name="context">{'search_default_checkup_products': 1} </field>
 
-                        <field name="target">current</field>
-                        <field name="help" type="html">
-                            <p class="oe_view_nocontent_create">Click to create new service Type
-                            </p>
-                        </field>
-              </record>
-                  <!-- <menuitem id="mizan_car_system_menu" name="المنتجات" /> -->
-                <menuitem id="mizan_product_menu" name="المنتجات" parent="mizan_car_system_menu"
-              action="action_mizan_product_view" sequence="2" />
+      <field name="target">current</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">Click to create new service Type
+        </p>
+      </field>
+    </record>
 
-    </data>
+    <menuitem id="mizan_product_menu" name="المنتجات" parent="mizan_car_system_menu"
+      action="action_mizan_product_view" sequence="2" />
 
+  </data>
 </odoo>
