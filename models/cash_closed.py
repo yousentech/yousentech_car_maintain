@@ -2,38 +2,8 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from datetime import datetime, date
-import datetime
 
-
-
-class xx_account_move(models.Model):
-    _inherit = 'account.move'
-
-    cash_close_id = fields.Many2one('cash.close.closed', copy=False,string="رقم اقفال الصندوق")
-
-    def unlink(self):
-        for rec in self:
-            if rec.move_type== 'entry':
-                if rec.cash_close_id:
-                    rec.cash_close_id.write({'account_move_id': False})
-                    rec.cash_close_id.write({'closed_flag': False})
-                    rec.cash_close_id.write({'matched_amount': False})
-                    rec.cash_close_id.write({'matched_flag': False})
-                    rec.write({'cash_close_id': False})
-                  
-        return super(xx_account_move, self).unlink()
-
-
-
-
-class journal_closed(models.Model):
-    _inherit = 'account.journal'
-
-    use_main_cash_close = fields.Boolean(string='دفتر صندوق المركز الرئيسي لاقفال صناديق الفروع')
-
-
-class pl_closed(models.Model):
+class cash_close_closed(models.Model):
     _name = 'cash.close.closed'
     _inherit = ['mail.thread']
 
@@ -45,11 +15,9 @@ class pl_closed(models.Model):
         default=lambda self: self._get_sequence(),)
 
     def _get_sequence(self):
-        # print(self.env.context.get('report_name', False))
         branch_id = self.env.user.company_id.id
         if branch_id:
             sql_query = "select max(COALESCE(seq,0)) as seq from cash_close_closed where company_id=%s" % (branch_id)
-
 
             self.env.cr.execute(sql_query)
             seq = self.env.cr.fetchone()
@@ -62,10 +30,6 @@ class pl_closed(models.Model):
                 return (x)
 
     order_date = fields.Date(string="تاريخ الاقفال", required=True, default=fields.Date.today,copy=False)
-
-    # branch_id = fields.Many2one('custom.branches', string='الفرع', readonly=True, copy=False,
-    #                             default=lambda self: self.env.user.branch_id.id)
-   
 
     branch_cash_journal_id = fields.Many2one('account.journal',required=True,string="صندوق النقدية للفرع",domain="[('type','=', 'cash'),('company_id','=', company_id)]",
                                     default=lambda self: self._default_cash_close())
@@ -86,17 +50,13 @@ class pl_closed(models.Model):
         required=True, default=lambda self: self.env.uid)
 
     def _default_cash_close(self):
-
         journal_id = self.env['account.journal'].search([('type', '=', 'cash'), ('company_id', '=', self.company_id.id)],
                                                         limit=1)
-
         return journal_id
 
     def _default_main_cash_close(self):
-
         journal_id = self.env['account.journal'].search([('type', '=', 'cash'),('use_main_cash_close','=',True)],
                                                         limit=1)
-
         return journal_id
 
     def matching_cah_btn(self):
@@ -107,20 +67,18 @@ class pl_closed(models.Model):
         if not self.user_has_groups('yousentech_car_maintain.group_allow_matched_cash_priv'):
             raise ValidationError(
                     "تنبيه .. لا توجد لديك صلاحية التعديل.. تواصل مع مدير النظام ")
-        res = super(pl_closed, self).write(vals)
+        res = super(cash_close_closed, self).write(vals)
         return  res
+    
     ##
     def closed_cash(self):
         for rec in self:
-
             if (rec.amount - rec.matched_amount) != 0:
                  raise ValidationError(
                     "تنبيه .. لا يمكن انشاء القيد بسبب عدم المطابقة ")
 
-            # check_close = self.env['cash.close.closed'].search([('branch_id','=', rec.branch_id.id),('order_date','=', rec.order_date)])
             if rec.branch_cash_journal_id and rec.main_cash_journal_id and rec.amount:
                     line_ids = []
-
                     if not rec.account_move_id:
                             credit_vals = (0, 0, {
                                 'name': rec.description,
@@ -129,7 +87,6 @@ class pl_closed(models.Model):
                                 'company_currency_id': rec.company_id.currency_id.id,
                                 'debit': 0.0,
                                 'credit': rec.amount,
-                                # 'balance': payment.local_amount if payment.check_multi_currency else payment.payment_amount,
                                 'date': rec.order_date,
                                 'date_maturity': rec.order_date,
                                 ##
@@ -137,7 +94,6 @@ class pl_closed(models.Model):
                                 # 'account_internal_type': rec.branch_cash_journal_id.default_credit_account_id.internal_type,
                                 'account_id': rec.branch_cash_journal_id.default_account_id.id,
                                 # 'account_internal_type':rec.branch_cash_journal_id.default_credit_account_id.internal_type,
-                                # 'parent_state': 'posted',
                                 'ref': 'اقفال صندوق الفرع : ' + str(rec.company_id.name),
                                 'journal_id': rec.main_cash_journal_id.id,
                                 'company_id': rec.company_id.id,
@@ -145,15 +101,12 @@ class pl_closed(models.Model):
 
                             })
                             line_ids.append(credit_vals)
-
                             debit_vals = (0, 0, {
                                 'name': rec.description,
                                 'amount_currency': 0.0,
-
                                 'company_currency_id':rec.company_id.currency_id.id,
                                 'debit': rec.amount,
                                 'credit': 0.0,
-                                # 'balance': -(line.l_local_amount) if payment.check_multi_currency else -(line.l_payment_amount),
                                 'date': rec.order_date,
                                 'date_maturity': rec.order_date,
                                 ##
@@ -161,7 +114,6 @@ class pl_closed(models.Model):
                                 # 'account_internal_type': rec.main_cash_journal_id.default_debit_account_id.internal_type,
                                 'account_id': rec.main_cash_journal_id.default_account_id.id,
                                 # 'account_internal_type': rec.main_cash_journal_id.default_debit_account_id.internal_type,
-                                # 'parent_state': 'posted',
                                 'ref': 'اقفال صندوق الفرع : ' + str(rec.company_id.name),
                                 'journal_id': rec.main_cash_journal_id.id,
                                 'company_id':rec.company_id.id,
@@ -175,14 +127,11 @@ class pl_closed(models.Model):
                         mov_vals = {
                             'date': rec.order_date,
                             'ref': ref,
-                            # 'state': 'posted',
                             'type': 'entry',
                             'journal_id': rec.main_cash_journal_id.id,
                             'company_id': rec.company_id.id,
                             'currency_id': rec.company_id.currency_id.id,
                             'cash_close_id': rec.id,
-                            # 'amount_total': payment.payment_amount, #if payment.check_multi_currency and (payment.company_id.currency_id.id != line.currency_id.id) else payment.local_amount,
-                            # 'amount_total_signed': payment.local_amount, #if payment.check_multi_currency and (payment.company_id.currency_id.id != line.currency_id.id) else payment.local_amount,
                             'invoice_user_id': self.env.uid,
                             'line_ids': line_ids,
                         }
@@ -199,7 +148,6 @@ class pl_closed(models.Model):
                 raise ValidationError(
                     "تنبيه .. لا يمكن الاستمرار توجد بينات غير مكتملة ")
 
-
     def un_closed_cash(self):
         for rec in self:
             if rec.account_move_id:
@@ -210,17 +158,12 @@ class pl_closed(models.Model):
         for rec in self:
             rec.remaining_matched_amount = rec.amount - rec.matched_amount
             
-
-
-
     def call_entry(self):
         for rec in self:
             action = self.env.ref('account.action_move_journal_line')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
-            # result['domain'] = [('cash_close_id', '=', rec.id), ('type', '=', 'entry')
-            #                     ]
             result['domain'] = [('cash_close_id', '=', rec.id), ('move_type', '=', 'entry')
                                 ]
             return result

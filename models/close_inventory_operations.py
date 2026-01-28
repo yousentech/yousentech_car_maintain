@@ -1,13 +1,8 @@
 # -*- coding: utf-8 -*-
+from odoo import models, fields, _
 
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
-
-
-
-class period_closed(models.Model):
+class wo_period_closed(models.Model):
     _name = 'wo.period.closed'
-
     _rec_name = 'id'
 
     inv_closed_from_date = fields.Date(required=True,string="ايقاف العمليات المخزنية من")
