@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-
+<!-- 
 	<report id="print_wo_sum_report"
 				model="mizan.wo.report.module"
 				string=" تقرير اوامر العمل"
@@ -21,7 +21,42 @@
         file=" تقرير اوامر العمل"
      
         attachment_use="False"
-        />
+        /> -->
+        <record id="formate_pdf_report_portrait" model="report.paperformat">
+            <field name="name">YOUR PAPER FORMAT Portrait</field>
+            <field name="default" eval="False" />
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">45</field>
+            <field name="margin_bottom">32</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">80</field>
+        </record>
+        <record id="formate_pdf_report" model="report.paperformat">
+            <field name="name">YOUR PAPER FORMAT Landscape</field>
+            <field name="default" eval="False" />
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">32</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">80</field>
+        </record>
+
+    <record id="print_wo_sum_report" model="ir.actions.report">
+      <field name="name"> تقرير اوامر العمل</field>
+      <field name="model">mizan.wo.report.module</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">yousentech_car_maintain.work_order_sum_report_view</field>
+      <field name="report_file">yousentech_car_maintain.work_order_sum_report_view</field>
+      <field name="paperformat_id" ref="yousentech_car_maintain.formate_pdf_report" />
+  </record>
 
 		<template id="work_order_sum_report_view">
 		    <t t-if="o and 'company_id' in o">
@@ -1071,7 +1106,7 @@ right:0px;
                              </p>
 				</t>
 				</t>
-	</template>
+	  </template>
 
 
 </odoo>

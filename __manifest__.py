@@ -63,7 +63,7 @@
         
         'reports/car_checkup_report.xml',
         'reports/car_work_order_report.xml',
-        'reports/work_order_sum_report.xml',
+        'reports/mizan_wo_report_module.xml',
         'reports/wo_invoice_payments_report.xml',
         'reports/close_cash_report.xml',
         'reports/wo_technical_report.xml',

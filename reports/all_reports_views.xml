@@ -39,7 +39,7 @@
                     <group>
                         <field name="company_id"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة"
+                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة" widget="many2many_tags"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
                 </group>
@@ -69,7 +69,6 @@
         parent="mizan_report_menu" sequence="1"
         action="action_mizan_wo_report"
     />
-    <!--  invoice payments-->
 
     <record model="ir.ui.view" id="mizan_wo_invoice_payments_report">
         <field name="name">mizan.wo.invoice.payments.report</field>
@@ -113,7 +112,7 @@
                     <group>
                         <field name="company_id"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة"
+                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة"  widget="many2many_tags"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
                 </group>
@@ -143,7 +142,6 @@
         parent="mizan_report_menu" sequence="2"
         action="action_mizan_wo_invoice_payments_rpt"
     />
-    <!--  mizan.wo.technical.report-->
 
     <record model="ir.ui.view" id="mizan_wo_technical_report">
         <field name="name">mizan.wo.technical.report</field>
