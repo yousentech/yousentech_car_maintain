@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record model="ir.ui.view" id="mizan_wo_report_wizred">
         <field name="name">Mizan Work Order Report</field>
@@ -53,27 +54,21 @@
             </form>
         </field>
     </record>
-    <!-- <act_window id="action_mizan_wo_report"
-        name="تقرير اوامر العمل"
-        res_model="mizan.wo.report.module"
-        view_mode="form"
-        target="new" /> -->
 
     <record id="action_mizan_wo_report" model="ir.actions.act_window">
         <field name="name">تقرير اوامر العمل</field>
         <field name="res_model">mizan.wo.report.module</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">form</field>
         <field name="view_id" ref="mizan_wo_report_wizred" />
+        <field name="domain"></field>
         <field name="target">new</field>
-
+       <field name="context">{}</field>  
     </record>
 
-    <menuitem action="action_mizan_wo_report"
-        id="menu_mizan_wo_report"
-        name="اوامر العمل"
-        sequence="1"
-        parent="mizan_report_menu" />
-
+    <menuitem id="menu_mizan_wo_report" name="اوامر العمل"
+        parent="mizan_report_menu" sequence="90"
+        action="action_mizan_wo_report"
+    />
     <!--  invoice payments-->
 
     <record model="ir.ui.view" id="mizan_wo_invoice_payments_report">
@@ -133,13 +128,9 @@
             </form>
         </field>
     </record>
-    <!-- <act_window id="action_mizan_wo_invoice_payments_rpt"
-        name="تقرير اوامر العمل المكتملة"
-        res_model="mizan.wo.invoice.payments.report"
-        view_mode="form"
-        target="new" /> -->
 
-        <record id="action_mizan_wo_invoice_payments_rpt" model="ir.actions.act_window">
+
+    <record id="action_mizan_wo_invoice_payments_rpt" model="ir.actions.act_window">
         <field name="name">تقرير اوامر العمل المكتملة</field>
         <field name="res_model">mizan.wo.invoice.payments.report</field>
         <field name="view_mode">tree,form</field>
@@ -148,12 +139,10 @@
 
     </record>
 
-    <menuitem action="action_mizan_wo_invoice_payments_rpt"
-        id="menu_mizan_wo_invoice_payments_rpt"
-        name="اوامر العمل المكتملة"
-        sequence="2"
-        parent="mizan_report_menu" />
-
+    <menuitem id="menu_mizan_wo_invoice_payments_rpt"  name="اوامر العمل المكتملة"
+        parent="mizan_report_menu" sequence="100"
+        action="action_mizan_wo_invoice_payments_rpt"
+    />
     <!--  mizan.wo.technical.report-->
 
     <record model="ir.ui.view" id="mizan_wo_technical_report">
@@ -215,24 +204,21 @@
         </field>
     </record>
 
-    <!-- <act_window id="action_mizan_wo_tehnical_rpt"
-        name="تقرير الفنيين"
-        res_model="mizan.wo.technical.report"
-        view_mode="form"
-        target="new" /> -->
     <record id="action_mizan_wo_tehnical_rpt" model="ir.actions.act_window">
-        <field name="name">تقرير الفنيين  </field>
+        <field name="name">تقرير الفنيين </field>
         <field name="res_model">mizan.wo.technical.report</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="mizan_wo_technical_report" />
         <field name="target">new</field>
 
     </record>
-    <menuitem action="action_mizan_wo_tehnical_rpt"
+    <menuitem 
         id="menu_mizan_wo_tehnical_rpt"
+        parent="mizan_report_menu"
         name="الفنيين"
-        sequence="3"
-        parent="mizan_report_menu" />
+        sequence="110"
+        action="action_mizan_wo_tehnical_rpt"
+        />
 
 
 </odoo>

@@ -76,7 +76,6 @@
             <field name="target">current</field>
         </record>
 
-        <!-- <menuitem id="mizan_report_menu" name="الخدمات" /> -->
 
         <menuitem id="menu_wo_services_lines_view" name="تقرير حركة الخدمات لامر العمل للفنيين"
             parent="mizan_report_menu" sequence="60"
