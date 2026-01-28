@@ -8,8 +8,7 @@
             <field name="inherit_id" ref="yousentech_invoicing.res_config_settings_invoicing_form" />
             <field name="arch" type="xml">
                 <xpath expr="/form" position="inside">
-                    <app data-string="Work Order" string="Work Order" name="work_order_car">
-                        <block title="Work Order" name="work_order_container">
+                    <app data-string="نظام الصيانة" string="نظام الصيانة" name="work_order_car" >
                             <div id="business_documents" position="after">
                                 <h2>اعدادات نظام الفحص</h2>
                                 <div class="row mt16 o_settings_container" name="work_order">
@@ -96,13 +95,8 @@
                                             <div class="text-muted">نوع السيارة</div>
                                         </div>
                                     </div>
-
-
                                 </div>
-
-
                             </div>
-                        </block>
                     </app>
                 </xpath>
             </field>
