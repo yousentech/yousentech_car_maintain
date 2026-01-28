@@ -212,6 +212,7 @@
         <field name="target">new</field>
 
     </record>
+    
     <menuitem 
         id="menu_mizan_wo_tehnical_rpt"
         parent="mizan_report_menu"
