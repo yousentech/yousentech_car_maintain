@@ -411,8 +411,8 @@
 				model="mizan.car.checkup.procedure.master"
 				string=" طباعة طلب الفحص"
 				report_type="qweb-pdf"
-				name="qimamhd_mizan_car_13.checkup_order_report_view"
-				file="qimamhd_mizan_car_13.checkup_order_report_view"
+				name="yousentech_car_maintain.checkup_order_report_view"
+				file="yousentech_car_maintain.checkup_order_report_view"
 				menu="True"
 
 				/>

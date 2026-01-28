@@ -6,8 +6,8 @@
 				model="mizan.wo.report.module"
 				string=" تقرير اوامر العمل"
 				report_type="qweb-pdf"
-				name="qimamhd_mizan_car_13.work_order_sum_report_view"
-				file="qimamhd_mizan_car_13.work_order_sum_report_view"
+				name="yousentech_car_maintain.work_order_sum_report_view"
+				file="yousentech_car_maintain.work_order_sum_report_view"
 				 menu="True"
 
 				/>
@@ -17,7 +17,7 @@
         model="mizan.wo.invoice.payments.report"
         string="Print to XLSX"
         report_type="xlsx"
-        name="qimamhd_mizan_car_13.print_wo_sum_xlsx_view"
+        name="yousentech_car_maintain.print_wo_sum_xlsx_view"
         file=" تقرير اوامر العمل"
      
         attachment_use="False"

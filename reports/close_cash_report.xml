@@ -6,8 +6,8 @@
 				model="cash.close.closed"
 				string=" تقرير اقفال الصندوق"
 				report_type="qweb-pdf"
-				name="qimamhd_mizan_car_13.cash_close_report_view"
-				file="qimamhd_mizan_car_13.cash_close_report_view"
+				name="yousentech_car_maintain.cash_close_report_view"
+				file="yousentech_car_maintain.cash_close_report_view"
 				menu="True"
 
 				/>

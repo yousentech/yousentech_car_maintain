@@ -380,8 +380,8 @@
 				model="mizan.car.work.procedure.master"
 				string=" طباعة امر العمل"
 				report_type="qweb-pdf"
-				name="qimamhd_mizan_car_13.work_order_report_view"
-				file="qimamhd_mizan_car_13.work_order_report_view"
+				name="yousentech_car_maintain.work_order_report_view"
+				file="yousentech_car_maintain.work_order_report_view"
 				menu="True"
 
 				/>

@@ -20,8 +20,8 @@
 				model="mizan.wo.technical.report"
 				string=" تقرير الفنيين"
 				report_type="qweb-pdf"
-				name="qimamhd_mizan_car_13.print_wo_technical_report_view"
-				file="qimamhd_mizan_car_13.print_wo_technical_report_view"
+				name="yousentech_car_maintain.print_wo_technical_report_view"
+				file="yousentech_car_maintain.print_wo_technical_report_view"
            
 				 menu="True"
 
@@ -31,7 +31,7 @@
 				model="mizan.wo.technical.report"
         string="Print to XLSX"
         report_type="xlsx"
-        name="qimamhd_mizan_car_13.print_wo_technical_xlsx_view"
+        name="yousentech_car_maintain.print_wo_technical_xlsx_view"
         file=" تقرير الفنيين"
         attachment_use="False"
         />

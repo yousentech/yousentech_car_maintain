@@ -6,8 +6,8 @@
 				model="mizan.wo.invoice.payments.report"
 				string=" تقرير اوامر العمل المكتملة"
 				report_type="qweb-pdf"
-				name="qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view"
-				file="qimamhd_mizan_car_13.print_wo_inv_pay_rpt_view"
+				name="yousentech_car_maintain.print_wo_inv_pay_rpt_view"
+				file="yousentech_car_maintain.print_wo_inv_pay_rpt_view"
 				 menu="True"
 
 				/>
@@ -16,7 +16,7 @@
         model="mizan.wo.invoice.payments.report"
         string="Print to XLSX"
         report_type="xlsx"
-        name="qimamhd_mizan_car_13.print_wo_inv_pay_xlsx_view"
+        name="yousentech_car_maintain.print_wo_inv_pay_xlsx_view"
         file="تقرير اوامر العمل المكتملة"
         attachment_use="False"
         />
