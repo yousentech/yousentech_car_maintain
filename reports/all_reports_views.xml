@@ -66,7 +66,7 @@
     </record>
 
     <menuitem id="menu_mizan_wo_report" name="اوامر العمل"
-        parent="mizan_report_menu" sequence="90"
+        parent="mizan_report_menu" sequence="1"
         action="action_mizan_wo_report"
     />
     <!--  invoice payments-->
@@ -140,7 +140,7 @@
     </record>
 
     <menuitem id="menu_mizan_wo_invoice_payments_rpt"  name="اوامر العمل المكتملة"
-        parent="mizan_report_menu" sequence="100"
+        parent="mizan_report_menu" sequence="2"
         action="action_mizan_wo_invoice_payments_rpt"
     />
     <!--  mizan.wo.technical.report-->
@@ -212,12 +212,12 @@
         <field name="target">new</field>
 
     </record>
-    
+
     <menuitem 
         id="menu_mizan_wo_tehnical_rpt"
         parent="mizan_report_menu"
         name="الفنيين"
-        sequence="110"
+        sequence="3"
         action="action_mizan_wo_tehnical_rpt"
         />
 
