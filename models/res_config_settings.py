@@ -1,8 +1,5 @@
 from odoo import fields, models, _,api
-from odoo.exceptions import ValidationError
-
-
-class ResConfigSettings(models.TransientModel):
+class res_config_settings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     discount_posted = fields.Boolean('ترحيل الخصم في اوامر التركيب')
@@ -14,14 +11,12 @@ class ResConfigSettings(models.TransientModel):
     service_price_include_tax = fields.Boolean('سعر الخدمة شاملة الضريبة')
 
     collecting_products = fields.Boolean('تجميع الاصناف في بند واحد')
-    # skip_available_qty = fields.Boolean('تجاوز عدم توفر الكمية للمنتج في امر العمل')
-    # create_inv_flag = fields.Boolean('انشاء فاتورة مبيعات في نظام الفحص')
     car_type = fields.Boolean('ادخال نوع السيارة اجباري')
 
 
     @api.model
     def get_values(self):
-        res = super(ResConfigSettings, self).get_values()
+        res = super(res_config_settings, self).get_values()
         params = self.env['ir.config_parameter'].sudo()
         l_discount_posted = params.get_param('discount_posted',
                                              default=False)
@@ -44,9 +39,7 @@ class ResConfigSettings(models.TransientModel):
 
         l_service_price_include_tax = params.get_param('service_price_include_tax',
                                                        default=False)
-        # l_skip_available_qty = params.get_param('skip_available_qty',
-        #                                                default=False)
-
+  
         res.update(discount_posted=l_discount_posted)
         res.update(car_no=l_car_no)
         res.update(vin_no=l_vin_no)
@@ -56,12 +49,10 @@ class ResConfigSettings(models.TransientModel):
         res.update(collecting_products=l_collecting_products)
         res.update(car_type=l_car_type)
         res.update(service_price_include_tax=l_service_price_include_tax)
-        # res.update(skip_available_qty=l_skip_available_qty)
-
         return res
 
     def set_values(self):
-          super(ResConfigSettings, self).set_values()
+          super(res_config_settings, self).set_values()
           self.env['ir.config_parameter'].sudo().set_param(
                 "discount_posted",
                 self.discount_posted)
@@ -90,13 +81,9 @@ class ResConfigSettings(models.TransientModel):
             "car_type",
             self.car_type)
 
-
-
           self.env['ir.config_parameter'].sudo().set_param(
             "service_price_include_tax",
             self.service_price_include_tax)
 
-          # self.env['ir.config_parameter'].sudo().set_param(
-          #           "skip_available_qty",
-          #           self.skip_available_qty)
+      
 

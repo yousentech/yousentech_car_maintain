@@ -1,338 +1,331 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-         <record id="work_procedure_form_view" model="ir.ui.view">
+        <record id="work_procedure_form_view" model="ir.ui.view">
             <field name="name">mizan.car.work.procedure.master.form</field>
             <field name="model">mizan.car.work.procedure.master</field>
             <field name="arch" type="xml">
                 <form create="0">
-                     <header>
-                        <button name="call_confirm_message_dailog" string="انشاء امر بيع" type="object" class="oe_highlight"
-                                    attrs="{'invisible':['|',('sale_order_id','!=', False),('state','in',['cancel_order'])]}"
-                                    groups="qimamhd_mizan_car_13.group_sales_man_priv"
+                    <header>
+                        <button name="call_confirm_message_dailog" string="انشاء امر بيع"
+                            type="object" class="oe_highlight"
+                            invisible="sale_order_id != False or state in ['cancel_order']"
+                            groups="yousentech_car_maintain.group_sales_man_priv"
                         />
-                          <button name="register_payment" string="تسجيل دفعة" type="object" class="oe_highlight"
-                                    attrs="{'invisible':[('state','in',['cancel_order'])]}"
-                                    groups="qimamhd_mizan_car_13.group_sales_man_priv"
+                        <button name="register_payment" string="تسجيل دفعة" type="object"
+                            class="oe_highlight"
+                            invisible="state in ['cancel_order']"
+                            groups="yousentech_car_maintain.group_sales_man_priv"
                         />
-                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order"/>
+                        <field name="state" widget="statusbar"
+                            statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order" />
 
                     </header>
 
                     <sheet>
-                         <div class="oe_button_box" name="button_box">
+                        <div class="oe_button_box" name="button_box">
 
-                               <button type="object"
-                                    name="call_sale_order"
-                                    class="oe_stat_button"
-                                     string="امر البيع"
-                                    attrs="{'invisible':[('sale_order_id','=', False)]}"
+                            <button type="object"
+                                name="call_sale_order"
+                                class="oe_stat_button"
+                                string="امر البيع"
+                                invisible="sale_order_id == False"
+                                icon="fa-pencil-square-o"
+                            />
+                            <button type="object"
+                                name="action_register_payment"
+                                class="oe_stat_button"
+                                string="الدفعات المقدمة"
+                                icon="fa-history">
 
-                                       icon="fa-pencil-square-o"
-                                />
-                              <button type="object"
-                                    name="action_register_payment"
-                                    class="oe_stat_button"
-                                    string="الدفعات المقدمة"
-                                     icon="fa-history" >
-
-<!--                                <field name="payment_count"  widget="statinfo"/>-->
                             </button>
 
 
-
-                         </div>
+                        </div>
                         <h1>
-                              <strong>امر العمل</strong>
+                            <strong>امر العمل</strong>
 
-                          </h1>
-                            <group>
-                                 <group readonly="1" >
-                                      <field name="sale_order_id" invisible="1" />
-                                        <field name="is_user_technical"  invisible="1"/>
-                                        <field name="is_user_supervisor"  invisible="1"/>
-                                     <field name="add_user_spare_parts_flag"  invisible="1"/>
+                        </h1>
+                        <group>
+                            <group readonly="1">
+                                <field name="sale_order_id" invisible="1" />
+                                <field name="is_user_technical" invisible="1" />
+                                <field name="is_user_supervisor" invisible="1" />
+                                <field name="add_user_spare_parts_flag" invisible="1" />
 
-                                        <field name="is_user_sale_man"  invisible="1"/>
-                                      <field name="partner_id"  readonly="1"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-                                      <field name="create_date"   readonly="1" />
-                                      <field name="car_panel_no"  readonly="1"  />
-                                      <field name="partner_mobile"  readonly="1"   />
-                                      <field name="car_size_id"  readonly="1"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                          <field name="sale_man_id"  readonly="1"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-                                      <field name="no_spare_parts_flag" attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"  />
+                                <field name="is_user_sale_man" invisible="1" />
+                                <field name="partner_id" readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="create_date" readonly="1" />
+                                <field name="car_panel_no" readonly="1" />
+                                <field name="partner_mobile" readonly="1" />
+                                <field name="car_size_id" readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="sale_man_id" readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="no_spare_parts_flag"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
 
-                                      <field name="is_guarantee"  attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"  />
+                                <field name="is_guarantee"
+                                    readonly="sale_order_id != False or is_user_sale_man ==  False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
 
-                                     <field name="technical_name" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"  />
-                                      <field name="discount_type"  attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"  />
-                                      <field name="discount_line"   digits="[12,12]" attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"  />
+                                <field name="technical_name"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
+                                <field name="discount_type"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
+                                <field name="discount_line" digits="[12,12]"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
 
-                                 </group>
-                                <group readonly="1" >
-                                      <field name="id" string="رقم امر العمل"  readonly="1" />
-                                      <field name="end_date"  readonly="1" />
-                                      <field name="car_model"  readonly="1" />
-                                      <field name="car_type_id"  readonly="1"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                     <field name="vin_no" readonly="1"  />
+                            </group>
+                            <group readonly="1">
+                                <field name="id" string="رقم امر العمل" readonly="1" />
+                                <field name="end_date" readonly="1" />
+                                <field name="car_model" readonly="1" />
+                                <field name="car_type_id" readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="vin_no" readonly="1" />
 
-                                      <field name="pay_type" attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"  />
+                                <field name="pay_type"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
 
-<!--                                      <field name="service_type_price" />-->
-                                      <field name="create_invoice_manually_id" invisible="1" />
-                                     <field name="branch_id" readonly="1"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="create_invoice_manually_id" invisible="1" />
+                                <field name="company_id" readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
-                                      <field name="checkup_id" readonly="1"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                      <field name="entry_card_id"  readonly="1"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                       <field name="pricelist_id"   groups="product.group_product_pricelist" readonly="1"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="checkup_id" readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="entry_card_id" readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                <field name="pricelist_id" groups="product.group_product_pricelist"
+                                    readonly="1"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
-                                    <field name="advance_amount" readonly="1"  />
-                                     <field name="supervisor_amount"  attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"  />
-                                       <field name="additional_services"  attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"  />
+                                <field name="advance_amount" readonly="1" />
+                                <field name="supervisor_amount"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
+                                <field name="additional_services"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
+                            </group>
+                        </group>
 
+                        <notebook>
+                            <page string="ادخال الخدمات">
+                                <field name="result_lines"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']">
+                                    <tree editable="bottom" limit="100">
+                                        <field name="sequence" widget="handle" />
+                                        <field name="product_has_guarantee_flag"
+                                            readonly="parent.is_guarantee == False" />
+                                        <field name="product_id" options="{'no_quick_create':True}"
+                                            context="{'default_type':'service','default_categ_id':261,'default_property_account_income_id':False,'default_property_account_expense_id':False,'default_taxes_id': [(6, 0, [2])]}" />
+                                        <field name="company_id" invisible="1" />
+                                        <field name="name" optional="hide" />
+                                        <field name="unit_price" />
+                                        <field name="discount_type" optional="hide" />
+                                        <field name="discount_line" digits="[12,12]" optional="hide" />
+                                        <field name="discount_amount" invisible="1" />
+                                        <field name="product_tax" optional="hide"
+                                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                        <field name="tax_id" invisible="1" />
+                                        <field name="total" optional="hide" />
+                                        <field name="total_before_tax" optional="hide" />
+                                        <field name="total_tax" optional="hide" />
+                                        <field name="amount_tax" optional="hide" readonly="1"
+                                            force_save="1" />
+                                        <field name="technical_name" optional="hide"
+                                            widget="many2many_tags"
+                                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                                        <field name="notes" optional="hide" />
+                                        <field name="technical_is_started" optional="hide" />
+                                        <field name="technical_is_done" optional="hide" />
+                                        <field name="state" optional="hide" />
+                                        <field name="start_Service_date" optional="hide" />
+                                        <field name="complete_date" optional="hide" />
+                                        <field name="diff_times" optional="hide" readonly="1" />
+                                        <field name="header_id" invisible="1" />
+                                    </tree>
+
+                                </field>
+                                <group string="اجمالي الخدمات">
+                                    <group>
+                                        <field name="services_amt_before_tax" readonly="1"
+                                            force_save="1" />
+
+                                    </group>
+                                    <group>
+                                        <field name="services_discount" readonly="1" force_save="1" />
+
+                                    </group>
+                                    <group>
+                                        <field name="services_amt_tax" readonly="1" force_save="1" />
+
+                                    </group>
+                                    <group>
+                                        <field name="services_amt_after_tax" readonly="1"
+                                            force_save="1" />
+                                    </group>
+                                </group>
+
+                            </page>
+                            <page string="قطع الغيار">
+                                <group>
+                                    <button name="get_spare_parts_inv"
+                                        string="تحديث الاصناف من امر الصرف" type="object"
+                                        class="oe_highlight"
+                                        invisible="add_user_spare_parts_flag == True"
+                                        readonly="sale_order_id !=  False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']"
+                                        groups="yousentech_car_maintain.group_sales_man_priv"
+                                    />
+                                </group>
+
+                                <field name="lines_spare_parts"
+                                    readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']">
+
+                                    <tree editable="bottom" limit="100">
+                                        <field name="sequence" widget="handle" />
+
+                                        <control
+                                            invisible="parent.add_user_spare_parts_flag == False">
+                                           
+                                            <create name="add_line_control" string="Add line"
+                                                context="{'default_display_type': 'line_note'}" />
+                                        </control>
+
+                                        <field name="product_id"
+                                            readonly="parent.add_user_spare_parts_flag == False"
+                                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                                        <field name="company_id" invisible="1" />
+
+                                        <field name="name" optional="hide"
+                                            readonly="parent.add_user_spare_parts_flag == False" />
+                                        <field name="qty"
+                                            readonly="parent.add_user_spare_parts_flag == False" />
+                                        <field name="qty_done" />
+                                        <field name="aval_qty" optional="hide" />
+                                        <field name="unit_cost" optional="hide" />
+
+                                        <field name="unit_price"
+                                            readonly="parent.add_user_spare_parts_flag == False" />
+
+                                        <field name="tax_id" invisible="1" />
+
+                                        <field name="discount_type" optional="hide"
+                                            readonly="parent.add_user_spare_parts_flag == False" />
+                                        <field name="discount_line" optional="hide"
+                                            readonly="parent.add_user_spare_parts_flag == False" />
+                                        <field name="discount_amount" invisible="1" />
+                                        <field name="product_tax" optional="hide"
+                                            readonly="parent.add_user_spare_parts_flag == False"
+                                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                                        <field name="total" optional="hide" />
+                                        <field name="total_before_tax" optional="hide" />
+
+                                        <field name="total_tax" optional="hide" />
+                                        <field name="amount_tax" readonly="1" force_save="1"
+                                            optional="hide" />
+
+
+                                        <field name="technical_name" optional="hide"
+                                            readonly="parent.add_user_spare_parts_flag == False"
+                                            widget="many2many_tags"
+                                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                                        <field name="notes" optional="hide"
+                                            readonly="parent.add_user_spare_parts_flag == False" />
+                                        <field name="stock_picking_id" optional="hide"
+                                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+
+                                        <field name="header_id" invisible="1" />
+
+                                    </tree>
+
+                                </field>
+                                <group string="اجمالي قطع الغيار">
+                                    <group>
+                                        <field name="spare_parts_amt_before_tax" readonly="1"
+                                            force_save="1" />
+
+                                    </group>
+                                    <group>
+                                        <field name="spare_parts_discount" readonly="1"
+                                            force_save="1" />
+
+                                    </group>
+                                    <group>
+                                        <field name="spare_parts_amt_tax" readonly="1"
+                                            force_save="1" />
+
+                                    </group>
+                                    <group>
+                                        <field name="spare_parts_amt_after_tax" readonly="1"
+                                            force_save="1" />
+
+                                    </group>
 
                                 </group>
 
+                            </page>
+
+                        </notebook>
+                        <h2>
+                            <strong>
+                                =====================================================================================</strong>
+                            <group string="الاجمالي الكلي">
+                                <group>
+                                    <field name="total_all_before_tax" />
+
+                                </group>
+                                <group>
+                                    <field name="total_discount" />
+
+                                </group>
+                                <group>
+                                    <field name="total_tax" />
+
+                                </group>
+                                <group>
+                                    <field name="total_all_with_tax" />
+
+                                </group>
 
                             </group>
 
-                            <notebook>
-                                <page string="ادخال الخدمات" >
-
-
-                                    <field name="result_lines" attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}">
-
-                                        <tree editable="bottom"   limit="100">
-                                            <field name="sequence"  widget="handle" />
-                                            <field name="product_has_guarantee_flag" attrs="{'readonly' : [('parent.is_guarantee','=', False)]}"/>
-                                            <field name="product_id"    options="{'no_quick_create':True}" context="{'default_type':'service','default_categ_id':261,'default_property_account_income_id':False,'default_property_account_expense_id':False,'default_taxes_id': [(6, 0, [2])]}"/>
-                                            <field name="branch_id" invisible="1"  />
-                                            <field name="name"  optional="hide" />
-                                            <field name="unit_price" />
-                                            <field name="discount_type" optional="hide" />
-                                            <field name="discount_line" digits="[12,12]" optional="hide"  />
-                                            <field name="discount_amount" invisible="1"/>
-                                            <field name="product_tax" optional="hide"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                                            <field name="tax_id" invisible="1"/>
-                                             <field name="total" optional="hide"  />
-                                             <field name="total_before_tax" optional="hide" />
-                                             <field name="total_tax" optional="hide" />
-                                             <field name="amount_tax" optional="hide" readonly="1" force_save="1"/>
-
-                                            
-                                             <field name="technical_name" optional="hide"  widget="many2many_tags"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-
-                                            <field name="notes" optional="hide"  />
-                                            <field name="technical_is_started" optional="hide"  />
-                                            <field name="technical_is_done" optional="hide"  />
-                                         
-                                            <field name="state" optional="hide"  />
-                                             <field name="start_Service_date" optional="hide" />
-                                            <field name="complete_date" optional="hide" />
-
-                                            <field name="diff_times" optional="hide" readonly="1"/>
-
-                                            <field name="header_id" invisible="1"/>
-
-                                        </tree>
-
-                                    </field>
-                                    <group string="اجمالي الخدمات">
-                                        <group>
-                                            <field name="services_amt_before_tax" readonly="1" force_save="1"/>
-
-                                        </group>
-                                        <group>
-                                            <field name="services_discount" readonly="1" force_save="1"/>
-
-                                        </group>
-                                        <group>
-                                                <field name="services_amt_tax" readonly="1" force_save="1"/>
-
-                                        </group>
-                                        <group>
-                                            <field name="services_amt_after_tax" readonly="1" force_save="1"/>
-
-                                        </group>
-
-                                    </group>
-
-                                 </page>
-                                <page string="قطع الغيار" >
-                                    <group>
-                                         <button name="get_spare_parts_inv" string="تحديث الاصناف من امر الصرف" type="object" class="oe_highlight"
-                                                attrs="{'invisible' : [('add_user_spare_parts_flag','=', True)], 'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}"
-
-                                                groups="qimamhd_mizan_car_13.group_sales_man_priv"
-                                                      />
-                                    </group>
-
-                                    <field name="lines_spare_parts" attrs="{'readonly':['|','|','|',('sale_order_id','!=', False), ('is_user_sale_man', '=', False),('state','in',['execute_request','execute_completed','cancel_order','execute_started'])]}">
-
-                                        <tree editable="bottom"  limit="100">
-                                            <field name="sequence"  widget="handle" />
-
-                                         <control  attrs="{'invisible' : [('parent.add_user_spare_parts_flag','=', False)]}">
-<!--                                            <create name="add_line_control" string="Add a line"/>-->
-                                             <create name="add_line_control" string="Add line"  context="{'default_display_type': 'line_note'}"/>
-                                         </control>
-
-                                            <field name="product_id" attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                                            <field name="branch_id" invisible="1"  />
-
-                                            <field name="name" optional="hide"  attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}" />
-                                            <field name="qty"  attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}" />
-                                            <field name="qty_done"  />
-                                              <field name="aval_qty" optional="hide" />
-                                              <field name="unit_cost"  optional="hide"  />
-
-                                            <field name="unit_price" attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}"  />
-
-                                            <field name="tax_id" invisible="1"/>
-
-                                             <field name="discount_type" optional="hide"  attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}"/>
-                                             <field name="discount_line"  optional="hide"  attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}"/>
-                                             <field name="discount_amount" invisible="1" />
-                                            <field name="product_tax" optional="hide"  attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                                             <field name="total" optional="hide" />
-                                               <field name="total_before_tax" optional="hide" />
-
-                                             <field name="total_tax" optional="hide"  />
-                                             <field name="amount_tax" readonly="1" force_save="1" optional="hide" />
-
-
-                                            <field name="technical_name" optional="hide"  attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}" widget="many2many_tags"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-
-                                            <field name="notes" optional="hide"  attrs="{'readonly' : [('parent.add_user_spare_parts_flag','=', False)]}" />
-                                             <field name="stock_picking_id" optional="hide" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-
-                                            <field name="header_id" invisible="1"/>
-
-                                        </tree>
-
-                                    </field>
-                                    <group string="اجمالي قطع الغيار">
-                                        <group>
-                                            <field name="spare_parts_amt_before_tax" readonly="1" force_save="1"/>
-
-                                        </group>
-                                        <group>
-                                            <field name="spare_parts_discount" readonly="1" force_save="1"/>
-
-                                        </group>
-                                        <group>
-                                                <field name="spare_parts_amt_tax" readonly="1" force_save="1"/>
-
-                                        </group>
-                                        <group>
-                                            <field name="spare_parts_amt_after_tax" readonly="1" force_save="1"/>
-
-                                        </group>
-
-                                    </group>
-
-                                 </page>
-
-
-
-                            </notebook>
-                            <h2>
-                                <strong>=====================================================================================</strong>
-
-
-                             <group string="الاجمالي الكلي">
-                                        <group>
-                                            <field name="total_all_before_tax" />
-
-                                        </group>
-                                        <group>
-                                            <field name="total_discount" />
-
-                                        </group>
-                                        <group>
-                                                <field name="total_tax" />
-
-                                        </group>
-                                        <group>
-                                            <field name="total_all_with_tax" />
-
-                                        </group>
-
-                                    </group>
-
-                                </h2>
-<!--                            <group>-->
-<!--                                    <group>-->
-<!--                                         <field name="service_type_price"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  attrs="{'readonly':['|', ('is_user_sale_man', '=', False),('state','in',['execute_started','execute_completed','complete_work','sale_order'])]}"/>-->
-
-<!--                                     </group>-->
-<!--                                    <group>-->
-<!--                                          <field name="discount_type"  attrs="{'readonly':['|', ('is_user_sale_man', '=', False), ('sale_order_id','!=', False)]}"/>-->
-<!--                                        <field name="service_discount"  attrs="{'readonly':['|', ('is_user_sale_man', '=', False), ('sale_order_id','!=', False)]}"/>-->
-
-<!--                                    </group>-->
-<!--                          </group>-->
-<!--                          <group string="الاجمالي">-->
-<!--                             <group>-->
-<!--                                    <field name="services_price"/>-->
-<!--                                    <field name="services_price_with_tax"/>-->
-
-<!--                             </group>-->
-<!--                             <group>-->
-
-<!--                              <field name="services_price_after_discount"/>-->
-<!--                             </group>-->
-<!--                          </group>-->
-<!--                                 <button name="add_new_checkup" string="اضافة نتائج فحص جديدة" type="object"-->
-
-<!--                                        class="oe_highlight"-->
-<!--                                        />-->
-
-<!--                              <button string="خروج" special="cancel"/>-->
-
-                       </sheet>
-                   </form>
+                        </h2>
+                    </sheet>
+                </form>
             </field>
         </record>
-      <!--make products Tree View-->
+
         <record id="car_work_procedure_tree_view" model="ir.ui.view">
             <field name="name">mizan.car.work.procedure.master.tree</field>
             <field name="model">mizan.car.work.procedure.master</field>
             <field name="arch" type="xml">
                 <tree>
-
-
-                                      <field name="partner_id"  />
-                                      <field name="create_date"  />
-                                      <field name="car_panel_no"  />
-                                      <field name="partner_mobile"  />
-                                      <field name="car_size_id"  />
-                                      <field name="entry_card_id"  />
-
-
-                                      <field name="state"  readonly="1" />
-                                      <field name="end_date" />
-                                      <field name="car_model" />
-                                      <field name="car_type_id" />
-<!--                                      <field name="service_type_id" />-->
-
-<!--                                      <field name="service_type_price" />-->
-                                      <field name="create_invoice_manually_id" invisible="1" />
-
-
-
+                    <field name="partner_id" />
+                    <field name="create_date" />
+                    <field name="car_panel_no" />
+                    <field name="partner_mobile" />
+                    <field name="car_size_id" />
+                    <field name="entry_card_id" />
+                    <field name="state" readonly="1" />
+                    <field name="end_date" />
+                    <field name="car_model" />
+                    <field name="car_type_id" />
+                    <field name="create_invoice_manually_id" invisible="1" />
                 </tree>
             </field>
         </record>
 
-       <record id="action_work_procedure_view" model="ir.actions.act_window">
+        <record id="action_work_procedure_view" model="ir.actions.act_window">
             <field name="name">امر العمل</field>
             <field name="res_model">mizan.car.work.procedure.master</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="car_work_procedure_tree_view"/>
+            <field name="view_id" ref="car_work_procedure_tree_view" />
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create new
@@ -340,5 +333,4 @@
             </field>
         </record>
     </data>
-
 </odoo>

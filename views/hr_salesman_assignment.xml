@@ -8,20 +8,20 @@
         <field name="model">mizan.salesman.assignments</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form >
+            <form>
                 <sheet>
-                    <group >
-                         <group>
-                             <field name="salesman_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                <field name="branch_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-
-                            <field name="assign_date"  />
-
-
-                         </group>
+                    <group>
                         <group>
-                            <field name="state"  />
-                            <field name="close_date"  />
+                            <field name="salesman_id"
+                                options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                            <field name="company_id"
+                                options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                            <field name="assign_date" />
+                        </group>
+                        <group>
+                            <field name="state" />
+                            <field name="close_date" />
                         </group>
 
                     </group>
@@ -32,42 +32,50 @@
     <record id="view_salesman_assign_tree" model="ir.ui.view">
         <field name="name">mizan.salesman.assignments.tree</field>
         <field name="model">mizan.salesman.assignments</field>
-         <field name="arch" type="xml">
-            <tree >
-                         <field name="salesman_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="assign_date"  />
-                        <field name="branch_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="state"  />
-                        <field name="close_date"  />
+        <field name="arch" type="xml">
+            <tree>
+                <field name="salesman_id"
+                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                <field name="assign_date" />
+                <field name="company_id"
+                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                <field name="state" />
+                <field name="close_date" />
             </tree>
         </field>
     </record>
     <record id="view_salesman_assign_search" model="ir.ui.view">
         <field name="name">mizan.salesman.assignments.search</field>
         <field name="model">mizan.salesman.assignments</field>
-         <field eval="10" name="priority"/>
+        <field eval="10" name="priority" />
 
-         <field name="arch" type="xml">
-            <search >
-                         <field name="salesman_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                        <field name="assign_date"  />
-                        <field name="branch_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="state"  />
-                        <field name="close_date"  />
-                       <separator/>
-                       <group expand='0' string='Filters'>
-                            <filter string="حسب الفني" name="salesman_filter" domain="[]" context="{'group_by': 'salesman_id'}"/>
+        <field name="arch" type="xml">
+            <search>
+                <field name="salesman_id"
+                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                <field name="assign_date" />
+                <field name="company_id"
+                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                <field name="state" />
+                <field name="close_date" />
+                <separator />
+                <group expand='0' string='Filters'>
+                    <filter string="حسب الفني" name="salesman_filter" domain="[]"
+                        context="{'group_by': 'salesman_id'}" />
 
-                           <filter string="حسب الفرع" name="branch_filter" domain="[]" context="{'group_by': 'branch_id'}"/>
+                    <filter string="حسب الفرع" name="branch_filter" domain="[]"
+                        context="{'group_by': 'company_id'}" />
 
-                           <filter string="حسب الحالة" name="state_filter" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="حسب الحالة" name="state_filter" domain="[]"
+                        context="{'group_by': 'state'}" />
 
-                      </group>
-                      <separator/>
-                      <group expand='0' string='Filters'>
-                           <filter string="الاسناد النشط" name="currecnt_state_filter" domain="[('state','=', 'current')]"/>
+                </group>
+                <separator />
+                <group expand='0' string='Filters'>
+                    <filter string="الاسناد النشط" name="currecnt_state_filter"
+                        domain="[('state','=', 'current')]" />
 
-                    </group>
+                </group>
             </search>
         </field>
     </record>
@@ -81,7 +89,8 @@
         <field name="view_id" ref="view_salesman_assign_tree" />
     </record>
 
-       <menuitem id="salesman_assign_menu" name="اسناد المندوبين للفروع" parent="branch_assignment_menu"  sequence="3"
-                   action="salesman_assign_action" />
+    <menuitem id="salesman_assign_menu" name="اسناد المندوبين للفروع"
+        parent="branch_assignment_menu" sequence="3"
+        action="salesman_assign_action" />
 
 </odoo>

@@ -14,7 +14,7 @@ class CustomProduct_qty_cost(models.Model):
 
     order_date = fields.Date( string='تاريخ الطلب',)
     create_date = fields.Datetime( string='تاريخ البدء',)
-    branch_id= fields.Many2one('custom.branches',string='الفرع',)
+    company_id= fields.Many2one('res.company',string='الفرع',)
     invoice_no= fields.Many2one('account.move', string='رقم الفاتورة',)
     car_panel_no = fields.Char( string='رقم اللوحة',)
     partner_mobile = fields.Char( string='جوال العميل',)
@@ -45,7 +45,7 @@ class CustomProduct_qty_cost(models.Model):
                                     m.partner_id,
                                     en.order_date,
                                     m.create_date,
-                                    m.branch_id,
+                                    m.company_id,
                                     m.create_invoice_manually_id AS invoice_no,
                                     m.car_panel_no,
                                     m.partner_mobile,

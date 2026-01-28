@@ -1,90 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-<!--sales man-->
-       <record id="wo_spare_part_analysis_tree_view" model="ir.ui.view">
-            <field name="name">wo_spare_part_analysis_tree_view</field>
-            <field name="model">wo.spare.part.analysis.view</field>
-            <field name="arch" type="xml">
-                <tree create="0" default_order="header_id,create_uid,stock_picking_id,order_date,product_categ_id,product_id,qty,unit_price,total,discount,untaxed_amount,amount_tax,amount_with_tax,partner_id,create_date,branch_id,invoice_no,car_panel_no,partner_mobile,state,supervisor_id desc">
-                  <field name="id"  widget="handle" />
-                  <field name="header_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                   <field name="product_categ_id"  readonly="1" />
-                     <field name="product_id"  readonly="1" />
-                      <field name="unit_price"  readonly="1" />
-                      <field name="qty"  readonly="1" />
-                      <field name="total"  readonly="1" />
-                      <field name="untaxed_amount"  readonly="1" />
-                    <field name="discount"  readonly="1" />
-                    <field name="amount_tax"  readonly="1" />
-                      <field name="amount_with_tax"  readonly="1" />
-                      <field name="create_uid"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                     <field name="stock_picking_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                
-                 
-                   <field name="partner_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                    <field name="order_date"  />
-                    <field name="create_date"  readonly="1" />
-                    <field name="branch_id"  readonly="1" />
-                    <field name="invoice_no"  readonly="1" />
-                    <field name="car_panel_no"  readonly="1" />
-                    <field name="partner_mobile"  readonly="1" />
-                    <field name="state"  readonly="1" />
-                  
-                    
-                      <field name="supervisor_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-                 
-                 </tree>
-            </field>
-      </record>
-      <record id="wo_spare_part_analysis_search_view" model="ir.ui.view">
-        <field name="name">البحث في </field>
-        <field name="model">wo.spare.part.analysis.view</field>
-          
+  <data>
+    <record id="wo_spare_part_analysis_tree_view" model="ir.ui.view">
+      <field name="name">wo_spare_part_analysis_tree_view</field>
+      <field name="model">wo.spare.part.analysis.view</field>
+      <field name="arch" type="xml">
+        <tree create="0"
+          default_order="header_id,create_uid,stock_picking_id,order_date,product_categ_id,product_id,qty,unit_price,total,discount,untaxed_amount,amount_tax,amount_with_tax,partner_id,create_date,company_id,invoice_no,car_panel_no,partner_mobile,state,supervisor_id desc">
+          <field name="id" widget="handle" />
+          <field name="header_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="product_categ_id" readonly="1" />
+          <field name="product_id" readonly="1" />
+          <field name="unit_price" readonly="1" />
+          <field name="qty" readonly="1" />
+          <field name="total" readonly="1" />
+          <field name="untaxed_amount" readonly="1" />
+          <field name="discount" readonly="1" />
+          <field name="amount_tax" readonly="1" />
+          <field name="amount_with_tax" readonly="1" />
+          <field name="create_uid"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="stock_picking_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
-        <field name="arch" type="xml">
-             <search string=" البحث في ">
-             
-                  <field name="header_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                     <field name="create_uid"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                   <field name="stock_picking_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-               
-                   <field name="partner_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                    <field name="order_date"  />
-                    <field name="create_date"  readonly="1" />
-                    <field name="branch_id"  readonly="1" />
-                    <field name="invoice_no"  readonly="1" />
-                    <field name="car_panel_no"  readonly="1" />
-                    <field name="partner_mobile"  readonly="1" />
-                    <field name="state"  readonly="1" />
-                     <field name="product_categ_id"  readonly="1" />
-                     <field name="product_id"  readonly="1" />
-                      <field name="unit_price"  readonly="1" />
-                      <field name="qty"  readonly="1" />
-                      <field name="total"  readonly="1" />
-                      <field name="untaxed_amount"  readonly="1" />
-                    <field name="discount"  readonly="1" />
-                    <field name="amount_tax"  readonly="1" />
-                      <field name="amount_with_tax"  readonly="1" />
-                    
-                    
-                      <field name="supervisor_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-                 
-                </search>
-            </field>
-        </record>
-      <record id="action_wo_spare_part_analysis_view" model="ir.actions.act_window">
-            <field name="name">تحليل مبيعات قطع الغيار</field>
-            <field name="res_model">wo.spare.part.analysis.view</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="wo_spare_part_analysis_tree_view"/>
-     
-            <field name="target">current</field>
-        </record>
+          <field name="partner_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="order_date" />
+          <field name="create_date" readonly="1" />
+          <field name="company_id" readonly="1" />
+          <field name="invoice_no" readonly="1" />
+          <field name="car_panel_no" readonly="1" />
+          <field name="partner_mobile" readonly="1" />
+          <field name="state" readonly="1" />
 
-      <menuitem id="menu_wo_spare_part_analysis_view" name="تحليل مبيعات قطع الغيار"  parent="mizan_report_menu" sequence="110"
-              action="action_wo_spare_part_analysis_view"
-          />
-    </data>
+          <field name="supervisor_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+        </tree>
+      </field>
+    </record>
+    <record id="wo_spare_part_analysis_search_view" model="ir.ui.view">
+      <field name="name">البحث في </field>
+      <field name="model">wo.spare.part.analysis.view</field>
+      <field name="arch" type="xml">
+        <search string=" البحث في ">
+
+          <field name="header_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="create_uid"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="stock_picking_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+          <field name="partner_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="order_date" />
+          <field name="create_date" readonly="1" />
+          <field name="company_id" readonly="1" />
+          <field name="invoice_no" readonly="1" />
+          <field name="car_panel_no" readonly="1" />
+          <field name="partner_mobile" readonly="1" />
+          <field name="state" readonly="1" />
+          <field name="product_categ_id" readonly="1" />
+          <field name="product_id" readonly="1" />
+          <field name="unit_price" readonly="1" />
+          <field name="qty" readonly="1" />
+          <field name="total" readonly="1" />
+          <field name="untaxed_amount" readonly="1" />
+          <field name="discount" readonly="1" />
+          <field name="amount_tax" readonly="1" />
+          <field name="amount_with_tax" readonly="1" />
+          <field name="supervisor_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+        </search>
+      </field>
+    </record>
+    <record id="action_wo_spare_part_analysis_view" model="ir.actions.act_window">
+      <field name="name">تحليل مبيعات قطع الغيار</field>
+      <field name="res_model">wo.spare.part.analysis.view</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="wo_spare_part_analysis_tree_view" />
+
+      <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_wo_spare_part_analysis_view" name="تحليل مبيعات قطع الغيار"
+      parent="mizan_report_menu" sequence="110"
+      action="action_wo_spare_part_analysis_view"
+    />
+  </data>
 </odoo>

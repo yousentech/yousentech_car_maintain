@@ -1,66 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-<!--sales man-->
-       <record id="wo_auditor_analysis_tree_view" model="ir.ui.view">
-            <field name="name">wo_auditor_analysis_tree_view</field>
-            <field name="model">wo.auditor.analysis.view</field>
-            <field name="arch" type="xml">
-                <tree create="0" default_order="operation_date,account_move_id,account_payment_id,model,write_uid,subject,record_name,field,field_desc,field_type,old_value,new_value desc">
-                  <field name="id"  widget="handle" />
-                  <field name="operation_date"  readonly="1" />
-                  <field name="account_move_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                  <field name="account_payment_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                  <field name="write_uid"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                   <field name="model"  />
-                   <field name="subject"  readonly="1" />
-                   <field name="record_name"  readonly="1" />
-                  <field name="field"  readonly="1" />
-                   <field name="field_desc"  readonly="1" />
-                   <field name="field_type"  readonly="1" />
-                   <field name="old_value"  readonly="1" />
-                   <field name="new_value"  readonly="1" />
-                   
-                 </tree>
-            </field>
-      </record>
-      <record id="wo_auditor_analysis_search_view" model="ir.ui.view">
-        <field name="name">البحث في </field>
-        <field name="model">wo.auditor.analysis.view</field>
-          
+  <data>
+    <record id="wo_auditor_analysis_tree_view" model="ir.ui.view">
+      <field name="name">wo_auditor_analysis_tree_view</field>
+      <field name="model">wo.auditor.analysis.view</field>
+      <field name="arch" type="xml">
+        <tree create="0"
+          default_order="operation_date,account_move_id,account_payment_id,model,write_uid,subject,record_name,field,field_desc,field_type,old_value,new_value desc">
+          <field name="id" widget="handle" />
+          <field name="operation_date" readonly="1" />
+          <field name="account_move_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="account_payment_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="write_uid"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="model" />
+          <field name="subject" readonly="1" />
+          <field name="record_name" readonly="1" />
+          <field name="field" readonly="1" />
+          <field name="field_desc" readonly="1" />
+          <field name="field_type" readonly="1" />
+          <field name="old_value" readonly="1" />
+          <field name="new_value" readonly="1" />
 
-        <field name="arch" type="xml">
-             <search string=" البحث في ">
-            
-               <field name="id"  widget="handle" />
-                  <field name="operation_date"  readonly="1" />
-                  <field name="account_move_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                  <field name="account_payment_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                  <field name="write_uid"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                   <field name="model"  />
-                   <field name="subject"  readonly="1" />
-                   <field name="record_name"  readonly="1" />
-                  <field name="field"  readonly="1" />
-                   <field name="field_desc"  readonly="1" />
-                   <field name="field_type"  readonly="1" />
-                   <field name="old_value"  readonly="1" />
-                   <field name="new_value"  readonly="1" />
+        </tree>
+      </field>
+    </record>
+    <record id="wo_auditor_analysis_search_view" model="ir.ui.view">
+      <field name="name">البحث في </field>
+      <field name="model">wo.auditor.analysis.view</field>
 
-                </search>
-            </field>
-        </record>
-      <record id="action_wo_auditor_analysis_view" model="ir.actions.act_window">
-            <field name="name">تقرير تتبع حركة العمليات </field>
-            <field name="res_model">wo.auditor.analysis.view</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="wo_auditor_analysis_tree_view"/>
-     
-            <field name="target">current</field>
-        </record>
 
-      <menuitem id="menu_wo_auditor_analysis_view" name="تقرير تتبع حركة العمليات"  parent="mizan_report_menu" sequence="100"
-              action="action_wo_auditor_analysis_view"
-          />
-    </data>
+      <field name="arch" type="xml">
+        <search string=" البحث في ">
+
+          <field name="id" widget="handle" />
+          <field name="operation_date" readonly="1" />
+          <field name="account_move_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="account_payment_id"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="write_uid"
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+          <field name="model" />
+          <field name="subject" readonly="1" />
+          <field name="record_name" readonly="1" />
+          <field name="field" readonly="1" />
+          <field name="field_desc" readonly="1" />
+          <field name="field_type" readonly="1" />
+          <field name="old_value" readonly="1" />
+          <field name="new_value" readonly="1" />
+
+        </search>
+      </field>
+    </record>
+    <record id="action_wo_auditor_analysis_view" model="ir.actions.act_window">
+      <field name="name">تقرير تتبع حركة العمليات </field>
+      <field name="res_model">wo.auditor.analysis.view</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="wo_auditor_analysis_tree_view" />
+
+      <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_wo_auditor_analysis_view" name="تقرير تتبع حركة العمليات"
+      parent="mizan_report_menu" sequence="100"
+      action="action_wo_auditor_analysis_view"
+    />
+  </data>
 </odoo>

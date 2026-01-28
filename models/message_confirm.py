@@ -1,9 +1,6 @@
-from datetime import datetime, time
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo import models, fields, _
 
-
-class haraj_report(models.TransientModel):
+class mizan_message_confirm(models.TransientModel):
     _name = 'mizan.message.confirm'
 
     desc = fields.Char(string="تنبيه / ", readonly=True)

@@ -44,3 +44,7 @@ access_wo_spare_part_analysis_view,wo.spare.part.analysis.view,model_wo_spare_pa
 access_wo_technicals_analysis_view,wo.technicals.analysis.view,model_wo_technicals_analysis_view,,1,1,1,1
 access_wo_auditor_analysis_view,wo.auditor.analysis.view,model_wo_auditor_analysis_view,,1,1,1,1
 access_wo_period_closed,wo.period.closed,model_wo_period_closed,,1,1,1,1
+access_mizan_wo_report_module,mizan.wo.report.module,model_mizan_wo_report_module,,1,1,1,1
+
+access_mizan_wo_invoice_payments_report,mizan.wo.invoice.payments.report,model_mizan_wo_invoice_payments_report,,1,1,1,1
+access_mizan_wo_technical_report,mizan.wo.technical.report,model_mizan_wo_technical_report,,1,1,1,1

@@ -11,9 +11,9 @@
             	<div class="header">
                 <div class="row mt32 mb32">
                     <div class="col-6">
-						<t t-if="not user_id.branch_id.no_header_report_account">
-							<t t-if="user_id.branch_id.branch_header">
-								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_header)"
+						<t t-if="not user_id.company_id.no_header_report_account">
+							<t t-if="user_id.company_id.branch_header">
+								<img t-if="user_id.company_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_header)"
 									style="max-height: 200px;"/>
 							</t>
 							<t t-else="">
@@ -29,9 +29,9 @@
             <div class="footer">
                 <div class="row mt32 mb32">
                     <div class="col-12">
-						<t t-if="not user_id.branch_id.no_header_report_account">
-							<t t-if="user_id.branch_id.branch_footer">
- 								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_footer)"
+						<t t-if="not user_id.company_id.no_header_report_account">
+							<t t-if="user_id.company_id.branch_footer">
+ 								<img t-if="user_id.company_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_footer)"
 									style="max-height: 200px;"/> 
 
 							</t>
@@ -250,7 +250,7 @@
                                                     <strong> الفرع </strong>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="docs.entry_card_id.branch_id.name"/>
+                                                    <span t-esc="docs.entry_card_id.company_id.name"/>
                                                 </td>
                                         </tr>
                                             </table>
@@ -411,8 +411,8 @@
 				model="mizan.car.checkup.procedure.master"
 				string=" طباعة طلب الفحص"
 				report_type="qweb-pdf"
-				name="qimamhd_mizan_car_13.checkup_order_report_view"
-				file="qimamhd_mizan_car_13.checkup_order_report_view"
+				name="yousentech_car_maintain.checkup_order_report_view"
+				file="yousentech_car_maintain.checkup_order_report_view"
 				menu="True"
 
 				/>

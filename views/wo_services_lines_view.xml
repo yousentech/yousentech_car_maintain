@@ -1,94 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-<!--sales man-->
-       <record id="wo_services_lines_tree_view" model="ir.ui.view">
+        <record id="wo_services_lines_tree_view" model="ir.ui.view">
             <field name="name">wo_services_lines_tree_view</field>
             <field name="model">mizan.car.work.procedure.line</field>
             <field name="arch" type="xml">
-                <tree >
-                    <field name="sequence"  widget="handle" />
-                    <field name="product_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                    <field name="technical_name"   widget="many2many_tags"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                    <field name="state"  readonly="1" />
-
-                    <field name="start_Service_date"  readonly="1"/>
-
-                    <field name="complete_date"  readonly="1"/>
-                    <field name="technical_is_done"   readonly="1"/>
-
-                    <field name="branch_id" invisible="1"  />
-                    <field name="name"  optional="hide" />
-                    <field name="unit_price" optional="hide"/>
+                <tree>
+                    <field name="sequence" widget="handle" />
+                    <field name="product_id"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    <field name="technical_name" widget="many2many_tags"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    <field name="state" readonly="1" />
+                    <field name="start_Service_date" readonly="1" />
+                    <field name="complete_date" readonly="1" />
+                    <field name="technical_is_done" readonly="1" />
+                    <field name="company_id" invisible="1" />
+                    <field name="name" optional="hide" />
+                    <field name="unit_price" optional="hide" />
                     <field name="discount_type" optional="hide" />
-                    <field name="discount_line" digits="[12,12]" optional="hide"  />
-                    <field name="discount_amount" invisible="1"/>
-                    <field name="product_tax" optional="hide"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                    <field name="tax_id" invisible="1"/>
-                     <field name="total" optional="hide"  />
-                     <field name="total_before_tax" optional="hide" />
-                     <field name="total_tax" optional="hide" />
-                     <field name="amount_tax" optional="hide" readonly="1" force_save="1"/>
-
-                    
-
-                    <field name="notes" optional="hide"  />
-                
-
-
-                  </tree>
+                    <field name="discount_line" digits="[12,12]" optional="hide" />
+                    <field name="discount_amount" invisible="1" />
+                    <field name="product_tax" optional="hide"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    <field name="tax_id" invisible="1" />
+                    <field name="total" optional="hide" />
+                    <field name="total_before_tax" optional="hide" />
+                    <field name="total_tax" optional="hide" />
+                    <field name="amount_tax" optional="hide" readonly="1" force_save="1" />
+                    <field name="notes" optional="hide" />
+                </tree>
             </field>
-      </record>
-      <record id="wo_services_lines_search_view" model="ir.ui.view">
-        <field name="name">البحث في </field>
-        <field name="model">mizan.car.work.procedure.line</field>
-         <field eval="10" name="priority"/>
+        </record>
 
-        <field name="arch" type="xml">
-             <search string=" البحث في ">
-                <field name="sequence"  widget="handle" />
-                <field name="product_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                <field name="technical_name"   widget="many2many_tags"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                <field name="state"  readonly="1" />
+        <record id="wo_services_lines_search_view" model="ir.ui.view">
+            <field name="name">البحث في </field>
+            <field name="model">mizan.car.work.procedure.line</field>
+            <field eval="10" name="priority" />
 
-                <field name="start_Service_date"  readonly="1"/>
-
-                <field name="complete_date"  readonly="1"/>
-                <field name="technical_is_done"   readonly="1"/>
-
-                <field name="branch_id" invisible="1"  />
-                <field name="name"  optional="hide" />
-                <field name="unit_price" optional="hide"/>
-                <field name="discount_type" optional="hide" />
-                <field name="discount_line" digits="[12,12]" optional="hide"  />
-                <field name="discount_amount" invisible="1"/>
-                <field name="product_tax" optional="hide"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                <field name="tax_id" invisible="1"/>
-                 <field name="total" optional="hide"  />
-                 <field name="total_before_tax" optional="hide" />
-                 <field name="total_tax" optional="hide" />
-                 <field name="amount_tax" optional="hide" readonly="1" force_save="1"/>
-
-                
-
-                <field name="notes" optional="hide"  />
-            
-
+            <field name="arch" type="xml">
+                <search string=" البحث في ">
+                    <field name="sequence" widget="handle" />
+                    <field name="product_id"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    <field name="technical_name" widget="many2many_tags"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    <field name="state" readonly="1" />
+                    <field name="start_Service_date" readonly="1" />
+                    <field name="complete_date" readonly="1" />
+                    <field name="technical_is_done" readonly="1" />
+                    <field name="company_id" invisible="1" />
+                    <field name="name" optional="hide" />
+                    <field name="unit_price" optional="hide" />
+                    <field name="discount_type" optional="hide" />
+                    <field name="discount_line" digits="[12,12]" optional="hide" />
+                    <field name="discount_amount" invisible="1" />
+                    <field name="product_tax" optional="hide"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    <field name="tax_id" invisible="1" />
+                    <field name="total" optional="hide" />
+                    <field name="total_before_tax" optional="hide" />
+                    <field name="total_tax" optional="hide" />
+                    <field name="amount_tax" optional="hide" readonly="1" force_save="1" />
+                    <field name="notes" optional="hide" />
                 </search>
             </field>
         </record>
-      <record id="action_wo_services_lines_view" model="ir.actions.act_window">
+
+        <record id="action_wo_services_lines_view" model="ir.actions.act_window">
             <field name="name">رولات الاصناف </field>
             <field name="res_model">mizan.car.work.procedure.line</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="wo_services_lines_tree_view"/>
-     
+            <field name="view_id" ref="wo_services_lines_tree_view" />
             <field name="target">current</field>
         </record>
 
-      <menuitem id="menu_wo_services_lines_view" name="تقرير حركة الخدمات لامر العمل للفنيين"  parent="mizan_report_menu" sequence="60"
-              action="action_wo_services_lines_view"
-          />
+
+        <menuitem id="menu_wo_services_lines_view" name="تقرير حركة الخدمات لامر العمل للفنيين"
+            parent="mizan_report_menu" sequence="60"
+            action="action_wo_services_lines_view"
+        />
     </data>
 </odoo>

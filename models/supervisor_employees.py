@@ -1,20 +1,14 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 
-
-class xx_specialist_emp(models.Model):
+class hr_employee(models.Model):
     _inherit = 'hr.employee'
 
     supervisor_emp = fields.Boolean(string="المشرف الفني")
     technical_emp = fields.Boolean(string="فني تركيب")
-    branch_id = fields.Many2one('custom.branches', string='الفرع', copy=False,
-                                default=lambda self: self.env.user.branch_id.id)
     face_features_line_id = fields.One2many('emp.face.features','employee_id',copy=False ,ondelete='cascade')
     
-  
-
-
-class x_face_features_line(models.Model):
+class emp_face_features(models.Model):
     _name = 'emp.face.features'
     
     botton_mouth_x =fields.Integer()

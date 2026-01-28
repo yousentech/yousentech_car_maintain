@@ -1,11 +1,10 @@
-<?xml version="1.0"?>
 <odoo>
     <record id="view_mizan_product_wizard_form" model="ir.ui.view">
         <field name="name">mizan.product.wizard.form</field>
         <field name="model">mizan.product.wizard</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form >
+            <form>
                 <group string="Products">
                     <field name="product_ids" nolabel="1" />
                 </group>

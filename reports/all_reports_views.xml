@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record model="ir.ui.view" id="mizan_wo_report_wizred">
         <field name="name">Mizan Work Order Report</field>
@@ -5,60 +6,69 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="custom Report">
+                <group>
                     <group>
-                        <group>
-                            <field name="date_start" string="من تاريخ"/>
-                        </group>
-                        <group>
-                            <field name="date_end"  string="الى تاريخ"/>
-                        </group>
-                         <group>
-                              <field name="supervisor_id" string="حسب المشرف" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                        </group>
-                        <group>
-                               <field name="partner_id"   string="حسب العميل" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                        </group>
-
-                        <group>
-                             <field name="cancel_state"    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                             <field name="hide_uncompleted_orders" />
-                        </group>
-                            <group>
-                              <field name="group_by_type"  widget="radio"/>
-                        </group>
+                        <field name="date_start" string="من تاريخ" />
                     </group>
+                    <group>
+                        <field name="date_end" string="الى تاريخ" />
+                    </group>
+                    <group>
+                        <field name="supervisor_id" string="حسب المشرف"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                    </group>
+                    <group>
+                        <field name="partner_id" string="حسب العميل"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                    </group>
+
+                    <group>
+                        <field name="cancel_state"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                        <field name="hide_uncompleted_orders" />
+                    </group>
+                    <group>
+                        <field name="group_by_type" widget="radio" />
+                    </group>
+                </group>
                 <group>
 
 
-                     <group>
-                         <field name="branch_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                          <field name="company_ids1" groups="base.group_multi_company" string="الشركة"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    <group>
+                        <field name="company_id"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة" widget="many2many_tags"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
                 </group>
 
                 <footer>
-                    <button name="get_report" string="Print Report" type="object" class="oe_highlight"/>
+                    <button name="get_report" string="Print Report" type="object"
+                        class="oe_highlight" />
                     <button name="get_report_excel" string="Print to Xlsx" type="object" />
 
-                    <button string="Cancel" special="cancel"/>
+                    <button string="Cancel" special="cancel" />
                 </footer>
             </form>
         </field>
     </record>
-      <act_window id="action_mizan_wo_report"
-            name="تقرير اوامر العمل"
-            res_model="mizan.wo.report.module"
-            view_mode="form"
-            target="new"/>
 
-      <menuitem action="action_mizan_wo_report"
-          id="menu_mizan_wo_report"
-           sequence="1"
-          parent="mizan_report_menu"/>
+    <record id="action_mizan_wo_report" model="ir.actions.act_window">
+        <field name="name">تقرير اوامر العمل</field>
+        <field name="res_model">mizan.wo.report.module</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="mizan_wo_report_wizred" />
+        <field name="domain"></field>
+        <field name="target">new</field>
+       <field name="context">{}</field>  
+    </record>
 
-<!--  invoice payments-->
+    <menuitem id="menu_mizan_wo_report" name="اوامر العمل"
+        parent="mizan_report_menu" sequence="1"
+        action="action_mizan_wo_report"
+    />
 
     <record model="ir.ui.view" id="mizan_wo_invoice_payments_report">
         <field name="name">mizan.wo.invoice.payments.report</field>
@@ -66,62 +76,72 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="custom Report">
+                <group>
                     <group>
-                        <group>
-                            <field name="date_start" string="من تاريخ"/>
-                        </group>
-                        <group>
-                            <field name="date_end"  string="الى تاريخ"/>
-                        </group>
-                         <group>
-                              <field name="supervisor_id" string="حسب المشرف" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                        </group>
-                        <group>
-                               <field name="partner_id"   string="حسب العميل" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                        </group>
-
-                        <group>
-                             <field name="cancel_state"    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                         </group>
-                        <group>
-                             <field name="display_type"   widget="radio"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                         </group>
-                          <group>
-                              <field name="group_by_type"  widget="radio"/>
-                        </group>
+                        <field name="date_start" string="من تاريخ" />
                     </group>
+                    <group>
+                        <field name="date_end" string="الى تاريخ" />
+                    </group>
+                    <group>
+                        <field name="supervisor_id" string="حسب المشرف"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                    </group>
+                    <group>
+                        <field name="partner_id" string="حسب العميل"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                    </group>
+
+                    <group>
+                        <field name="cancel_state"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    </group>
+                    <group>
+                        <field name="display_type" widget="radio"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    </group>
+                    <group>
+                        <field name="group_by_type" widget="radio" />
+                    </group>
+                </group>
                 <group>
 
 
-                     <group>
-                         <field name="branch_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                          <field name="company_ids1" groups="base.group_multi_company" string="الشركة"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    <group>
+                        <field name="company_id"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة"  widget="many2many_tags"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
                 </group>
 
                 <footer>
-                    <button name="get_report" string="Print Report" type="object" class="oe_highlight"/>
+                    <button name="get_report" string="Print Report" type="object"
+                        class="oe_highlight" />
                     <button name="get_report_excel" string="Print to Xlsx" type="object" />
 
-                    <button string="Cancel" special="cancel"/>
+                    <button string="Cancel" special="cancel" />
                 </footer>
             </form>
         </field>
     </record>
-      <act_window id="action_mizan_wo_invoice_payments_rpt"
-            name="تقرير اوامر العمل المكتملة"
-            res_model="mizan.wo.invoice.payments.report"
-            view_mode="form"
-            target="new"/>
 
-      <menuitem action="action_mizan_wo_invoice_payments_rpt"
-          id="menu_mizan_wo_invoice_payments_rpt"
-           sequence="2"
-          parent="mizan_report_menu"/>
 
-<!--  mizan.wo.technical.report-->
+    <record id="action_mizan_wo_invoice_payments_rpt" model="ir.actions.act_window">
+        <field name="name">تقرير اوامر العمل المكتملة</field>
+        <field name="res_model">mizan.wo.invoice.payments.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="mizan_wo_invoice_payments_report" />
+        <field name="target">new</field>
+
+    </record>
+
+    <menuitem id="menu_mizan_wo_invoice_payments_rpt"  name="اوامر العمل المكتملة"
+        parent="mizan_report_menu" sequence="2"
+        action="action_mizan_wo_invoice_payments_rpt"
+    />
 
     <record model="ir.ui.view" id="mizan_wo_technical_report">
         <field name="name">mizan.wo.technical.report</field>
@@ -129,62 +149,75 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="custom Report">
+                <group>
                     <group>
-                        <group>
-                            <field name="date_start" eval="DateTime.today().strftime('%Y-%m-%d %H:%M')" string="من تاريخ"/>
-                        </group>
-                        <group>
-                            <field name="date_end" eval="DateTime.today().strftime('%Y-%m-%d %H:%M')"  string="الى تاريخ"/>
-                        </group>
-                        <group>
-                            <field name="technical_ids" widget="many2many_tags" string="الفني" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                        </group>
-                         <group>
-                            <field name="wo_ids" widget="many2many_tags" string="امر العمل" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                        </group>
-                        <group>
-                            <field name="partner_id"    string="العميل" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                        </group>
-                        <group>
-                            <field name="product_ids" widget="many2many_tags"  string="الخدمة" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                        </group>
-                        <group>
-                            <field name="wo_completed"     />
-                        </group>
-                        <group>
-                            <field name="display_type"   widget="radio"  />
-                        </group>
-                           <group>
-                        <field name="branch_ids"  widget="many2many_tags" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                     </group>
+                        <field name="date_start" eval="DateTime.today().strftime('%Y-%m-%d %H:%M')"
+                            string="من تاريخ" />
                     </group>
-                
+                    <group>
+                        <field name="date_end" eval="DateTime.today().strftime('%Y-%m-%d %H:%M')"
+                            string="الى تاريخ" />
+                    </group>
+                    <group>
+                        <field name="technical_ids" widget="many2many_tags" string="الفني"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                    </group>
+                    <group>
+                        <field name="wo_ids" widget="many2many_tags" string="امر العمل"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                    </group>
+                    <group>
+                        <field name="partner_id" string="العميل"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                    </group>
+                    <group>
+                        <field name="product_ids" widget="many2many_tags" string="الخدمة"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                    </group>
+                    <group>
+                        <field name="wo_completed" />
+                    </group>
+                    <group>
+                        <field name="display_type" widget="radio" />
+                    </group>
+                    <group>
+                        <field name="company_ids" widget="many2many_tags"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                    </group>
+                </group>
+
 
                 <footer>
-                    <button name="get_report" string="Print Report" type="object" class="oe_highlight"/>
+                    <button name="get_report" string="Print Report" type="object"
+                        class="oe_highlight" />
                     <button name="get_report_excel" string="Print to Xlsx" type="object" />
 
-                    <button string="Cancel" special="cancel"/>
+                    <button string="Cancel" special="cancel" />
                 </footer>
             </form>
         </field>
     </record>
-    <act_window id="action_mizan_wo_tehnical_rpt"
-            name="تقرير الفنيين"
-            res_model="mizan.wo.technical.report"
-            view_mode="form"
-            target="new"/>
 
-    <menuitem action="action_mizan_wo_tehnical_rpt"
+    <record id="action_mizan_wo_tehnical_rpt" model="ir.actions.act_window">
+        <field name="name">تقرير الفنيين </field>
+        <field name="res_model">mizan.wo.technical.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="mizan_wo_technical_report" />
+        <field name="target">new</field>
+
+    </record>
+
+    <menuitem 
         id="menu_mizan_wo_tehnical_rpt"
+        parent="mizan_report_menu"
+        name="الفنيين"
         sequence="3"
-        parent="mizan_report_menu"/>
-
-
+        action="action_mizan_wo_tehnical_rpt"
+        />
 
 
 </odoo>

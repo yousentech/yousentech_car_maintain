@@ -17,7 +17,7 @@ class CustomProduct_qty_cost(models.Model):
     partner_id = fields.Many2one('res.partner', string='العميل', readonly=True)
     order_date = fields.Date( string='تاريخ الطلب',)
     create_date = fields.Datetime( string='تاريخ البدء',)
-    branch_id= fields.Many2one('custom.branches',string='الفرع',)
+    company_id= fields.Many2one('res.company',string='الفرع',)
     invoice_no= fields.Many2one('account.move', string='رقم الفاتورة',)
     car_panel_no = fields.Char( string='رقم اللوحة',)
     partner_mobile = fields.Char( string='جوال العميل',)
@@ -33,7 +33,7 @@ class CustomProduct_qty_cost(models.Model):
    
     supervisor_id = fields.Many2one('hr.supervisor.assignments', string='المشرف', readonly=True)
     
-    product_categ_id = fields.Many2one('product.categories', string='المجموعة المخزنية', readonly=True)     
+    product_categ_id = fields.Many2one('product.category', string='المجموعة المخزنية', readonly=True)     
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'wo_spare_part_analysis_view')
@@ -43,7 +43,7 @@ class CustomProduct_qty_cost(models.Model):
                           WITH product_categ AS (
                                         SELECT 
                                             p.id AS product_id,
-                                            t.product_categ_id
+                                            t.categ_id
                                         FROM product_product p
                                         JOIN product_template t ON p.product_tmpl_id = t.id
                                     ),
@@ -77,7 +77,7 @@ class CustomProduct_qty_cost(models.Model):
                                         wo.partner_id,
                                         wo.order_date,
                                         wo.create_date,
-                                        wo.branch_id,
+                                        wo.company_id,
                                         wo.invoice_no,
                                         wo.car_panel_no,
                                         wo.partner_mobile,
@@ -93,7 +93,7 @@ class CustomProduct_qty_cost(models.Model):
                                         cd.amount_tax,
                                         round((cd.total_base::numeric - (cd.total_base * (cd.discount_perc / 100))::numeric) + cd.amount_tax::numeric, 2) AS amount_with_tax,
                                         wo.supervisor_id,
-                                        pc.product_categ_id
+                                        pc.categ_id
                                     FROM (
                                         SELECT
                                             m.id AS header_id,
@@ -101,7 +101,7 @@ class CustomProduct_qty_cost(models.Model):
                                             m.partner_id,
                                             en.order_date,
                                             m.create_date,
-                                            m.branch_id,
+                                            m.company_id,
                                             m.create_invoice_manually_id AS invoice_no,
                                             m.car_panel_no,
                                             m.partner_mobile,

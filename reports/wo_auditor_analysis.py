@@ -25,10 +25,10 @@ class CustomProduct_qty_cost(models.Model):
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'wo_auditor_analysis_view')
-        
+        ##
         self._cr.execute("""CREATE OR REPLACE VIEW wo_auditor_analysis_view AS
                         (
-                         select id,account_move_id	,account_payment_id	,operation_date,	subject	,model,	record_name	,write_uid,	field	,field_desc	,field_type	,old_value,	new_value
+                         select id,account_move_id	,account_payment_id	,operation_date,	subject	,model,	record_name	,write_uid,old_value,	new_value
 
                                     from (
                                     
@@ -45,22 +45,22 @@ class CustomProduct_qty_cost(models.Model):
                                     m.model,
                                     m.record_name,
                                     m.write_uid,
-                                    t.field,
-                                    t.field_desc,
-                                    t.field_type,
+                                   -- t.field,
+                                    -- t.field_desc,
+                                    -- t.field_type,
 
                                     -- دمج القيم المختلفة في عمود واحد بعد تحويلها إلى TEXT
                                     COALESCE(
                                     t.old_value_char,
                                     CAST(t.old_value_float AS TEXT),
-                                    CAST(t.old_value_monetary AS TEXT),
+                                    -- CAST(t.old_value_monetary AS TEXT),
                                     CAST(t.old_value_datetime AS TEXT)
                                     ) as old_value,
 
                                     COALESCE(
                                     t.new_value_char,
                                     CAST(t.new_value_float AS TEXT),
-                                    CAST(t.new_value_monetary AS TEXT),
+                                   -- CAST(t.new_value_monetary AS TEXT),
                                     CAST(t.new_value_datetime AS TEXT)
                                     ) as new_value
 
@@ -82,22 +82,22 @@ class CustomProduct_qty_cost(models.Model):
                                     m.model,
                                     m.record_name,
                                     m.write_uid,
-                                    t.field,
-                                    t.field_desc,
-                                    t.field_type,
+                                    -- t.field,
+                                    -- t.field_desc,
+                                    -- t.field_type,
 
                                     -- دمج القيم المختلفة في عمود واحد بعد تحويلها إلى TEXT
                                     COALESCE(
                                     t.old_value_char,
                                     CAST(t.old_value_float AS TEXT),
-                                    CAST(t.old_value_monetary AS TEXT),
+                                    -- CAST(t.old_value_monetary AS TEXT),
                                     CAST(t.old_value_datetime AS TEXT)
                                     ) as old_value,
 
                                     COALESCE(
                                     t.new_value_char,
                                     CAST(t.new_value_float AS TEXT),
-                                    CAST(t.new_value_monetary AS TEXT),
+                                    -- CAST(t.new_value_monetary AS TEXT),
                                     CAST(t.new_value_datetime AS TEXT)
                                     ) as new_value
 

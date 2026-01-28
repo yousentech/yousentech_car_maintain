@@ -28,8 +28,6 @@
             view_mode="form"
             target="new"
         />
-<!--            binding_model="wo.installation.order.mst"-->
-<!--            binding_views="form"-->
 
     </data>
 </odoo>

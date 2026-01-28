@@ -8,20 +8,20 @@
         <field name="model">hr.technical.assignments</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form >
+            <form>
                 <sheet>
-                    <group >
-                         <group>
-                             <field name="technical_emp_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                                <field name="branch_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"  />
-
-                            <field name="assign_date"  />
-
-
-                         </group>
+                    <group>
                         <group>
-                            <field name="state"  />
-                            <field name="close_date"  />
+                            <field name="technical_emp_id"
+                                options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                            <field name="company_id"
+                                options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                            <field name="assign_date" />
+                        </group>
+                        <group>
+                            <field name="state" />
+                            <field name="close_date" />
                         </group>
 
                     </group>
@@ -32,42 +32,48 @@
     <record id="view_hr_technical_assign_tree" model="ir.ui.view">
         <field name="name">hr.technical.assignments.tree</field>
         <field name="model">hr.technical.assignments</field>
-         <field name="arch" type="xml">
-            <tree >
-                         <field name="technical_emp_id"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="assign_date"  />
-                        <field name="branch_id"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
-                        <field name="state"  />
-                        <field name="close_date"  />
+        <field name="arch" type="xml">
+            <tree>
+                <field name="technical_emp_id"
+                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                <field name="assign_date" />
+                <field name="company_id"
+                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                <field name="state" />
+                <field name="close_date" />
             </tree>
         </field>
     </record>
+
     <record id="view_hr_technical_assign_search" model="ir.ui.view">
         <field name="name">hr.technical.assignments.search</field>
         <field name="model">hr.technical.assignments</field>
-         <field eval="10" name="priority"/>
+        <field eval="10" name="priority" />
 
-         <field name="arch" type="xml">
-            <search >
-                         <field name="technical_emp_id"  />
-                        <field name="assign_date"  />
-                        <field name="branch_id"  />
-                        <field name="state"  />
-                        <field name="close_date"  />
-                       <separator/>
-                       <group expand='0' string='Filters'>
-                            <filter string="حسب الفني" name="technical_filter" domain="[]" context="{'group_by': 'technical_emp_id'}"/>
+        <field name="arch" type="xml">
+            <search>
+                <field name="technical_emp_id" />
+                <field name="assign_date" />
+                <field name="company_id" />
+                <field name="state" />
+                <field name="close_date" />
+                <separator />
+                <group expand='0' string='Filters'>
+                    <filter string="حسب الفني" name="technical_filter" domain="[]"
+                        context="{'group_by': 'technical_emp_id'}" />
 
-                           <filter string="حسب الفرع" name="branch_filter" domain="[]" context="{'group_by': 'branch_id'}"/>
+                    <filter string="حسب الفرع" name="branch_filter" domain="[]"
+                        context="{'group_by': 'company_id'}" />
 
-                           <filter string="حسب الحالة" name="state_filter" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="حسب الحالة" name="state_filter" domain="[]"
+                        context="{'group_by': 'state'}" />
+                </group>
+                <separator />
+                <group expand='0' string='Filters'>
+                    <filter string="الاسناد النشط" name="currecnt_state_filter"
+                        domain="[('state','=', 'current')]" />
 
-                      </group>
-                      <separator/>
-                      <group expand='0' string='Filters'>
-                           <filter string="الاسناد النشط" name="currecnt_state_filter" domain="[('state','=', 'current')]"/>
-
-                    </group>
+                </group>
             </search>
         </field>
     </record>
@@ -81,7 +87,8 @@
         <field name="view_id" ref="view_hr_technical_assign_tree" />
     </record>
 
-       <menuitem id="technical_assign_menu" name="اسناد الفنيين للفروع" parent="branch_assignment_menu"  sequence="1"
-                   action="hr_technical_assign_action" />
+    <menuitem id="technical_assign_menu" name="اسناد الفنيين للفروع" parent="branch_assignment_menu"
+        sequence="1"
+        action="hr_technical_assign_action" />
 
 </odoo>
