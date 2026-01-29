@@ -3,43 +3,46 @@ from datetime import datetime
 from odoo import fields, models, tools, api, _
 from odoo.exceptions import ValidationError
 
+# "تحليل مبيعات الفنيين"
 class wo_technicals_analysis_view(models.Model):
     _name = 'wo.technicals.analysis.view'
     _description = 'wo.technicals.analysis.view'
     _auto = False
-    
+
     id = fields.Integer(string="تسلسل")
-    header_id = fields.Many2one('mizan.car.work.procedure.master',string="رقم امر العمل")
+    header_id = fields.Many2one(
+        'mizan.car.work.procedure.master', string="رقم امر العمل")
     partner_id = fields.Many2one('res.partner', string='العميل', readonly=True)
-    order_date = fields.Date( string='تاريخ الطلب',)
-    create_date = fields.Datetime( string='تاريخ البدء العمل',)
-    end_date = fields.Datetime( string='تاريخ انتهاء العمل',)
-    company_id= fields.Many2one('res.company',string='الفرع',)
-    invoice_no= fields.Many2one('account.move', string='رقم الفاتورة',)
-    car_panel_no = fields.Char( string='رقم اللوحة',)
-    partner_mobile = fields.Char( string='جوال العميل',)
-    state = fields.Char( string='الحالة',)
+    order_date = fields.Date(string='تاريخ الطلب',)
+    create_date = fields.Datetime(string='تاريخ البدء العمل',)
+    end_date = fields.Datetime(string='تاريخ انتهاء العمل',)
+    company_id = fields.Many2one('res.company', string='الفرع',)
+    invoice_no = fields.Many2one('account.move', string='رقم الفاتورة',)
+    car_panel_no = fields.Char(string='رقم اللوحة',)
+    partner_mobile = fields.Char(string='جوال العميل',)
+    state = fields.Char(string='الحالة',)
     product_id = fields.Many2one('product.product', string='المنتج',)
-    unit_price = fields.Float( string='سعر البيع',default=0)
-    qty = fields.Float( string='الكمية',default=0)
-    total = fields.Float( string='اجمالي ',default=0)
-    untaxed_amount = fields.Float( string='اجمالي قبل الضريبة',default=0)
-    discount = fields.Float( string='الخصم',default=0)
-    amount_tax = fields.Float( string='الضريبة',default=0)
-    amount_with_tax = fields.Float( string='اجمالي شامل الضريبة',default=0)
-     
-    supervisor_id = fields.Many2one('hr.supervisor.assignments', string='المشرف', readonly=True)
-    
-    product_categ_id = fields.Many2one('product.category', string='المجموعة المخزنية', readonly=True)     
-    technical_count = fields.Integer( string='عدد الفنيين في الخدمة',default=0)
-    hr_technical_assignments_id = fields.Many2one('hr.technical.assignments', string='الفني', readonly=True)
-    time_difference = fields.Char( string='مدة انجاز امر العمل', readonly=True)
-    
-     
+    unit_price = fields.Float(string='سعر البيع', default=0)
+    qty = fields.Float(string='الكمية', default=0)
+    total = fields.Float(string='اجمالي ', default=0)
+    untaxed_amount = fields.Float(string='اجمالي قبل الضريبة', default=0)
+    discount = fields.Float(string='الخصم', default=0)
+    amount_tax = fields.Float(string='الضريبة', default=0)
+    amount_with_tax = fields.Float(string='اجمالي شامل الضريبة', default=0)
+
+    supervisor_id = fields.Many2one(
+        'hr.supervisor.assignments', string='المشرف', readonly=True)
+
+    product_categ_id = fields.Many2one(
+        'product.category', string='المجموعة المخزنية', readonly=True)
+    technical_count = fields.Integer(string='عدد الفنيين في الخدمة', default=0)
+    hr_technical_assignments_id = fields.Many2one(
+        'hr.technical.assignments', string='الفني', readonly=True)
+    time_difference = fields.Char(string='مدة انجاز امر العمل', readonly=True)
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'wo_technicals_analysis_view')
-        
+
         self._cr.execute("""CREATE OR REPLACE VIEW wo_technicals_analysis_view AS
                         (SELECT 
     ROW_NUMBER() OVER (ORDER BY wo.hr_technical_assignments_id) AS id, 
