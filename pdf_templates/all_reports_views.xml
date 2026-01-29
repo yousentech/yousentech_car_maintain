@@ -39,7 +39,8 @@
                     <group>
                         <field name="company_id"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة" widget="many2many_tags"
+                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة"
+                            widget="many2many_tags"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
                 </group>
@@ -62,7 +63,7 @@
         <field name="view_id" ref="mizan_wo_report_wizred" />
         <field name="domain"></field>
         <field name="target">new</field>
-       <field name="context">{}</field>  
+        <field name="context">{}</field>
     </record>
 
     <menuitem id="menu_mizan_wo_report" name="اوامر العمل"
@@ -112,7 +113,8 @@
                     <group>
                         <field name="company_id"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة"  widget="many2many_tags"
+                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة"
+                            widget="many2many_tags"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
                 </group>
@@ -138,7 +140,7 @@
 
     </record>
 
-    <menuitem id="menu_mizan_wo_invoice_payments_rpt"  name="اوامر العمل المكتملة"
+    <menuitem id="menu_mizan_wo_invoice_payments_rpt" name="اوامر العمل المكتملة"
         parent="mizan_report_menu" sequence="2"
         action="action_mizan_wo_invoice_payments_rpt"
     />
@@ -211,13 +213,13 @@
 
     </record>
 
-    <menuitem 
+    <menuitem
         id="menu_mizan_wo_tehnical_rpt"
         parent="mizan_report_menu"
         name="الفنيين"
         sequence="3"
         action="action_mizan_wo_tehnical_rpt"
-        />
+    />
 
 
 </odoo>

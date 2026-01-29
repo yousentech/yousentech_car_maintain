@@ -3,7 +3,7 @@ from datetime import datetime
 from odoo import fields, models, tools, api, _
 from odoo.exceptions import ValidationError
 
-class CustomProduct_qty_cost(models.Model):
+class wo_spare_part_analysis_view(models.Model):
     _name = 'wo.spare.part.analysis.view'
     _description = 'wo.spare.part.analysis.view'
     _auto = False
