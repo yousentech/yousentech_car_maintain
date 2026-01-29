@@ -61,9 +61,9 @@
         'views/mizan_product_wizard.xml',
         'wizard/message_confirm.xml',
         
+        'pdf_templates/mizan_wo_report_module.xml',
         'pdf_templates/car_checkup_report.xml',
         'pdf_templates/car_work_order_report.xml',
-        'pdf_templates/mizan_wo_report_module.xml',
         'pdf_templates/wo_invoice_payments_report.xml',
         'pdf_templates/close_cash_report.xml',
         'pdf_templates/wo_technical_report.xml',

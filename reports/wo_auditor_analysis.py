@@ -3,11 +3,12 @@ from datetime import datetime
 from odoo import fields, models, tools, api, _
 from odoo.exceptions import ValidationError
 
+# "تقرير تتبع حركة العمليات"
 class wo_auditor_analysis_view(models.Model):
     _name = 'wo.auditor.analysis.view'
     _description = 'wo.auditor.analysis.view'
     _auto = False
-    
+
     id = fields.Integer(string="تسلسل")
     account_move_id = fields.Many2one('account.move')
     account_payment_id = fields.Many2one('account.payment')
@@ -21,7 +22,6 @@ class wo_auditor_analysis_view(models.Model):
     field_type = fields.Char()
     old_value = fields.Char()
     new_value = fields.Char()
-
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'wo_auditor_analysis_view')
