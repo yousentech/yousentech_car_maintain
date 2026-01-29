@@ -6,7 +6,7 @@
       <field name="model">wo.auditor.analysis.view</field>
       <field name="arch" type="xml">
         <tree create="0"
-          default_order="operation_date,account_move_id,account_payment_id,model,write_uid,subject,record_name,field,field_desc,field_type,old_value,new_value desc">
+          default_order="operation_date,account_move_id,account_payment_id,model,write_uid,subject,record_name,field,old_value,new_value desc">
           <field name="id" widget="handle" />
           <field name="operation_date" readonly="1" />
           <field name="account_move_id"
@@ -19,10 +19,10 @@
           <field name="subject" readonly="1" />
           <field name="record_name" readonly="1" />
           <field name="field" readonly="1" />
-          <field name="field_desc" readonly="1" />
-          <field name="field_type" readonly="1" />
-          <field name="old_value" readonly="1" />
-          <field name="new_value" readonly="1" />
+          <!-- <field name="field_desc" readonly="1" /> -->
+          <!-- <field name="field_type" readonly="1" /> -->
+          <field name="old_value_integer" readonly="1" />
+          <field name="new_value_integer" readonly="1" />
 
         </tree>
       </field>
@@ -47,10 +47,10 @@
           <field name="subject" readonly="1" />
           <field name="record_name" readonly="1" />
           <field name="field" readonly="1" />
-          <field name="field_desc" readonly="1" />
-          <field name="field_type" readonly="1" />
-          <field name="old_value" readonly="1" />
-          <field name="new_value" readonly="1" />
+          <!-- <field name="field_desc" readonly="1" /> -->
+          <!-- <field name="field_type" readonly="1" /> -->
+          <field name="old_value_integer" readonly="1" />
+          <field name="new_value_integer" readonly="1" />
 
         </search>
       </field>
