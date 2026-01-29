@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <record id="technical_paperformat" model="report.paperformat">
+    <field name="name">Leaves Summary</field>
+    <field name="default" eval="True" />
+    <field name="format">custom</field>
+    <field name="page_height">297</field>
+    <field name="page_width">210</field>
+    <field name="orientation">Landscape</field>
+    <field name="margin_top">15</field>
+    <field name="margin_bottom">5</field>
+    <field name="margin_left">5</field>
+    <field name="margin_right">5</field>
+    <field name="header_line" eval="True" />
+    <field name="header_spacing">20</field>
+    <field name="dpi">200</field>
+  </record>
+  <!-- <report id="print_wo_technical_report"
+				model="mizan.wo.technical.report"
+				string=" تقرير الفنيين"
+				report_type="qweb-pdf"
+				name="yousentech_car_maintain.print_wo_technical_report_view"
+				file="yousentech_car_maintain.print_wo_technical_report_view"
+           
+				 menu="True"
+
+				/>
+        <report
+        id="print_wo_technical_xlsx"
+				model="mizan.wo.technical.report"
+        string="Print to XLSX"
+        report_type="xlsx"
+        name="yousentech_car_maintain.print_wo_technical_xlsx_view"
+        file=" تقرير الفنيين"
+        attachment_use="False"
+        /> -->
+
+  <record id="print_wo_technical_report" model="ir.actions.report">
+    <field name="name"> تقرير الفنيين</field>
+    <field name="model">mizan.wo.technical.report</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">yousentech_car_maintain.print_wo_technical_report_view</field>
+    <field name="report_file">yousentech_car_maintain.print_wo_technical_report_view</field>
+    <field name="paperformat_id" ref="yousentech_car_maintain.technical_paperformat" />
+  </record>
+
+  <template id="print_wo_technical_report_view">
+    <t t-if="o and 'company_id' in o">
+      <t t-set="company" t-value="o.company_id"></t>
+    </t>
+    <t t-if="not o or not 'company_id' in o">
+      <t t-set="company" t-value="res_company"></t>
+    </t>
+
+    <div class="header">
+      <div class="row mt32 mb32">
+        <div class="col-6">
+          <t t-if="not user_id.company_id.no_header_report_account">
+            <t t-if="user_id.company_id.branch_header">
+              <img t-if="user_id.company_id"
+                t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_header)"
+                style="max-height: 200px;" />
+            </t>
+            <t t-else="">
+              <t t-if="company.header_image">
+                <img t-if="company.header_image"
+                  t-att-src="'data:image/png;base64,%s' % to_text(company.header_image)"
+                  style="max-height: 200px;" />
+              </t>
+            </t>
+          </t>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="row mt32 mb32">
+        <div class="col-12">
+          <t t-if="not user_id.company_id.no_header_report_account">
+            <t t-if="user_id.company_id.branch_footer">
+              <img t-if="user_id.company_id"
+                t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_footer)"
+                style="max-height: 200px;" />
+              <!--<img
+              src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+              <br />
+            </t>
+            <t t-else="">
+              <t t-if="company.footer_image">
+                <img t-if="company.footer_image"
+                  t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)"
+                  style="max-height: 200px;" />
+                <!--<img
+                src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+                <br />
+              </t>
+            </t>
+          </t>
+        </div>
+      </div>
+    </div>
+
+    <t t-call="web.html_container">
+
+      <t t-call="web.external_layout">
+
+        <style>
+          table {
+          border-collapse: collapse;
+          width: 100%;
+          font-size:9px;
+          }
+          #t01 th, td {
+          text-align: left;
+          padding: 3px;
+          font-size:9px;
+          vertical-align: middle;
+          }
+        </style>
+        <style>
+          #customers {
+          border-collapse: collapse;
+          width: 100%;
+          border: 1px solid DarkOrange;
+
+          overflow:hidden
+          }
+
+          #supplier {
+          border-collapse: collapse;
+          width: 100%;
+          border: 1px solid DarkOrange;
+
+          overflow:hidden
+          }
+
+          #customers td, #customers th {
+          border: 1px solid gray;
+          padding: 5px;
+          text-align: right;
+          }
+
+          #supplier td, #supplier th {
+          border: 1px solid #D3D3D3;
+          padding: 8px;
+          text-align: right;
+          vertical-align: top;
+          }
+
+          #customers tr:nth-child(even){background-color: #F5F5F5;}
+
+          #customers tr:hover {background-color: #ddd;}
+
+          #customers th {
+          padding-top: 5px;
+          padding-bottom: 5px;
+          text-align: right;
+
+
+          }
+
+          #supplier th {
+          padding-top: 5px;
+          padding-bottom: 5px;
+          text-align: right;
+
+          }
+        </style>
+        <style>
+          #table1 {
+          border-collapse: collapse;
+          width: 100%;
+          font-size:9px;
+          }
+
+          #table1 th, #table1 td {
+          padding: 8px;
+          text-align: right;
+          font-size:9px;
+          }
+        </style>
+        <style>
+          #foo {
+          position:absolute;
+          bottom:300px;
+          right:0px;
+          }
+        </style>
+
+        <div class="page">
+          <h3>
+            <center>
+              <strong> تقرير الفنيين </strong>
+            </center>
+          </h3>
+
+
+          <t t-if="branchs">
+            <div>
+
+              <strong> بيانات بالسيارات الواردة الى المركز : </strong>
+              <br></br>
+              <span t-esc="', '.join(g['name'] for g in branchs)" />
+
+            </div>
+          </t>
+          <t t-set="technical_list" t-value="[]" />
+          <t t-if="technical_ids">
+            <t t-set="technical_list" t-value="technical_ids" />
+          </t>
+          <t t-else="">
+            <t t-foreach="docs.technical_name" t-as="tech">
+              <t t-if="tech not in technical_list">
+                <t t-set="technical_list" t-value="technical_list+[tech]" />
+              </t>
+            </t>
+          </t>
+
+          <br> </br>
+          <br> </br>
+          <t t-if="display_type == 'detail'">
+            <t t-foreach="sorted(set(technical_list))" t-as="rec">
+              <div>
+                <strong> الفني : <span t-esc="rec.technical_emp_id.name" /></strong>
+              </div>
+              <br></br>
+              <table id="customers">
+                <thead>
+                  <tr class="text-center">
+                    <th class="text-center" style="width: 5%">#</th>
+                    <th class="text-center" style="width: 15%">الخدمة</th>
+                    <th class="text-center" style="width: 7%">تاريح البدء</th>
+                    <th class="text-center" style="width: 7%">تاريخ الانتهاء</th>
+                    <th class="text-center" style="width: 7%">فترة الانجاز(ساعة)</th>
+                    <th class="text-center" style="width: 7%">الفني المعمد</th>
+                    <th class="text-center" style="width: 7%">حالة الانجاز</th>
+                    <th class="text-center" style="width: 7%">الفنيين المشتركين</th>
+                    <th class="text-center" style="width: 5%">رقم امر العمل</th>
+                    <th class="text-center" style="width: 7%">العميل</th>
+                    <th class="text-center" style="width: 7%">جوال العميل</th>
+                    <th class="text-center" style="width: 10%">لوحة السيارة</th>
+                    <th class="text-center" style="width: 10%">الفرع</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-set="l_cnt" t-value="0" />
+
+                  <t t-foreach="docs.filtered(lambda x: rec.id in x.technical_name.ids)" t-as="line">
+                    <tr>
+                      <t t-set="l_cnt" t-value="l_cnt + 1" />
+                      <td>
+                        <span t-esc="l_cnt" />
+                      </td>
+                      <td>
+                        <span t-esc="line.product_id.name" />
+                      </td>
+                      <td>
+                        <span t-esc="line.header_id.get_datetime_zone_user(line.start_Service_date)" />
+                      </td>
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+                          <span t-esc="line.header_id.get_datetime_zone_user(line.complete_date)" />
+                        </strong>
+                      </td>
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+                          <span t-esc="line.diff_times" />
+
+                        </strong>
+                      </td>
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+
+                          <span t-esc="line.technical_is_done.technical_emp_id.name" />
+                        </strong>
+                      </td>
+                      <td>
+                        <t t-if="line.start_Service_date or line.complete_date">
+                          <strong>
+                            <span style="color:gray;" />
+
+                            <t t-if="line.state == 'complete'">
+                              completed / مكتمل
+                            </t>
+                            <t t-else="">
+                              started / البدء
+                            </t>
+                          </strong>
+                        </t>
+                      </td>
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+                          <span
+                            t-esc="', '.join(g['name'] for g in line.technical_name.filtered(lambda x: x.id != rec.id).technical_emp_id)" />
+
+                        </strong>
+                      </td>
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+                          <span t-esc="line.header_id.id" />
+                        </strong>
+                      </td>
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+                          <span t-esc="line.header_id.partner_id.name" />
+                        </strong>
+                      </td>
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+                          <span t-esc="line.header_id.partner_mobile" />
+                        </strong>
+                      </td>
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+
+                          <span t-esc="line.header_id.car_panel_no" />
+                        </strong>
+                      </td>
+
+                      <td>
+                        <strong>
+                          <span style="color:gray;" />
+
+                          <span t-esc="line.header_id.company_id.name" />
+                        </strong>
+                      </td>
+
+                    </tr>
+                  </t>
+                </tbody>
+
+              </table>
+            </t>
+          </t>
+          <t t-if="display_type == 'summary' ">
+            <table id="customers">
+              <thead>
+                <tr class="text-center">
+                  <th class="text-center" style="width: 15%">الفني</th>
+                  <th class="text-center" style="width: 7%">عدد الخدمات المنجزة</th>
+                  <th class="text-center" style="width: 7%">الايرادات المحققة</th>
+                </tr>
+              </thead>
+              <tbody>
+                <t t-set="total" t-value="0" />
+
+                <t t-foreach="sorted(set(technical_list))" t-as="rec">
+                  <tr>
+                    <td>
+                      <span t-esc="rec.technical_emp_id.name" />
+                    </td>
+                    <t t-set="service_count"
+                      t-value="len([l for l in docs if rec.id in l.technical_name.ids])" />
+                    <t t-set="service_amount"
+                      t-value="sum(l.total_before_tax / len(l.technical_name) for l in docs.filtered(lambda x: rec.id in x.technical_name.ids and len(x.technical_name.ids) > 0))" />
+                    <t t-set="total" t-value="total +service_amount " />
+
+                    <td>
+                      <span t-esc="service_count" />
+
+                    </td>
+                    <t t-if="service_count>0">
+                      <td>
+                        <span t-esc="round(service_amount,2)" />
+
+                      </td>
+                    </t>
+                    <t t-else="">
+                      <td>
+                        0
+
+                      </td>
+                    </t>
+                  </tr>
+
+                </t>
+                <tr>
+                  <td colspan="2">
+                    الاجمالي
+                  </td>
+                  <td>
+                    <span t-esc="round(total,2)" />
+
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+
+          </t>
+
+        </div>
+        <p style="page-break-after:always;">
+        </p>
+      </t>
+    </t>
+  </template>
+
+
+</odoo>

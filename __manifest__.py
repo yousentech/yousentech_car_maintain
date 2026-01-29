@@ -23,7 +23,7 @@
         
         'views/views.xml',
         
-        'views/res_config_setting.xml',
+        'wizard/res_config_setting.xml',
         
         'views/product_template.xml',
         'views/entry_card_view.xml',
@@ -59,15 +59,15 @@
         'views/wo_auditor_analysis.xml',
         
         'views/mizan_product_wizard.xml',
-        'views/message_confirm.xml',
+        'wizard/message_confirm.xml',
         
-        'reports/car_checkup_report.xml',
-        'reports/car_work_order_report.xml',
-        'reports/mizan_wo_report_module.xml',
-        'reports/wo_invoice_payments_report.xml',
-        'reports/close_cash_report.xml',
-        'reports/wo_technical_report.xml',
-        'reports/all_reports_views.xml',
+        'pdf_templates/car_checkup_report.xml',
+        'pdf_templates/car_work_order_report.xml',
+        'pdf_templates/mizan_wo_report_module.xml',
+        'pdf_templates/wo_invoice_payments_report.xml',
+        'pdf_templates/close_cash_report.xml',
+        'pdf_templates/wo_technical_report.xml',
+        'pdf_templates/all_reports_views.xml',
         
        
     ],
