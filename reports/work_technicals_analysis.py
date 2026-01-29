@@ -8,7 +8,7 @@ class wo_technicals_analysis_view(models.Model):
     _name = 'wo.technicals.analysis.view'
     _description = 'wo.technicals.analysis.view'
     _auto = False
-
+ 
     id = fields.Integer(string="تسلسل")
     header_id = fields.Many2one(
         'mizan.car.work.procedure.master', string="رقم امر العمل")
@@ -65,7 +65,7 @@ class wo_technicals_analysis_view(models.Model):
     wo.amount_tax, 
     wo.amount_with_tax, 
     wo.supervisor_id,
-    t.categ_id, 
+    t.categ_id as product_categ_id, 
     wo.technical_count,
     wo.hr_technical_assignments_id,
 

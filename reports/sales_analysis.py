@@ -44,7 +44,7 @@ class wo_sales_analysis(models.Model):
 
     product_tmpl_id = fields.Many2one('product.template', string='Product Template',
                                       related='product_id.product_tmpl_id', readonly=True)
-
+ 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'wo_sales_analysis')
         ##
@@ -81,8 +81,8 @@ class wo_sales_analysis(models.Model):
                             
                             
                                 wo.product_id, 
-                                p.detailed_type, 
-                                p.categ_id 
+                                p.detailed_type as type, 
+                                p.categ_id  as product_categ_id
                             from 
                             (select  s.header_id , m.partner_id , m.company_id, m.create_invoice_manually_id 
                             ,(s.unit_price / 1.15) as untaxed_amount, s.discount_amount as discount, s.amount_tax as amount_tax, 

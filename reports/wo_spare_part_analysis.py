@@ -15,7 +15,7 @@ class wo_spare_part_analysis_view(models.Model):
     create_uid = fields.Many2one('res.users', string='البائع', readonly=True)
     stock_picking_id = fields.Many2one(
         'stock.picking', string='رقم الشحنة', readonly=True)
-
+ 
     partner_id = fields.Many2one('res.partner', string='العميل', readonly=True)
     order_date = fields.Date(string='تاريخ الطلب',)
     create_date = fields.Datetime(string='تاريخ البدء',)
@@ -47,7 +47,7 @@ class wo_spare_part_analysis_view(models.Model):
                           WITH product_categ AS (
                                         SELECT 
                                             p.id AS product_id,
-                                            t.categ_id
+                                            t.categ_id as product_categ_id
                                         FROM product_product p
                                         JOIN product_template t ON p.product_tmpl_id = t.id
                                     ),
@@ -97,7 +97,7 @@ class wo_spare_part_analysis_view(models.Model):
                                         cd.amount_tax,
                                         round((cd.total_base::numeric - (cd.total_base * (cd.discount_perc / 100))::numeric) + cd.amount_tax::numeric, 2) AS amount_with_tax,
                                         wo.supervisor_id,
-                                        pc.categ_id
+                                        pc.product_categ_id
                                     FROM (
                                         SELECT
                                             m.id AS header_id,
