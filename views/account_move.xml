@@ -16,7 +16,7 @@
                          invisible="move_type not in ['out_invoice','out_refund']" />
                     <field name="is_guarantee" readonly="1"
                          invisible="move_type not in ['out_invoice','out_refund']" />
-                    <field name="work_order_id" readonly="1"
+                    <field name="maint_wo_id" readonly="1"
                          invisible="move_type not in ['out_invoice','out_refund']" />
                     <field name="collecting_products_report_flag" invisible="1" />
 
@@ -41,7 +41,7 @@
                          invisible="move_type not in ['out_invoice','out_refund']" />
                     <field name="car_type" invisible="move_type not in ['out_invoice','out_refund']" />
 
-                    <field name="work_order_id"
+                    <field name="maint_wo_id"
                          invisible="move_type not in ['out_invoice','out_refund']" />
                </xpath>
           </field>
@@ -57,7 +57,7 @@
                     <field name="car_panel_no" />
                     <field name="car_type" />
                     <field name="sale_man_id" />
-                    <field name="work_order_id" />
+                    <field name="maint_wo_id" />
                </xpath>
 
           </field>

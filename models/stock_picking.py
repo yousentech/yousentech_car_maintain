@@ -26,9 +26,9 @@ class stock_picking(models.Model):
     car_size_id = fields.Many2one('mizan.car.size', string="المقاس", )
     car_model = fields.Char(string="الموديل")
     car_type_id = fields.Many2one('mizan.car.types', string="نوع السيارة")
-    work_order_id = fields.Many2one(
+    maint_wo_id = fields.Many2one(
         'mizan.wo.picking', string="امر العمل", domain=_get_default_branches)
-    work_order_id1 = fields.Many2one(
+    maint_wo_id1 = fields.Many2one(
         'mizan.car.work.procedure.master', string="امر العمل")
     work_order_flag = fields.Boolean(string="عملية امر عمل")
     send_done_wo = fields.Boolean(
@@ -44,15 +44,15 @@ class stock_picking(models.Model):
         for rec in self:
             rec.total_all = sum(l.total for l in rec.move_ids_without_package)
 
-    @api.constrains('move_ids_without_package', 'workstation_id', 'work_order_id', 'location_dest_id')
+    @api.constrains('move_ids_without_package', 'workstation_id', 'maint_wo_id', 'location_dest_id')
     def get_price_of_product(self):
         for rec in self:
-            if rec.location_dest_id.workstation_location_id and not rec.work_order_id1:
+            if rec.location_dest_id.workstation_location_id and not rec.maint_wo_id1:
                 raise ValidationError(
                     "تنبيه..  لا يمكن اعتماد الشحنة لعدم تحديد امر العمل للجهة المصروفة [%s] " % rec.location_dest_id.name)
-            if rec.workstation_id and rec.work_order_id:
+            if rec.workstation_id and rec.maint_wo_id:
                 if not (
-                        rec.workstation_id.company_id.id == rec.work_order_id.company_id):
+                        rec.workstation_id.company_id.id == rec.maint_wo_id.company_id):
                     raise ValidationError(
                         "تنبيه.. الفروع غير متوافقة بين امر العمل والوشة ")
 
@@ -119,22 +119,22 @@ class stock_picking(models.Model):
                         'picking_type_id': ['|', ('workstation_id', '!=', rec.workstation_flag_id), ('workstation_id', '=', False)],
                     }}
 
-    @api.onchange('workstation_id', 'work_order_id')
+    @api.onchange('workstation_id', 'maint_wo_id')
     def check_branchs_in_picking(self):
         for rec in self:
-            if rec.workstation_id and rec.work_order_id:
-                if not (rec.workstation_id.company_id.id == rec.work_order_id.company_id):
+            if rec.workstation_id and rec.maint_wo_id:
+                if not (rec.workstation_id.company_id.id == rec.maint_wo_id.company_id):
                     raise ValidationError(
                         "تنبيه.. الفروع غير متوافقة بين امر العمل والورشة ")
 
-    @api.onchange('work_order_id')
+    @api.onchange('maint_wo_id')
     def get_wo(self):
         for rec in self:
-            if rec.work_order_id:
-                rec.work_order_id1 = rec.work_order_id.id
+            if rec.maint_wo_id:
+                rec.maint_wo_id1 = rec.maint_wo_id.id
                 rec.work_order_flag = True
             else:
-                rec.work_order_id1 = False
+                rec.maint_wo_id1 = False
 
     def delete_products_from_wo(self):
         for rec in self:
@@ -149,13 +149,13 @@ class stock_picking(models.Model):
 
             rec.write({'send_done_wo': False})
 
-            rec.work_order_id = False
-            rec.work_order_id1 = False
+            rec.maint_wo_id = False
+            rec.maint_wo_id1 = False
             rec.work_order_flag = False
 
     def button_validate(self):
         for rec in self:
-            if rec.work_order_id or rec.work_order_flag:
+            if rec.maint_wo_id or rec.work_order_flag:
                 for line in rec.move_ids_without_package:
                     if (line.product_qty != line.product_uom_qty) or not line.unit_price:
                         raise ValidationError(
@@ -164,9 +164,9 @@ class stock_picking(models.Model):
 
     def send_products_to_wo(self):
         for rec in self:
-            if rec.work_order_id:
+            if rec.maint_wo_id:
                 wo = self.env['mizan.car.work.procedure.master'].search(
-                    [('id', '=', rec.work_order_id.id)])
+                    [('id', '=', rec.maint_wo_id.id)])
 
                 if wo.state in ('cancel_order', 'execute_completed'):
                     raise ValidationError(

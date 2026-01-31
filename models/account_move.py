@@ -102,7 +102,7 @@ class account_move(models.Model):
     
     
     checkup_id = fields.Many2one('mizan.car.checkup.procedure.master', string="رقم امر الفحص",readony=True,copy=False)
-    work_order_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل",copy=False)
+    maint_wo_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل",copy=False)
     sale_order_id = fields.Many2one('sale.order', string="امر البيع",copy=False)
     car_panel_no = fields.Char(string="رقم لوحة السيارة")
     partner_mobile = fields.Char(string="رقم الجوال")
@@ -118,8 +118,8 @@ class account_move(models.Model):
     @api.model
     def create(self, vals_list):
         invoice = super(account_move, self).create(vals_list)
-        if vals_list.get('work_order_id'):
-            wo_move = self.env['mizan.car.work.procedure.master'].search([('id', '=', vals_list.get('work_order_id'))])
+        if vals_list.get('maint_wo_id'):
+            wo_move = self.env['mizan.car.work.procedure.master'].search([('id', '=', vals_list.get('maint_wo_id'))])
             if wo_move:
                 wo_move.write({'create_invoice_manually_id': invoice.id})
 

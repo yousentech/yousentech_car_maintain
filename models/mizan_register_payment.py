@@ -30,13 +30,13 @@ class mizan_register_payment(models.Model):
                                  domain=get_journal_id)
 
     checkup_id = fields.Many2one('mizan.car.checkup.procedure.master', string="الفحص", copy=False)
-    work_order_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل", copy=False)
+    maint_wo_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل", copy=False)
 
     def create_payment(self):
         for rec in self:
             if rec.checkup_id:
                 rec.create_payment_checkup()
-            elif rec.work_order_id:
+            elif rec.maint_wo_id:
                 rec.create_payment_wo()
 
 
@@ -144,12 +144,12 @@ class mizan_register_payment(models.Model):
                     "يجب تحديد المبلغ اولا")
 
             payment = self.env['mizan.register.payment'].search(
-                [('header_id', '=', rec.header_id.id), ('work_order_id', '=', rec.header_id.work_order_id.id)])
+                [('header_id', '=', rec.header_id.id), ('maint_wo_id', '=', rec.header_id.maint_wo_id.id)])
             advanced_amount = 0
             for line in payment:
                 advanced_amount = advanced_amount + line.payment_amount
 
-            # if advanced_amount > rec.header_id.work_order_id.total_all_with_tax:
+            # if advanced_amount > rec.header_id.maint_wo_id.total_all_with_tax:
             #     raise ValidationError(
             #         "اكتمل الدفع لامر العمل .. لا يمكن انشاء مفوعات جديدة ")
             #
@@ -218,7 +218,7 @@ class mizan_register_payment(models.Model):
                 'currency_id': self.env.company.currency_id.id,
                 'ref': self.payment_note,
                 'entry_card_id': self.header_id.id,
-                'work_order_id': self.header_id.work_order_id.id,
+                'maint_wo_id': self.header_id.maint_wo_id.id,
             })
 
             payment.action_post()
@@ -226,12 +226,12 @@ class mizan_register_payment(models.Model):
             self.write({'state': 'posted'})
 
             payment = self.env['mizan.register.payment'].search(
-                [('header_id', '=', rec.header_id.id), ('work_order_id', '=', rec.header_id.work_order_id.id)])
+                [('header_id', '=', rec.header_id.id), ('maint_wo_id', '=', rec.header_id.maint_wo_id.id)])
             advanced_amount = 0
             for line in payment:
                 advanced_amount = advanced_amount + line.payment_amount
 
             wo = self.env['mizan.car.work.procedure.master'].search(
-                [('id', '=', rec.header_id.work_order_id.id)])
+                [('id', '=', rec.header_id.maint_wo_id.id)])
 
             wo.write({'advance_amount': advanced_amount})

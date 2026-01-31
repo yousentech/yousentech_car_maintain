@@ -38,7 +38,7 @@ class mizan_car_work_procedure_master(models.Model):
             car_data = {'partner_id': header.partner_id.id,
                         'partner_name': header.partner_id.name,
                         'partner_mobile': header.partner_mobile,
-                        'work_order_id': header.id,
+                        'maint_wo_id': header.id,
                         'wo_date': header.create_date,
                         'car_type': header.car_type_id.name,
                         'car_type_id': header.car_type_id.id,

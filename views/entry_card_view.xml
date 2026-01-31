@@ -57,7 +57,7 @@
                 name="call_wo_procedure"
                 class="oe_stat_button"
                 string="امر العمل"
-                invisible="work_order_id == False"
+                invisible="maint_wo_id == False"
                 icon="fa-pencil-square-o"
               />
               <button type="object"
@@ -89,7 +89,7 @@
                 <field name="is_user_supervisor" invisible="1" />
                 <field name="is_user_sale_man" invisible="1" />
                 <field name="checkup_id" invisible="1" />
-                <field name="work_order_id" invisible="1" />
+                <field name="maint_wo_id" invisible="1" />
 
                 <field name="is_user_sale_man" invisible="1" />
 
@@ -119,7 +119,7 @@
                 <field name="checkup_id"
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
                   readonly="1" />
-                <field name="work_order_id"
+                <field name="maint_wo_id"
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
                   readonly="1" />
 
@@ -192,7 +192,7 @@
 
           <field name="supervisor_name" string="المشرف" />
           <field name="car_size_id" />
-          <field name="work_order_id" />
+          <field name="maint_wo_id" />
           <field name="car_panel_no" />
 
           <field name="vin_no" optional="hide" />
@@ -222,7 +222,7 @@
       <field eval="10" name="priority" />
       <field name="arch" type="xml">
         <search string=" البحث في ">
-          <field name="work_order_id" />
+          <field name="maint_wo_id" />
           <field name="car_panel_no" />
           <field name="partner_mobile" />
           <field name="car_type_id" />

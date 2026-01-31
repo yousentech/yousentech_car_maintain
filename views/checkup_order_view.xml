@@ -198,7 +198,7 @@
                     <field name="partner_mobile" />
                     <field name="car_size_id" />
                     <field name="entry_card_id" />
-                    <field name="work_order_id" />
+                    <field name="maint_wo_id" />
 
 
                     <field name="state" readonly="1" />

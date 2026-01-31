@@ -75,13 +75,13 @@ class mizan_car_entry_card_master(models.Model):
     commission = fields.Float(string="عمولة الفحص")
     pay_type = fields.Selection([('cash','نقدا'),('bank','بنكي'),('transfer','تحويل')],string="طريقة الدفع")
     checkup_id = fields.Many2one('mizan.car.checkup.procedure.master', string="الفحص",copy=False)
-    work_order_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل",copy=False)
+    maint_wo_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل",copy=False)
 
     @api.onchange('partner_id','car_panel_no','partner_mobile','car_size_id','car_model','car_type_id','vin_no','sale_man_id')
     def update_data(self):
         for rec in self:
             if rec.partner_id:
-                if rec.work_order_id.sale_order_id:
+                if rec.maint_wo_id.sale_order_id:
                     raise ValidationError(
                         "تنبيه... لا يمكن تعديل البيانات لوجود امر بيع على هذا الفحص")
 
@@ -95,8 +95,8 @@ class mizan_car_entry_card_master(models.Model):
                      'vin_no': rec.vin_no,
                     'sale_man_id': rec.sale_man_id.id,})
 
-                if rec.work_order_id:
-                   rec.work_order_id.write({ 'partner_id': rec.partner_id.id,
+                if rec.maint_wo_id:
+                   rec.maint_wo_id.write({ 'partner_id': rec.partner_id.id,
                      'car_panel_no': rec.car_panel_no,
                     'partner_mobile': rec.partner_mobile,
                     'car_size_id': rec.car_size_id.id,
@@ -262,8 +262,8 @@ class mizan_car_entry_card_master(models.Model):
     def not_checkup_car(self):
         for rec in self:
             rec.write({'state': 'not_checkup_car'})
-            if rec.work_order_id:
-                rec.work_order_id.write({'state': 'not_checkup_car'})
+            if rec.maint_wo_id:
+                rec.maint_wo_id.write({'state': 'not_checkup_car'})
             if rec.checkup_id:
                 rec.checkup_id.write({'state': 'not_checkup_car'})
 
@@ -278,14 +278,14 @@ class mizan_car_entry_card_master(models.Model):
         for rec in self:
             if rec.checkup_id:
                 rec.checkup_id.write({'state': 'execute_completed'})
-            if rec.work_order_id:
-                rec.work_order_id.write({'state': 'execute_completed'})
+            if rec.maint_wo_id:
+                rec.maint_wo_id.write({'state': 'execute_completed'})
             rec.write({'state': 'execute_completed'})
 
 
     def unlink(self):
         for rec in self:
-            if not rec.is_user_allow_delete or rec.checkup_id or rec.work_order_id:
+            if not rec.is_user_allow_delete or rec.checkup_id or rec.maint_wo_id:
                  raise ValidationError(
                     " تنبيه .. لا يمكن الحذف  لوجود ارتباطات بكرت الدخول او ان المستخدم لاتوجد له صلاحية  ")
         return super(mizan_car_entry_card_master, self).unlink()
@@ -298,8 +298,8 @@ class mizan_car_entry_card_master(models.Model):
                     " تنبيه .. لا يمكن الحذف  .. المستخدم لاتوجد له صلاحية  ")
             if rec.checkup_id:
                 rec.checkup_id.write({'state': 'cancel_order'})
-            if rec.work_order_id:
-                rec.work_order_id.write({'state': 'cancel_order'})
+            if rec.maint_wo_id:
+                rec.maint_wo_id.write({'state': 'cancel_order'})
             rec.write({'state': 'cancel_order'})
 
 

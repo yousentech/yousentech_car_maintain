@@ -48,7 +48,7 @@ class mizan_car_checkup_procedure_master(models.Model):
     services_price_with_tax = fields.Float(string="الاجمالي شامل الضريبة", store=True,
                                            readonly=True)
 
-    work_order_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل",copy=False)
+    maint_wo_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل",copy=False)
     entry_card_id = fields.Many2one('mizan.car.entry.card.master', string="بيانات كرت الدخول",copy=False)
 
     result_lines = fields.One2many('mizan.car.checkup.procedure.line','header_id',ondelete='cascade',copy=False)
@@ -337,8 +337,8 @@ class mizan_car_checkup_procedure_master(models.Model):
                 }
 
                 wo_procedure = self.env['mizan.car.work.procedure.master'].create(results_tmp)
-                rec.write({'work_order_id': wo_procedure.id})
-                rec.entry_card_id.write({'work_order_id':wo_procedure.id})
+                rec.write({'maint_wo_id': wo_procedure.id})
+                rec.entry_card_id.write({'maint_wo_id':wo_procedure.id})
                 rec.write({'state': 'work_order_started'})
                 rec.entry_card_id.write({'state': 'work_order_started'})
 
@@ -386,9 +386,9 @@ class mizan_car_checkup_procedure_master(models.Model):
 
     def unlink(self):
         for rec in self:
-            if rec.work_order_id:
+            if rec.maint_wo_id:
                  raise ValidationError(
-                    "تنبيه .. لا يمكن الحذف بسبب تم انشاء امر عمل (%s) " % rec.work_order_id.id)
+                    "تنبيه .. لا يمكن الحذف بسبب تم انشاء امر عمل (%s) " % rec.maint_wo_id.id)
             if rec.create_invoice_manually_id:
                 raise ValidationError(
                     "تنبيه .. لا يمكن الحذف بسبب تم انشاء فاتورة مبيعات (%s) " % rec.create_invoice_manually_id.name)
@@ -399,7 +399,7 @@ class mizan_car_checkup_procedure_master(models.Model):
                     " تنبيه .. لا يمكن الحذف .. المستخدم لاتوجد له صلاحية  ")
             rec.entry_card_id.write({'state': 'confirm'})
             rec.entry_card_id.write({'checkup_id': False})
-            rec.work_order_id.write({'checkup_id': False})
+            rec.maint_wo_id.write({'checkup_id': False})
 
         return super(mizan_car_checkup_procedure_master, self).unlink()
 

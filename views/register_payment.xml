@@ -9,7 +9,7 @@
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="entry_card_id" />
                     <field name="checkup_id" />
-                    <field name="work_order_id" />
+                    <field name="maint_wo_id" />
                 </xpath>
             </field>
         </record>
@@ -51,7 +51,7 @@
                                 <field name="remaining_amount" string="المتبقي" />
                                 <field name="header_id" readonly="1" />
                                 <field name="checkup_id" readonly="1" />
-                                <field name="work_order_id" readonly="1" />
+                                <field name="maint_wo_id" readonly="1" />
 
                             </group>
                         </group>
@@ -71,7 +71,7 @@
                     <field name="payment_amount" string="المبلغ المدفرع" />
                     <field name="header_id" readonly="1" />
                     <field name="checkup_id" readonly="1" />
-                    <field name="work_order_id" readonly="1" />
+                    <field name="maint_wo_id" readonly="1" />
                     <field name="payment_note" string="البيانات" />
                     <field name="state" string="الحالة" />
 
@@ -92,7 +92,7 @@
                     <field name="remaining_amount" string="الملاحظات" />
                     <field name="header_id" readonly="1" />
                     <field name="checkup_id" readonly="1" />
-                    <field name="work_order_id" readonly="1" />
+                    <field name="maint_wo_id" readonly="1" />
                     <field name="payment_note" string="البيانات" />
 
                 </search>

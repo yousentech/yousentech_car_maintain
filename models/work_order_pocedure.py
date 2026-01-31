@@ -367,7 +367,7 @@ class mizan_car_work_procedure_master(models.Model):
     def get_spare_parts_inv(self):
         for rec in self:
             picking = self.env['stock.picking'].search(
-                [('work_order_id1', '=', rec.id)])
+                [('maint_wo_id1', '=', rec.id)])
             if picking:
                 picking.send_products_to_wo()
 
@@ -397,7 +397,7 @@ class mizan_car_work_procedure_master(models.Model):
             rec.get_available_qty()
 
             sale_order_check = self.env['sale.order'].search(
-                [('work_order_id', '=', rec.id)])
+                [('maint_wo_id', '=', rec.id)])
             if sale_order_check:
                 raise ValidationError(
                     "لا يمكن انشاء امر بيع مره اخرى لنفس امر العمل")
@@ -433,7 +433,7 @@ class mizan_car_work_procedure_master(models.Model):
                 'company_id': rec.entry_card_id.company_id.id,
                 'user_id': rec.user_id.id,
                 'warehouse_id': whs_id.id,
-                'work_order_id': rec.id,
+                'maint_wo_id': rec.id,
                 'entry_card_id': rec.entry_card_id.id,
                 'car_panel_no': rec.car_panel_no,
                 'partner_mobile': rec.partner_mobile,
@@ -571,7 +571,7 @@ class mizan_car_work_procedure_master(models.Model):
     def call_sale_order(self):
         for rec in self:
             sale_order = self.env['sale.order'].search(
-                [('work_order_id', '=', rec.id)])
+                [('maint_wo_id', '=', rec.id)])
 
             action = self.env.ref('sale.action_orders')
             result = action.read()[0]
@@ -594,8 +594,8 @@ class mizan_car_work_procedure_master(models.Model):
                 rec.entry_card_id.write({'state': 'execute_started'})
                 rec.checkup_id.write({'state': 'execute_started'})
 
-                rec.entry_card_id.write({'work_order_id': False})
-                rec.checkup_id.write({'work_order_id': False})
+                rec.entry_card_id.write({'maint_wo_id': False})
+                rec.checkup_id.write({'maint_wo_id': False})
 
             else:
                 raise ValidationError(
@@ -662,7 +662,7 @@ class mizan_car_work_procedure_master(models.Model):
     def action_register_payment(self):
         for rec in self:
             payment = self.env['mizan.register.payment'].search(
-                [('header_id', '=', rec.entry_card_id.id), ('work_order_id', '=', rec.id)])
+                [('header_id', '=', rec.entry_card_id.id), ('maint_wo_id', '=', rec.id)])
 
             action = self.env.ref(
                 'yousentech_car_maintain.action_mizan_payment_view')
@@ -677,7 +677,7 @@ class mizan_car_work_procedure_master(models.Model):
         remaining_amount = 0
         for rec in self:
             payment = self.env['mizan.register.payment'].search(
-                [('header_id', '=', rec.entry_card_id.id), ('work_order_id', '=', rec.id)])
+                [('header_id', '=', rec.entry_card_id.id), ('maint_wo_id', '=', rec.id)])
 
             for line in payment:
                 advanced_amount = advanced_amount + line.payment_amount
@@ -694,7 +694,7 @@ class mizan_car_work_procedure_master(models.Model):
                             'default_remaining_amount': remaining_amount, 'default_company_id': rec.entry_card_id.company_id.id,
                             'default_payment_note': "دفعة مقدمة لامر العمل",
 
-                            'default_header_id': rec.entry_card_id.id, 'default_work_order_id': rec.id, 'default_payment_amount': remaining_amount if remaining_amount else 0,
+                            'default_header_id': rec.entry_card_id.id, 'default_maint_wo_id': rec.id, 'default_payment_amount': remaining_amount if remaining_amount else 0,
                             },
                 'target': 'current'
             }

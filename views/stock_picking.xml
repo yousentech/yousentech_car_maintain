@@ -19,9 +19,9 @@
                 </field>
                 <field name="origin" position="after">
                     <field name="work_order_flag" />
-                    <field name="work_order_id"
+                    <field name="maint_wo_id"
                         options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                    <field name="work_order_id1" readonly="1" force_save="1" />
+                    <field name="maint_wo_id1" readonly="1" force_save="1" />
                     <field name="partner_mobile" />
                     <field name="car_panel_no" />
                     <field name="car_size_id" />
@@ -80,7 +80,7 @@
             <field name="arch" type="xml">
                 <field name="origin" position="after">
                     <field name="work_order_flag" />
-                    <field name="work_order_id1"
+                    <field name="maint_wo_id1"
                         options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     <field name="manual_ref_no" />
                     <field name="workstation_id" />
@@ -100,7 +100,7 @@
             <field name="inherit_id" ref="stock.view_picking_internal_search" />
             <field name="arch" type="xml">
                 <xpath expr="//search" position="inside">
-                    <field name="work_order_id1" />
+                    <field name="maint_wo_id1" />
                     <field name="car_panel_no" />
                     <field name="partner_mobile" />
                     <field name="car_type_id" />
