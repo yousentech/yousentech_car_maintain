@@ -30,8 +30,9 @@
             />
             <button name="return_to_modify" string="استعادة للتعديل" type="object"
               class="oe_highlight"
-              invisible="state not in ['confirm','execute_started','work_order_started']"
-              groups="yousentech_car_maintain.group_supervisor_priv,yousentech_car_maintain.group_sales_man_priv"
+           
+              invisible="state not in ['confirm','execute_started','work_order_started','execute_completed']"
+              groups="yousentech_car_maintain.group_supervisor_priv,yousentech_car_maintain.group_sales_man_priv,yousentech_car_maintain.group_rtn_to_draft_and_cancel_priv"
             />
 
 
@@ -124,7 +125,7 @@
               </group>
               <group>
                 <field name="order_date" string="تاريخ الطلب"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order']" />
 
                 <field name="car_size_id"
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"

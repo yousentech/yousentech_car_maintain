@@ -19,7 +19,7 @@ class mizan_car_checkup_procedure_master(models.Model):
                               ('return_to_modify', 'استعادة للتعديل'),
                               ('cancel_order', 'ملغي امر التركيب')
 
-                              ], default='execute_started', readonly=True, copy=False)
+                              ], default='execute_started', readonly=True, related="entry_card_id.state",copy=False)
 
     car_panel_no = fields.Char(string="رقم لوحة السيارة")
 
@@ -30,6 +30,12 @@ class mizan_car_checkup_procedure_master(models.Model):
     service_type_id = fields.Many2one('mizan.services.types', string="نوع الخدمة",)
     service_type_price = fields.Float(string="سعر الخدمة", )
     advance_amount = fields.Float(string="المبلغ المدفوع")
+
+    
+    drum_counter = fields.Char(string="عداد وقت الدخول")
+
+    drum_counter_exit = fields.Char(string="عداد وقت الخروج")
+
     company_id = fields.Many2one('res.company',copy=False,
                                default=lambda self: self._default_branch_id(), compute="_get_branch_id")
 
@@ -458,7 +464,7 @@ class mizan_car_checkup_procedure_line(models.Model):
                             compute="_get_product_tmpl_id")
 
     checkup_part_result_id = fields.Many2many('mizan.default.results', string="نتيجة الفحص",
-                                              copy=False,required=True,domain="[('product_id','=',product_tmpl_id)]")
+                                              copy=False, domain="[('product_id','=',product_tmpl_id)]")
 
     notes = fields.Char(string="الملاحظات")
     header_id = fields.Many2one('mizan.car.checkup.procedure.master',ondelete='cascade')

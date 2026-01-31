@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <!-- ### -->
-        <!-- <record id="checkup_procedure_form_view" model="ir.ui.view">
+        <record id="checkup_procedure_form_view" model="ir.ui.view">
             <field name="name">mizan.car.checkup.procedure.master</field>
             <field name="model">mizan.car.checkup.procedure.master</field>
             <field name="arch" type="xml">
@@ -26,8 +26,8 @@
                         />
 
                         <field name="state" widget="statusbar"
-        statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order"
-        />
+                        statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order"
+                        />
 
                     </header>
 
@@ -72,7 +72,7 @@
                                 <field name="is_user_sale_man" invisible="1" />
                                 <field name="partner_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                <field name="create_date" readonly="1" />
+                                <field name="create_date" force_save="1" readonly="is_user_sale_man == False or state in   ['execute_request','execute_completed','cancel_order','work_order_started']"  />
                                 <field name="car_panel_no" readonly="1" />
                                 <field name="partner_mobile" readonly="1" />
                                 <field name="car_size_id" readonly="1"
@@ -87,24 +87,32 @@
                             </group>
                             <group>
                                 <field name="end_date"
-                                    readonly="is_user_sale_man == False or state in
-        ['execute_request','execute_completed','cancel_order','work_order_started']" />
+                                    readonly="is_user_sale_man == False or state in   ['execute_request','execute_completed','cancel_order','work_order_started']" />
                                 <field name="car_model" readonly="1" />
                                 <field name="car_type_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                <field name="vin_no" readonly="1" />
+                            
+                                 <field name="vin_no" readonly="1" />
+ 
+
+                                <field name="drum_counter" readonly="create_invoice_manually_id != False or is_user_sale_man == False 
+                                                or state in  ['execute_request','execute_completed','cancel_order','work_order_started']" />
+                               
+                                <field name="drum_counter_exit" readonly="create_invoice_manually_id != False or is_user_sale_man == False 
+                                                or state in  ['execute_request','execute_completed','cancel_order','work_order_started']" />
+
 
                                 <field name="service_type_id"
-                                    readonly="create_invoice_manually_id != False or is_user_sale_man  == False or state in
-        ['execute_request','execute_completed','cancel_order']"
+                                    readonly="create_invoice_manually_id != False or is_user_sale_man  == False 
+                                    or state in   ['execute_request','execute_completed','cancel_order']"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                                 <field name="service_type_price"
-                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False or state in
-        ['execute_request','execute_completed','cancel_order']" />
+                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False
+                                     or state in   ['execute_request','execute_completed','cancel_order']" />
 
                                 <field name="pay_type"
-                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False or state in
-        ['execute_request','execute_completed','cancel_order','work_order_started']" />
+                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False
+                                     or state in   ['execute_request','execute_completed','cancel_order','work_order_started']" />
                                 <field name="advance_amount" readonly="1" />
 
                                 <field name="create_invoice_manually_id" invisible="1" />
@@ -125,8 +133,8 @@
 
 
                                 <field name="result_lines"
-                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False or state in
-        ['execute_request','execute_completed','cancel_order','work_order_started']">
+                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False
+                                                 or state in  ['execute_request','execute_completed','cancel_order','work_order_started']">
 
                                     <tree editable="bottom" limit="100">
                                         <field name="sequence" widget="handle" />
@@ -139,7 +147,7 @@
                                         <field name="product_tmpl_id" invisible="1" />
                                         <field name="company_id" invisible="1" />
 
-                                        <field name="checkup_part_result_id" widget="many2many_tags"
+                                        <field name="checkup_part_result_id" widget="many2many_tags" optional="hide"
                                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
                                         <field name="technical_name" widget="many2many_tags"
@@ -183,7 +191,7 @@
                     </sheet>
                 </form>
             </field>
-        </record> -->
+        </record>
 
         <record id="car_checkup_procedure_tree_view" model="ir.ui.view">
             <field name="name">mizan.car.checkup.procedure.master.tree</field>

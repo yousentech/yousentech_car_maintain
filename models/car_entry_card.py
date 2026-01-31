@@ -12,8 +12,7 @@ class mizan_car_entry_card_master(models.Model):
     seq = fields.Integer(
         string='رقم العملية',
         copy=False,
-        readonly=True,
-        default=lambda self: self._get_sequence(),)
+        readonly=True )
 
     def _get_sequence(self):
         branch_id = self.env.user.company_id.id
@@ -35,7 +34,7 @@ class mizan_car_entry_card_master(models.Model):
     complete_done_date = fields.Date(string="تاريخ انجاز العمل",copy=False)
     car_panel_no = fields.Char(string="رقم لوحة السيارة")
     execute_done = fields.Boolean()
-    drum_counter = fields.Char(string="عداد طبلون")
+    drum_counter = fields.Char(string="عداد طبلون وقت الدخول")
     partner_mobile = fields.Char(string="رقم الجوال")
     gear_type = fields.Selection([('auto_gear', 'تماتيك'), ('manual', 'عادي')], string="نوع الجير")
     car_size_id = fields.Many2one('mizan.car.size', string="المقاس",)
@@ -298,9 +297,9 @@ class mizan_car_entry_card_master(models.Model):
 
     def create_checkup_procedure(self):
         for rec in self:
-                part_results = self.env['mizan.car.checkup.procedure.master'].search([('entry_card_id','=', rec.id)])
-                if not part_results:
-                        results_tmp = {
+            part_results = self.env['mizan.car.checkup.procedure.master'].search([('entry_card_id','=', rec.id)])
+            if not part_results:
+                results_tmp = {
                             'partner_id': rec.partner_id.id,
                             'state': 'execute_started',
                             'car_panel_no': rec.car_panel_no,
@@ -310,25 +309,27 @@ class mizan_car_entry_card_master(models.Model):
                             'car_type_id': rec.car_type_id.id,
                             'entry_card_id': rec.id,
                             'vin_no': rec.vin_no,
-                          
+                            
+                            'drum_counter': rec.drum_counter,
+                            'create_date': datetime.today()
 
                         }
 
-                        checkup_procedure = self.env['mizan.car.checkup.procedure.master'].create(results_tmp)
-                        rec.write({'checkup_id': checkup_procedure.id})
-                        rec.write({'state': 'execute_started'})
+                checkup_procedure = self.env['mizan.car.checkup.procedure.master'].create(results_tmp)
+                rec.write({'checkup_id': checkup_procedure.id})
+                rec.write({'state': 'execute_started'})
+                rec._get_sequence()
 
+                action = self.env.ref('yousentech_car_maintain.action_car_checkup_procedure_view')
+                result = action.read()[0]
+                result.pop('id', None)
+                result['domain'] = [('entry_card_id', '=', rec.id)]
+                if checkup_procedure:
+                    res = self.env.ref('yousentech_car_maintain.checkup_procedure_form_view', False)
+                    result['views'] = [(res and res.id or False, 'form')]
+                    result['res_id'] = checkup_procedure.id or False
 
-                        action = self.env.ref('yousentech_car_maintain.action_car_checkup_procedure_view')
-                        result = action.read()[0]
-                        result.pop('id', None)
-                        result['domain'] = [('entry_card_id', '=', rec.id)]
-                        if checkup_procedure:
-                            res = self.env.ref('yousentech_car_maintain.checkup_procedure_form_view', False)
-                            result['views'] = [(res and res.id or False, 'form')]
-                            result['res_id'] = checkup_procedure.id or False
-
-                        return result
+                return result
 
     def call_checkup_procedure(self):
         for rec in self:

@@ -17,7 +17,7 @@ class mizan_register_payment(models.Model):
         'res.users', string='User name', readonly=True,
         required=True, default=lambda self: self.env.uid)
     
-    state = fields.Selection([('draft','مسودة'),('posted','مرحل')])
+    state = fields.Selection([('draft','مسودة'),('posted','مرحل'),("cancel", "ملغي")])
     invoice_amount = fields.Float(string="مبلغ الفاتورة",readonly=True)
     advanced_amount = fields.Float(string="المبلغ المقدم",readonly=True)
     remaining_amount = fields.Float(string="المبلغ المتبقي",readonly=True)
@@ -31,6 +31,8 @@ class mizan_register_payment(models.Model):
 
     checkup_id = fields.Many2one('mizan.car.checkup.procedure.master', string="الفحص", copy=False)
     maint_wo_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل", copy=False)
+    payment_id = fields.Many2one('account.payment', )
+
 
     def create_payment(self):
         for rec in self:
@@ -67,14 +69,27 @@ class mizan_register_payment(models.Model):
                 raise ValidationError(
                     "يجب تحديد المبلغ اولا")
 
-            payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.id),('checkup_id','=', rec.header_id.checkup_id.id)])
+            payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.id),('checkup_id','=', rec.header_id.checkup_id.id),('state', '!=', 'cancel')])
             advanced_amount = 0
             for line in payment:
                 advanced_amount = advanced_amount + line.payment_amount
 
-            if advanced_amount > rec.header_id.checkup_id.service_type_price:
+            account_payment = self.env['account.payment'].search([('maint_wo_id', '=', rec.header_id.checkup_id.id),('state', '!=', 'cancel')])
+            amount_total = rec.header_id.checkup_id.service_type_price
+
+
+            ready_amount = 0
+            for line in account_payment:
+                ready_amount = ready_amount + line.amount
+              
+            if ready_amount >= amount_total:
                 raise ValidationError(
-                    "اكتمل الدفع لامر الفحص .. لا يمكن انشاء مفوعات جديدة ")
+                    "اكتمل الدفع  في شاشة مدفوعات الفوترة لامر العمل المحدد .. لا يمكن انشاء مفوعات جديدة ")
+          
+           
+            if advanced_amount >= amount_total:
+                raise ValidationError(
+                      "اكتمل الدفع لامر الفحص .. لا يمكن انشاء مفوعات جديدة ")
 
             if rec.payment_amount > rec.remaining_amount:
                     raise ValidationError(
@@ -119,10 +134,10 @@ class mizan_register_payment(models.Model):
                 'entry_card_id': self.header_id.id,
                 'checkup_id': self.header_id.checkup_id.id,
                 'company_id': self.header_id.company_id.id,
-
+               
                   })
             payment.action_post()
-            
+            self.write({'payment_id': payment.id})
             ################################################################################
             self.write({'state': 'posted'})
 
@@ -235,3 +250,46 @@ class mizan_register_payment(models.Model):
                 [('id', '=', rec.header_id.maint_wo_id.id)])
 
             wo.write({'advance_amount': advanced_amount})
+    
+    
+    def cancel_checkup_payment_btn(self):
+        for rec in self:
+            if not self.user_has_groups('yousentech_car_maintain.group_cancel_register_payment'):
+              raise ValidationError(
+                    "لا توجد لديك صلاحية الغاء المدفوعات")
+            else:
+                rec.write({'state': 'cancel'})
+                if self.payment_id:
+                    self.payment_id.action_draft()
+                    self.payment_id.cancel()
+
+                payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.checkup_id.id),('state', '!=', 'cancel')])
+            
+                advanced_amount = 0
+                for line in payment:
+                    advanced_amount = advanced_amount + line.payment_amount
+
+                wo = self.env['mizan.car.work.procedure.master'].search([('id', '=', rec.header_id.checkup_id.id)])
+
+                wo.write({'advance_amount': advanced_amount})
+    
+    def cancel_payment_btn(self):
+        for rec in self:
+            if not self.user_has_groups('yousentech_car_maintain.group_cancel_register_payment'):
+              raise ValidationError(
+                    "لا توجد لديك صلاحية الغاء المدفوعات")
+            else:
+                rec.write({'state': 'cancel'})
+                if self.payment_id:
+                    self.payment_id.action_draft()
+                    self.payment_id.cancel()
+
+                payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.maint_wo_id.id),('state', '!=', 'cancel')])
+            
+                advanced_amount = 0
+                for line in payment:
+                    advanced_amount = advanced_amount + line.payment_amount
+
+                wo = self.env['mizan.car.work.procedure.master'].search([('id', '=', rec.header_id.maint_wo_id.id)])
+
+                wo.write({'advance_amount': advanced_amount})

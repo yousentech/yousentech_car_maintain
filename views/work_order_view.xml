@@ -84,6 +84,13 @@
                                 <field name="car_type_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                                 <field name="vin_no" readonly="1" />
+                                
+                                <field name="drum_counter" readonly="create_invoice_manually_id != False or is_user_sale_man == False 
+                                                or state in  ['execute_request','execute_completed','cancel_order','work_order_started']" />
+                               
+                                <field name="drum_counter_exit" readonly="create_invoice_manually_id != False or is_user_sale_man == False 
+                                                or state in  ['execute_request','execute_completed','cancel_order','work_order_started']" />
+
 
                                 <field name="pay_type"
                                     readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />

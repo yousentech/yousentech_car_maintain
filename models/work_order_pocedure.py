@@ -18,7 +18,7 @@ class mizan_car_work_procedure_master(models.Model):
                                'اكتمال التنفيذ'), ('not_checkup_car', 'الخروج بدون فحص'),
                               ('return_to_modify', 'استعادة للتعديل'),
                               ('cancel_order', 'ملغي امر التركيب')
-                              ], default='work_order_started', readonly=True, copy=False)
+                              ], default='work_order_started', related="entry_card_id.state", readonly=True, copy=False)
 
     create_date = fields.Datetime(
         string="بدء الفحص", required=True, default=fields.Datetime.now, copy=False)
@@ -95,6 +95,10 @@ class mizan_car_work_procedure_master(models.Model):
     use_pricelist = fields.Boolean(default=lambda self: self._default_pricelist_flag(),
                                    compute="_get_pricelist_flag")
     confirm_message_flag = fields.Boolean()
+
+    drum_counter = fields.Char(string="عداد وقت الدخول")
+
+    drum_counter_exit = fields.Char(string="عداد وقت الخروج")
 
     @api.model
     def _default_pricelist_flag(self):
@@ -555,17 +559,36 @@ class mizan_car_work_procedure_master(models.Model):
             rec.checkup_id.write({'state': 'execute_completed'})
 
             rec.write({'sale_order_id': sale_order.id})
-            action = self.env.ref('sale.action_orders')
+            sale_order.action_confirm()
+            rec.call_invoice()
+
+    def call_invoice(self):
+        for rec in self:
+            invoice = self.env['account.move'].search([('work_order_id', '=', rec.id)])
+
+            action = self.env.ref('account.action_move_out_invoice_type')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
-            result['domain'] = [('id', '=', sale_order.id)]
-            if sale_order:
-                res = self.env.ref('sale.view_order_form', False)
-                result['views'] = [(res and res.id or False, 'form')]
-                result['res_id'] = sale_order.id or False
+            result['domain'] = [('id', '=', invoice.id),('type','in',['out_refund','out_invoice'])]
 
+            if invoice:
+                res = self.env.ref('account.view_move_form', False)
+                result['views'] = [(res and res.id or False, 'form')]
+                result['res_id'] = invoice.id or False
             return result
+
+            # action = self.env.ref('sale.action_orders')
+            # result = action.read()[0]
+            # result.pop('id', None)
+            # result['context'] = {}
+            # result['domain'] = [('id', '=', sale_order.id)]
+            # if sale_order:
+            #     res = self.env.ref('sale.view_order_form', False)
+            #     result['views'] = [(res and res.id or False, 'form')]
+            #     result['res_id'] = sale_order.id or False
+
+            # return result
 
     def call_sale_order(self):
         for rec in self:
@@ -675,25 +698,30 @@ class mizan_car_work_procedure_master(models.Model):
         advanced_amount = 0
         remaining_amount = 0
         for rec in self:
-            payment = self.env['mizan.register.payment'].search(
-                [('header_id', '=', rec.entry_card_id.id), ('maint_wo_id', '=', rec.id)])
-
+            payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.entry_card_id.id),('state', '!=', 'cancel'),('work_order_id','=', rec.id)])
+ 
             for line in payment:
                 advanced_amount = advanced_amount + line.payment_amount
+           
+            if advanced_amount >=  rec.total_all_with_tax:
+                raise ValidationError(
+                    "اكتمل الدفع  .. لا يمكن انشاء مفوعات جديدة ")
 
+             
             remaining_amount = rec.total_all_with_tax - advanced_amount
+
             return {
                 'name': _('Register Payment'),
                 'view_mode': 'form',
                 'res_model': 'mizan.register.payment',
-                'view_id': self.env.ref('yousentech_car_maintain.mizan_payment_view').id,
+                'view_id': self.env.ref('qimamhd_mizan_car_13.mizan_payment_view').id,
                 'type': 'ir.actions.act_window',
                 'context': {'default_invoice_amount': rec.total_all_with_tax,
                             'default_advanced_amount': advanced_amount,
-                            'default_remaining_amount': remaining_amount, 'default_company_id': rec.entry_card_id.company_id.id,
+                            'default_remaining_amount': remaining_amount, 'default_branch_id': rec.entry_card_id.branch_id.id,
                             'default_payment_note': "دفعة مقدمة لامر العمل",
 
-                            'default_header_id': rec.entry_card_id.id, 'default_maint_wo_id': rec.id, 'default_payment_amount': remaining_amount if remaining_amount else 0,
+                            'default_header_id': rec.entry_card_id.id, 'default_work_order_id': rec.id, 'default_payment_amount': remaining_amount if remaining_amount else 0,
                             },
                 'target': 'current'
             }

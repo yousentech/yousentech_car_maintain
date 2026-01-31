@@ -85,6 +85,13 @@ class mizan_car_spare_parts_lines(models.Model):
         for rec in self:
             rec.product_tax = rec.product_id.taxes_id.id
 
+  
+    @api.onchange('qty_done')
+    def set_qty_done(self):
+        for rec in self:
+            rec.qty = rec.qty_done
+
+
     @api.onchange('qty', 'qty_done')
     def check_qty_done(self):
         for rec in self:
@@ -165,5 +172,4 @@ class mizan_car_spare_parts_lines(models.Model):
                 rec.name = rec.product_id.name
                 rec.unit_price = rec.header_id.get_price_of_product(
                     rec.product_id)
-
 
