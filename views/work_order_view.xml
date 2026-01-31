@@ -61,8 +61,7 @@
                                 <field name="partner_mobile" readonly="1" />
                                 <field name="car_size_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                <field name="sale_man_id" readonly="1"
-                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                              
                                 <field name="no_spare_parts_flag"
                                     readonly="sale_order_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','execute_started']" />
 
