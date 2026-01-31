@@ -34,6 +34,8 @@ class wo_auditor_analysis_view(models.Model):
                                     SELECT
                                         ROW_NUMBER() OVER (PARTITION BY m.res_id ORDER BY m.id) AS id,
                                         m.res_id,
+                                        (select min(mm.id) from mail_message mm
+                                                  join mail_tracking_value t on t.mail_message_id = mm.id and mm.res_id = m.res_id ) min_id,
                                         m.id AS operation_id,
                                         m.res_id AS account_move_id,
                                         NULL AS account_payment_id,
@@ -56,6 +58,7 @@ class wo_auditor_analysis_view(models.Model):
                                     SELECT
                                         ROW_NUMBER() OVER (PARTITION BY m.res_id ORDER BY m.id) AS id,
                                         m.res_id,
+                                        0 as min_id,
                                         m.id AS operation_id,
                                         NULL AS account_move_id,
                                         m.res_id AS account_payment_id,
