@@ -112,10 +112,7 @@
                 <field name="supervisor_name"
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
                   readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
-                <field name="sale_man_id"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','complete_work','work_order_started']" />
-
+              
                 <field name="checkup_id"
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
                   readonly="1" />
@@ -197,9 +194,7 @@
 
           <field name="vin_no" optional="hide" />
           <field name="drum_counter" optional="hide" />
-          <field name="sale_man_id" />
-
-
+        
           <field name="state" />
         
           <field name="company_id"
@@ -236,8 +231,7 @@
           <field name="car_size_id" />
           <field name="vin_no" />
           <field name="drum_counter" />
-          <field name="sale_man_id" />
-
+          
           <field name="state" />
 
           <field name="company_id"

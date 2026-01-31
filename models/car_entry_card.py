@@ -8,14 +8,7 @@ class mizan_car_entry_card_master(models.Model):
 
     _description = 'Car checkup order master'
     _rec_name = 'seq'
-
-    
-    def _get_default_supervisor(self):
-        company_id = self.env.context.get('default_company_id', self.env.company.id)
-        return [('supervisor_emp', '=', True), ('company_id', 'in',  self.env.companies.ids),
-            ('company_id', '=', company_id)]
-
-
+ 
     seq = fields.Integer(
         string='رقم العملية',
         copy=False,
@@ -71,13 +64,13 @@ class mizan_car_entry_card_master(models.Model):
     is_user_sale_man = fields.Boolean(default=lambda self: self._default_user_sale_man(), compute="_user_sale_man_edit_mode")
     
     partner_id = fields.Many2one('res.partner', string="العميل", required=True,)
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
+    
     commission = fields.Float(string="عمولة الفحص")
     pay_type = fields.Selection([('cash','نقدا'),('bank','بنكي'),('transfer','تحويل')],string="طريقة الدفع")
     checkup_id = fields.Many2one('mizan.car.checkup.procedure.master', string="الفحص",copy=False)
     maint_wo_id = fields.Many2one('mizan.car.work.procedure.master', string="امر العمل",copy=False)
 
-    @api.onchange('partner_id','car_panel_no','partner_mobile','car_size_id','car_model','car_type_id','vin_no','sale_man_id')
+    @api.onchange('partner_id','car_panel_no','partner_mobile','car_size_id','car_model','car_type_id','vin_no')
     def update_data(self):
         for rec in self:
             if rec.partner_id:
@@ -93,7 +86,7 @@ class mizan_car_entry_card_master(models.Model):
                     'car_model': rec.car_model,
                     'car_type_id': rec.car_type_id.id,
                      'vin_no': rec.vin_no,
-                    'sale_man_id': rec.sale_man_id.id,})
+                     })
 
                 if rec.maint_wo_id:
                    rec.maint_wo_id.write({ 'partner_id': rec.partner_id.id,
@@ -103,7 +96,7 @@ class mizan_car_entry_card_master(models.Model):
                     'car_model': rec.car_model,
                     'car_type_id': rec.car_type_id.id,
                      'vin_no': rec.vin_no,
-                    'sale_man_id': rec.sale_man_id.id, })
+                      })
 
     @api.onchange('company_id')
     def _default_customer(self):
@@ -317,7 +310,7 @@ class mizan_car_entry_card_master(models.Model):
                             'car_type_id': rec.car_type_id.id,
                             'entry_card_id': rec.id,
                             'vin_no': rec.vin_no,
-                            'sale_man_id': rec.sale_man_id.id,
+                          
 
                         }
 

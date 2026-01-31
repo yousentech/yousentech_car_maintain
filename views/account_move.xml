@@ -20,10 +20,7 @@
                          invisible="move_type not in ['out_invoice','out_refund']" />
                     <field name="collecting_products_report_flag" invisible="1" />
 
-                    <field name="sale_man_id"
-                         invisible="move_type not in ['out_invoice','out_refund']"
-                         options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                         readonly="1" string="مندوب نظام الصيانة" />
+                
 
                </xpath>
            
@@ -56,7 +53,7 @@
                     <field name="partner_mobile" />
                     <field name="car_panel_no" />
                     <field name="car_type" />
-                    <field name="sale_man_id" />
+     
                     <field name="maint_wo_id" />
                </xpath>
 

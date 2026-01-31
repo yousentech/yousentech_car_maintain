@@ -40,8 +40,7 @@ class mizan_car_work_procedure_master(models.Model):
     entry_card_id = fields.Many2one(
         'mizan.car.entry.card.master', string="بيانات كرت الدخول", copy=False)
     vin_no = fields.Char(string="رقم الشاصي")
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",
-                                  copy=False, domain="[('company_id','=', company_id),('state','=', 'current')]")
+
     result_lines = fields.One2many(
         'mizan.car.work.procedure.line', 'header_id', ondelete='cascade', copy=False)
     lines_spare_parts = fields.One2many(
@@ -440,7 +439,7 @@ class mizan_car_work_procedure_master(models.Model):
                 'pay_type': rec.pay_type,
                 'vin_no': rec.vin_no,
                 'car_type': rec.car_type_id.name,
-                'sale_man_id': rec.sale_man_id.id,
+             
                 'company_id': rec.entry_card_id.company_id.id,
                 'require_signature': True,
                 'require_payment': False,

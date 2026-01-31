@@ -20,37 +20,26 @@
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
-        
         'views/views.xml',
-        
         'wizard/res_config_setting.xml',
-        
         'views/product_template.xml',
         'views/entry_card_view.xml',
         'views/work_order_view.xml',
         'views/checkup_order_view.xml',
         'views/wo_services_lines_view.xml',
-        
         'views/hr_tecnical_assignment_.xml',
         'views/hr_supervisor_assignment_.xml',
-        'views/hr_salesman_assignment.xml',
         'views/special_emp_view.xml',
-        
         'views/account_move.xml',
         'views/account_journal.xml',
         'views/account_move_close_cash.xml',
         'views/register_payment.xml',
-        
-        
         'views/sale_order.xml',
-        
         'views/stock_picking.xml',
         'views/stock_picking_workstation.xml',
         'views/stock_locations.xml',
         'views/close_inventory_operations.xml',
-        
         'views/cash_closed_view.xml',
-        
         'views/wo_sales_analysis.xml',
         'views/wo_work_order_analysis.xml',
         'views/wo_services_analysis.xml',

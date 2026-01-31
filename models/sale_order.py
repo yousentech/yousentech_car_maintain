@@ -11,7 +11,6 @@ class sale_order(models.Model):
     pay_type = fields.Selection([('cash','نقدا'),('bank','بنكي'),('transfer','تحويل')],string="طريقة الدفع")
     vin_no = fields.Char(string="رقم الشاصي")
     car_type = fields.Char(string="نوع السيارة")
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
     is_guarantee = fields.Boolean(string="اضافة ضمان",default=False)
 
 
@@ -25,7 +24,7 @@ class sale_order(models.Model):
         invoice_vals.update({'pay_type': self.pay_type or False})
         invoice_vals.update({'vin_no': self.vin_no or False})
         invoice_vals.update({'car_type': self.car_type or False})
-        invoice_vals.update({'sale_man_id': self.sale_man_id.id or False})
+  
         invoice_vals.update({'is_guarantee': self.is_guarantee or False})
 
         return invoice_vals

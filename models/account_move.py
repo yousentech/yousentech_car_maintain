@@ -108,7 +108,6 @@ class account_move(models.Model):
     partner_mobile = fields.Char(string="رقم الجوال")
     vin_no = fields.Char(string="رقم الشاصي")
     car_type = fields.Char(string="نوع السيارة")
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
     pay_type = fields.Selection([('cash','نقدا'),('bank','بنكي'),('transfer','تحويل')],string="طريقة الدفع")
     entry_card_id = fields.Many2one('mizan.car.entry.card.master', string="رقم كرت الدخول", readony=True,copy=False)
     is_guarantee = fields.Boolean(string="اضافة ضمان",default=False)

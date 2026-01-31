@@ -31,7 +31,6 @@ access_mizan_picking_workstation,mizan.picking.workstation,model_mizan_picking_w
 
 access_hr_technical_assignments,hr.technical.assignments,model_hr_technical_assignments,,1,1,1,1
 access_hr_supervisor_assignments,hr.supervisor.assignments,model_hr_supervisor_assignments,,1,1,1,1
-access_mizan_salesman_assignments,mizan.salesman.assignments,model_mizan_salesman_assignments,,1,1,1,1
 
 access_mizan_register_payment,mizan.register.payment,model_mizan_register_payment,,1,1,1,1
 access_cash_close_closed,cash.close.closed,model_cash_close_closed,,1,1,1,1

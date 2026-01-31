@@ -33,8 +33,6 @@ class mizan_car_checkup_procedure_master(models.Model):
     company_id = fields.Many2one('res.company',copy=False,
                                default=lambda self: self._default_branch_id(), compute="_get_branch_id")
 
-    sale_man_id = fields.Many2one('mizan.salesman.assignments', string="المندوب",copy=False,domain="[('company_id','=', company_id),('state','=', 'current')]")
-
     ##
     services_price = fields.Float(string="الاجمالي", store=True,
                                   readonly=True)
@@ -261,7 +259,7 @@ class mizan_car_checkup_procedure_master(models.Model):
                     'pay_type': rec.pay_type,
                     'vin_no': rec.vin_no,
                     'car_type': rec.car_type_id.name,
-                    'sale_man_id': rec.sale_man_id.id,
+                   
                     'company_id': rec.entry_card_id.company_id.id,
                     'invoice_line_ids': inv_line_ids,
                     })
@@ -328,7 +326,6 @@ class mizan_car_checkup_procedure_master(models.Model):
                     'car_model': rec.car_model,
                     'car_type_id': rec.car_type_id.id,
                     'vin_no': rec.vin_no,
-                    'sale_man_id': rec.sale_man_id.id,
                     'checkup_id': rec.id,
                     'entry_card_id': rec.entry_card_id.id,
                     'company_id': rec.entry_card_id.company_id.id,

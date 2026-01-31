@@ -61,34 +61,4 @@ class hr_supervisor_assignments(models.Model):
                 "تنبيه .. لا يمكن الحذف   ")
         return super(hr_supervisor_assignments, self).unlink()
 
-
-class mizan_salesman_assignments(models.Model):
-    _name = 'mizan.salesman.assignments'
-    _description = 'mizan salesman assignments'
-    _rec_name = "salesman_id"
-
-    salesman_id = fields.Many2one('mizan.sales.man', required=True,string="المندوب",domain=[('sale_man_type','=', 'internal')])
-    assign_date = fields.Date(string="تاريخ الاسناد", required=True, default=fields.Date.today,copy=False)
-    close_date = fields.Date(string="تاريخ الايقاف", copy=False,readonly=True)
-
-    company_id = fields.Many2one('res.company', string='الفرع المسند اليه', copy=False,required=True,)
-    state = fields.Selection([('current','متوفر لدى الفرع'),('closed','ايقاف')],string="الحالة", default='current',readonly=True)
-
-
-    @api.model
-    def create(self, vals_list):
-        salesman_id = vals_list.get('salesman_id')
-        assign_date = vals_list.get('assign_date')
-        salesman_assign = self.env['mizan.salesman.assignments'].search([('salesman_id','=',salesman_id),('state','=', 'current')])
-        for line in salesman_assign:
-            line.write({'close_date': assign_date,
-                        'state': 'closed'})
-        res = super(mizan_salesman_assignments, self).create(vals_list)
-
-        return res
-
-    def unlink(self):
-        for rec in self:
-            raise ValidationError(
-                "تنبيه .. لا يمكن الحذف   ")
-        return super(mizan_salesman_assignments, self).unlink()
+ 
