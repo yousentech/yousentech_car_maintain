@@ -28,7 +28,7 @@ class wo_auditor_analysis_view(models.Model):
         ##
         self._cr.execute("""CREATE OR REPLACE VIEW wo_auditor_analysis_view AS
                         (
-                         select id,account_move_id	,account_payment_id	,operation_date,	subject	,model,	record_name	,write_uid,old_value_integer,	new_value_integer
+                         select id,account_move_id	,account_payment_id	,operation_date,	subject	,model,	record_name	,write_uid,field,old_value_integer,	new_value_integer
 
                             from (
                                     SELECT
@@ -44,7 +44,7 @@ class wo_auditor_analysis_view(models.Model):
                                         m.model,
                                         m.record_name,
                                         m.write_uid,
-                                        t.field_id,
+                                        t.field_id as field,
                                       
                                         t.old_value_integer,
                                         t.new_value_integer
@@ -67,7 +67,7 @@ class wo_auditor_analysis_view(models.Model):
                                         m.model,
                                         m.record_name,
                                         m.write_uid,
-                                        t.field_id,
+                                        t.field_id as field,
                                        
                                         t.old_value_integer,
                                         t.new_value_integer
