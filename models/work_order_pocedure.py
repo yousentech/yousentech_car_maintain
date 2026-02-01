@@ -3,6 +3,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import datetime
 import pytz
+from datetime import datetime, time
 
 
 class mizan_car_work_procedure_master(models.Model):

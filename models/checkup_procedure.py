@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from datetime import datetime, time
 
 
 class mizan_car_checkup_procedure_master(models.Model):
