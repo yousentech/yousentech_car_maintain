@@ -513,18 +513,18 @@ class mizan_car_checkup_procedure_line(models.Model):
     #         else:
     #             rec.product_tmpl_id = False
 
-    # @api.onchange('checkup_part_id')
-    # def get_default_results(self):
-    #     for rec in self:
-    #         if rec.checkup_part_id:
-    #             rec.write({'name':  rec.checkup_part_id.name})
+    @api.onchange('checkup_part_id')
+    def get_default_results(self):
+        for rec in self:
+            if rec.checkup_part_id:
+                rec.write({'name':  rec.checkup_part_id.name})
 
-    #             for l in rec.checkup_part_id.results_lines:
-    #                 if l.default_result:
-    #                     rec.write({'checkup_part_result_id':  [(4, l.id)]})
+                for l in rec.checkup_part_id.results_lines:
+                    if l.default_result:
+                        rec.write({'checkup_part_result_id':  [(4, l.id)]})
 
-    #         else:
-    #             rec.write({'checkup_part_result_id': False})
+            else:
+                rec.write({'checkup_part_result_id': False})
 
 
 
