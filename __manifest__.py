@@ -23,8 +23,10 @@
         'views/views.xml',
         'wizard/res_config_setting.xml',
         'views/product_template.xml',
+        'views/mizan_product_wizard.xml',
         'views/entry_card_view.xml',
         'views/work_order_view.xml',
+        
         'views/checkup_order_view.xml',
         'views/wo_services_lines_view.xml',
         'views/hr_tecnical_assignment_.xml',
@@ -47,7 +49,7 @@
         'views/wo_technicals_analysis.xml',
         'views/wo_auditor_analysis.xml',
         
-        'views/mizan_product_wizard.xml',
+     
         'wizard/message_confirm.xml',
         
         'pdf_templates/mizan_wo_report_module.xml',
