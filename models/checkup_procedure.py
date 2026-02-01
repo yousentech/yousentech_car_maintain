@@ -461,9 +461,16 @@ class mizan_car_checkup_procedure_line(models.Model):
     checkup_part_id = fields.Many2one('product.product', string="نوع /كود الفحص", copy=False,required=True,domain=[('is_checkup_product','=',True)])
     name = fields.Char(string="وصف الفحص" , copy=False,required=True)
     technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
-    product_tmpl_id = fields.Many2many('product.template',default=lambda self: self._default_product_tmpl_id(),
-                            compute="_get_product_tmpl_id")
+    product_tmpl_id = fields.Many2many('product.template',compute="_get_product_tmpl_id",)
 
+    @api.depends('checkup_part_id')
+    def _get_product_tmpl_id(self):
+        for rec in self:
+            if rec.checkup_part_id:
+                rec.product_tmpl_id =  [(6, 0, rec.checkup_part_id.product_tmpl_id.ids)]
+            else:
+                rec.product_tmpl_id = [(5, 0, 0)]
+    
     checkup_part_result_id = fields.Many2many('mizan.default.results', string="نتيجة الفحص",
                                               copy=False, domain="[('product_id','=',product_tmpl_id)]")
 
@@ -489,19 +496,19 @@ class mizan_car_checkup_procedure_line(models.Model):
             else:
                 rec.company_id = False
 
-    @api.model
-    def _default_product_tmpl_id(self):
-        for rec in self:
-             return rec.checkup_part_id.product_tmpl_id.id
+    # @api.model
+    # def _default_product_tmpl_id(self):
+    #     for rec in self:
+    #          return rec.checkup_part_id.product_tmpl_id.id
 
-    @api.depends('checkup_part_id')
-    def _get_product_tmpl_id(self):
-        for rec in self:
-            if rec.checkup_part_id:
+    # @api.depends('checkup_part_id')
+    # def _get_product_tmpl_id(self):
+    #     for rec in self:
+    #         if rec.checkup_part_id:
  
-                rec.product_tmpl_id = rec.checkup_part_id.product_tmpl_id.ids
-            else:
-                rec.product_tmpl_id = False
+    #             rec.product_tmpl_id = rec.checkup_part_id.product_tmpl_id.ids
+    #         else:
+    #             rec.product_tmpl_id = False
 
     @api.onchange('checkup_part_id')
     def get_default_results(self):
