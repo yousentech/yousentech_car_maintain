@@ -467,7 +467,7 @@ class mizan_car_checkup_procedure_line(models.Model):
     def _get_product_tmpl_id(self):
         for rec in self:
             if rec.checkup_part_id:
-                rec.product_tmpl_id =  [(6, 0, rec.checkup_part_id.product_tmpl_id.ids)]
+                rec.product_tmpl_id =  [(6, 0, rec.checkup_part_id.product_tmpl_id.id)]
             else:
                 rec.product_tmpl_id = [(5, 0, 0)]
     
