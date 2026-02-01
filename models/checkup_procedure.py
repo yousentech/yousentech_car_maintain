@@ -461,7 +461,7 @@ class mizan_car_checkup_procedure_line(models.Model):
     checkup_part_id = fields.Many2one('product.product', string="نوع /كود الفحص", copy=False,required=True,domain=[('is_checkup_product','=',True)])
     name = fields.Char(string="وصف الفحص" , copy=False,required=True)
     technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
-    product_tmpl_id = fields.Many2many(default=lambda self: self._default_product_tmpl_id(),
+    product_tmpl_id = fields.Many2many('product.template',default=lambda self: self._default_product_tmpl_id(),
                             compute="_get_product_tmpl_id")
 
     checkup_part_result_id = fields.Many2many('mizan.default.results', string="نتيجة الفحص",
