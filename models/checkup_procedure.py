@@ -458,7 +458,6 @@ class mizan_car_checkup_procedure_line(models.Model):
     checkup_part_id = fields.Many2one('product.product', string="نوع /كود الفحص", copy=False,required=True,domain=[('is_checkup_product','=',True)])
 
     sequence = fields.Integer(string="التسلسل", default=12)
-    checkup_part_id = fields.Many2one('product.product', string="نوع /كود الفحص", copy=False,required=True,domain=[('is_checkup_product','=',True)])
     name = fields.Char(string="وصف الفحص" , copy=False,required=True)
     technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
     # product_tmpl_id = fields.Many2many('product.template',compute="_get_product_tmpl_id",)
@@ -475,7 +474,7 @@ class mizan_car_checkup_procedure_line(models.Model):
     #             rec.product_tmpl_id = [(5, 0, 0)]
     
     checkup_part_result_id = fields.Many2many('mizan.default.results', string="نتيجة الفحص",
-                                              copy=False,domain="[('product_id','=',checkup_part_id.product_tmpl_id)]"  )
+                                              copy=False,domain="[('product_id','=',checkup_part_id.product_tmpl_id)]")
 
     notes = fields.Char(string="الملاحظات")
     header_id = fields.Many2one('mizan.car.checkup.procedure.master',ondelete='cascade')
