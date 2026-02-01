@@ -19,7 +19,7 @@ class mizan_car_checkup_procedure_master(models.Model):
                               ('return_to_modify', 'استعادة للتعديل'),
                               ('cancel_order', 'ملغي امر التركيب')
 
-                              ], default='execute_started', readonly=True, related="entry_card_id.state",copy=False)
+                              ], default='execute_started', readonly=True, related="entry_card_id.state",store=True, copy=False)
 
     car_panel_no = fields.Char(string="رقم لوحة السيارة")
 

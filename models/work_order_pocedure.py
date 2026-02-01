@@ -18,7 +18,7 @@ class mizan_car_work_procedure_master(models.Model):
                                'اكتمال التنفيذ'), ('not_checkup_car', 'الخروج بدون فحص'),
                               ('return_to_modify', 'استعادة للتعديل'),
                               ('cancel_order', 'ملغي امر التركيب')
-                              ], default='work_order_started', related="entry_card_id.state", readonly=True, copy=False)
+                              ], default='work_order_started', related="entry_card_id.state", readonly=True,store=True, copy=False)
 
     create_date = fields.Datetime(
         string="بدء الفحص", required=True, default=fields.Datetime.now, copy=False)
