@@ -16,17 +16,18 @@
           <field name="write_uid"
             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
           <field name="model" />
-          <field name="subject" readonly="1" />
-          <field name="record_name" readonly="1" />
-          <field name="field" readonly="1" />
+          <field name="subject" readonly="1" optional="hide" />
+          <field name="record_name" readonly="1" optional="hide" />
+          <field name="field" readonly="1" optional="hide" />
           <!-- <field name="field_desc" readonly="1" /> -->
           <!-- <field name="field_type" readonly="1" /> -->
-          <field name="old_value_integer" readonly="1" />
-          <field name="new_value_integer" readonly="1" />
+          <field name="old_value_integer" readonly="1" optional="hide" />
+          <field name="new_value_integer" readonly="1" optional="hide" />
 
         </tree>
       </field>
     </record>
+
     <record id="wo_auditor_analysis_search_view" model="ir.ui.view">
       <field name="name">البحث في </field>
       <field name="model">wo.auditor.analysis.view</field>
