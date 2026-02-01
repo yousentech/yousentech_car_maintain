@@ -476,7 +476,7 @@ class mizan_car_checkup_procedure_line(models.Model):
     #             rec.product_tmpl_id = [(5, 0, 0)]
     
     checkup_part_result_id = fields.Many2many('mizan.default.results', string="نتيجة الفحص",
-                                              copy=False, domain="[('product_id','=',checkup_part_id.product_tmpl_id)]")
+                                              copy=False, domain="[('product_id','=',checkup_part_id)]")
 
     notes = fields.Char(string="الملاحظات")
     header_id = fields.Many2one('mizan.car.checkup.procedure.master',ondelete='cascade')
