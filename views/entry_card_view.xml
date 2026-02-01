@@ -154,9 +154,9 @@
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
                   readonly="1" string="مسئول المبيعات" />
 
-                <field name="company_id" string="الشركة"
+                <!-- <field name="company_id" string="الشركة"
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  groups="base.group_multi_company" />
+                  groups="base.group_multi_company" /> -->
 
 
               </group>

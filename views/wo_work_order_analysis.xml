@@ -17,20 +17,20 @@
           <field name="company_id" readonly="1" />
           <field name="invoice_no" readonly="1" />
           <field name="car_panel_no" readonly="1" />
-          <field name="partner_mobile" readonly="1" />
+          <field name="partner_mobile" readonly="1" optional="hide" />
           <field name="state" readonly="1" />
           <field name="invoice_amout_total" readonly="1" />
           <field name="services_amt_before_tax" readonly="1" />
           <field name="services_discount" readonly="1" />
-          <field name="services_amt_tax" readonly="1" />
-          <field name="services_amt_after_tax" readonly="1" />
-          <field name="spare_parts_amt_before_tax" readonly="1" />
-          <field name="spare_parts_discount" readonly="1" />
-          <field name="spare_parts_amt_tax" readonly="1" />
-          <field name="spare_parts_amt_after_tax" readonly="1" />
-          <field name="supervisor_amount" readonly="1" />
+          <field name="services_amt_tax" readonly="1" optional="hide" />
+          <field name="services_amt_after_tax" readonly="1" optional="hide" />
+          <field name="spare_parts_amt_before_tax" readonly="1" optional="hide" />
+          <field name="spare_parts_discount" readonly="1" optional="hide" />
+          <field name="spare_parts_amt_tax" readonly="1" optional="hide" />
+          <field name="spare_parts_amt_after_tax" readonly="1" optional="hide" />
+          <field name="supervisor_amount" readonly="1" optional="hide" />
           <field name="supervisor_id"
-            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" optional="hide" />
 
         </tree>
       </field>

@@ -33,7 +33,7 @@
                 <xpath expr="//button[@name='button_validate']" position="after">
                     <button string="ارسال الى امر العمل" name="send_products_to_wo" type="object"
                         class="oe_highlight"
-                        invisible="[('state', 'not in', ['done'])]" />
+                        invisible="state not in ['done']" />
 
                 </xpath>
                 <xpath expr="//button[@name='button_validate']" position="after">

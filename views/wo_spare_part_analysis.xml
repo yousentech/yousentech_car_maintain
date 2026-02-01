@@ -18,24 +18,24 @@
           <field name="untaxed_amount" readonly="1" />
           <field name="discount" readonly="1" />
           <field name="amount_tax" readonly="1" />
-          <field name="amount_with_tax" readonly="1" />
+          <field name="amount_with_tax" readonly="1" optional="hide" />
           <field name="create_uid"
-            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" optional="hide" />
           <field name="stock_picking_id"
-            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" optional="hide" />
 
           <field name="partner_id"
-            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-          <field name="order_date" />
-          <field name="create_date" readonly="1" />
-          <field name="company_id" readonly="1" />
-          <field name="invoice_no" readonly="1" />
-          <field name="car_panel_no" readonly="1" />
-          <field name="partner_mobile" readonly="1" />
-          <field name="state" readonly="1" />
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" optional="hide" />
+          <field name="order_date" optional="hide" />
+          <field name="create_date" readonly="1" optional="hide" />
+          <field name="company_id" readonly="1" optional="hide" />
+          <field name="invoice_no" readonly="1" optional="hide" />
+          <field name="car_panel_no" readonly="1" optional="hide" />
+          <field name="partner_mobile" readonly="1" optional="hide" />
+          <field name="state" readonly="1" optional="hide" />
 
           <field name="supervisor_id"
-            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" optional="hide" />
         </tree>
       </field>
     </record>

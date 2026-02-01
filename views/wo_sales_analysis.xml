@@ -18,24 +18,24 @@
           <field name="technical_3" readonly="1" />
           <field name="technical_4" readonly="1" />
           <field name="car_panel_no" readonly="1" />
-          <field name="partner_mobile" readonly="1" />
+          <field name="partner_mobile" readonly="1" optional="hide" />
           <field name="state" readonly="1" />
           <field name="invoice_no" readonly="1" />
-          <field name="company_id" readonly="1" />
-          <field name="unit_price" readonly="1" />
+          <field name="company_id" readonly="1" optional="hide" />
+          <field name="unit_price" readonly="1" optional="hide" />
           <field name="qty" readonly="1" />
           <field name="total" readonly="1" />
-          <field name="untaxed_amount" readonly="1" />
-          <field name="discount" readonly="1" />
-          <field name="amount_tax" readonly="1" />
-          <field name="amount_with_tax" readonly="1" />
-          <field name="invoice_with_tax" readonly="1" />
-          <field name="create_date" readonly="1" />
-          <field name="name" readonly="1" />
-          <field name="product_id"
+          <field name="untaxed_amount" readonly="1" optional="hide" />
+          <field name="discount" readonly="1" optional="hide" />
+          <field name="amount_tax" readonly="1" optional="hide" />
+          <field name="amount_with_tax" readonly="1" optional="hide" />
+          <field name="invoice_with_tax" readonly="1" optional="hide" />
+          <field name="create_date" readonly="1" optional="hide" />
+          <field name="name" readonly="1" optional="hide" />
+          <field name="product_id" optional="hide" 
             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-          <field name="type" readonly="1" />
-          <field name="product_categ_id"
+          <field name="type" readonly="1" optional="hide" />
+          <field name="product_categ_id" optional="hide" 
             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
         </tree>
       </field>
