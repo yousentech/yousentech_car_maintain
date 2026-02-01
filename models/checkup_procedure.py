@@ -499,9 +499,9 @@ class mizan_car_checkup_procedure_line(models.Model):
         for rec in self:
             if rec.checkup_part_id:
  
-                rec.product_tmpl_id = rec.checkup_part_id.product_tmpl_id.id
+                rec.product_tmpl_id = rec.checkup_part_id.product_tmpl_id.ids
             else:
-                rec.product_tmpl_id = 0
+                rec.product_tmpl_id = False
 
     @api.onchange('checkup_part_id')
     def get_default_results(self):
