@@ -15,7 +15,7 @@
                         />
                         <button name="create_work_order_procedure" string="انشاء امر العمل"
                             type="object" class="oe_highlight"
-                            invisible="work_order_id != False or state in ['cancel_order']"
+                            invisible="maint_wo_id != False or state in ['cancel_order']"
                             groups="yousentech_car_maintain.group_sales_man_priv"
                         />
 
@@ -38,7 +38,7 @@
                                 name="call_wo_procedure"
                                 class="oe_stat_button"
                                 string="امر العمل"
-                                invisible="work_order_id == False"
+                                invisible="maint_wo_id == False"
                                 icon="fa-pencil-square-o"
                             />
                             <button type="object"
@@ -64,7 +64,7 @@
                         <br></br>
                         <group>
                             <group readonly="1">
-                                <field name="work_order_id" invisible="1" />
+                                <field name="maint_wo_id" invisible="1" />
                                 <field name="is_user_technical" invisible="1" />
                                 <field name="is_user_supervisor" invisible="1" />
                                 <field name="use_pricelist" invisible="1" />
@@ -82,7 +82,7 @@
 
                                 <field name="entry_card_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                <field name="work_order_id" readonly="1"
+                                <field name="maint_wo_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                             </group>
                             <group>
