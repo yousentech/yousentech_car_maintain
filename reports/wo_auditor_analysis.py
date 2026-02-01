@@ -17,7 +17,7 @@ class wo_auditor_analysis_view(models.Model):
     model = fields.Char()
     record_name = fields.Char()
     write_uid = fields.Many2one('res.users')
-    field = fields.Char()
+    field_id = fields.Char()
     # field_desc = fields.Char()
     # field_type = fields.Char()
     old_value_integer = fields.Char()
@@ -28,7 +28,7 @@ class wo_auditor_analysis_view(models.Model):
         ##
         self._cr.execute("""CREATE OR REPLACE VIEW wo_auditor_analysis_view AS
                         (
-                         select id,account_move_id	,account_payment_id	,operation_date,	subject	,model,	record_name	,write_uid,old_value_integer,	new_value_integer
+                         select id,account_move_id	,account_payment_id	,operation_date,	subject	,model,	record_name	,write_uid,field_id,old_value_integer,	new_value_integer
 
                             from (
                                     SELECT
@@ -45,7 +45,6 @@ class wo_auditor_analysis_view(models.Model):
                                         m.record_name,
                                         m.write_uid,
                                         t.field_id,
-                                      
                                         t.old_value_integer,
                                         t.new_value_integer
                                     FROM mail_message m
@@ -68,15 +67,14 @@ class wo_auditor_analysis_view(models.Model):
                                         m.record_name,
                                         m.write_uid,
                                         t.field_id,
-                                       
                                         t.old_value_integer,
                                         t.new_value_integer
-                                    FROM mail_message m
+                                    FROM mail_message m 
                                     JOIN mail_tracking_value t ON t.mail_message_id = m.id
                                     WHERE m.model = 'account.payment'  
                                     ) x  
                                     
-                                    where   operation_id > min_id
+                                    --where   operation_id > min_id
                                     order by res_id,id
                                         );
                                     """)
