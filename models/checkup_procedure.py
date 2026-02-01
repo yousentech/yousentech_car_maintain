@@ -462,15 +462,18 @@ class mizan_car_checkup_procedure_line(models.Model):
     name = fields.Char(string="وصف الفحص" , copy=False,required=True)
     technical_name = fields.Many2many('hr.technical.assignments',string="اسم الفني",domain="[('company_id','=', company_id),('state','=', 'current')]")
     product_tmpl_id = fields.Many2many('product.template',compute="_get_product_tmpl_id",)
+    checkup_part_id = fields.Many2one('product.product', string="نوع /كود الفحص", copy=False,required=True,domain=[('is_checkup_product','=',True)])
 
-    @api.depends('checkup_part_id')
+  
+    @api.depends('checkup_part_id', 'checkup_part_id.product_tmpl_id')
     def _get_product_tmpl_id(self):
         for rec in self:
-            if rec.checkup_part_id:
-                rec.product_tmpl_id = rec.checkup_part_id.product_tmpl_id
+            if rec.checkup_part_id and rec.checkup_part_id.product_tmpl_id:
+                rec.product_tmpl_id = [
+                    (6, 0, [rec.checkup_part_id.product_tmpl_id.id])
+                ]
             else:
                 rec.product_tmpl_id = [(5, 0, 0)]
-    
     checkup_part_result_id = fields.Many2many('mizan.default.results', string="نتيجة الفحص",
                                               copy=False, domain="[('product_id','=',product_tmpl_id)]")
 
