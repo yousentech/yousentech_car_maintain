@@ -21,7 +21,7 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/views.xml',
-        # 'wizard/res_config_setting.xml',
+        'wizard/res_config_setting.xml',
         'views/product_template.xml',
         'views/mizan_product_wizard.xml',
         'views/entry_card_view.xml',
