@@ -348,13 +348,21 @@ class mizan_car_checkup_procedure_master(models.Model):
 
                 for line in rec.result_lines:
                     if line.selected:
-                        for item in line.checkup_part_result_id:
-                            if item.product_service_id:
-                                products = self.env['mizan.car.work.procedure.line'].create({
-                                    'product_id': item.product_service_id.id,
-                                    'name': item.product_service_id.name,
-                                    'unit_price': rec.get_price_of_product(item.product_service_id),
-                                    'product_tax': item.product_service_id.taxes_id.id,
+                        # for item in line.checkup_part_result_id:
+                        #     if item.product_service_id:
+                        #         products = self.env['mizan.car.work.procedure.line'].create({
+                        #             'product_id': item.product_service_id.id,
+                        #             'name': item.product_service_id.name,
+                        #             'unit_price': rec.get_price_of_product(item.product_service_id),
+                        #             'product_tax': item.product_service_id.taxes_id.id,
+                        #             'technical_name': line.technical_name.ids if line.technical_name else False,
+                        #             'header_id': wo_procedure.id,
+                        #         })
+                        products = self.env['mizan.car.work.procedure.line'].create({
+                                    'product_id': line.checkup_part_id.id,
+                                    'name': line.checkup_part_id.name,
+                                    'unit_price': rec.get_price_of_product(line.checkup_part_id),
+                                    'product_tax': line.checkup_part_id.taxes_id.id,
                                     'technical_name': line.technical_name.ids if line.technical_name else False,
                                     'header_id': wo_procedure.id,
 
