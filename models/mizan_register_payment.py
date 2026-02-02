@@ -49,9 +49,8 @@ class mizan_register_payment(models.Model):
         for wizard in self:
             if wizard.journal_id:
                 payment_type = "inbound"
-                available_payment_method_lines = (
-                    wizard.journal_id._get_available_payment_method_lines(payment_type)
-                )
+                available_payment_method_lines = wizard.journal_id._get_available_payment_method_lines(payment_type)
+                
             else:
                 available_payment_method_lines = False
 
@@ -66,10 +65,9 @@ class mizan_register_payment(models.Model):
     def create_payment_checkup(self):
         for rec in self:
             if rec.payment_amount <= 0:
-                raise ValidationError(
-                    "يجب تحديد المبلغ اولا")
+                raise ValidationError("يجب تحديد المبلغ اولا")
 
-            payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.id),('checkup_id','=', rec.header_id.checkup_id.id),('state', '!=', 'cancel')])
+            payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.id),('checkup_id','=', rec.header_id.checkup_id.id),('state', '!=', 'cancel'),('state','=','posted')])
             advanced_amount = 0
             for line in payment:
                 advanced_amount = advanced_amount + line.payment_amount
@@ -82,12 +80,11 @@ class mizan_register_payment(models.Model):
             for line in account_payment:
                 ready_amount = ready_amount + line.amount
               
-            if ready_amount >= amount_total:
+            if ready_amount != 0 and ready_amount >= amount_total:
                 raise ValidationError(
                     "اكتمل الدفع  في شاشة مدفوعات الفوترة لامر العمل المحدد .. لا يمكن انشاء مفوعات جديدة ")
           
-           
-            if advanced_amount >= amount_total:
+            if amount_total !=0 and advanced_amount >= amount_total:
                 raise ValidationError(
                       "اكتمل الدفع لامر الفحص .. لا يمكن انشاء مفوعات جديدة ")
 
@@ -117,9 +114,8 @@ class mizan_register_payment(models.Model):
             #     'checkup_id': self.header_id.checkup_id.id,
             #       })
             # payment.action_post()
-            ############################################################# :
-            # payment_method_line_id = fields.Many2one("account.payment.method.line")
-            
+            ############################################################# : 
+            self._compute_payment_method_line_id()        
             payment = self.env['account.payment'].create({
                 "amount":  self.payment_amount,
                 "ref": self.payment_note,
@@ -151,7 +147,7 @@ class mizan_register_payment(models.Model):
             wo.write({'advance_amount': advanced_amount})
 
 
-
+    ## 
     def create_payment_wo(self):
         for rec in self:
             if rec.payment_amount <= 0:
@@ -220,6 +216,7 @@ class mizan_register_payment(models.Model):
             #     })
             # else:
             #     payment_method_line = payment_method_line[0]
+            self._compute_payment_method_line_id()        
 
             payment = self.env['account.payment'].create({
                 'date': self.pay_date,
@@ -261,7 +258,7 @@ class mizan_register_payment(models.Model):
                 rec.write({'state': 'cancel'})
                 if self.payment_id:
                     self.payment_id.action_draft()
-                    self.payment_id.cancel()
+                    self.payment_id.action_cancel()
 
                 payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.checkup_id.id),('state', '!=', 'cancel')])
             
@@ -282,7 +279,7 @@ class mizan_register_payment(models.Model):
                 rec.write({'state': 'cancel'})
                 if self.payment_id:
                     self.payment_id.action_draft()
-                    self.payment_id.cancel()
+                    self.payment_id.action_cancel()
 
                 payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.header_id.maint_wo_id.id),('state', '!=', 'cancel')])
             

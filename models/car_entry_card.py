@@ -10,25 +10,26 @@ class mizan_car_entry_card_master(models.Model):
     _description = 'Car checkup order master'
     _rec_name = 'seq'
  
-    seq = fields.Integer(
-        string='رقم العملية',
-        copy=False,
-        readonly=True )
-
+    seq = fields.Integer(string='رقم العملية',copy=False,required=True)
+    
+    @api.onchange('company_id')
     def _get_sequence(self):
-        branch_id = self.env.user.company_id.id
-        if branch_id:
-            sql_query = "select max(COALESCE(seq,0)) as seq from mizan_car_entry_card_master where company_id=%s" % (branch_id)
-
+        sql_query = ""
+        if self.company_id:
+            sql_query = "select max(COALESCE(seq,0)) as seq from mizan_car_entry_card_master where company_id='%s'" % self.company_id.id
             self.env.cr.execute(sql_query)
             seq = self.env.cr.fetchone()
-            x = seq[0]
-            if x:
-                x = x + 1
-                return (x)
+            is_exist_seq = seq[0]
+            if is_exist_seq:
+                is_exist_seq = is_exist_seq + 1
+                self.seq = is_exist_seq
             else:
-                x = 1
-                return (x)
+                is_exist_seq = 1
+                self.seq = is_exist_seq
+        else:
+            self.seq = 0
+        
+
 
 
     order_date = fields.Date(string="تاريخ الطلب", required=True, default=fields.Date.today,copy=False)
@@ -319,7 +320,7 @@ class mizan_car_entry_card_master(models.Model):
                 checkup_procedure = self.env['mizan.car.checkup.procedure.master'].create(results_tmp)
                 rec.write({'checkup_id': checkup_procedure.id})
                 rec.write({'state': 'execute_started'})
-                rec._get_sequence()
+                # rec._get_sequence()
 
                 action = self.env.ref('yousentech_car_maintain.action_car_checkup_procedure_view')
                 result = action.read()[0]

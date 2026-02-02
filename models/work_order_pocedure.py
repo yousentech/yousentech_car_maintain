@@ -19,7 +19,7 @@ class mizan_car_work_procedure_master(models.Model):
                                'اكتمال التنفيذ'), ('not_checkup_car', 'الخروج بدون فحص'),
                               ('return_to_modify', 'استعادة للتعديل'),
                               ('cancel_order', 'ملغي امر التركيب')
-                              ], default='work_order_started', related="entry_card_id.state", readonly=True,store=True, copy=False)
+                              ], default='work_order_started', related="entry_card_id.state", readonly=True, store=True, copy=False)
 
     create_date = fields.Datetime(
         string="بدء الفحص", required=True, default=fields.Datetime.now, copy=False)
@@ -427,6 +427,7 @@ class mizan_car_work_procedure_master(models.Model):
                             l.product_id.name))
 
             rec.write({'end_date': datetime.today()})
+            
             sale_order_tmp = {
                 'partner_id': rec.partner_id.id,
                 'partner_invoice_id': rec.partner_id.id,
@@ -444,11 +445,11 @@ class mizan_car_work_procedure_master(models.Model):
                 'pay_type': rec.pay_type,
                 'vin_no': rec.vin_no,
                 'car_type': rec.car_type_id.name,
-             
+
                 'company_id': rec.entry_card_id.company_id.id,
                 'require_signature': True,
                 'require_payment': False,
-                'pricelist_id':  1,
+                # 'pricelist_id':  1,
                 'invoice_status': 'no',
                 'is_guarantee': rec.is_guarantee,
             }
@@ -565,13 +566,15 @@ class mizan_car_work_procedure_master(models.Model):
 
     def call_invoice(self):
         for rec in self:
-            invoice = self.env['account.move'].search([('work_order_id', '=', rec.id)])
+            invoice = self.env['account.move'].search(
+                [('maint_wo_id', '=', rec.id)])
 
             action = self.env.ref('account.action_move_out_invoice_type')
             result = action.read()[0]
             result.pop('id', None)
             result['context'] = {}
-            result['domain'] = [('id', '=', invoice.id),('type','in',['out_refund','out_invoice'])]
+            result['domain'] = [('id', '=', invoice.id),
+                                ('move_type', 'in', ['out_refund', 'out_invoice'])]
 
             if invoice:
                 res = self.env.ref('account.view_move_form', False)
@@ -699,30 +702,28 @@ class mizan_car_work_procedure_master(models.Model):
         advanced_amount = 0
         remaining_amount = 0
         for rec in self:
-            payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.entry_card_id.id),('state', '!=', 'cancel'),('work_order_id','=', rec.id)])
- 
+            payment = self.env['mizan.register.payment'].search(
+                [('header_id', '=', rec.entry_card_id.id), ('state', '!=', 'cancel'), ('maint_wo_id', '=', rec.id)])
             for line in payment:
                 advanced_amount = advanced_amount + line.payment_amount
-           
-            if advanced_amount >=  rec.total_all_with_tax:
+
+            if advanced_amount >= rec.total_all_with_tax:
                 raise ValidationError(
                     "اكتمل الدفع  .. لا يمكن انشاء مفوعات جديدة ")
 
-             
             remaining_amount = rec.total_all_with_tax - advanced_amount
-
             return {
                 'name': _('Register Payment'),
                 'view_mode': 'form',
                 'res_model': 'mizan.register.payment',
-                'view_id': self.env.ref('qimamhd_mizan_car_13.mizan_payment_view').id,
+                'view_id': self.env.ref('yousentech_car_maintain.mizan_payment_view').id,
                 'type': 'ir.actions.act_window',
                 'context': {'default_invoice_amount': rec.total_all_with_tax,
                             'default_advanced_amount': advanced_amount,
-                            'default_remaining_amount': remaining_amount, 'default_branch_id': rec.entry_card_id.branch_id.id,
+                            'default_remaining_amount': remaining_amount, 'default_branch_id': rec.entry_card_id.company_id.id,
                             'default_payment_note': "دفعة مقدمة لامر العمل",
 
-                            'default_header_id': rec.entry_card_id.id, 'default_work_order_id': rec.id, 'default_payment_amount': remaining_amount if remaining_amount else 0,
+                            'default_header_id': rec.entry_card_id.id, 'default_maint_wo_id': rec.id, 'default_payment_amount': remaining_amount if remaining_amount else 0,
                             },
                 'target': 'current'
             }
@@ -751,7 +752,6 @@ class mizan_car_work_procedure_master(models.Model):
 
     def call_confirm_message_dailog(self):
         for rec in self:
-
             if not rec.additional_services:
                 if rec.total_all_with_tax:
                     message = "اجمالي المبلغ المستحق هو  [ %s ] .. هل تريد الاستمرار " % round(
@@ -773,11 +773,10 @@ class mizan_car_work_procedure_master(models.Model):
                 message = "اجمالي المبلغ المستحق هو  [ %s ] .. هل تريد الاستمرار " % rec.total_all_with_tax
                 message_en = " Total amount will be [ %s ] >> do you want to continue " % rec.total_all_with_tax
 
-                action = self.env.ref(
-                    'yousentech_car_maintain.message_confirm_action')
+                action = self.env.ref('yousentech_car_maintain.message_confirm_action')
                 result = action.read()[0]
                 result.pop('id', None)
-                result['context'] = {'default_desc': message_en + message}
+                result['context'] = {'default_desc': message_en + "/" + message}
                 return result
 
 
@@ -787,7 +786,7 @@ class mizan_car_work_procedure_line(models.Model):
 
     sequence = fields.Integer(string="التسلسل", default=12)
     product_id = fields.Many2one('product.product', string="المنتج", copy=False, required=True,
-                                 domain=[('discount_product_flag', '!=', True), ('type', '!=', 'product')])
+                                 domain=[('discount_product_flag', '!=', True), ('detailed_type', '!=', 'product')])
     name = fields.Char(string="وصف الفحص", copy=False, required=True)
 
     company_id = fields.Many2one(
@@ -937,4 +936,3 @@ class mizan_car_work_procedure_line(models.Model):
                             rec.write({'name': rec.name + '[غير خاضع للضمان]'})
                         if rec.product_id.guarantee_able:
                             rec.write({'product_has_guarantee_flag': True})
-

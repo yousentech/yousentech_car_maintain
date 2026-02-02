@@ -125,19 +125,19 @@
                                             readonly="parent.is_guarantee == False" />
                                         <field name="product_id" options="{'no_quick_create':True}"
                                             context="{'default_type':'service','default_categ_id':261,'default_property_account_income_id':False,'default_property_account_expense_id':False,'default_taxes_id': [(6, 0, [2])]}" />
-                                        <field name="company_id" invisible="1" />
-                                        <field name="name" optional="hide" />
+                                        <field name="company_id" column_invisible="1" />
+                                        <field name="name"  />
                                         <field name="unit_price" />
-                                        <field name="discount_type" optional="hide" />
+                                        <field name="discount_type"  />
                                         <field name="discount_line" digits="[12,12]" optional="hide" />
-                                        <field name="discount_amount" invisible="1" />
+                                        <field name="discount_amount" column_invisible="1" />
                                         <field name="product_tax" optional="hide"
                                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                        <field name="tax_id" invisible="1" />
-                                        <field name="total" optional="hide" />
+                                        <field name="tax_id" column_invisible="1" />
+                                        <field name="total"  />
                                         <field name="total_before_tax" optional="hide" />
-                                        <field name="total_tax" optional="hide" />
-                                        <field name="amount_tax" optional="hide" readonly="1"
+                                        <field name="total_tax"  />
+                                        <field name="amount_tax"  readonly="1"
                                             force_save="1" />
                                         <field name="technical_name" optional="hide"
                                             widget="many2many_tags"
@@ -149,8 +149,8 @@
                                         <field name="state" optional="hide" />
                                         <field name="start_Service_date" optional="hide" />
                                         <field name="complete_date" optional="hide" />
-                                        <field name="diff_times" optional="hide" readonly="1" />
-                                        <field name="header_id" invisible="1" />
+                                        <field name="diff_times"  readonly="1" />
+                                        <field name="header_id"  column_invisible="1"/>
                                     </tree>
 
                                 </field>
@@ -202,7 +202,7 @@
                                         <field name="product_id"
                                             readonly="parent.add_user_spare_parts_flag == False"
                                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                        <field name="company_id" invisible="1" />
+                                        <field name="company_id" column_invisible="1" />
 
                                         <field name="name" optional="hide"
                                             readonly="parent.add_user_spare_parts_flag == False" />
@@ -215,13 +215,13 @@
                                         <field name="unit_price"
                                             readonly="parent.add_user_spare_parts_flag == False" />
 
-                                        <field name="tax_id" invisible="1" />
+                                        <field name="tax_id" column_invisible="1" />
 
                                         <field name="discount_type" optional="hide"
                                             readonly="parent.add_user_spare_parts_flag == False" />
                                         <field name="discount_line" optional="hide"
                                             readonly="parent.add_user_spare_parts_flag == False" />
-                                        <field name="discount_amount" invisible="1" />
+                                        <field name="discount_amount" column_invisible="1" />
                                         <field name="product_tax" optional="hide"
                                             readonly="parent.add_user_spare_parts_flag == False"
                                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
@@ -245,7 +245,7 @@
                                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
 
-                                        <field name="header_id" invisible="1" />
+                                        <field name="header_id" column_invisible="1" />
 
                                     </tree>
 

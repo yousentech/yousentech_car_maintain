@@ -26,7 +26,7 @@
                         />
 
                         <field name="state" widget="statusbar"
-                        statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order"
+                            statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order"
                         />
 
                     </header>
@@ -72,12 +72,13 @@
                                 <field name="is_user_sale_man" invisible="1" />
                                 <field name="partner_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                                <field name="create_date" force_save="1" readonly="is_user_sale_man == False or state in   ['execute_request','execute_completed','cancel_order','work_order_started']"  />
+                                <field name="create_date" force_save="1"
+                                    readonly="is_user_sale_man == False or state in   ['execute_request','execute_completed','cancel_order','work_order_started']" />
                                 <field name="car_panel_no" readonly="1" />
                                 <field name="partner_mobile" readonly="1" />
                                 <field name="car_size_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                              
+
 
                                 <field name="entry_card_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
@@ -90,14 +91,16 @@
                                 <field name="car_model" readonly="1" />
                                 <field name="car_type_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                            
-                                 <field name="vin_no" readonly="1" />
- 
 
-                                <field name="drum_counter" readonly="create_invoice_manually_id != False or is_user_sale_man == False 
+                                <field name="vin_no" readonly="1" />
+
+
+                                <field name="drum_counter"
+                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False 
                                                 or state in  ['execute_request','execute_completed','cancel_order','work_order_started']" />
-                               
-                                <field name="drum_counter_exit" readonly="create_invoice_manually_id != False or is_user_sale_man == False 
+
+                                <field name="drum_counter_exit"
+                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False 
                                                 or state in  ['execute_request','execute_completed','cancel_order','work_order_started']" />
 
 
@@ -126,8 +129,7 @@
                                 <button
                                     name="%(yousentech_car_maintain.multi_mizan_product_wizard_action)d"
                                     type="action" string="Add Multi Products"
-                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False or state in
-        ['execute_request','execute_completed','cancel_order','work_order_started']"
+                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','work_order_started']"
                                     class="oe_highlight" />
 
 
@@ -138,15 +140,16 @@
                                     <tree editable="bottom" limit="100">
                                         <field name="sequence" widget="handle" />
 
-                                  
+
                                         <field name="selected" nolabel="1" />
 
                                         <field name="checkup_part_id"
                                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                                         <!-- <field name="product_tmpl_id" invisible="1" /> -->
-                                        <field name="company_id" invisible="1" />
+                                        <field name="company_id" column_invisible="1" />
 
-                                        <field name="checkup_part_result_id" widget="many2many_tags" optional="hide"
+                                        <field name="checkup_part_result_id" widget="many2many_tags"
+                                            optional="hide"
                                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
                                         <field name="technical_name" widget="many2many_tags"
@@ -155,38 +158,32 @@
 
                                         <field name="notes" />
 
-                                        <field name="header_id" invisible="1" />
+                                        <field name="header_id" column_invisible="1" />
 
                                     </tree>
 
                                 </field>
                             </page>
                             <page string="فحص الكمبيوتر">
-                                <group>
-                                    <field name="lines_computer"
-                                        readonly="create_invoice_manually_id != False or is_user_sale_man == False or state in
-        ['execute_request','execute_completed','cancel_order','work_order_started']"
-                                        nolabel="1">
-                                        <tree editable="bottom">
-                                            <field name="sequence" widget="handle" />
 
-                                            <field name="computer_code"
-                                                options="{'no_quick_create':True ,'no_open': True}" />
-                                            <field name="desc_ar" />
-                                            <field name="desc_en" />
-                                            <field name="notes" optional="hide" />
+                                <field name="lines_computer"
+                                    readonly="create_invoice_manually_id != False or is_user_sale_man == False or state in ['execute_request','execute_completed','cancel_order','work_order_started']"
+                                    nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle" />
 
-                                            <field name="header_id" invisible="1" />
-                                        </tree>
-                                    </field>
-                                </group>
+                                        <field name="computer_code"
+                                            options="{'no_quick_create':True ,'no_open': True}" />
+                                        <field name="desc_ar" />
+                                        <field name="desc_en" />
+                                        <field name="notes" optional="hide" />
+                                        <field name="header_id" column_invisible="1" />
+                                    </tree>
+                                </field>
+
 
                             </page>
-
-
                         </notebook>
-                     
-
                     </sheet>
                 </form>
             </field>

@@ -1,4 +1,3 @@
-
 <odoo>
     <data>
         <record id="mizan_message_confirm_view" model="ir.ui.view">
@@ -6,28 +5,28 @@
             <field name="model">mizan.message.confirm</field>
             <field name="arch" type="xml">
                 <form>
-                    <group string="رسالة تأكيد">
-                        <strong>
-                            <field name="desc" nolabel="1" readonly="1"/>
-
-                        </strong>
-
-                    </group>
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-info-circle m-2 text-primary"></i>
+                        <field name="desc" nolabel="1" readonly="1" style="font-weight: bold;" />
+                    </div>
                     <footer>
-                        <button name="confirm" string="تاكيد / Confirm" type="object" class="oe_highlight"/>
-                        <button  special="cancel" class="btn-secondary" string="cancel/ خروج"/>
+                        <button name="confirm" string="تأكيد / Confirm" type="object"
+                            class="oe_highlight" />
+                        <button special="cancel" class="btn-secondary" string="cancel / خروج" />
 
                     </footer>
                 </form>
             </field>
         </record>
 
-        <act_window name="message confirm"
-            id="message_confirm_action"
-            res_model="mizan.message.confirm"
-            view_mode="form"
-            target="new"
-        />
-
+        <record id="message_confirm_action" model="ir.actions.act_window">
+            <field name="name">Message Confirm</field>
+            <field name="res_model">mizan.message.confirm</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="mizan_message_confirm_view" />
+            <field name="domain"></field>
+            <field name="target">new</field>
+            <field name="context">{}</field>
+        </record>
     </data>
 </odoo>
