@@ -2,10 +2,12 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
+
 class stock_workstation_location(models.Model):
     _inherit = 'stock.location'
 
     workstation_location_id = fields.Boolean(string="موقع ورشة")
+
 
 class stock_picking_types(models.Model):
     _inherit = 'stock.picking.type'
@@ -38,7 +40,10 @@ class stock_picking(models.Model):
     workstation_flag_id = fields.Integer(default=lambda self: self._default_workstation_id(),
                                          compute="_get_workstation_id")
     total_all = fields.Float(compute="_calc_total", string="الاجمالي")
-
+    
+    ## 
+    line_spare_parts_id = fields.Many2one('mizan.car.spare.parts.lines', ondelete='cascade', copy=False)
+    
     @api.depends('move_ids_without_package')
     def _calc_total(self):
         for rec in self:
@@ -101,7 +106,7 @@ class stock_picking(models.Model):
         for rec in self:
             if rec.workstation_id:
                 picking_type = self.env['stock.picking.type'].search([('workstation_id', '=', rec.workstation_id.id)],
-                                                               limit=1)
+                                                                     limit=1)
                 if picking_type:
                     rec.picking_type_id = picking_type.id
                 else:
@@ -162,6 +167,135 @@ class stock_picking(models.Model):
                             " تنبيه ... الصنف [%s] قد يكن الكمية غير صحيحه او ان السعر غير صحيح " % line.product_id.name)
         return super(stock_picking, self).button_validate()
 
+    def check_closed_period(self, date_field):
+        if not date_field:
+            return False
+
+        sql_query = """
+            SELECT COUNT(*) as exist_res 
+            FROM wo_period_closed
+            WHERE %s BETWEEN inv_closed_from_date AND inv_closed_to_date
+        """
+        try:
+            self.env.cr.execute(sql_query, (date_field,))
+            result = self.env.cr.fetchone()
+            return result[0] > 0 if result else False
+        except Exception as e:
+            print(f"Error checking closed period: {str(e)}")
+            return False
+
+    # def send_products_to_wo(self):
+    #     for rec in self:
+    #         if rec.maint_wo_id:
+    #             wo = self.env['mizan.car.work.procedure.master'].search([('id', '=', rec.maint_wo_id.id)])
+
+    #             if wo.state in ('cancel_order', 'execute_completed'):
+    #                 raise ValidationError("ارسال الاصناف لامر العمل اما ان يكون مكتمل او ملغي لا يمكن ")
+
+    #             # sql_query = """ select count(*) as exist_res from  wo_period_closed
+    #             #                 where '{}' between inv_closed_from_date and inv_closed_to_date
+    #             #                 """.format(rec.date)
+
+    #             # if sql_query:
+    #             #     self.env.cr.execute(sql_query)
+    #             #     seq = self.env.cr.fetchone()
+    #             #     x = seq[0]
+    #             #     if x:
+    #             #         raise ValidationError(
+    #             #             "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفتره ")
+
+    #             # if rec.scheduled_date:
+    #             #     sql_query = """
+    #             #                 select count(*) as exist_res from  wo_period_closed
+    #             #                 where '{}' between inv_closed_from_date and inv_closed_to_date
+    #             #                 """.format(rec.scheduled_date)
+    #             # if rec.date_done:
+
+    #             #     sql_query = """
+    #             #                 select count(*) as exist_res from  wo_period_closed
+    #             #                 where '{}' between inv_closed_from_date and inv_closed_to_date
+    #             #                 """.format(rec.date_done)
+
+    #             # if sql_query:
+    #             #     self.env.cr.execute(sql_query)
+    #             #     seq = self.env.cr.fetchone()
+    #             #     x = seq[0]
+    #             #     if x:
+    #             #         raise ValidationError("تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفترة ")
+
+    #             if wo.sale_order_id:
+    #                 raise ValidationError(" لا يمكن ارسال الاصناف لامر العمل بسبب تم انشاء امر بيع ")
+    #             else:
+    #                 for line in rec.move_ids_without_package:
+    #                     if (line.product_qty <= 0 and not line.quantity) or not line.unit_price or (line.product_uom_qty != line.quantity):
+    #                         raise ValidationError(
+    #                             " تنبيه ... الصنف [%s] قد يكن الكمية غير صحيحه او ان السعر غير صحيح " % line.product_id.name)
+
+    #                 for wo_line in wo.lines_spare_parts:
+    #                     if wo_line.product_id.id not in rec.move_ids_without_package.product_id.ids and wo_line.stock_picking_id.id == rec.id:
+    #                         wo_line.unlink()
+
+    #                 products = []
+    #                 for p_line in rec.move_ids_without_package.product_id:
+    #                     products.append(p_line.id)
+
+    #                 for product_id in products:
+    #                     qty = 0
+    #                     p_count = 0
+    #                     unit_price = 0
+    #                     ##
+    #                     for line_move in rec.move_ids_without_package:
+    #                         if line_move.product_id.id == product_id:
+
+    #                             if rec.state == 'done':
+    #                                 qty = qty + line_move.quantity
+    #                                 unit_price = unit_price + line_move.unit_price
+    #                                 p_count = p_count + 1
+
+    #                     for wo_line in wo.lines_spare_parts:
+    #                         if product_id == wo_line.product_id.id and wo_line.stock_picking_id.id == rec.id:
+
+    #                             wo_line.write({'unit_price': round(unit_price/p_count, 2),
+    #                                            'qty': qty,
+    #                                            'product_tax': wo_line.product_id.taxes_id.id,
+
+    #                                            })
+    #                     if rec.id in wo.lines_spare_parts.stock_picking_id.ids:
+    #                         if product_id not in wo.lines_spare_parts.product_id.ids and rec.id in wo.lines_spare_parts.stock_picking_id.ids:
+    #                             prod = self.env['product.product'].search(
+    #                                 [('id', '=', product_id)])
+    #                             products = self.env['mizan.car.spare.parts.lines'].create({
+    #                                 'product_id': prod.id,
+    #                                 'name': prod.name,
+    #                                 'unit_price': round(unit_price / p_count, 2),
+    #                                 'qty': qty,
+    #                                 'qty_done': qty,
+    #                                 'product_tax': prod.taxes_id.id,
+    #                                 'stock_picking_id': rec.id,
+    #                                 'header_id': wo.id,
+    #                             })
+
+    #                     else:
+    #                         prod = self.env['product.product'].search(
+    #                             [('id', '=', product_id)])
+    #                         products = self.env['mizan.car.spare.parts.lines'].create({
+    #                             'product_id': prod.id,
+    #                             'name': prod.name,
+    #                             'unit_price': round(unit_price/p_count, 2),
+    #                             'qty': qty,
+    #                             'qty_done': qty,
+    #                             'product_tax': prod.taxes_id.id,
+    #                             'stock_picking_id': rec.id,
+    #                             'header_id': wo.id,
+    #                         })
+
+    #                 rec.write({'send_done_wo': True})
+    #                 wo._cal_spare_parts_amounts()
+    #                 wo._cal_services_amounts()
+
+    #         else:
+    #             raise ValidationError(" لا يمكن ارسال الاصناف لامر العمل   ")
+
     def send_products_to_wo(self):
         for rec in self:
             if rec.maint_wo_id:
@@ -171,40 +305,18 @@ class stock_picking(models.Model):
                 if wo.state in ('cancel_order', 'execute_completed'):
                     raise ValidationError(
                         "ارسال الاصناف لامر العمل اما ان يكون مكتمل او ملغي لا يمكن ")
-                sql_query = """          
-                                        select count(*) as exist_res from  wo_period_closed
-                                        where '{}' between inv_closed_from_date and inv_closed_to_date
-                                        """.format(rec.date)
 
-                if sql_query:
-                    self.env.cr.execute(sql_query)
-                    seq = self.env.cr.fetchone()
-                    x = seq[0]
-                    if x:
-                        raise ValidationError(
-                            "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفتره ")
-
+                if self.check_closed_period(rec.date):
+                    raise ValidationError(
+                        "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفترة ")
                 if rec.scheduled_date:
-                    sql_query = """          
-                                            select count(*) as exist_res from  wo_period_closed
-                                            where '{}' between inv_closed_from_date and inv_closed_to_date or 
-                                                
-                                            """.format(rec.scheduled_date)
-                if rec.date_done:
-
-                    sql_query = """          
-                                        select count(*) as exist_res from  wo_period_closed
-                                        where '{}' between inv_closed_from_date and inv_closed_to_date
-                                        """.format(rec.date_done)
-
-                if sql_query:
-                    self.env.cr.execute(sql_query)
-                    seq = self.env.cr.fetchone()
-                    x = seq[0]
-                    if x:
-
+                    if self.check_closed_period(rec.scheduled_date):
                         raise ValidationError(
-                            "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفتره ")
+                            "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفترة ")
+                if rec.date_done:
+                    if self.check_closed_period(rec.date_done):
+                        raise ValidationError(
+                            "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفترة ")
 
                 if wo.sale_order_id:
                     raise ValidationError(
@@ -227,27 +339,26 @@ class stock_picking(models.Model):
                         qty = 0
                         p_count = 0
                         unit_price = 0
+                        
                         for line_move in rec.move_ids_without_package:
                             if line_move.product_id.id == product_id:
-
                                 if rec.state == 'done':
                                     qty = qty + line_move.quantity
                                     unit_price = unit_price + line_move.unit_price
                                     p_count = p_count + 1
 
                         for wo_line in wo.lines_spare_parts:
-                            if product_id == wo_line.product_id.id and wo_line.stock_picking_id.id == rec.id:
-
+                            if product_id == wo_line.product_id.id and wo_line.stock_picking_id.id:
                                 wo_line.write({'unit_price': round(unit_price/p_count, 2),
-                                               'qty': qty,
-                                               'product_tax': wo_line.product_id.taxes_id.id,
-
-                                               })
-                        if rec.id in wo.lines_spare_parts.stock_picking_id.ids:
-                            if product_id not in wo.lines_spare_parts.product_id.ids and rec.id in wo.lines_spare_parts.stock_picking_id.ids:
+                                               'qty': wo_line.qty + qty,
+                                               'product_tax': wo_line.product_id.taxes_id.id})
+                                ##
+                                rec.line_spare_parts_id = wo_line.id
+                        if wo.lines_spare_parts.stock_picking_id.ids:
+                            if product_id not in wo.lines_spare_parts.product_id.ids and wo.lines_spare_parts.stock_picking_id.ids:
                                 prod = self.env['product.product'].search(
                                     [('id', '=', product_id)])
-                                products = self.env['mizan.car.spare.parts.lines'].create({
+                                line_spare_parts = self.env['mizan.car.spare.parts.lines'].create({
                                     'product_id': prod.id,
                                     'name': prod.name,
                                     'unit_price': round(unit_price / p_count, 2),
@@ -257,11 +368,13 @@ class stock_picking(models.Model):
                                     'stock_picking_id': rec.id,
                                     'header_id': wo.id,
                                 })
+                                ##
+                                rec.line_spare_parts_id = line_spare_parts.id
 
                         else:
                             prod = self.env['product.product'].search(
                                 [('id', '=', product_id)])
-                            products = self.env['mizan.car.spare.parts.lines'].create({
+                            line_spare_parts = self.env['mizan.car.spare.parts.lines'].create({
                                 'product_id': prod.id,
                                 'name': prod.name,
                                 'unit_price': round(unit_price/p_count, 2),
@@ -271,13 +384,13 @@ class stock_picking(models.Model):
                                 'stock_picking_id': rec.id,
                                 'header_id': wo.id,
                             })
+                            ##
+                            rec.line_spare_parts_id = line_spare_parts.id
+
 
                     rec.write({'send_done_wo': True})
                     wo._cal_spare_parts_amounts()
                     wo._cal_services_amounts()
 
             else:
-                raise ValidationError(
-                    " لا يمكن ارسال الاصناف لامر العمل   ")
-
-
+                raise ValidationError(" لا يمكن ارسال الاصناف لامر العمل   ")
