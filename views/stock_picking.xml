@@ -18,8 +18,9 @@
                     <field name="send_done_wo" />
                 </field>
                 <field name="origin" position="after">
+                    <field name="line_spare_parts_id" />
                     <field name="work_order_flag" />
-                    <field name="maint_wo_id"
+                    <field name="maint_wo_id" readonly="line_spare_parts_id != False"
                         options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     <field name="maint_wo_id1" readonly="1" force_save="1" />
                     <field name="partner_mobile" />
@@ -33,7 +34,7 @@
                 <xpath expr="//button[@name='button_validate']" position="after">
                     <button string="ارسال الى امر العمل" name="send_products_to_wo" type="object"
                         class="oe_highlight"
-                        invisible="state not in ['done']" />
+                        invisible="state not in ['done'] or line_spare_parts_id != False" />
 
                 </xpath>
                 <xpath expr="//button[@name='button_validate']" position="after">
@@ -129,7 +130,7 @@
                 </p>
             </field>
         </record>
-        
+
         <menuitem id="mizan_stock_picking_menu" name="الصرف المخزني" sequence="3"
             parent="mizan_car_system_menu"
             action="action_mizan_stock_picking_view" />
