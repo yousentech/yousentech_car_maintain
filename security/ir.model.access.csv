@@ -48,3 +48,4 @@ access_mizan_product_wizard,mizan.product.wizard,model_mizan_product_wizard,,1,1
 
 access_mizan_wo_invoice_payments_report,mizan.wo.invoice.payments.report,model_mizan_wo_invoice_payments_report,,1,1,1,1
 access_mizan_wo_technical_report,mizan.wo.technical.report,model_mizan_wo_technical_report,,1,1,1,1
+access_mizan_message_confirm,mizan.message.confirm,model_mizan_message_confirm,,1,1,1,1

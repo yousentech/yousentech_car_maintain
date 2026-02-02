@@ -94,7 +94,7 @@
 
                 <field name="is_user_sale_man" invisible="1" />
 
-                <field name="seq" readonly="1" string="رقم الطلب" />
+                <field name="seq" readonly="1" string="رقم الطلب" force_save="1" />
 
 
                 <field name="partner_id"

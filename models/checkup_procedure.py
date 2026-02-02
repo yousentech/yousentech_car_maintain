@@ -348,13 +348,13 @@ class mizan_car_checkup_procedure_master(models.Model):
 
                 for line in rec.result_lines:
                     if line.selected:
-                        for p in line.checkup_part_result_id:
-                            if p.product_service_id:
+                        for item in line.checkup_part_result_id:
+                            if item.product_service_id:
                                 products = self.env['mizan.car.work.procedure.line'].create({
-                                    'product_id': p.product_service_id.id,
-                                    'name': p.product_service_id.name,
-                                     'unit_price': rec.get_price_of_product(p.product_service_id),
-                                    'product_tax': p.product_service_id.taxes_id.id,
+                                    'product_id': item.product_service_id.id,
+                                    'name': item.product_service_id.name,
+                                    'unit_price': rec.get_price_of_product(item.product_service_id),
+                                    'product_tax': item.product_service_id.taxes_id.id,
                                     'technical_name': line.technical_name.ids if line.technical_name else False,
                                     'header_id': wo_procedure.id,
 
@@ -425,7 +425,7 @@ class mizan_car_checkup_procedure_master(models.Model):
             payment = self.env['mizan.register.payment'].search([('header_id', '=', rec.entry_card_id.id),('checkup_id','=', rec.id)])
             for line in payment:
                 advanced_amount = advanced_amount + line.payment_amount
-            if advanced_amount >= rec.service_type_price:
+            if advanced_amount != 0 and advanced_amount >= rec.service_type_price:
                 raise ValidationError(
                     "اكتمل الدفع لامر الفحص .. لا يمكن انشاء مفوعات جديدة ")
 
