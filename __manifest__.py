@@ -48,10 +48,7 @@
         'views/wo_spare_part_analysis.xml',
         'views/wo_technicals_analysis.xml',
         'views/wo_auditor_analysis.xml',
-        
-     
         'wizard/message_confirm.xml',
-        
         'pdf_templates/mizan_wo_report_module.xml',
         'pdf_templates/car_checkup_report.xml',
         'pdf_templates/car_work_order_report.xml',

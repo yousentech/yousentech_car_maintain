@@ -3,7 +3,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import datetime
 import pytz
-from datetime import datetime, time
+from datetime import datetime
 
 
 class mizan_car_work_procedure_master(models.Model):
@@ -258,27 +258,6 @@ class mizan_car_work_procedure_master(models.Model):
                 raise ValidationError(
                     "لا يمكن ان يكون مبلغ المشرف اكبر من مبلغ امر العمل")
 
-            whs_id = self.env['stock.warehouse'].search(
-                [('company_id', '=', rec.entry_card_id.company_id.id)], limit=1)
-            ##
-            # if not rec.use_minus_qty:
-            #     for line in rec.lines_spare_parts:
-            #         if not line.product_id.categ_id.temp_categ_flag:
-            #             if line.qty_done and line.product_id and line.product_id.name.upper() != "DISCOUNT" and line.product_id.type == 'product':
-
-            #                 sql_query = "select COALESCE(sum(quantity), 0::numeric) as qty from stock_quant a where a.product_id = {} and location_id in (" \
-            #                             "select ld.id from stock_warehouse w, stock_location ls ,stock_location ld " \
-            #                             "where w.id={} and w.code=ls.name and ls.id=ld.location_id and ld.active=true)".format(
-            #                     line.product_id.id, whs_id.id)
-
-            #                 self.env.cr.execute(sql_query)
-            #                 aval_qty = self.env.cr.fetchone()[0]
-            #                 if line.qty_done > aval_qty:
-            #                     raise ValidationError(
-            #                         "Warning: No enough Qty For product <<<<لا توجد كمية متوفر للصنف المحدد[ {} ][ "
-            #                         "{} ] .. الكمية المتوفره للصنف [ {} ]".format(
-            #                             line.product_id.name, line.product_id.default_code, aval_qty))
-
     user_id = fields.Many2one(
         'res.users', string='مدخل البيانات/مسئول المبيعات', readonly=True,
         required=True, default=lambda self: self.env.uid)
@@ -427,7 +406,7 @@ class mizan_car_work_procedure_master(models.Model):
                             l.product_id.name))
 
             rec.write({'end_date': datetime.today()})
-            
+
             sale_order_tmp = {
                 'partner_id': rec.partner_id.id,
                 'partner_invoice_id': rec.partner_id.id,
@@ -581,18 +560,6 @@ class mizan_car_work_procedure_master(models.Model):
                 result['views'] = [(res and res.id or False, 'form')]
                 result['res_id'] = invoice.id or False
             return result
-
-            # action = self.env.ref('sale.action_orders')
-            # result = action.read()[0]
-            # result.pop('id', None)
-            # result['context'] = {}
-            # result['domain'] = [('id', '=', sale_order.id)]
-            # if sale_order:
-            #     res = self.env.ref('sale.view_order_form', False)
-            #     result['views'] = [(res and res.id or False, 'form')]
-            #     result['res_id'] = sale_order.id or False
-
-            # return result
 
     def call_sale_order(self):
         for rec in self:
@@ -773,166 +740,10 @@ class mizan_car_work_procedure_master(models.Model):
                 message = "اجمالي المبلغ المستحق هو  [ %s ] .. هل تريد الاستمرار " % rec.total_all_with_tax
                 message_en = " Total amount will be [ %s ] >> do you want to continue " % rec.total_all_with_tax
 
-                action = self.env.ref('yousentech_car_maintain.message_confirm_action')
+                action = self.env.ref(
+                    'yousentech_car_maintain.message_confirm_action')
                 result = action.read()[0]
                 result.pop('id', None)
-                result['context'] = {'default_desc': message_en + "/" + message}
+                result['context'] = {
+                    'default_desc': message_en + "/" + message}
                 return result
-
-
-class mizan_car_work_procedure_line(models.Model):
-    _name = 'mizan.car.work.procedure.line'
-    _description = 'Car work order line'
-
-    sequence = fields.Integer(string="التسلسل", default=12)
-    product_id = fields.Many2one('product.product', string="المنتج", copy=False, required=True,
-                                 domain=[('discount_product_flag', '!=', True), ('detailed_type', '!=', 'product')])
-    name = fields.Char(string="وصف الفحص", copy=False, required=True)
-
-    company_id = fields.Many2one(
-        'res.company', copy=False, default=lambda self: self._default_branch_id(), compute="_get_branch_id")
-
-    discount_type = fields.Selection([('amount', 'مبلغ'), ('percentage', 'نسبة')], string="نوع الخصم",
-                                     default='percentage')
-    discount_line = fields.Float(string="الخصم")
-    discount_amount = fields.Float(string="مبلغ الخصم")
-
-    tax_id = fields.Integer(default=lambda self: self._default_tax_id(),
-                            compute="_get_tax_id")
-
-    product_tax = fields.Many2one(
-        'account.tax', string="الضريبة", domain="[('id','=',tax_id)]")
-    amount_tax = fields.Float()
-    total = fields.Float(
-        string="الاجمالي", compute="_calc_total", readonly=True)
-    total_before_tax = fields.Float(
-        string="الاجمالي قبل الضريبة", compute="_calc_total", readonly=True)
-
-    total_tax = fields.Float(
-        string="الاجمالي بعد الضريبة", compute="_calc_total", readonly=True)
-
-    technical_name = fields.Many2many('hr.technical.assignments', string="اسم الفني",
-                                      domain="[('company_id','=', company_id),('state','=', 'current')]")
-    unit_price = fields.Float(string="السعر", required=True)
-    is_guarantee_flag = fields.Boolean(default=False)
-    product_has_guarantee_flag = fields.Boolean(string="الضمان", default=False)
-
-    notes = fields.Char(string="الملاحظات")
-    header_id = fields.Many2one(
-        'mizan.car.work.procedure.master', ondelete='cascade')
-    technical_is_done = fields.Many2one(
-        'hr.technical.assignments', string=" اعتمد بواسطة",)
-    technical_is_started = fields.Many2one(
-        'hr.technical.assignments', string="بدأ بواسطة")
-    state = fields.Selection(
-        [('complete', ' completed / مكتمل'), ('started', 'started / البدء')], string="الحالة")
-    complete_date = fields.Datetime(string="تاريخ ووقت الاكتمال")
-    start_Service_date = fields.Datetime(string="تاريخ ووقت البدء")
-    diff_times = fields.Char(
-        string="فتره الانجاز(ساعة)", compute="get_diff_times")
-    _sql_constraints = [
-        ('product_id_uniq', 'unique(product_id,header_id)',
-         ' مكرر لا يمكن الاستمرار'),
-    ]
-
-    @api.depends('start_Service_date', 'complete_date')
-    def get_diff_times(self):
-        for rec in self:
-            if rec.start_Service_date and rec.complete_date:
-                time_difference = rec.complete_date - rec.start_Service_date
-                days, seconds = time_difference.days, time_difference.seconds
-                hours = days * 24 + seconds // 3600
-                minutes = (seconds % 3600) // 60
-                seconds = seconds % 60
-                rec.diff_times = "ساعة [%s] و [%s] دقيقة" % (hours, minutes)
-
-            else:
-                rec.diff_times = False
-
-    @api.model
-    def _default_branch_id(self):
-        for rec in self:
-            return rec.header_id.entry_card_id.company_id.id
-
-    @api.depends('header_id')
-    def _get_branch_id(self):
-        for rec in self:
-            if rec.header_id:
-                rec.company_id = rec.header_id.entry_card_id.company_id.id
-            else:
-                rec.company_id = False
-
-    @api.model
-    def _default_tax_id(self):
-        for rec in self:
-            rec.tax_id = rec.product_id.taxes_id.id
-
-    def _get_tax_id(self):
-        for rec in self:
-            rec.tax_id = rec.product_id.taxes_id.id
-
-    @api.onchange('product_id')
-    def get_product_tax(self):
-        for rec in self:
-            rec.product_tax = rec.product_id.taxes_id.id
-
-    @api.onchange('product_has_guarantee_flag')
-    def check_guarantee(self):
-        for rec in self:
-            if not rec.product_has_guarantee_flag:
-                if rec.name:
-                    rec.write({'name': rec.name + '[غير خاضع للضمان]'})
-            else:
-                if rec.product_id:
-                    rec.write({'name': rec.product_id.name})
-
-    @api.depends('unit_price', 'discount_line', 'discount_type', 'product_tax')
-    def _calc_total(self):
-        for rec in self:
-            if rec.discount_type == 'percentage':
-                rec.total = (rec.unit_price) - ((rec.unit_price)
-                                                * (rec.discount_line / 100))
-                rec.discount_amount = (
-                    (rec.unit_price) * (rec.discount_line / 100))
-
-            elif rec.discount_type == 'amount':
-                rec.total = (rec.unit_price) - (rec.discount_line)
-                rec.discount_amount = (rec.discount_line)
-
-            else:
-                rec.total = (rec.unit_price)
-                rec.discount_amount = 0
-
-            if rec.product_tax:
-                if rec.product_tax.price_include:
-                    rec.total_before_tax = round((rec.total / 1.15), 2)
-                else:
-                    rec.total_before_tax = round(rec.total, 2)
-
-            else:
-                rec.total_before_tax = rec.total
-
-            if rec.product_tax:
-                if rec.product_tax.price_include:
-                    rec.total_tax = round(rec.total, 2)
-                else:
-                    rec.total_tax = round(rec.total + (rec.total * 0.15), 2)
-
-                rec.amount_tax = abs(rec.total_before_tax - rec.total_tax)
-            else:
-                rec.total_tax = rec.total
-                rec.amount_tax = abs(rec.total_before_tax - rec.total_tax)
-
-    @api.onchange('product_id')
-    def set_name(self):
-        for rec in self:
-            rec.name = rec.product_id.name
-            rec.unit_price = rec.header_id.get_price_of_product(rec.product_id)
-
-            if rec.product_id:
-                if rec.header_id.is_guarantee:
-                    if rec.name:
-                        if not rec.product_id.guarantee_able and not rec.product_id.guarantee_product:
-                            rec.write({'name': rec.name + '[غير خاضع للضمان]'})
-                        if rec.product_id.guarantee_able:
-                            rec.write({'product_has_guarantee_flag': True})
