@@ -24,14 +24,11 @@ class sale_order(models.Model):
         invoice_vals.update({'pay_type': self.pay_type or False})
         invoice_vals.update({'vin_no': self.vin_no or False})
         invoice_vals.update({'car_type': self.car_type or False})
-  
         invoice_vals.update({'is_guarantee': self.is_guarantee or False})
 
         return invoice_vals
 
     def action_confirm(self):
-        ##
-        # self.check_available_qty()
         sale_order_confirm = super(sale_order, self).action_confirm()
         return sale_order_confirm
     
@@ -58,7 +55,6 @@ class sale_order(models.Model):
 
         return super(sale_order, self).unlink()
     
-
 
 
 class sale_order_line(models.Model):
