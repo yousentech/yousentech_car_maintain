@@ -307,21 +307,6 @@ class stock_picking(models.Model):
                 wo = self.env['mizan.car.work.procedure.master'].search(
                     [('id', '=', rec.maint_wo_id.id)])
 
-                # if wo.state in ('cancel_order', 'execute_completed'):
-                #     raise ValidationError(
-                #         "ارسال الاصناف لامر العمل اما ان يكون مكتمل او ملغي لا يمكن ")
-
-                # if self.check_closed_period(rec.date):
-                #     raise ValidationError(
-                #         "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفترة ")
-                # if rec.scheduled_date:
-                #     if self.check_closed_period(rec.scheduled_date):
-                #         raise ValidationError(
-                #             "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفترة ")
-                # if rec.date_done:
-                #     if self.check_closed_period(rec.date_done):
-                #         raise ValidationError(
-                #             "تنبيه .. لا يمكن اتمام العمليات بسبب تم ايقاف العمليات في هذه الفترة ")
 
                 dates_to_check = [rec.date, rec.scheduled_date, rec.date_done]
                 if any(self.check_closed_period(d) for d in dates_to_check if d):
@@ -406,80 +391,3 @@ class stock_picking(models.Model):
 
             else:
                 raise ValidationError(" لا يمكن ارسال الاصناف لامر العمل   ")
-
-    # def send_products_to_wo(self):
-    #     for rec in self:
-    #         if not rec.maint_wo_id:
-    #             raise ValidationError("لا يمكن ارسال الاصناف لامر العمل")
-
-    #         wo = self.env['mizan.car.work.procedure.master'].search([('id', '=', rec.maint_wo_id.id)])
-
-    #         if wo.state in ('cancel_order', 'execute_completed'):
-    #             raise ValidationError("لا يمكن إرسال الأصناف لأمر العمل المكتمل أو الملغي")
-
-    #         dates_to_check = [rec.date, rec.scheduled_date, rec.date_done]
-    #         if any(self.check_closed_period(d) for d in dates_to_check if d):
-    #             raise ValidationError("لا يمكن اتمام العمليات بسبب توقف العمليات في هذه الفترة")
-
-    #         if wo.sale_order_id:
-    #             raise ValidationError("لا يمكن إرسال الأصناف بسبب وجود أمر بيع")
-
-    #         for line in rec.move_ids_without_package:
-    #             if (line.product_qty <= 0 and not line.quantity) or not line.unit_price or (line.product_uom_qty != line.quantity):
-    #                 raise ValidationError(f"الصنف [{line.product_id.name}] به مشكلة في الكمية أو السعر")
-
-    #         lines_to_delete = wo.lines_spare_parts.filtered(
-    #             lambda l: l.product_id.id not in rec.move_ids_without_package.product_id.ids
-    #             and l.stock_picking_id.id == rec.id)
-    #         lines_to_delete.unlink()
-
-    #         product_data = {}
-    #         for line in rec.move_ids_without_package:
-    #             if rec.state == 'done':
-    #                 product_id = line.product_id.id
-    #                 if product_id not in product_data:
-    #                     product_data[product_id] = {
-    #                         'product': line.product_id,
-    #                         'qty': 0,
-    #                         'unit_price_total': 0,
-    #                         'count': 0
-    #                     }
-    #                 product_data[product_id]['qty'] += line.quantity
-    #                 product_data[product_id]['unit_price_total'] += line.unit_price
-    #                 product_data[product_id]['count'] += 1
-
-    #         for product_id, data in product_data.items():
-    #             if data['count'] == 0:
-    #                 continue
-
-    #             avg_unit_price = round(data['unit_price_total'] / data['count'], 2)
-
-    #             existing_line = wo.lines_spare_parts.filtered(
-    #                 lambda l: l.product_id.id == product_id
-    #                 and l.stock_picking_id.id == rec.id
-    #             )
-
-    #             if existing_line:
-    #                 existing_line.write({
-    #                     'unit_price': avg_unit_price,
-    #                     'qty': existing_line.qty + data['qty'],
-    #                     'qty_done': existing_line.qty_done + data['qty'],
-    #                 })
-    #                 rec.write({'line_spare_parts_ids': [(4, existing_line.id, 0)]})
-
-    #             else:
-    #                 line_spare_parts = self.env['mizan.car.spare.parts.lines'].create({
-    #                     'product_id': product_id,
-    #                     'name': data['product'].name,
-    #                     'unit_price': avg_unit_price,
-    #                     'qty': data['qty'],
-    #                     'qty_done': data['qty'],
-    #                     'product_tax': data['product'].taxes_id.id,
-    #                     'stock_picking_id': rec.id,
-    #                     'header_id': wo.id,
-    #                 })
-    #                 rec.write({'line_spare_parts_ids': [(4, line_spare_parts.id, 0)]})
-
-    #         rec.write({'send_done_wo': True})
-    #         wo._cal_spare_parts_amounts()
-    #         wo._cal_services_amounts()

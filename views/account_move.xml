@@ -77,11 +77,11 @@
           <field name="inherit_id" ref="account.view_invoice_tree" />
           <field name="arch" type="xml">
                <xpath expr="//field[@name='ref']" position="after">
-                    <field name="move_type" invisible="1" />
+                    <field name="move_type" column_invisible="1" />
 
                     <field name="cash_close_id" invisible="move_type not in ['entry']"
                          options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                         readonly="1" string="مندوب نظام الصيانة" />
+                         readonly="1"  />
 
                </xpath>
           </field>
@@ -93,11 +93,15 @@
           <field name="arch" type="xml">
 
                <xpath expr="//search" position="inside">
-                    <field name="move_type" invisible="1" />
+                    <!-- <field name="move_type" column_invisible="1" /> -->
 
-                    <field name="cash_close_id" invisible="move_type not in ['entry']"
+                    <!-- <field name="cash_close_id" column_invisible="move_type not in ['entry']"
                          options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                         readonly="1" string="مندوب نظام الصيانة" />
+                         readonly="1" string="مندوب نظام الصيانة" /> -->
+
+                    <filter name="cash_close_id"
+                         string="رقم اقفال الصندوق"
+                         domain="[('cash_close_id', '!=', False)]" />
                </xpath>
 
           </field>
