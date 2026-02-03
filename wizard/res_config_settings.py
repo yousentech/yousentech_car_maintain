@@ -1,88 +1,173 @@
-from odoo import fields, models, _,api
+from odoo import fields, models, _
+
 class res_config_settings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    discount_posted = fields.Boolean('ترحيل الخصم في اوامر التركيب')
+    discount_posted = fields.Boolean(
+        'ترحيل الخصم في اوامر التركيب',
+        config_parameter='yousentech_car_maintain.discount_posted'
+    )
+    
+    car_no = fields.Boolean(
+        string='ادخال رقم لوحة السيارة اجباري',  
+        config_parameter='yousentech_car_maintain.car_no'
+    )
+    
+    vin_no = fields.Boolean(
+        string='ادخال رقم الشاصي للسيارة اجباري',
+        config_parameter='yousentech_car_maintain.vin_no'
+    )
+    
+    compelete_done_date_not_required = fields.Boolean(
+        'تاريخ اكتمال التنفيذ غير اجباري',
+        config_parameter='yousentech_car_maintain.compelete_done_date_not_required'
+    )
+    
+    partner_mobile_not_required = fields.Boolean(
+        'ادخال رقم جوال العميل غير اجباري',
+        config_parameter='yousentech_car_maintain.partner_mobile_not_required'
+    )
+    
+    service_price_include_tax = fields.Boolean(
+        'سعر الخدمة شاملة الضريبة',
+        config_parameter='yousentech_car_maintain.service_price_include_tax'
+    )
+    
+    collecting_products = fields.Boolean(
+        'تجميع الاصناف في بند واحد',
+        config_parameter='yousentech_car_maintain.collecting_products'
+    )
+    
+    car_type = fields.Boolean(
+        'ادخال نوع السيارة اجباري',
+        config_parameter='yousentech_car_maintain.car_type'
+    )
+    
 
-    car_no = fields.Boolean(string='ادخال رقم لوحة السيارة اجباري',  config_parameter='yousentech_car_maintain.car_no')
-    vin_no = fields.Boolean(string='ادخال رقم الشاصي للسيارة اجباري',config_parameter='yousentech_car_maintain.vin_no')
-    compelete_done_date_not_required = fields.Boolean('تاريخ اكتمال التنفيذ غير اجباري')
-    partner_mobile_not_required = fields.Boolean('ادخال رقم جوال العميل غير اجباري')
-    service_price_include_tax = fields.Boolean('سعر الخدمة شاملة الضريبة')
-
-    collecting_products = fields.Boolean('تجميع الاصناف في بند واحد')
-    car_type = fields.Boolean('ادخال نوع السيارة اجباري')
 
 
-    @api.model
-    def get_values(self):
-        res = super(res_config_settings, self).get_values()
-        params = self.env['ir.config_parameter'].sudo()
-        l_discount_posted = params.get_param('discount_posted',
-                                             default=False)
-        l_car_no = params.get_param('car_no',
-                                             default=False)
-        l_vin_no = params.get_param('vin_no',
-                                    default=False)
-
-        l_partner_mobile_not_required = params.get_param('partner_mobile_not_required',
-                                    default=False)
-
-        l_compelete_done_date_not_required = params.get_param('compelete_done_date_not_required',
-                                                       default=False)
-
-        l_collecting_products = params.get_param('collecting_products',
-                                    default=False)
-        l_car_type = params.get_param('car_type',
-                                             default=False)
 
 
-        l_service_price_include_tax = params.get_param('service_price_include_tax',
-                                                       default=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from odoo import fields, models, _,api
+# class res_config_settings(models.TransientModel):
+#     _inherit = 'res.config.settings'
+
+#     discount_posted = fields.Boolean('ترحيل الخصم في اوامر التركيب')
+
+#     car_no = fields.Boolean(string='ادخال رقم لوحة السيارة اجباري',  config_parameter='yousentech_car_maintain.car_no')
+#     vin_no = fields.Boolean(string='ادخال رقم الشاصي للسيارة اجباري',config_parameter='yousentech_car_maintain.vin_no')
+#     compelete_done_date_not_required = fields.Boolean('تاريخ اكتمال التنفيذ غير اجباري')
+#     partner_mobile_not_required = fields.Boolean('ادخال رقم جوال العميل غير اجباري')
+#     service_price_include_tax = fields.Boolean('سعر الخدمة شاملة الضريبة')
+
+#     collecting_products = fields.Boolean('تجميع الاصناف في بند واحد')
+#     car_type = fields.Boolean('ادخال نوع السيارة اجباري')
+
+
+#     @api.model
+#     def get_values(self):
+#         res = super(res_config_settings, self).get_values()
+#         params = self.env['ir.config_parameter'].sudo()
+#         l_discount_posted = params.get_param('discount_posted',
+#                                              default=False)
+#         l_car_no = params.get_param('car_no',
+#                                              default=False)
+#         l_vin_no = params.get_param('vin_no',
+#                                     default=False)
+
+#         l_partner_mobile_not_required = params.get_param('partner_mobile_not_required',
+#                                     default=False)
+
+#         l_compelete_done_date_not_required = params.get_param('compelete_done_date_not_required',
+#                                                        default=False)
+
+#         l_collecting_products = params.get_param('collecting_products',
+#                                     default=False)
+#         l_car_type = params.get_param('car_type',
+#                                              default=False)
+
+
+#         l_service_price_include_tax = params.get_param('service_price_include_tax',
+#                                                        default=False)
   
-        res.update(discount_posted=l_discount_posted)
-        res.update(car_no=l_car_no)
-        res.update(vin_no=l_vin_no)
-        res.update(partner_mobile_not_required=l_partner_mobile_not_required)
+#         res.update(discount_posted=l_discount_posted)
+#         res.update(car_no=l_car_no)
+#         res.update(vin_no=l_vin_no)
+#         res.update(partner_mobile_not_required=l_partner_mobile_not_required)
 
-        res.update(compelete_done_date_not_required=l_compelete_done_date_not_required)
-        res.update(collecting_products=l_collecting_products)
-        res.update(car_type=l_car_type)
-        res.update(service_price_include_tax=l_service_price_include_tax)
-        return res
+#         res.update(compelete_done_date_not_required=l_compelete_done_date_not_required)
+#         res.update(collecting_products=l_collecting_products)
+#         res.update(car_type=l_car_type)
+#         res.update(service_price_include_tax=l_service_price_include_tax)
+#         return res
 
-    def set_values(self):
-        super(res_config_settings, self).set_values()
-        self.env['ir.config_parameter'].sudo().set_param(
-            "discount_posted",
-            self.discount_posted)
+#     def set_values(self):
+#         super(res_config_settings, self).set_values()
+#         self.env['ir.config_parameter'].sudo().set_param(
+#             "discount_posted",
+#             self.discount_posted)
 
-        self.env['ir.config_parameter'].sudo().set_param(
-            "car_no",
-            self.car_no)
+#         self.env['ir.config_parameter'].sudo().set_param(
+#             "car_no",
+#             self.car_no)
 
-        self.env['ir.config_parameter'].sudo().set_param(
-            "vin_no",
-            self.vin_no)
+#         self.env['ir.config_parameter'].sudo().set_param(
+#             "vin_no",
+#             self.vin_no)
 
-        self.env['ir.config_parameter'].sudo().set_param(
-          "partner_mobile_not_required",self.partner_mobile_not_required)
+#         self.env['ir.config_parameter'].sudo().set_param(
+#           "partner_mobile_not_required",self.partner_mobile_not_required)
 
-        self.env['ir.config_parameter'].sudo().set_param(
-            "compelete_done_date_not_required",
-            self.compelete_done_date_not_required)
+#         self.env['ir.config_parameter'].sudo().set_param(
+#             "compelete_done_date_not_required",
+#             self.compelete_done_date_not_required)
 
-        self.env['ir.config_parameter'].sudo().set_param(
-                    "collecting_products",
-                    self.collecting_products)
+#         self.env['ir.config_parameter'].sudo().set_param(
+#                     "collecting_products",
+#                     self.collecting_products)
 
-        self.env['ir.config_parameter'].sudo().set_param(
-        "car_type",
-        self.car_type)
+#         self.env['ir.config_parameter'].sudo().set_param(
+#         "car_type",
+#         self.car_type)
 
-        self.env['ir.config_parameter'].sudo().set_param(
-        "service_price_include_tax",
-        self.service_price_include_tax)
+#         self.env['ir.config_parameter'].sudo().set_param(
+#         "service_price_include_tax",
+#         self.service_price_include_tax)
 
       
 

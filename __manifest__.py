@@ -1,5 +1,5 @@
 {
-    'name': 'Car Maintenance System',
+    'name': 'yousentech_car_maintain',
     'version': '17.0.1.0.0',
     'summary': 'Car Maintenance and Workshop Management',
     'category': 'Services/Maintenance',
@@ -24,7 +24,7 @@
         'wizard/res_config_setting.xml',
         'views/product_template.xml',
         'views/product_wizard.xml',
-         'views/car_entry_card.xml',
+        'views/car_entry_card.xml',
         'views/car_work_procedure.xml',
         
         'views/car_checkup_procedure.xml',
