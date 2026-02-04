@@ -620,8 +620,8 @@ class mizan_wo_report_module(models.TransientModel):
             excel_data = output.read() 
             output.close()
             return excel_data
-        else:
-            raise ValidationError("لا توجد بيانات")
+        # else:
+        #     raise ValidationError("لا توجد بيانات")
 
 
 class mizan_wo_report_module_pdf_report(models.AbstractModel):
@@ -705,6 +705,6 @@ class mizan_wo_report_module_pdf_report(models.AbstractModel):
                 'docs_un_compelete': harajs_un_compelete,
 
             }
-        else:
-            raise ValidationError(
-                "لا توجد بيانات")
+        # else:
+        #     raise ValidationError(
+        #         "لا توجد بيانات")
