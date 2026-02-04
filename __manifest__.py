@@ -26,13 +26,13 @@
         'views/product_wizard.xml',
         'views/car_entry_card.xml',
         'views/car_work_procedure.xml',
-        
+         
         'views/car_checkup_procedure.xml',
         'views/wo_services_lines_view.xml',
         'views/hr_tecnical_assignments.xml',
         'views/hr_supervisor_assignments.xml',
         'views/hr_employee.xml',
-        'views/account_move.xml',
+        'views/account_move.xml', 
         'views/account_journal.xml',
         'views/register_payment.xml',
         'views/sale_order.xml',
@@ -48,13 +48,13 @@
         'views/wo_technicals_analysis.xml',
         'views/wo_auditor_analysis.xml',
         'wizard/message_confirm.xml',
-        'pdf_templates/mizan_wo_report_module.xml',
-        'pdf_templates/car_checkup_report.xml',
-        'pdf_templates/car_work_order_report.xml',
+        'pdf_templates/wo_report_module.xml',
+        'pdf_templates/car_checkup_procedure.xml',
+        'pdf_templates/car_work_procedure.xml',
         'pdf_templates/wo_invoice_payments_report.xml',
-        'pdf_templates/close_cash_report.xml',
+        'pdf_templates/cash_closed.xml',
         'pdf_templates/wo_technical_report.xml',
-        'pdf_templates/all_reports_views.xml',
+        'pdf_templates/reports_views.xml',
         
         
         

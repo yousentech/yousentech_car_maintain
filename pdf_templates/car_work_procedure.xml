@@ -8,7 +8,7 @@
             <t t-set="company" t-value="res_company"></t>
         </t>
 
-        <div class="header">
+        <!-- <div class="header">
             <div class="row mt32 mb32">
                 <div class="col-6">
                     <t t-if="not user_id.company_id.no_header_report_account">
@@ -49,7 +49,7 @@
                     </t>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <t t-call="web.html_container">
@@ -303,8 +303,7 @@
 
                                     <th class="text-center" style="width: 20%">البيان</th>
                                     <th class="text-center" style="width: 20%">الكمية</th>
-                                    <!-- 									<th class="text-center" style="width: 10%">اجمالي
-                                    المقاسات</th>-->
+                                  
                                     <th class="text-center" style="width: 10%">السعر </th>
                                     <th class="text-center" style="width: 10%">الخصم </th>
                                     <th class="text-center" style="width: 10%">الضريبة </th>
@@ -419,15 +418,6 @@
         </t>
     </template>
 
-
-    <!-- <report id="print_mizan_work_order_report"
-        model="mizan.car.work.procedure.master"
-        string=" طباعة امر العمل"
-        report_type="qweb-pdf"
-        name="yousentech_car_maintain.work_order_report_view"
-        file="yousentech_car_maintain.work_order_report_view"
-        menu="True"
-    /> -->
 
     <record id="print_mizan_work_order_report" model="ir.actions.report">
         <field name="name"> طباعة امر العمل</field>

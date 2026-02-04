@@ -69,7 +69,6 @@ class mizan_wo_report_module(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         # data = json.loads(data_excel)
         return self.generate_xlsx_report(workbook,data)
-        # return self.env.ref('yousentech_car_maintain.print_wo_sum_xlsx').report_action(self, data=data)
     
     @api.model
     def generate_xlsx_report(self, workbook, data):
@@ -122,7 +121,34 @@ class mizan_wo_report_module(models.TransientModel):
             l_company = self.env['res.company'].search([('id', 'in', l_company_id)])
             l_partner = self.env['res.partner'].search([('id', 'in', l_partner_id)])
             l_supervisors = self.env['hr.supervisor.assignments'].search([('id', 'in', l_supervisor_id)])
+            
+            sheet = workbook.add_worksheet('تقرير اوامر العمل ')
+            sheet.right_to_left()
+            format_company = workbook.add_format(
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 20})
 
+            format_header = workbook.add_format(
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+            
+            format_header.set_bg_color('gray')
+            format_header_date = workbook.add_format(
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+            
+            format_header_date.set_bg_color('orange')
+            
+            format_address = workbook.add_format(
+                {'bold': True, 'align': 'center', 'bg_color': 'yellow', 'font': 'Arial', 'font_size': 12})
+            format_totally_row = workbook.add_format(
+                {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10})
+            format_date = workbook.add_format(
+                {'num_format': 'dd-mm-yyyy', 'align': 'center', 'font': 'Arial', 'font_size': 10})
+            format_num = workbook.add_format(
+                {"num_format": u"#,##0.00", 'align': 'center', 'font': 'Arial', 'font_size': 10})
+            format_string = workbook.add_format(
+                {'align': 'center', 'font': 'Arial', 'font_size': 10})
+
+            company_col = 1
+            company_row = 1
             for account in l_companys:
                 work_order_date = []
             
@@ -140,33 +166,33 @@ class mizan_wo_report_module(models.TransientModel):
                         work_order_date.append(rec.create_date.strftime('%Y-%m-%d'))
                  
                 
-                sheet = workbook.add_worksheet('تقرير اوامر العمل ')
-                sheet.right_to_left()
-                format_company = workbook.add_format(
-                    {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 20})
+                # sheet = workbook.add_worksheet('تقرير اوامر العمل ')
+                # sheet.right_to_left()
+                # format_company = workbook.add_format(
+                #     {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 20})
 
-                format_header = workbook.add_format(
-                    {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+                # format_header = workbook.add_format(
+                #     {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
                 
-                format_header.set_bg_color('gray')
-                format_header_date = workbook.add_format(
-                    {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+                # format_header.set_bg_color('gray')
+                # format_header_date = workbook.add_format(
+                #     {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
                 
-                format_header_date.set_bg_color('orange')
+                # format_header_date.set_bg_color('orange')
                 
-                format_address = workbook.add_format(
-                    {'bold': True, 'align': 'center', 'bg_color': 'yellow', 'font': 'Arial', 'font_size': 12})
-                format_totally_row = workbook.add_format(
-                    {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10})
-                format_date = workbook.add_format(
-                    {'num_format': 'dd-mm-yyyy', 'align': 'center', 'font': 'Arial', 'font_size': 10})
-                format_num = workbook.add_format(
-                    {"num_format": u"#,##0.00", 'align': 'center', 'font': 'Arial', 'font_size': 10})
-                format_string = workbook.add_format(
-                    {'align': 'center', 'font': 'Arial', 'font_size': 10})
+                # format_address = workbook.add_format(
+                #     {'bold': True, 'align': 'center', 'bg_color': 'yellow', 'font': 'Arial', 'font_size': 12})
+                # format_totally_row = workbook.add_format(
+                #     {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10})
+                # format_date = workbook.add_format(
+                #     {'num_format': 'dd-mm-yyyy', 'align': 'center', 'font': 'Arial', 'font_size': 10})
+                # format_num = workbook.add_format(
+                #     {"num_format": u"#,##0.00", 'align': 'center', 'font': 'Arial', 'font_size': 10})
+                # format_string = workbook.add_format(
+                #     {'align': 'center', 'font': 'Arial', 'font_size': 10})
 
-                company_col = 1
-                company_row = 1
+                # company_col = 1
+                # company_row = 1
                 sheet.merge_range(company_row, company_col, company_row, company_col + 2, 'الاسم', format_company)
                 sheet.merge_range(company_row + 1, company_col, company_row + 1, company_col + 2, 'العنوان',
                                   format_company)
@@ -195,13 +221,12 @@ class mizan_wo_report_module(models.TransientModel):
                 date_col = 1
 
                 sheet.merge_range(date_row , date_col, date_row, date_col + 1,
-                            date_start + ' من تاريخ ',
+                            f'من تاريخ {date_start.strftime("%Y-%m-%d")}',
                               format_header)
                 date_col +=1
                 sheet.merge_range(date_row , date_col+1, date_row, date_col + 2,
-                                  date_end + ' الى تاريخ ',
+                                  f'من تاريخ {date_end.strftime("%Y-%m-%d")}',
                                   format_header)
-                print("l_group_by_type",l_group_by_type)
                 if l_group_by_type == 'by_type':
                                 
                         address_col = 1
