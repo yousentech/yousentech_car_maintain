@@ -1,7 +1,12 @@
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo import models, fields, api, http
+from odoo.http import request, content_disposition
 import io
 import xlsxwriter
+from datetime import datetime
+import json
+from urllib.parse import urlencode
+from odoo.exceptions import ValidationError
+
 
 class mizan_wo_invoice_payments_report(models.TransientModel):
     _name = 'mizan.wo.invoice.payments.report'
@@ -20,7 +25,7 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                                       ('by_type', 'حسب النوع')], string='ترتيب التقرير', required=True,
                                      default='by_date')
     company_ids = fields.Many2many(comodel_name="res.company", string="الشركة", required=True,
-                                    default=lambda self: self.env.companies.ids)
+                                   default=lambda self: self.env.companies.ids)
     # company_id = fields.Many2one('res.company', string="الفرع",
     #                              required=True, default=lambda self: self.env.user.company_id.id)
     supervisor_id = fields.Many2one(
@@ -32,8 +37,6 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
         return {'domain': {'company_id': [('id', 'in', select)]}}
 
     def get_report(self):
-        """Call when button 'Get Report' clicked.
-        """
         data = {
             'ids': self.ids,
             'model': self._name,
@@ -53,33 +56,57 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
 
         return self.env.ref('yousentech_car_maintain.print_wo_inv_pay_rpt').report_action(self, data=data)
 
-    def get_report_excel(self):
-        """Call when button 'Get Report' clicked.
-        """
+    def action_download_excel(self):
+        """Button action to download Excel"""
+        self.ensure_one()
+        # data = {
+        #     'ids': self.ids,
+        #     'model': self._name,
+        #     'form': {
+        #         'date_start': self.date_start,
+        #         'date_end': self.date_end,
+        #         'partner_id': [(i['id']) for i in self.partner_id],
+        #         'company_ids': [(i['id']) for i in self.company_ids],
+        #         # 'company_id': [(i['id']) for i in self.company_id],
+        #         'supervisor_id': [(i['id']) for i in self.supervisor_id],
+        #         'cancel_state': self.cancel_state,
+        #         'display_type': self.display_type,
+        #         'group_by_type': self.group_by_type,
 
-        data = {
-            'ids': self.ids,
-            'model': self._name,
-            'form': {
-                'date_start': self.date_start,
-                'date_end': self.date_end,
-                'partner_id': [(i['id']) for i in self.partner_id],
-                'company_ids': [(i['id']) for i in self.company_ids],
-                # 'company_id': [(i['id']) for i in self.company_id],
-                'supervisor_id': [(i['id']) for i in self.supervisor_id],
-                'cancel_state': self.cancel_state,
-                'display_type': self.display_type,
-                'group_by_type': self.group_by_type,
-
-            },
+        #     },
+        # }
+        form_data = {
+            'date_start': self.date_start.strftime('%Y-%m-%d') if self.date_start else '',
+            'date_end': self.date_end.strftime('%Y-%m-%d') if self.date_end else '',
+            'partner_id': [(i['id']) for i in self.partner_id],
+            'company_ids': [(i['id']) for i in self.company_ids],
+            # 'company_id': [(i['id']) for i in self.company_id],
+            'supervisor_id': [(i['id']) for i in self.supervisor_id],
+            'cancel_state': self.cancel_state,
+            'display_type': self.display_type,
+            'group_by_type': self.group_by_type,
         }
-        output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        # data = json.loads(data_excel)
-        return self.generate_xlsx_report(workbook, data)
+
+        params = {
+            'model': self._name,
+            'data': json.dumps(form_data, default=str),
+            'output_format': 'xlsx',
+            'report_name': f'CompletedWorkOrder_{fields.Date.today()}'
+        }
+
+        # URL encode
+        encoded_params = urlencode(params)
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/xlsx_report?{encoded_params}',
+            'target': 'new',
+        }
 
     @api.model
-    def generate_xlsx_report(self, workbook, data):
+    def get_xlsx_report(self, data):
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
@@ -150,7 +177,7 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                                                             and am.id in {}
                                                             group by j.name,am.id ) x group by journal_name
                                                     """.format(tuple(mizan_wo.create_invoice_manually_id.ids), tuple(mizan_wo.create_invoice_manually_id.ids), )
-           
+
                 self.env.cr.execute(sql_payments)
                 res_payments = self.env.cr.dictfetchall()
 
@@ -239,11 +266,11 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                 date_col = 1
 
                 sheet.merge_range(date_row, date_col, date_row, date_col + 1,
-                                 f'من تاريخ {date_start.strftime("%Y-%m-%d")}',
+                                  f'من تاريخ {date_start}',
                                   format_header)
                 date_col += 1
                 sheet.merge_range(date_row, date_col+1, date_row, date_col + 2,
-                                  f'من تاريخ {date_end.strftime("%Y-%m-%d")}',
+                                  f'من تاريخ {date_end}',
                                   format_header)
 
                 if l_group_by_type == 'by_date':
@@ -381,24 +408,27 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                                     l_bank,
                                     format_totally_row)
 
-                     
+            # return {
+            #     'doc_ids': data['ids'],
+            #     'doc_model': data['model'],
+            #     'date_start': date_start,
+            #     'date_end': date_end,
+            #     'companys': l_companys,
+            #     # 'branchs': l_branchs,
+            #     'customers': l_partner,
+            #     'supervisors': l_supervisors,
+            #     # 'payments': payments,
+            #     'docs': mizan_wo,
+            #     'payments_sum': res_payments,
+            #     'display_type': l_display_type,
+            #     'group_by_type': l_group_by_type,
 
-            return {
-                'doc_ids': data['ids'],
-                'doc_model': data['model'],
-                'date_start': date_start,
-                'date_end': date_end,
-                'companys': l_companys,
-                # 'branchs': l_branchs,
-                'customers': l_partner,
-                'supervisors': l_supervisors,
-                # 'payments': payments,
-                'docs': mizan_wo,
-                'payments_sum': res_payments,
-                'display_type': l_display_type,
-                'group_by_type': l_group_by_type,
-
-            }
+            # }
+            workbook.close()
+            output.seek(0)
+            excel_data = output.read()
+            output.close()
+            return excel_data
         else:
             raise ValidationError(
                 "لا توجد بيانات")
@@ -472,7 +502,7 @@ class mizan_wo_invoice_payments_report_pdf_report(models.AbstractModel):
                                             and am.id in {}
                                             group by j.name,am.id ) x group by journal_name
                                     """.format(tuple(mizan_wo.create_invoice_manually_id.ids), tuple(mizan_wo.create_invoice_manually_id.ids), )
-         
+
                 self.env.cr.execute(sql_payments)
                 res_payments = self.env.cr.dictfetchall()
             else:
