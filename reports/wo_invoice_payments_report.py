@@ -1,9 +1,7 @@
-from datetime import datetime, time
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import io
 import xlsxwriter
-
 
 class mizan_wo_invoice_payments_report(models.TransientModel):
     _name = 'mizan.wo.invoice.payments.report'
@@ -21,14 +19,14 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
     group_by_type = fields.Selection([('by_date', 'حسب التاريخ'),
                                       ('by_type', 'حسب النوع')], string='ترتيب التقرير', required=True,
                                      default='by_date')
-    company_ids1 = fields.Many2many(comodel_name="res.company", string="الشركة", required=True,
-                                    default=lambda self: self.env.user.company_ids.ids)
-    company_id = fields.Many2one('res.company', string="الفرع",
-                                 required=True, default=lambda self: self.env.user.company_id.id)
+    company_ids = fields.Many2many(comodel_name="res.company", string="الشركة", required=True,
+                                    default=lambda self: self.env.companies.ids)
+    # company_id = fields.Many2one('res.company', string="الفرع",
+    #                              required=True, default=lambda self: self.env.user.company_id.id)
     supervisor_id = fields.Many2one(
-        'hr.supervisor.assignments', string="المشرف", copy=False, domain="[('company_id','=', company_id)]")
+        'hr.supervisor.assignments', string="المشرف", copy=False, domain="[('company_id','in', company_ids)]")
 
-    @api.onchange('company_ids1')
+    @api.onchange('company_ids')
     def _get_allowed_branch_ids(self):
         select = [(i['id']) for i in self.env.user.sudo().company_ids]
         return {'domain': {'company_id': [('id', 'in', select)]}}
@@ -43,8 +41,8 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                 'date_start': self.date_start,
                 'date_end': self.date_end,
                 'partner_id': [(i['id']) for i in self.partner_id],
-                'company_ids1': [(i['id']) for i in self.company_ids1],
-                'company_id': [(i['id']) for i in self.company_id],
+                'company_ids': [(i['id']) for i in self.company_ids],
+                # 'company_id': [(i['id']) for i in self.company_id],
                 'supervisor_id': [(i['id']) for i in self.supervisor_id],
                 'cancel_state': self.cancel_state,
                 'display_type': self.display_type,
@@ -66,8 +64,8 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                 'date_start': self.date_start,
                 'date_end': self.date_end,
                 'partner_id': [(i['id']) for i in self.partner_id],
-                'company_ids1': [(i['id']) for i in self.company_ids1],
-                'company_id': [(i['id']) for i in self.company_id],
+                'company_ids': [(i['id']) for i in self.company_ids],
+                # 'company_id': [(i['id']) for i in self.company_id],
                 'supervisor_id': [(i['id']) for i in self.supervisor_id],
                 'cancel_state': self.cancel_state,
                 'display_type': self.display_type,
@@ -86,8 +84,8 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
         l_partner_id = data['form']['partner_id']
-        l_company_ids1 = data['form']['company_ids1']
-        l_company_id = data['form']['company_id']
+        l_company_ids = data['form']['company_ids']
+        # l_company_id = data['form']['company_id']
         l_supervisor_id = data['form']['supervisor_id']
         l_cancel_state = data['form']['cancel_state']
         l_display_type = data['form']['display_type']
@@ -101,11 +99,11 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
             domain.append(
                 ('entry_card_id.supervisor_name', 'in', l_supervisor_id))
 
-        if l_company_ids1:
-            domain.append(('entry_card_id.company_id', '=', l_company_ids1))
+        if l_company_ids:
+            domain.append(('entry_card_id.company_id', 'in', l_company_ids))
 
-        if l_company_id:
-            domain.append(('company_id', 'in', l_company_id))
+        # if l_company_id:
+        #     domain.append(('company_id', 'in', l_company_id))
 
         if l_partner_id:
             domain.append(('partner_id', '=', l_partner_id))
@@ -115,9 +113,7 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
 
         domain.append(('state', '=', 'execute_completed'))
 
-        print(domain)
         mizan_wo = self.env['mizan.car.work.procedure.master'].search(domain)
-        print(mizan_wo)
         if mizan_wo:
             # if l_enable_custom_seq:
             #     sql_query += " group by b.date,a.seq_2, b.move_name,p.name, b.company_id,a.id order by date "
@@ -125,7 +121,7 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
             #     sql_query += " group by b.date, b.move_name,p.name, b.company_id,a.id order by date "
 
             l_companys = self.env['res.company'].search(
-                [('id', 'in', l_company_ids1)])
+                [('id', 'in', l_company_ids)])
             # l_branchs = self.env['custom.branches'].search([('id', 'in', l_branch_id)])
 
             l_partner = self.env['res.partner'].search(
@@ -154,6 +150,10 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                                                             and am.id in {}
                                                             group by j.name,am.id ) x group by journal_name
                                                     """.format(tuple(mizan_wo.create_invoice_manually_id.ids), tuple(mizan_wo.create_invoice_manually_id.ids), )
+           
+                self.env.cr.execute(sql_payments)
+                res_payments = self.env.cr.dictfetchall()
+
             else:
                 if len(mizan_wo.create_invoice_manually_id.ids) == 1:
                     sql_payments = """
@@ -174,11 +174,8 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                                                             group by j.name,am.id ) x group by journal_name
                                                         """.format(mizan_wo.create_invoice_manually_id.id, mizan_wo.create_invoice_manually_id.id)
 
-            print(sql_payments)
-
-            self.env.cr.execute(sql_payments)
-            res_payments = self.env.cr.dictfetchall()
-            print(res_payments)
+                    self.env.cr.execute(sql_payments)
+                    res_payments = self.env.cr.dictfetchall()
 
             for account in l_companys:
                 work_order_date = []
@@ -242,11 +239,11 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                 date_col = 1
 
                 sheet.merge_range(date_row, date_col, date_row, date_col + 1,
-                                  date_start + ' من تاريخ ',
+                                 f'من تاريخ {date_start.strftime("%Y-%m-%d")}',
                                   format_header)
                 date_col += 1
                 sheet.merge_range(date_row, date_col+1, date_row, date_col + 2,
-                                  date_end + ' الى تاريخ ',
+                                  f'من تاريخ {date_end.strftime("%Y-%m-%d")}',
                                   format_header)
 
                 if l_group_by_type == 'by_date':
@@ -384,14 +381,7 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                                     l_bank,
                                     format_totally_row)
 
-                        # address_row += 10
-                        # sheet.write(address_row, address_col + 1, ' دفعت ', format_totally_row)
-                        # sheet.write(address_row, address_col + 2, ' اجمالي المبلغ', format_totally_row)
-                        # address_row += 1
-                        # for pay in res_payments:
-                        #     sheet.write(address_row, address_col + 1, pay['journal_name'], format_string)
-                        #     sheet.write(address_row, address_col + 2, pay['amount'] , format_string)
-                        #
+                     
 
             return {
                 'doc_ids': data['ids'],
@@ -423,8 +413,8 @@ class mizan_wo_invoice_payments_report_pdf_report(models.AbstractModel):
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
         l_partner_id = data['form']['partner_id']
-        l_company_ids1 = data['form']['company_ids1']
-        l_company_id = data['form']['company_id']
+        l_company_ids = data['form']['company_ids']
+        # l_company_id = data['form']['company_id']
         l_supervisor_id = data['form']['supervisor_id']
         l_cancel_state = data['form']['cancel_state']
         l_display_type = data['form']['display_type']
@@ -438,11 +428,11 @@ class mizan_wo_invoice_payments_report_pdf_report(models.AbstractModel):
             domain.append(
                 ('entry_card_id.supervisor_name', 'in', l_supervisor_id))
 
-        if l_company_ids1:
-            domain.append(('entry_card_id.company_id', '=', l_company_ids1))
+        if l_company_ids:
+            domain.append(('entry_card_id.company_id', 'in', l_company_ids))
 
-        if l_company_id:
-            domain.append(('company_id', 'in', l_company_id))
+        # if l_company_id:
+        #     domain.append(('company_id', 'in', l_company_id))
 
         if l_partner_id:
             domain.append(('partner_id', '=', l_partner_id))
@@ -455,7 +445,7 @@ class mizan_wo_invoice_payments_report_pdf_report(models.AbstractModel):
         mizan_wo = self.env['mizan.car.work.procedure.master'].search(domain)
         if mizan_wo:
             l_companys = self.env['res.company'].search(
-                [('id', 'in', l_company_ids1)])
+                [('id', 'in', l_company_ids)])
             l_partner = self.env['res.partner'].search(
                 [('id', 'in', l_partner_id)])
 
@@ -482,6 +472,9 @@ class mizan_wo_invoice_payments_report_pdf_report(models.AbstractModel):
                                             and am.id in {}
                                             group by j.name,am.id ) x group by journal_name
                                     """.format(tuple(mizan_wo.create_invoice_manually_id.ids), tuple(mizan_wo.create_invoice_manually_id.ids), )
+         
+                self.env.cr.execute(sql_payments)
+                res_payments = self.env.cr.dictfetchall()
             else:
                 if len(mizan_wo.create_invoice_manually_id.ids) == 1:
                     sql_payments = """
@@ -502,8 +495,8 @@ class mizan_wo_invoice_payments_report_pdf_report(models.AbstractModel):
                                                 group by j.name,am.id ) x group by journal_name
                                             """.format(mizan_wo.create_invoice_manually_id.id, mizan_wo.create_invoice_manually_id.id)
 
-            self.env.cr.execute(sql_payments)
-            res_payments = self.env.cr.dictfetchall()
+                    self.env.cr.execute(sql_payments)
+                    res_payments = self.env.cr.dictfetchall()
 
             return {
                 'doc_ids': data['ids'],

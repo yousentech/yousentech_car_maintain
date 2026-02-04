@@ -385,7 +385,6 @@
 
                       <td>
                         <strong>
-                          <!--                                           <span t-esc="l_services_total"/>-->
                           <span t-esc=" '{:,.2f}'.format(l_services_total )" />
                         </strong>
 
