@@ -37,9 +37,9 @@
 
 
                     <group>
-                        <field name="company_id"
-                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-                        <field name="company_ids1" groups="base.group_multi_company" string="الشركة"
+                        <!-- <field name="company_id"
+                            options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" /> -->
+                        <field name="company_ids"  string="الشركة"
                             widget="many2many_tags"
                             options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
                     </group>
