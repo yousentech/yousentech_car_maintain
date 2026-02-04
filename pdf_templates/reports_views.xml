@@ -48,7 +48,7 @@
                 <footer>
                     <button name="get_report" string="Print Report" type="object"
                         class="oe_highlight" />
-                    <button name="get_report_excel" string="Print to Xlsx" type="object" />
+                    <button name="action_download_excel" string="Print to Xlsx" type="object" />
 
                     <button string="Cancel" special="cancel" />
                 </footer>
@@ -122,7 +122,7 @@
                 <footer>
                     <button name="get_report" string="Print Report" type="object"
                         class="oe_highlight" />
-                    <button name="get_report_excel" string="Print to Xlsx" type="object" />
+                    <button name="action_download_excel" string="Print to Xlsx" type="object" />
 
                     <button string="Cancel" special="cancel" />
                 </footer>
@@ -196,7 +196,7 @@
                 <footer>
                     <button name="get_report" string="Print Report" type="object"
                         class="oe_highlight" />
-                    <button name="get_report_excel" string="Print to Xlsx" type="object" />
+                    <button name="action_download_excel" string="Print to Xlsx" type="object" />
 
                     <button string="Cancel" special="cancel" />
                 </footer>
