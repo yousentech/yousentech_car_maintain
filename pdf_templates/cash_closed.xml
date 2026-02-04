@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-
-    <!-- <report id="print_close_cash_report"
-        model="cash.close.closed"
-        string=" تقرير اقفال الصندوق"
-        report_type="qweb-pdf"
-        name="yousentech_car_maintain.cash_close_report_view"
-        file="yousentech_car_maintain.cash_close_report_view"
-        menu="True"
-    /> -->
     <record id="print_close_cash_report" model="ir.actions.report">
         <field name="name">تقرير اقفال الصندوق</field>
         <field name="model">cash.close.closed</field>
@@ -27,7 +18,7 @@
             <t t-set="company" t-value="res_company"></t>
         </t>
 
-        <div class="header">
+        <!-- <div class="header">
             <div class="row mt32 mb32">
                 <div class="col-6">
                     <t t-if="not user_id.company_id.no_header_report_account">
@@ -55,8 +46,7 @@
                             <img t-if="user_id.company_id"
                                 t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_footer)"
                                 style="max-height: 200px;" />
-                            <!--<img
-                            src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+                         
                             <br />
                         </t>
                         <t t-else="">
@@ -64,15 +54,14 @@
                                 <img t-if="company.footer_image"
                                     t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)"
                                     style="max-height: 200px;" />
-                                <!--<img
-                                src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+                          
                                 <br />
                             </t>
                         </t>
                     </t>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <t t-call="web.html_container">
 

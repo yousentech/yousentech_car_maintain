@@ -16,25 +16,7 @@
     <field name="header_spacing">20</field>
     <field name="dpi">200</field>
   </record>
-  <!-- <report id="print_wo_technical_report"
-				model="mizan.wo.technical.report"
-				string=" تقرير الفنيين"
-				report_type="qweb-pdf"
-				name="yousentech_car_maintain.print_wo_technical_report_view"
-				file="yousentech_car_maintain.print_wo_technical_report_view"
-           
-				 menu="True"
 
-				/>
-        <report
-        id="print_wo_technical_xlsx"
-				model="mizan.wo.technical.report"
-        string="Print to XLSX"
-        report_type="xlsx"
-        name="yousentech_car_maintain.print_wo_technical_xlsx_view"
-        file=" تقرير الفنيين"
-        attachment_use="False"
-        /> -->
 
   <record id="print_wo_technical_report" model="ir.actions.report">
     <field name="name"> تقرير الفنيين</field>
@@ -53,7 +35,7 @@
       <t t-set="company" t-value="res_company"></t>
     </t>
 
-    <div class="header">
+    <!-- <div class="header">
       <div class="row mt32 mb32">
         <div class="col-6">
           <t t-if="not user_id.company_id.no_header_report_account">
@@ -81,8 +63,7 @@
               <img t-if="user_id.company_id"
                 t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_footer)"
                 style="max-height: 200px;" />
-              <!--<img
-              src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+             
               <br />
             </t>
             <t t-else="">
@@ -90,15 +71,14 @@
                 <img t-if="company.footer_image"
                   t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)"
                   style="max-height: 200px;" />
-                <!--<img
-                src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+             
                 <br />
               </t>
             </t>
           </t>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <t t-call="web.html_container">
 

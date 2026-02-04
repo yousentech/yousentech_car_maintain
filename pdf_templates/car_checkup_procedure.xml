@@ -8,7 +8,7 @@
             <t t-set="company" t-value="res_company"></t>
         </t>
 
-        <div class="header">
+        <!-- <div class="header">
             <div class="row mt32 mb32">
                 <div class="col-6">
                     <t t-if="not user_id.company_id.no_header_report_account">
@@ -27,8 +27,8 @@
                     </t>
                 </div>
             </div>
-        </div>
-        <div class="footer">
+        </div> -->
+        <!-- <div class="footer">
             <div class="row mt32 mb32">
                 <div class="col-12">
                     <t t-if="not user_id.company_id.no_header_report_account">
@@ -49,7 +49,7 @@
                     </t>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <t t-call="web.html_container">
@@ -312,8 +312,7 @@
                                                         <t t-if="not line.name">
                                                             <span t-esc="line.checkup_part_id.name" />
                                                         </t>
-                                                        <!--                                                                <span
-                                                        t-esc="line.checkup_part_id.name"/>  -->
+
                                                         <span
                                                             t-esc="', '.join(str(g.checkup_part_result_id.name) for g in line.checkup_part_result_id)" />
 
@@ -341,8 +340,7 @@
                                 <thread>
                                     <th class="text-center" style="width: 10%">الكود</th>
                                     <th class="text-center" style="width: 40%">الوصف بالعربي</th>
-                                    <!-- 									<th class="text-center" style="width: 10%">اجمالي
-                                    المقاسات</th>-->
+
                                     <th class="text-center" style="width: 40%">Description </th>
                                 </thread>
                                 <tbody>
@@ -362,35 +360,7 @@
                                 </tbody>
                             </table>
                         </t>
-                        <!--                                <t t-if="docs.lines_spare_parts">-->
-                        <!--                                    <table id="table1" class="table table-sm table table-bordered"
-                        style="background-color:white;">-->
-                        <!--                                        <thread>-->
-                        <!--                                        <th class="text-center" style="width: 20%">المنتج</th>-->
-                        <!--                                        <th class="text-center" style="width: 20%">الكمية</th>-->
-                        <!--                                        &lt;!&ndash; 									<th class="text-center" style="width: 10%">اجمالي
-                        المقاسات</th>&ndash;&gt;-->
-                        <!--                                        <th class="text-center" style="width: 10%">السعر </th>-->
-                        <!--                                        <th class="text-center" style="width: 10%">الإجمالي</th>-->
-                        <!--                                        </thread>-->
-                        <!--                                        <tbody>-->
-                        <!--                                        <t t-foreach ="docs.lines_sales" t-as="line">-->
-                        <!--                                            <tr>-->
-                        <!--                                                <td><span t-esc="line.service_description"/></td>-->
-                        <!--                                                <td><span t-esc="line.qty"/></td>-->
-                        <!--                                                <td><span t-esc="line.unit_price"/></td>-->
-                        <!--                                                <td><span t-esc="line.total"/></td>-->
-                        <!--                                            </tr>-->
-                        <!--                                        </t>-->
-                        <!--                                        </tbody>-->
-                        <!--                                    </table>-->
-                        <!--                                </t>-->
-                        <!--                                <t t-if="doc.body_image">-->
-                        <!--                                    <center>-->
-                        <!--								        <img t-if="doc.body_image" t-att-src="'data:image/png;base64,%s' %
-                        to_text(doc.body_image)" style="max-height: 400px;"/>-->
-                        <!--                                    </center>-->
-                        <!--							    </t>-->
+
 
                         <table class="table">
                             <tr>
@@ -451,16 +421,6 @@
             </t>
         </t>
     </template>
-
-
-    <!-- <report id="print_mizan_checkup_order_report"
-        model="mizan.car.checkup.procedure.master"
-        string=" طباعة طلب الفحص"
-        report_type="qweb-pdf"
-        name="yousentech_car_maintain.checkup_order_report_view"
-        file="yousentech_car_maintain.checkup_order_report_view"
-        menu="True"
-    /> -->
 
     <record id="print_mizan_checkup_order_report" model="ir.actions.report">
         <field name="name">طباعة طلب الفحص</field>

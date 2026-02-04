@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-
-  <!-- <report id="print_wo_inv_pay_rpt"
-				model="mizan.wo.invoice.payments.report"
-				string=" تقرير اوامر العمل المكتملة"
-				report_type="qweb-pdf"
-				name="yousentech_car_maintain.print_wo_inv_pay_rpt_view"
-				file="yousentech_car_maintain.print_wo_inv_pay_rpt_view"
-				 menu="True"
-
-				/>
-     <report
-        id="print_wo_inv_pay_xlsx"
-        model="mizan.wo.invoice.payments.report"
-        string="Print to XLSX"
-        report_type="xlsx"
-        name="yousentech_car_maintain.print_wo_inv_pay_xlsx_view"
-        file="تقرير اوامر العمل المكتملة"
-        attachment_use="False"
-        /> -->
   <record id="print_wo_inv_pay_rpt" model="ir.actions.report">
     <field name="name"> تقرير اوامر العمل المكتملة</field>
     <field name="model">mizan.wo.report.module</field>
@@ -37,7 +18,7 @@
       <t t-set="company" t-value="res_company"></t>
     </t>
 
-    <div class="header">
+    <!-- <div class="header">
       <div class="row mt32 mb32">
         <div class="col-6">
           <t t-if="not user_id.company_id.no_header_report_account">
@@ -65,8 +46,7 @@
               <img t-if="user_id.company_id"
                 t-att-src="'data:image/png;base64,%s' % to_text(user_id.company_id.branch_footer)"
                 style="max-height: 200px;" />
-              <!--<img
-              src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+       
               <br />
             </t>
             <t t-else="">
@@ -74,15 +54,14 @@
                 <img t-if="company.footer_image"
                   t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)"
                   style="max-height: 200px;" />
-                <!--<img
-                src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+         
                 <br />
               </t>
             </t>
           </t>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <t t-call="web.html_container">
 
@@ -406,7 +385,6 @@
 
                       <td>
                         <strong>
-                          <!--                                           <span t-esc="l_services_total"/>-->
                           <span t-esc=" '{:,.2f}'.format(l_services_total )" />
                         </strong>
 
@@ -1109,7 +1087,6 @@
 
                     <td>
                       <strong>
-                        <!--                                           <span t-esc="l_services_total"/>-->
                         <span t-esc=" '{:,.2f}'.format(l_services_total )" />
                       </strong>
 

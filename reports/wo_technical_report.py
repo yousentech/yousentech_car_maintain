@@ -66,7 +66,6 @@ class mizan_wo_technical_report(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         # data = json.loads(data_excel)
         return self.generate_xlsx_report(workbook,data)
-        # return self.env.ref('yousentech_car_maintain.print_wo_technical_xlsx').report_action(self, data=data)
 
     @api.model
     def generate_xlsx_report(self, workbook, data):
@@ -176,11 +175,11 @@ class mizan_wo_technical_report(models.TransientModel):
                 date_col = 1
 
                 sheet.merge_range(date_row , date_col, date_row, date_col + 1,
-                            date_start + ' من تاريخ ',
+                            f'من تاريخ {date_start.strftime("%Y-%m-%d")}',
                               format_header)
                 date_col +=1
                 sheet.merge_range(date_row , date_col+1, date_row, date_col + 2,
-                                  date_end + ' الى تاريخ ',
+                                  f'من تاريخ {date_end.strftime("%Y-%m-%d")}',
                                   format_header)
                
                 if l_display_type == 'detail':

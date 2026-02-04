@@ -13,12 +13,12 @@ class mizan_wo_report_module(models.TransientModel):
     group_by_type = fields.Selection([('by_date', 'حسب التاريخ'),
                                      ('by_type', 'حسب النوع')], string='ترتيب التقرير', required=True,
                                     default='by_date')
-    company_ids1 = fields.Many2many(comodel_name="res.company", string="الشركة", required=True,
-                                    default=lambda self: self.env.user.company_ids.ids)
-    company_id = fields.Many2one('res.company', string="الفرع", required=True, default=lambda self: self.env.user.company_id.id)
-    supervisor_id = fields.Many2one('hr.supervisor.assignments', string="المشرف",copy=False,domain="[('company_id','=', company_id)]")
+    company_ids = fields.Many2many(comodel_name="res.company", string="الشركة", required=True,
+                                    default=lambda self: self.env.companies.ids)
+    # company_id = fields.Many2one('res.company', string="الفرع", required=True, default=lambda self: self.env.user.company_id.id)
+    supervisor_id = fields.Many2one('hr.supervisor.assignments', string="المشرف",copy=False,domain="[('company_id','in', company_ids)]")
 
-    @api.onchange('company_ids1')
+    @api.onchange('company_ids')
     def _get_allowed_branch_ids(self):
         select = [(i['id']) for i in self.env.user.sudo().company_ids]
         return {'domain': {'company_id': [('id', 'in', select)]}}
@@ -33,8 +33,8 @@ class mizan_wo_report_module(models.TransientModel):
                 'date_start': self.date_start,
                 'date_end': self.date_end,
                 'partner_id': [(i['id']) for i in self.partner_id],
-                'company_ids1': [(i['id']) for i in self.company_ids1],
-                'company_id': [(i['id']) for i in self.company_id],
+                'company_ids': [(i['id']) for i in self.company_ids],
+                # 'company_id': [(i['id']) for i in self.company_id],
                 'supervisor_id': [(i['id']) for i in self.supervisor_id],
                 'cancel_state': self.cancel_state,
                 'hide_uncompleted_orders': self.hide_uncompleted_orders,
@@ -56,8 +56,8 @@ class mizan_wo_report_module(models.TransientModel):
                 'date_start': self.date_start,
                 'date_end': self.date_end,
                 'partner_id': [(i['id']) for i in self.partner_id],
-                'company_ids1': [(i['id']) for i in self.company_ids1],
-                'company_id': [(i['id']) for i in self.company_id],
+                'company_ids': [(i['id']) for i in self.company_ids],
+                # 'company_id': [(i['id']) for i in self.company_id],
                 'supervisor_id': [(i['id']) for i in self.supervisor_id],
                 'cancel_state': self.cancel_state,
                 'hide_uncompleted_orders': self.hide_uncompleted_orders,
@@ -69,7 +69,6 @@ class mizan_wo_report_module(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         # data = json.loads(data_excel)
         return self.generate_xlsx_report(workbook,data)
-        # return self.env.ref('yousentech_car_maintain.print_wo_sum_xlsx').report_action(self, data=data)
     
     @api.model
     def generate_xlsx_report(self, workbook, data):
@@ -77,8 +76,8 @@ class mizan_wo_report_module(models.TransientModel):
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
         l_partner_id = data['form']['partner_id']
-        l_company_ids1 = data['form']['company_ids1']
-        l_company_id = data['form']['company_id']
+        l_company_ids = data['form']['company_ids']
+        # l_company_id = data['form']['company_id']
         l_supervisor_id = data['form']['supervisor_id']
         l_cancel_state = data['form']['cancel_state']
         l_hide_uncompleted_orders = data['form']['hide_uncompleted_orders']
@@ -94,13 +93,13 @@ class mizan_wo_report_module(models.TransientModel):
             domain_compelete.append(('entry_card_id.supervisor_name', 'in', l_supervisor_id))
             domain_un_compelete.append(('entry_card_id.supervisor_name', 'in', l_supervisor_id))
 
-        if l_company_ids1:
-            domain_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
-            domain_un_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
+        # if l_company_ids1:
+        #     domain_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
+        #     domain_un_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
 
-        if l_company_id:
-            domain_compelete.append(('company_id', 'in', l_company_id))
-            domain_un_compelete.append(('company_id', 'in', l_company_id))
+        if l_company_ids:
+            domain_compelete.append(('company_id', 'in', l_company_ids))
+            domain_un_compelete.append(('company_id', 'in', l_company_ids))
 
         if l_partner_id:
             domain_compelete.append(('partner_id', '=', l_partner_id))
@@ -118,11 +117,38 @@ class mizan_wo_report_module(models.TransientModel):
         harajs_compelete = self.env['mizan.car.work.procedure.master'].search(domain_compelete)
         harajs_un_compelete = self.env['mizan.car.work.procedure.master'].search(domain_un_compelete)
         if harajs_compelete or harajs_un_compelete:
-            l_companys = self.env['res.company'].search([('id', 'in', l_company_ids1)])
-            l_company = self.env['res.company'].search([('id', 'in', l_company_id)])
+            l_companys = self.env['res.company'].search([('id', 'in', l_company_ids)])
+            l_company = self.env['res.company'].search([('id', 'in', l_company_ids)])
             l_partner = self.env['res.partner'].search([('id', 'in', l_partner_id)])
             l_supervisors = self.env['hr.supervisor.assignments'].search([('id', 'in', l_supervisor_id)])
+            
+            sheet = workbook.add_worksheet('تقرير اوامر العمل ')
+            sheet.right_to_left()
+            format_company = workbook.add_format(
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 20})
 
+            format_header = workbook.add_format(
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+            
+            format_header.set_bg_color('gray')
+            format_header_date = workbook.add_format(
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+            
+            format_header_date.set_bg_color('orange')
+            
+            format_address = workbook.add_format(
+                {'bold': True, 'align': 'center', 'bg_color': 'yellow', 'font': 'Arial', 'font_size': 12})
+            format_totally_row = workbook.add_format(
+                {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10})
+            format_date = workbook.add_format(
+                {'num_format': 'dd-mm-yyyy', 'align': 'center', 'font': 'Arial', 'font_size': 10})
+            format_num = workbook.add_format(
+                {"num_format": u"#,##0.00", 'align': 'center', 'font': 'Arial', 'font_size': 10})
+            format_string = workbook.add_format(
+                {'align': 'center', 'font': 'Arial', 'font_size': 10})
+
+            company_col = 1
+            company_row = 1
             for account in l_companys:
                 work_order_date = []
             
@@ -140,33 +166,33 @@ class mizan_wo_report_module(models.TransientModel):
                         work_order_date.append(rec.create_date.strftime('%Y-%m-%d'))
                  
                 
-                sheet = workbook.add_worksheet('تقرير اوامر العمل ')
-                sheet.right_to_left()
-                format_company = workbook.add_format(
-                    {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 20})
+                # sheet = workbook.add_worksheet('تقرير اوامر العمل ')
+                # sheet.right_to_left()
+                # format_company = workbook.add_format(
+                #     {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 20})
 
-                format_header = workbook.add_format(
-                    {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+                # format_header = workbook.add_format(
+                #     {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
                 
-                format_header.set_bg_color('gray')
-                format_header_date = workbook.add_format(
-                    {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+                # format_header.set_bg_color('gray')
+                # format_header_date = workbook.add_format(
+                #     {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
                 
-                format_header_date.set_bg_color('orange')
+                # format_header_date.set_bg_color('orange')
                 
-                format_address = workbook.add_format(
-                    {'bold': True, 'align': 'center', 'bg_color': 'yellow', 'font': 'Arial', 'font_size': 12})
-                format_totally_row = workbook.add_format(
-                    {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10})
-                format_date = workbook.add_format(
-                    {'num_format': 'dd-mm-yyyy', 'align': 'center', 'font': 'Arial', 'font_size': 10})
-                format_num = workbook.add_format(
-                    {"num_format": u"#,##0.00", 'align': 'center', 'font': 'Arial', 'font_size': 10})
-                format_string = workbook.add_format(
-                    {'align': 'center', 'font': 'Arial', 'font_size': 10})
+                # format_address = workbook.add_format(
+                #     {'bold': True, 'align': 'center', 'bg_color': 'yellow', 'font': 'Arial', 'font_size': 12})
+                # format_totally_row = workbook.add_format(
+                #     {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10})
+                # format_date = workbook.add_format(
+                #     {'num_format': 'dd-mm-yyyy', 'align': 'center', 'font': 'Arial', 'font_size': 10})
+                # format_num = workbook.add_format(
+                #     {"num_format": u"#,##0.00", 'align': 'center', 'font': 'Arial', 'font_size': 10})
+                # format_string = workbook.add_format(
+                #     {'align': 'center', 'font': 'Arial', 'font_size': 10})
 
-                company_col = 1
-                company_row = 1
+                # company_col = 1
+                # company_row = 1
                 sheet.merge_range(company_row, company_col, company_row, company_col + 2, 'الاسم', format_company)
                 sheet.merge_range(company_row + 1, company_col, company_row + 1, company_col + 2, 'العنوان',
                                   format_company)
@@ -195,13 +221,12 @@ class mizan_wo_report_module(models.TransientModel):
                 date_col = 1
 
                 sheet.merge_range(date_row , date_col, date_row, date_col + 1,
-                            date_start + ' من تاريخ ',
+                            f'من تاريخ {date_start.strftime("%Y-%m-%d")}',
                               format_header)
                 date_col +=1
                 sheet.merge_range(date_row , date_col+1, date_row, date_col + 2,
-                                  date_end + ' الى تاريخ ',
+                                  f'من تاريخ {date_end.strftime("%Y-%m-%d")}',
                                   format_header)
-                print("l_group_by_type",l_group_by_type)
                 if l_group_by_type == 'by_type':
                                 
                         address_col = 1
@@ -333,8 +358,6 @@ class mizan_wo_report_module(models.TransientModel):
 
                 elif l_group_by_type == 'by_date':
                                 
-                       
-                     
                         sheet.set_column('C:C', 12)
                         sheet.set_column('D:D', 30)
                         sheet.set_column('E:E', 20)
@@ -481,8 +504,8 @@ class mizan_wo_report_module_pdf_report(models.AbstractModel):
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
         l_partner_id = data['form']['partner_id']
-        l_company_ids1 = data['form']['company_ids1']
-        l_company_id = data['form']['company_id']
+        l_company_ids = data['form']['company_ids']
+        # l_company_id = data['form']['company_id']
         l_supervisor_id = data['form']['supervisor_id']
         l_cancel_state = data['form']['cancel_state']
         l_hide_uncompleted_orders = data['form']['hide_uncompleted_orders']
@@ -498,13 +521,13 @@ class mizan_wo_report_module_pdf_report(models.AbstractModel):
             domain_compelete.append(('entry_card_id.supervisor_name', 'in', l_supervisor_id))
             domain_un_compelete.append(('entry_card_id.supervisor_name', 'in', l_supervisor_id))
 
-        if l_company_ids1:
-            domain_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
-            domain_un_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
+        # if l_company_ids1:
+        #     domain_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
+        #     domain_un_compelete.append(('entry_card_id.company_id', '=', l_company_ids1))
 
-        if l_company_id:
-            domain_compelete.append(('company_id', 'in', l_company_id))
-            domain_un_compelete.append(('company_id', 'in', l_company_id))
+        if l_company_ids:
+            domain_compelete.append(('company_id', 'in', l_company_ids))
+            domain_un_compelete.append(('company_id', 'in', l_company_ids))
 
         if l_partner_id:
             domain_compelete.append(('partner_id', '=', l_partner_id))
@@ -523,8 +546,8 @@ class mizan_wo_report_module_pdf_report(models.AbstractModel):
       
         if harajs_compelete or harajs_un_compelete:
 
-            l_companys = self.env['res.company'].search([('id', 'in', l_company_ids1)])
-            l_company = self.env['res.company'].search([('id', 'in', l_company_id)])
+            l_companys = self.env['res.company'].search([('id', 'in', l_company_ids)])
+            # l_company = self.env['res.company'].search([('id', 'in', l_company_ids)])
 
             l_partner = self.env['res.partner'].search([('id', 'in', l_partner_id)])
 
@@ -536,7 +559,7 @@ class mizan_wo_report_module_pdf_report(models.AbstractModel):
                 'date_start': date_start,
                 'date_end': date_end,
                 'companys': l_companys,
-                'company': l_company,
+                # 'company': l_company,
                 'customers': l_partner,
                 'group_by_type':l_group_by_type,
                 'supervisors': l_supervisors,
