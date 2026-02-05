@@ -51,11 +51,12 @@ class mizan_car_work_procedure_line(models.Model):
     start_Service_date = fields.Datetime(string="تاريخ ووقت البدء")
     diff_times = fields.Char(
         string="فتره الانجاز(ساعة)", compute="get_diff_times")
+ 
     _sql_constraints = [
-        ('product_id_uniq', 'unique(product_id,header_id)',
-         ' مكرر لا يمكن الاستمرار'),
-    ]
-
+    ('unique_product_id',
+     'UNIQUE(product_id,header_id)',
+     ' مكرر لا يمكن الاستمرار'),
+]
     @api.depends('start_Service_date', 'complete_date')
     def get_diff_times(self):
         for rec in self:

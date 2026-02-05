@@ -52,11 +52,12 @@ class mizan_car_spare_parts_lines(models.Model):
     header_id = fields.Many2one(
         'mizan.car.work.procedure.master', ondelete='cascade')
 
+    
     _sql_constraints = [
-        ('product_id_uniq', 'unique(product_id,header_id)',
-         ' مكرر لا يمكن الاستمرار'),
-
-    ]
+    ('unique_product_id',
+     'UNIQUE(product_id,header_id)',
+     ' مكرر لا يمكن الاستمرار'),
+]
 
     @api.model
     def _default_branch_id(self):

@@ -25,9 +25,11 @@ class mizan_car_checkup_procedure_line(models.Model):
     header_id = fields.Many2one(
         'mizan.car.checkup.procedure.master', ondelete='cascade')
 
+
     _sql_constraints = [
-        ('checkup_part_id_uniq', 'unique(checkup_part_id,header_id)',
-         ' مكرر لا يمكن الاستمرار'),]
+    ('unique_checkup_part_id',
+     'UNIQUE(checkup_part_id,header_id)',
+     ' مكرر لا يمكن الاستمرار'),]
 
     @api.onchange('checkup_part_id')
     def get_default_results(self):
