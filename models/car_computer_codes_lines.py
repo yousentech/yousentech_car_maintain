@@ -14,8 +14,10 @@ class mizan_car_computer_codes_lines(models.Model):
     header_id = fields.Many2one('mizan.car.checkup.procedure.master',ondelete='cascade')
 
     _sql_constraints = [
-        ('computer_code_uniq', 'unique(computer_code,header_id)',
-         ' مكرر لا يمكن الاستمرار'),]
+    ('unique_computer_code',
+     'UNIQUE(computer_code,header_id)',
+     ' مكرر لا يمكن الاستمرار'),
+]
 
 
     @api.onchange('computer_code')
