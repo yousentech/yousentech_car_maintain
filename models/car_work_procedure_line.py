@@ -10,8 +10,7 @@ class mizan_car_work_procedure_line(models.Model):
                                  domain=[('discount_product_flag', '!=', True), ('detailed_type', '!=', 'product')])
     name = fields.Char(string="وصف الفحص", copy=False, required=True)
 
-    company_id = fields.Many2one(
-        'res.company', copy=False, default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+    company_id = fields.Many2one('res.company', copy=False,related="header_id.entry_card_id.company_id",store=True)
 
     discount_type = fields.Selection([('amount', 'مبلغ'), ('percentage', 'نسبة')], string="نوع الخصم",
                                      default='percentage')
@@ -71,18 +70,18 @@ class mizan_car_work_procedure_line(models.Model):
             else:
                 rec.diff_times = False
 
-    @api.model
-    def _default_branch_id(self):
-        for rec in self:
-            return rec.header_id.entry_card_id.company_id.id
+    # @api.model
+    # def _default_branch_id(self):
+    #     for rec in self:
+    #         return rec.header_id.entry_card_id.company_id.id
 
-    @api.depends('header_id')
-    def _get_branch_id(self):
-        for rec in self:
-            if rec.header_id:
-                rec.company_id = rec.header_id.entry_card_id.company_id.id
-            else:
-                rec.company_id = False
+    # @api.depends('header_id')
+    # def _get_branch_id(self):
+    #     for rec in self:
+    #         if rec.header_id:
+    #             rec.company_id = rec.header_id.entry_card_id.company_id.id
+    #         else:
+    #             rec.company_id = False
 
     @api.model
     def _default_tax_id(self):

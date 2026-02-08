@@ -51,8 +51,7 @@ class mizan_car_work_procedure_master(models.Model):
     add_user_spare_parts_flag = fields.Boolean(default=lambda self: self._default_add_spare_parts_flag(),
                                                compute="_get_add_spare_parts_flag")
 
-    company_id = fields.Many2one(
-        'res.company', string='الفرع', copy=False, required=True,)
+    company_id = fields.Many2one('res.company', string='الفرع', copy=False, required=True,related="entry_card_id.company_id",store=True)
     no_spare_parts_flag = fields.Boolean(
         string="امر البيع لا يحتاج قطع مستبدلة")
     is_guarantee = fields.Boolean(string="اضافة ضمان", default=True)
@@ -100,6 +99,51 @@ class mizan_car_work_procedure_master(models.Model):
     drum_counter = fields.Char(string="عداد وقت الدخول")
 
     drum_counter_exit = fields.Char(string="عداد وقت الخروج")
+    user_id = fields.Many2one('res.users', string='مدخل البيانات', readonly=True,  required=True, related="entry_card_id.user_id",store=True)
+    picking_type_id = fields.Many2one('stock.picking.type', string='Place Of sale',
+                                      domain="[('code', '=', ['outgoing']),('company_id','=',company_id)]",required=False)
+
+
+    def _default_picking_type_id(self):
+        for rec in self:
+            user_config = rec.env['res.user.inventory.config'].search([('user_id', '=', rec.user_id.id),('company_id', '=', rec.company_id.id),('operation_type', '=', 'outgoing')], limit=1)
+            is_exsiting_field_in_company = self.env['ir.model.fields'].sudo().search([('name', '=', 'sale_picking_type_id'), ('model', '=', 'res.company')])
+            if user_config and user_config.picking_type_id:
+                # Use the picking type from user's inventory config
+                rec.picking_type_id = user_config.picking_type_id.id
+            elif is_exsiting_field_in_company:
+                if rec.company_id.sale_picking_type_id and rec.company_id.sale_picking_type_id.company_id.id == rec.company_id.id:
+                    # Company's default if no user-specific setting
+                    rec.picking_type_id = rec.company_id.sale_picking_type_id.id
+            else:
+                rec.picking_type_id = False
+
+    @api.onchange("company_id", "partner_id","user_id","lines_spare_parts")
+    def get_default_data(self):
+        for rec in self:
+            rec._default_picking_type_id()
+ 
+ 
+    def validate_negative_quantity(self):
+        # check quantity of product for prevent selling in negative value - منع البيع بالسالب
+        self._default_picking_type_id()
+        if self.user_has_groups('yousentech_inventory_minus_quantity.group_prevent_selling_negative_value'):
+            is_exsiting_field_free_quantity = self.env['ir.model.fields'].sudo().search(
+                [('name', '=', 'free_quantity'), ('model', '=', 'sale.order.line')])
+            for line in self.lines_spare_parts.filtered(lambda x:x.product_id.detailed_type == 'product'):
+                stock_quant = self.env['stock.quant'].search([('product_id', '=', line.product_id.id), 
+                ('warehouse_id', '=', self.picking_type_id.warehouse_id.id), ('location_id', '=',  self.picking_type_id.default_location_src_id.id)])
+                reserved_quantity = sum(
+                    line.reserved_quantity for line in stock_quant)
+                if not line.product_id.categ_id.temp_categ_flag:
+                    if is_exsiting_field_free_quantity:
+                        total_quantity = line.quantity + line.free_quantity
+                    else:
+                        total_quantity = line.quantity
+
+                    line.product_id.validate_product_quentity(
+                        total_quantity, reserved_quantity, self.picking_type_id.warehouse_id.id, self.picking_type_id.default_location_src_id.ids)
+
 
     @api.model
     def _default_pricelist_flag(self):
@@ -198,18 +242,18 @@ class mizan_car_work_procedure_master(models.Model):
                         line.write({'name': line.product_id.name})
                         line.write({'product_has_guarantee_flag': False})
 
-    @api.model
-    def _default_branch_id(self):
-        for rec in self:
-            return rec.entry_card_id.company_id.id
+    # @api.model
+    # def _default_branch_id(self):
+    #     for rec in self:
+    #         return rec.entry_card_id.company_id.id
 
-    @api.depends('entry_card_id')
-    def _get_branch_id(self):
-        for rec in self:
-            if rec.entry_card_id:
-                rec.company_id = rec.entry_card_id.company_id.id
-            else:
-                rec.company_id = False
+    # @api.depends('entry_card_id')
+    # def _get_branch_id(self):
+    #     for rec in self:
+    #         if rec.entry_card_id:
+    #             rec.company_id = rec.entry_card_id.company_id.id
+    #         else:
+    #             rec.company_id = False
 
     @api.onchange('result_lines')
     def _cal_services_amounts(self):
@@ -259,7 +303,7 @@ class mizan_car_work_procedure_master(models.Model):
                     "لا يمكن ان يكون مبلغ المشرف اكبر من مبلغ امر العمل")
 
     user_id = fields.Many2one(
-        'res.users', string='مدخل البيانات/مسئول المبيعات', readonly=True,
+        'res.users', string='مدخل البيانات', readonly=True,
         required=True, default=lambda self: self.env.uid)
 
     def _get_discount_posted_flag(self):
@@ -719,6 +763,7 @@ class mizan_car_work_procedure_master(models.Model):
 
     def call_confirm_message_dailog(self):
         for rec in self:
+            rec.validate_negative_quantity()
             if not rec.additional_services:
                 if rec.total_all_with_tax:
                     message = "اجمالي المبلغ المستحق هو  [ %s ] .. هل تريد الاستمرار " % round(

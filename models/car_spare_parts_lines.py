@@ -11,8 +11,7 @@ class mizan_car_spare_parts_lines(models.Model):
     product_id = fields.Many2one('product.product', string="القطع المستبدلة",
                                  required=True, copy=False, domain=[('type', '=', 'product')],)
     name = fields.Char(string="وصف الخدمة", required=True, copy=False)
-    company_id = fields.Many2one(
-        'res.company', copy=False, default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+    company_id = fields.Many2one('res.company', copy=False,related="header_id.entry_card_id.company_id",store=True)
 
     technical_name = fields.Many2many('hr.technical.assignments', string="اسم الفني",
                                       domain="[('company_id','=', company_id),('state','=', 'current')]")
@@ -59,18 +58,18 @@ class mizan_car_spare_parts_lines(models.Model):
      ' مكرر لا يمكن الاستمرار'),
 ]
 
-    @api.model
-    def _default_branch_id(self):
-        for rec in self:
-            return rec.header_id.entry_card_id.company_id.id
+    # @api.model
+    # def _default_branch_id(self):
+    #     for rec in self:
+    #         return rec.header_id.entry_card_id.company_id.id
 
-    @api.depends('header_id')
-    def _get_branch_id(self):
-        for rec in self:
-            if rec.header_id:
-                rec.company_id = rec.header_id.entry_card_id.company_id.id
-            else:
-                rec.company_id = False
+    # @api.depends('header_id')
+    # def _get_branch_id(self):
+    #     for rec in self:
+    #         if rec.header_id:
+    #             rec.company_id = rec.header_id.entry_card_id.company_id.id
+    #         else:
+    #             rec.company_id = False
 
     @api.model
     def _default_tax_id(self):
@@ -113,24 +112,15 @@ class mizan_car_spare_parts_lines(models.Model):
     @api.depends('qty_done', 'unit_price', 'discount_line', 'discount_type', 'product_tax', 'aval_qty', 'unit_cost')
     def _calc_total(self):
         for rec in self:
-            prod_id = ("product.product" + "," + str(rec.product_id.id))
-            rec.unit_cost = self.env['ir.property'].search(
-                [('res_id', '=', prod_id)]).value_float
-
-            qty = 0.00
-            if rec.product_id:
-                whs_id = self.env['stock.warehouse'].search(
-                    [('company_id', '=', rec.header_id.entry_card_id.company_id.id)], limit=1)
-                sql_query = "select COALESCE(sum(quantity), 0::numeric) as qty from stock_quant a where a.product_id = {} and location_id in (" \
-                            "select ld.id from stock_warehouse w, stock_location ls ,stock_location ld " \
-                            "where w.id={} and w.code=ls.name and ls.id=ld.location_id and ld.active=true)".format(
-                                rec.product_id.id, whs_id.id)
-
-                self.env.cr.execute(sql_query)
-                qty = self.env.cr.fetchone()[0]
-
-            rec.aval_qty = qty
-
+            if rec.product_id and rec.header_id.picking_type_id:
+                quants = self.env['stock.quant'].search([
+                    ('product_id', '=', rec.product_id.id),
+                    ('location_id', '=', rec.header_id.picking_type_id.default_location_src_id.id), ])
+                rec.aval_qty = sum(quants.mapped('quantity')) - sum(quants.mapped('reserved_quantity'))
+              
+            else:
+                rec.aval_qty = 0.0
+            
             if rec.discount_type == 'percentage':
                 rec.total = (rec.qty_done * rec.unit_price) - \
                     ((rec.qty_done * rec.unit_price) * (rec.discount_line / 100))

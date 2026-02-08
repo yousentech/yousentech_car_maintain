@@ -8,8 +8,7 @@ class mizan_car_checkup_procedure_line(models.Model):
 
     selected = fields.Boolean(string="اختيار", default=True)
 
-    company_id = fields.Many2one(
-        copy=False, related="header_id.company_id", store=True)
+    company_id = fields.Many2one('res.company',copy=False, related="header_id.entry_card_id.company_id", store=True)
     checkup_part_id = fields.Many2one('product.product', string="نوع /كود الفحص",
                                       copy=False, required=True, domain=[('is_checkup_product', '=', True)])
 

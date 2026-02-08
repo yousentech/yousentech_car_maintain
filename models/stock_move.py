@@ -13,17 +13,14 @@ class stock_move(models.Model):
     def _calc_total(self):
         for rec in self:
             rec.total = rec.product_uom_qty * rec.unit_price
-            prod_id = ("product.product" + "," + str(rec.product_id.id))
-            rec.unit_cost = self.env['ir.property'].search(
-                [('res_id', '=', prod_id)]).value_float
-
-            qty = 0.00
-            if rec.product_id and rec.picking_id.location_id.id:
-                qty = self.env['stock.quant'].search(
-                    [('location_id', '=', rec.picking_id.location_id.id), ('product_id', '=', rec.product_id.id)])
-
-                qty = sum(l.quantity for l in qty)
-            rec.aval_qty = qty
+            if rec.product_id and rec.picking_id.picking_type_id.code == 'outgoing':
+                quants = self.env['stock.quant'].search([
+                    ('product_id', '=', rec.product_id.id),
+                    ('location_id', '=', rec.picking_id.location_id.id), ])
+                rec.aval_qty = sum(quants.mapped('quantity')) - sum(quants.mapped('reserved_quantity'))
+              
+            else:
+                rec.aval_qty = 0.0
 
     @api.onchange('unit_price')
     def chk_price_of_product(self):

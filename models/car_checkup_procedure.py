@@ -40,7 +40,7 @@ class mizan_car_checkup_procedure_master(models.Model):
     drum_counter_exit = fields.Char(string="عداد وقت الخروج")
 
     company_id = fields.Many2one('res.company', copy=False,
-                                 default=lambda self: self._default_branch_id(), compute="_get_branch_id")
+                                 ,related="entry_card_id.company_id",store=True)
 
     ##
     services_price = fields.Float(string="الاجمالي", store=True,
@@ -84,21 +84,21 @@ class mizan_car_checkup_procedure_master(models.Model):
             'product.group_product_pricelist')
 
     user_id = fields.Many2one(
-        'res.users', string='مدخل البيانات/مسئول المبيعات', readonly=True,
-        required=True, default=lambda self: self.env.uid)
+        'res.users', string='مدخل البيانات', readonly=True,
+        required=True, related="entry_card_id.user_id",store=True)
 
-    @api.model
-    def _default_branch_id(self):
-        for rec in self:
-            return rec.entry_card_id.company_id.id
+    # @api.model
+    # def _default_branch_id(self):
+    #     for rec in self:
+    #         return rec.entry_card_id.company_id.id
 
-    @api.depends('entry_card_id')
-    def _get_branch_id(self):
-        for rec in self:
-            if rec.entry_card_id:
-                rec.company_id = rec.entry_card_id.company_id.id
-            else:
-                rec.company_id = False
+    # @api.depends('entry_card_id')
+    # def _get_branch_id(self):
+    #     for rec in self:
+    #         if rec.entry_card_id:
+    #             rec.company_id = rec.entry_card_id.company_id.id
+    #         else:
+    #             rec.company_id = False
 
     def _get_discount_posted_flag(self):
         params = self.env['ir.config_parameter'].sudo()
