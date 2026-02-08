@@ -175,12 +175,12 @@
           </h3>
 
 
-          <t t-if="branchs">
+          <t t-if="company">
             <div>
 
               <strong> بيانات بالسيارات الواردة الى المركز : </strong>
               <br></br>
-              <span t-esc="', '.join(g['name'] for g in branchs)" />
+              <span t-esc="', '.join(item['name'] for item in company)" />
 
             </div>
           </t>

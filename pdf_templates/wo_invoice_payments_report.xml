@@ -156,11 +156,11 @@
             <strong> تقرير اوامر العمل المكتملة </strong>
           </center>
 
-                                   <t t-if="branchs">
+                                   <t t-if="companys">
             <div>
 
               <strong> بيانات بالسيارات الواردة الى المركز : <span
-                  t-esc="', '.join(g['name'] for g in branchs)" /></strong>
+                  t-esc="', '.join(item['name'] for item in companys)" /></strong>
 
             </div>
           </t>
