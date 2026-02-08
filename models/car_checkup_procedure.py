@@ -39,8 +39,7 @@ class mizan_car_checkup_procedure_master(models.Model):
 
     drum_counter_exit = fields.Char(string="عداد وقت الخروج")
 
-    company_id = fields.Many2one('res.company', copy=False,
-                                 ,related="entry_card_id.company_id",store=True)
+    company_id = fields.Many2one('res.company', copy=False, related="entry_card_id.company_id",store=True)
 
     ##
     services_price = fields.Float(string="الاجمالي", store=True,
