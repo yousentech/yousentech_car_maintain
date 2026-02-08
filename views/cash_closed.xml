@@ -70,9 +70,9 @@
                                     readonly="1" string="مسئول المبيعات" />
                                 <field name="id" readonly="1" string="رقم التسلسلي" />
 
-                                <field name="company_id" string="الشركة" readonly="1"
+                                <!-- <field name="company_id" string="الشركة" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                                    groups="base.group_multi_company" />
+                                    groups="base.group_multi_company" /> -->
 
 
                                 <field name="account_move_id" invisible="1" />
