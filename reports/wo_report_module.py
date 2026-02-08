@@ -164,27 +164,27 @@ class mizan_wo_report_module(models.TransientModel):
         sheet = workbook.add_worksheet('تقرير اوامر العمل ')
         sheet.right_to_left()
         format_company = workbook.add_format(
-            {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 20})
+            {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 15})
 
         format_header = workbook.add_format(
-            {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+            {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14,'color':self.env.company.primary_color,'border':True})
 
-        format_header.set_bg_color('gray')
+        # format_header.set_bg_color('gray')
         format_header_date = workbook.add_format(
-            {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
+            {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 9})
 
-        format_header_date.set_bg_color('orange')
+        # format_header_date.set_bg_color('orange')
 
         format_address = workbook.add_format(
-            {'bold': True, 'align': 'center', 'bg_color': 'yellow', 'font': 'Arial', 'font_size': 12})
+            {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 12,'border':True,'color':self.env.company.secondary_color})
         format_totally_row = workbook.add_format(
-            {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10})
+            {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10,'border':True})
         format_date = workbook.add_format(
             {'num_format': 'dd-mm-yyyy', 'align': 'center', 'font': 'Arial', 'font_size': 10})
         format_num = workbook.add_format(
             {"num_format": u"#,##0.00", 'align': 'center', 'font': 'Arial', 'font_size': 10})
         format_string = workbook.add_format(
-            {'align': 'center', 'font': 'Arial', 'font_size': 10})
+            {'align': 'center', 'font': 'Arial', 'font_size': 10,'border':True})
 
         company_col = 1
         company_row = 1
@@ -231,23 +231,24 @@ class mizan_wo_report_module(models.TransientModel):
             sheet.merge_range(company_row + 4, company_col + 3, company_row + 4, company_col + 4,
                                 account.company_registry, format_company)
 
-            header_col = 1
-            header_row = 8
+            # header_col = 1
+            # header_row = 8
 
-            date_row = 10
-            date_col = 1
+            date_row = 8
+            date_col = 3
 
             sheet.merge_range(date_row, date_col, date_row, date_col + 1,
                                 f'من تاريخ {date_start}',
-                                format_header)
+                                format_header_date)
             date_col += 1
             sheet.merge_range(date_row, date_col+1, date_row, date_col + 2,
                                 f'إلى تاريخ {date_end}',
-                                format_header)
+                                format_header_date)
+            
             if l_group_by_type == 'by_type':
 
                 address_col = 1
-                address_row = 15
+                address_row = 9
 
                 sheet.set_column('C:C', 12)
                 sheet.set_column('D:D', 30)
@@ -443,12 +444,12 @@ class mizan_wo_report_module(models.TransientModel):
                 l_cnt = 0
                 l_services_total = 0
                 l_spare_parts_total = 0
-                address_row = 14
+                address_row = 9
                 for l_date in work_order_date:
                     address_col = 1
                     address_row += 1
-                    sheet.merge_range(address_row, date_col, address_row, date_col + 13,
-                                        ' تاريخ' + l_date,  format_header_date)
+                    # sheet.merge_range(address_row, date_col, address_row, date_col + 13,
+                    #                     ' تاريخ' + l_date,  format_header_date)
                     address_row += 2
                     sheet.merge_range(address_row, date_col, address_row, date_col + 3,
                                         ' الاوامر المكتملة ',  format_header)

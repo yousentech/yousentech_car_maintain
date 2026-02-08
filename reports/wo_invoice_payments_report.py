@@ -218,22 +218,27 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
             sheet = workbook.add_worksheet('تقرير اوامر العمل المكتملة')
             sheet.right_to_left()
             format_company = workbook.add_format(
-                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 20})
+            {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 15})
 
             format_header = workbook.add_format(
-                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14})
-            format_header.set_bg_color('gray')
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 14,'color':self.env.company.primary_color,'border':True})
+
+            # format_header.set_bg_color('gray')
+            format_header_date = workbook.add_format(
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 9})
+
+            # format_header_date.set_bg_color('orange')
 
             format_address = workbook.add_format(
-                {'bold': True, 'align': 'center', 'bg_color': 'yellow', 'font': 'Arial', 'font_size': 12})
+                {'bold': True, 'align': 'center', 'font': 'Arial', 'font_size': 12,'border':True,'color':self.env.company.secondary_color})
             format_totally_row = workbook.add_format(
-                {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10})
+                {'bold': True, 'align': 'center', "num_format": u"#,##0.00", 'font': 'Arial', 'font_size': 10,'border':True})
             format_date = workbook.add_format(
                 {'num_format': 'dd-mm-yyyy', 'align': 'center', 'font': 'Arial', 'font_size': 10})
             format_num = workbook.add_format(
                 {"num_format": u"#,##0.00", 'align': 'center', 'font': 'Arial', 'font_size': 10})
             format_string = workbook.add_format(
-                {'align': 'center', 'font': 'Arial', 'font_size': 10})
+                {'align': 'center', 'font': 'Arial', 'font_size': 10,'border':True})
 
             company_col = 1
             company_row = 1
@@ -267,11 +272,11 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
 
             sheet.merge_range(date_row, date_col, date_row, date_col + 1,
                                 f'من تاريخ {date_start}',
-                                format_header)
+                                format_header_date)
             date_col += 1
             sheet.merge_range(date_row, date_col+1, date_row, date_col + 2,
                                 f'من تاريخ {date_end}',
-                                format_header)
+                                format_header_date)
 
             if l_group_by_type == 'by_date':
                 if l_display_type == 'detail':
@@ -326,7 +331,7 @@ class mizan_wo_invoice_payments_report(models.TransientModel):
                                 'الدفع نقد', format_address)
                     sheet.write(address_row, address_col + 14,
                                 'الدفع شبكة', format_address)
-                    address_row += 1
+                    # address_row += 1
                     l_cnt = 0
                     l_services_total = 0
                     l_spare_parts_total = 0
