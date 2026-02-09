@@ -137,9 +137,9 @@ class mizan_car_work_procedure_master(models.Model):
                     line.reserved_quantity for line in stock_quant)
                 if not line.product_id.categ_id.temp_categ_flag:
                     if is_exsiting_field_free_quantity:
-                        total_quantity = line.quantity + line.free_quantity
+                        total_quantity = line.qty_done + line.free_quantity
                     else:
-                        total_quantity = line.quantity
+                        total_quantity = line.qty_done
 
                     line.product_id.validate_product_quentity(
                         total_quantity, reserved_quantity, self.picking_type_id.warehouse_id.id, self.picking_type_id.default_location_src_id.ids)
