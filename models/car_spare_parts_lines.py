@@ -112,6 +112,7 @@ class mizan_car_spare_parts_lines(models.Model):
     @api.depends('qty_done', 'unit_price', 'discount_line', 'discount_type', 'product_tax', 'aval_qty')
     def _calc_total(self):
         for rec in self:
+            rec.unit_cost = rec.product_id.standard_price
             if rec.product_id and rec.header_id.picking_type_id:
                 quants = self.env['stock.quant'].search([
                     ('product_id', '=', rec.product_id.id),
