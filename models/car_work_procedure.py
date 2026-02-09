@@ -140,7 +140,10 @@ class mizan_car_work_procedure_master(models.Model):
                         total_quantity = line.qty_done + line.free_quantity
                     else:
                         total_quantity = line.qty_done
-
+                    print("total_quantity+++++++++++++++++++++",total_quantity)
+                    print("reserved_quantity+++++++++++++++++++++",reserved_quantity)
+                    print(" self.picking_type_id.warehouse_id+++++++++++++++++++++", self.picking_type_id.warehouse_id)
+                    print(" self.picking_type_id.default_location_src_id.ids+++++++++++++++++++++", self.picking_type_id.default_location_src_id.ids)
                     line.product_id.validate_product_quentity(
                         total_quantity, reserved_quantity, self.picking_type_id.warehouse_id.id, self.picking_type_id.default_location_src_id.ids)
 
