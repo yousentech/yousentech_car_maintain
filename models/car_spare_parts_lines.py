@@ -109,13 +109,14 @@ class mizan_car_spare_parts_lines(models.Model):
                     "تنبيه .. الكمية الفعلية للصنف (%s) اكبر من الكمية المصروفة من المستودع " % (
                         rec.product_id.name))
 
-    @api.depends('qty_done', 'unit_price', 'discount_line', 'discount_type', 'product_tax', 'aval_qty', 'unit_cost')
+    @api.depends('qty_done', 'unit_price', 'discount_line', 'discount_type', 'product_tax', 'aval_qty')
     def _calc_total(self):
         for rec in self:
             if rec.product_id and rec.header_id.picking_type_id:
                 quants = self.env['stock.quant'].search([
                     ('product_id', '=', rec.product_id.id),
-                    ('location_id', '=', rec.header_id.picking_type_id.default_location_src_id.id), ])
+                    ('location_id', '=', rec.header_id.picking_type_id.default_location_src_id.id), 
+                ])
                 rec.aval_qty = sum(quants.mapped('quantity')) - sum(quants.mapped('reserved_quantity'))
               
             else:

@@ -5,7 +5,6 @@ class stock_move(models.Model):
 
     unit_price = fields.Float(string="سعر البيع")
     total = fields.Float(compute="_calc_total", string="الاجمالي")
-    unit_cost = fields.Float(compute="_calc_total", string="التكلفة")
     aval_qty = fields.Float(compute="_calc_total", string="الكمية المتوفرة")
 
 
