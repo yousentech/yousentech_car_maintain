@@ -484,6 +484,11 @@ class mizan_car_work_procedure_master(models.Model):
             }
 
             sale_order = self.env['sale.order'].create(sale_order_tmp)
+
+            is_exsiting_field_picking_type_id = self.env['ir.model.fields'].sudo().search([('name', '=', 'picking_type_id'), ('model', '=', 'sale.order')])
+            if is_exsiting_field_picking_type_id :
+                sale_order.picking_type_id = self.picking_type_id.id
+
             for line_sale in rec.lines_spare_parts:
                 discount_sale_perc = 0
                 if line_sale.discount_line and line_sale.discount_type == 'percentage':
