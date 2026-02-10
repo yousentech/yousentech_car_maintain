@@ -62,8 +62,8 @@ class sale_order_line(models.Model):
 
      product_has_guarantee_flag = fields.Boolean(string="خاضع للضمان",default=False)
 
-     def _prepare_invoice_line(self):
-        res = super(sale_order_line, self)._prepare_invoice_line()
+     def _prepare_invoice_line(self, **kwargs):
+        res = super(sale_order_line, self)._prepare_invoice_line(**kwargs)
         res.update({'product_has_guarantee_flag': self.product_has_guarantee_flag or False})
 
         return res
