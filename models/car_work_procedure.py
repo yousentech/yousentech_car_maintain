@@ -474,7 +474,7 @@ class mizan_car_work_procedure_master(models.Model):
                 'pay_type': rec.pay_type,
                 'vin_no': rec.vin_no,
                 'car_type': rec.car_type_id.name,
-             
+              
                 'company_id': rec.entry_card_id.company_id.id,
                 'require_signature': True,
                 'require_payment': False,
@@ -509,6 +509,7 @@ class mizan_car_work_procedure_master(models.Model):
                         'price_unit': line_sale.unit_price,
                         'tax_id': line_sale.product_tax.ids if line_sale.product_tax else [],
                         'sequence': 10,
+                        'display_type': False,
                         'order_id': sale_order.id,
                         'company_id': rec.entry_card_id.company_id.id,
                         'invoice_status': 'no',
@@ -555,6 +556,8 @@ class mizan_car_work_procedure_master(models.Model):
                     'qty_invoiced': 0,
                     'order_partner_id': rec.partner_id.id,
                     'customer_lead': 0,
+                    'sequence': 10,
+                    'display_type': False,
                 })
 
             if rec.discount_inv_posted:
@@ -588,6 +591,8 @@ class mizan_car_work_procedure_master(models.Model):
                         'qty_invoiced': 0,
                         'order_partner_id': rec.partner_id.id,
                         'customer_lead': 0,
+                        'sequence': 10,
+                        'display_type': False,
                     })
 
             rec.write({'state': 'execute_completed'})
