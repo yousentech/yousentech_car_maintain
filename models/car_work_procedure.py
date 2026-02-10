@@ -474,7 +474,7 @@ class mizan_car_work_procedure_master(models.Model):
                 'pay_type': rec.pay_type,
                 'vin_no': rec.vin_no,
                 'car_type': rec.car_type_id.name,
-                'sequence': 10,
+             
                 'company_id': rec.entry_card_id.company_id.id,
                 'require_signature': True,
                 'require_payment': False,
@@ -508,7 +508,7 @@ class mizan_car_work_procedure_master(models.Model):
                         'discount': discount_sale_perc if not rec.discount_inv_posted else False,
                         'price_unit': line_sale.unit_price,
                         'tax_id': line_sale.product_tax.ids if line_sale.product_tax else [],
-
+                        'sequence': 10,
                         'order_id': sale_order.id,
                         'company_id': rec.entry_card_id.company_id.id,
                         'invoice_status': 'no',
