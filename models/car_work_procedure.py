@@ -142,6 +142,8 @@ class mizan_car_work_procedure_master(models.Model):
                         total_quantity = line.qty_done
                     print(" line.product_id+++++++++++++++++++++", line.product_id)
                     print("total_quantity+++++++++++++++++++++",total_quantity)
+                    print("stock_quant-quantity+++++++++++++++++++++",stock_quant.quantity)
+                    print("stock_quant+++++++++++++++++++++",stock_quant)
                     print("reserved_quantity+++++++++++++++++++++",reserved_quantity)
                     print(" self.picking_type_id.warehouse_id+++++++++++++++++++++", self.picking_type_id.warehouse_id)
                     print(" self.picking_type_id.default_location_src_id.ids+++++++++++++++++++++", self.picking_type_id.default_location_src_id.ids)
