@@ -474,7 +474,7 @@ class mizan_car_work_procedure_master(models.Model):
                 'pay_type': rec.pay_type,
                 'vin_no': rec.vin_no,
                 'car_type': rec.car_type_id.name,
-
+                'sequence': 10,
                 'company_id': rec.entry_card_id.company_id.id,
                 'require_signature': True,
                 'require_payment': False,
