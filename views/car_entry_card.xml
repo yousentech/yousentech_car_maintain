@@ -66,9 +66,8 @@
                 name="action_register_payment"
                 class="oe_stat_button"
                 string="الدفعات المقدمة"
-                icon="fa-history">
-
-              </button>
+                invisible="lines_payment == False"
+                icon="fa-history"> </button>
 
 
             </div>
@@ -77,94 +76,116 @@
 
             </h1>
             <br></br>
-            <group>
-              <group>
+            <notebook>
+              <page string="بيانات الدخول">
+                  <group>
+                    <group>
 
 
-                <field name="compelete_done_date_not_required_flag" invisible="1" />
-                <field name="car_no_required" invisible="1" />
-                <field name="vin_no_required" invisible="1" />
-                <field name="car_type_required" invisible="1" />
+                      <field name="compelete_done_date_not_required_flag" invisible="1" />
+                      <field name="car_no_required" invisible="1" />
+                      <field name="vin_no_required" invisible="1" />
+                      <field name="car_type_required" invisible="1" />
 
-                <field name="partner_mobile_not_required" invisible="1" />
-                <field name="is_user_technical" invisible="1" />
-                <field name="is_user_supervisor" invisible="1" />
-                <field name="is_user_sale_man" invisible="1" />
-                <field name="checkup_id" invisible="1" />
-                <field name="maint_wo_id" invisible="1" />
+                      <field name="partner_mobile_not_required" invisible="1" />
+                      <field name="is_user_technical" invisible="1" />
+                      <field name="is_user_supervisor" invisible="1" />
+                      <field name="is_user_sale_man" invisible="1" />
+                      <field name="checkup_id" invisible="1" />
+                      <field name="maint_wo_id" invisible="1" />
 
-                <field name="is_user_sale_man" invisible="1" />
+                      <field name="is_user_sale_man" invisible="1" />
 
-                <field name="seq" readonly="1" string="رقم الطلب" force_save="1" />
-
-
-                <field name="partner_id"
-                  readonly="is_user_sale_man == False or state in ['execute_request','execute_started','execute_completed','cancel_order','work_order_started']" />
-                <field name="partner_mobile" required="partner_mobile_not_required == False"
-                  readonly="is_user_sale_man == False or state in ['execute_request','execute_started','execute_completed','cancel_order','work_order_started']" />
-                <field name="car_panel_no" required="car_no_required == True"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
-                <field name="car_manuf_id" invisible="1"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                <field name="car_type_id" required="car_type_required == True"
-                  readonly="is_user_sale_man ==False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
-
-                <field name="supervisor_name"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
-              
-                <field name="checkup_id"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  readonly="1" />
-                <field name="maint_wo_id"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  readonly="1" />
+                      <field name="seq" readonly="1" string="رقم الطلب" force_save="1" />
 
 
-              </group>
-              <group>
-                <field name="order_date" string="تاريخ الطلب"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order']" />
+                      <field name="partner_id"
+                        readonly="is_user_sale_man == False or state in ['execute_request','execute_started','execute_completed','cancel_order','work_order_started']" />
+                      <field name="partner_mobile" required="partner_mobile_not_required == False"
+                        readonly="is_user_sale_man == False or state in ['execute_request','execute_started','execute_completed','cancel_order','work_order_started']" />
+                      <field name="car_panel_no" required="car_no_required == True"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                      <field name="car_manuf_id" invisible="1"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
-                <field name="car_size_id"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                      <field name="car_type_id" required="car_type_required == True"
+                        readonly="is_user_sale_man ==False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
 
-                <field name="car_model"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-                <field name="gear_type"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
-
-
-                <field name="vin_no" required="vin_no_required == True"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
-                <field name="drum_counter"
-                  readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
-
-                <field name="id" readonly="1" string="رقم التسلسلي" />
-
-                <field name="company_id"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  readonly="1" string="الفرع" />
-                <field name="user_id"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  readonly="1" force_save="1" string="مسئول المبيعات" />
-
-                <!-- <field name="company_id" string="الشركة"
-                  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  groups="base.group_multi_company" /> -->
+                      <field name="supervisor_name"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                    
+                     
 
 
-              </group>
+                    </group>
+                    <group>
+                      <field name="order_date" string="تاريخ الطلب"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order']" />
+
+                      <field name="car_size_id"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+
+                      <field name="car_model"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+
+                      <field name="gear_type"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
+                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
 
 
-            </group>
+                      <field name="vin_no" required="vin_no_required == True"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                      <field name="drum_counter"
+                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
 
+                     
+                    </group>
+
+
+                  </group>
+
+
+              </page>
+              <page string="بيانات اخرى">
+                    <group>
+                      <group>
+ 
+                        <field name="checkup_id"
+                          options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                          readonly="1" />
+                        <field name="maint_wo_id"
+                          options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                          readonly="1" />
+
+
+                      </group>
+                      <group>
+                      
+                        <field name="id" readonly="1" string="رقم التسلسلي" />
+
+                        <field name="company_id"
+                          options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                          readonly="1" string="الفرع" />
+                        <field name="user_id"
+                          options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
+                          readonly="1" force_save="1" string="مسئول المبيعات" />
+ 
+
+                      </group>
+
+
+                    </group>
+                    <field name="lines_payment" />
+
+
+                </page> 
+
+            </notebook>
+           
 
           </sheet>
           <div class="oe_chatter">
