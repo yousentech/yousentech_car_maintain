@@ -179,8 +179,10 @@
 
 
                     </group>
-                   
-                    <field name="lines_payment" />
+                    <group string="الدفعات">
+                          <field name="lines_payment" readonly="1"/>
+                    </group>
+                  
 
                 </page> 
 
