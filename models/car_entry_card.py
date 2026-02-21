@@ -330,7 +330,7 @@ class mizan_car_entry_card_master(models.Model):
                     results_tmp)
                 rec.write({'checkup_id': checkup_procedure.id})
                 rec.write({'state': 'execute_started'})
-                if self.user_has_groups('yousentech_car_maintain.group_skip_checkup_procedure'):
+                if not self.user_has_groups('yousentech_car_maintain.group_use_checkup_procedure'):
                     wo_procedure = checkup_procedure.create_work_order_procedure()
 
                 action = self.env.ref(

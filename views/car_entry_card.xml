@@ -52,6 +52,7 @@
                 class="oe_stat_button"
                 string="اجراء الفحص"
                 invisible="checkup_id == False"
+                groups="yousentech_car_maintain.group_use_checkup_procedure"
                 icon="fa-arrow-right">
               </button>
               <button type="object"

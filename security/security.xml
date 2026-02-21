@@ -55,8 +55,8 @@
 		</record>
 
 
-        <record id="group_skip_checkup_procedure" model="res.groups">
-			<field name="name">تجاوز مرحلة الفحص في نظام الصيانة</field>
+        <record id="group_use_checkup_procedure" model="res.groups">
+			<field name="name">منح صلاحية استخدام مرحلة الفحص في نظام الصيانة</field>
             <field name="category_id" ref="car_maintain_category" />
 
 		</record>
