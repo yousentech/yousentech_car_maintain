@@ -83,8 +83,7 @@ class mizan_car_checkup_procedure_master(models.Model):
             'product.group_product_pricelist')
 
     user_id = fields.Many2one(
-        'res.users', string='مدخل البيانات', readonly=True,
-        required=True, related="entry_card_id.user_id",store=True)
+        'res.users', string='مدخل البيانات', readonly=True,   related="entry_card_id.user_id",store=True)
 
     # @api.model
     # def _default_branch_id(self):

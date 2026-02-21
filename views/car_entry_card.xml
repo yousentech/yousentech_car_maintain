@@ -152,7 +152,7 @@
                   readonly="1" string="الفرع" />
                 <field name="user_id"
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
-                  readonly="1" string="مسئول المبيعات" />
+                  readonly="1" force_save="1" string="مسئول المبيعات" />
 
                 <!-- <field name="company_id" string="الشركة"
                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
