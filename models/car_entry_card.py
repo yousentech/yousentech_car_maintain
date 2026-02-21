@@ -332,19 +332,21 @@ class mizan_car_entry_card_master(models.Model):
                 rec.write({'state': 'execute_started'})
                 if not self.user_has_groups('yousentech_car_maintain.group_use_checkup_procedure'):
                     wo_procedure = checkup_procedure.create_work_order_procedure()
+                
+                
+                if self.user_has_groups('yousentech_car_maintain.group_use_checkup_procedure'):
+                    action = self.env.ref(
+                        'yousentech_car_maintain.action_car_checkup_procedure_view')
+                    result = action.read()[0]
+                    result.pop('id', None)
+                    result['domain'] = [('entry_card_id', '=', rec.id)]
+                    if checkup_procedure:
+                        res = self.env.ref(
+                            'yousentech_car_maintain.checkup_procedure_form_view', False)
+                        result['views'] = [(res and res.id or False, 'form')]
+                        result['res_id'] = checkup_procedure.id or False
 
-                action = self.env.ref(
-                    'yousentech_car_maintain.action_car_checkup_procedure_view')
-                result = action.read()[0]
-                result.pop('id', None)
-                result['domain'] = [('entry_card_id', '=', rec.id)]
-                if checkup_procedure:
-                    res = self.env.ref(
-                        'yousentech_car_maintain.checkup_procedure_form_view', False)
-                    result['views'] = [(res and res.id or False, 'form')]
-                    result['res_id'] = checkup_procedure.id or False
-
-                return result
+                    return result
 
     def call_checkup_procedure(self):
         for rec in self:
