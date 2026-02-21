@@ -2,33 +2,63 @@
 <odoo>
 	<data>
 
+         <record model="ir.module.category" id="car_maintain_category">
+            <field name="name">Car Maintain</field>
+            <field name="description">All available permissions for Car Maintain</field>
+            <field name="sequence">40</field>
+        </record>
+
         <record id="group_sales_man_priv" model="res.groups">
 			<field name="name">منح صلاحيات البائع</field>
+            <field name="category_id" ref="car_maintain_category" />
 		</record>
 
         <record id="group_supervisor_priv" model="res.groups">
 			<field name="name">منح صلاحيات المشرف</field>
+            <field name="category_id" ref="car_maintain_category" />
+
 		</record>
         <record id="group_technician_priv" model="res.groups">
 			<field name="name">منح صلاحية الفني</field>
+            <field name="category_id" ref="car_maintain_category" />
+
 		</record>
          <record id="group_add_spare_parts_priv" model="res.groups">
 			<field name="name">منح صلاحية اضافة قطع الغيار في شاشة امر العمل</field>
+            <field name="category_id" ref="car_maintain_category" />
+
 		</record>
         <record id="group_rtn_to_draft_and_cancel_priv" model="res.groups">
 			<field name="name">منح صلاحية الاستعادة للتعديل والغاء الطلبات في نظام الصيانة</field>
+            <field name="category_id" ref="car_maintain_category" />
+
 		</record>
         <record id="group_un_close_cash_priv" model="res.groups">
 			<field name="name"> الغاء اقفال الصناديق</field>
+            <field name="category_id" ref="car_maintain_category" />
+
 		</record>
         <record id="group_allow_delete_wo_priv" model="res.groups">
 			<field name="name">منح صلاحية حذف طلبات الفحص واومر العمل</field>
+            <field name="category_id" ref="car_maintain_category" />
+
 		</record>
         <record id="group_allow_matched_cash_priv" model="res.groups">
 			<field name="name">منح صلاحية مطابقة الصناديق</field>
+            <field name="category_id" ref="car_maintain_category" />
+
 		</record>
         <record id="group_cancel_register_payment" model="res.groups">
 			<field name="name">منح صلاحية  الفاء الدفع في نظام الصيانة</field>
+            <field name="category_id" ref="car_maintain_category" />
+
+		</record>
+
+
+        <record id="group_skip_checkup_procedure" model="res.groups">
+			<field name="name">تجاوز مرحلة الفحص في نظام الصيانة</field>
+            <field name="category_id" ref="car_maintain_category" />
+
 		</record>
         
         <record id="car_checkup_branch_rules" model="ir.rule">
