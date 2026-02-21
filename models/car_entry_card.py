@@ -337,11 +337,11 @@ class mizan_car_entry_card_master(models.Model):
                     result = action.read()[0]
                     result.pop('id', None)
                     result['domain'] = [('checkup_id', '=', checkup_procedure.id)]
-                    if wo_procedure:
+                    if checkup_procedure.maint_wo_id:
                         res = self.env.ref(
                             'yousentech_car_maintain.work_procedure_form_view', False)
                         result['views'] = [(res and res.id or False, 'form')]
-                        result['res_id'] = wo_procedure.id or False
+                        result['res_id'] = checkup_procedure.maint_wo_id.id or False
 
                     return result
                 
