@@ -62,13 +62,7 @@
                 invisible="maint_wo_id == False"
                 icon="fa-pencil-square-o"
               />
-              <button type="object"
-                name="action_register_payment"
-                class="oe_stat_button"
-                string="الدفعات المقدمة"
-                invisible="lines_payment == False"
-                icon="fa-history"> </button>
-
+              
 
             </div>
             <h1>
@@ -180,7 +174,7 @@
 
                     </group>
                     <group string="الدفعات">
-                          <field name="lines_payment" readonly="1"/>
+                          <field name="lines_payment" readonly="1" nolabel="1"/>
                     </group>
                   
 
