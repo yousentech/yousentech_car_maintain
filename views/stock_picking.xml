@@ -48,8 +48,7 @@
                     position="after">
 
                     <field name="aval_qty" optional="hide" />
-                    <field name="unit_cost" optional="hide" />
-                    <field name="unit_price" />
+                     <field name="unit_price" />
                     <field name="total" />
 
                 </xpath>

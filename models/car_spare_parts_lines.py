@@ -39,7 +39,7 @@ class mizan_car_spare_parts_lines(models.Model):
         string="الاجمالي بعد الضريبة", compute="_calc_total", readonly=True)
 
     stock_picking_id = fields.Many2one('stock.picking')
-    unit_cost = fields.Float(compute="_calc_total", string="التكلفة")
+    unit_cost = fields.Float(compute="_calc_total", string="التكلفة",store=True)
     aval_qty = fields.Float(compute="_calc_total", string="الكمية المتوفرة")
 
     notes = fields.Char(string="الملاحظات")
