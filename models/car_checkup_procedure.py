@@ -386,8 +386,7 @@ class mizan_car_checkup_procedure_master(models.Model):
                 wo_procedure._cal_spare_parts_amounts()
                 wo_procedure._cal_services_amounts()
 
-                action = self.env.ref(
-                    'yousentech_car_maintain.action_work_procedure_view')
+                action = self.env.ref('yousentech_car_maintain.action_work_procedure_view')
                 result = action.read()[0]
                 result.pop('id', None)
                 result['domain'] = [('checkup_id', '=', rec.id)]
