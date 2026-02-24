@@ -170,13 +170,13 @@
  
 
                       </group>
-
+                      <field name="lines_payment" readonly="1" nolabel="1"/>
 
                     </group>
-                    <group string="الدفعات">
-                          <field name="lines_payment" readonly="1" nolabel="1"/>
+                    <!-- <group string="الدفعات">
+                         
                     </group>
-                  
+                   -->
 
                 </page> 
 
