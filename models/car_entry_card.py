@@ -263,7 +263,12 @@ class mizan_car_entry_card_master(models.Model):
 
     def confirm_btn(self):
         for rec in self:
-            rec.write({'state': 'confirm'})
+            if rec.maint_wo_id:
+                rec.write({'state': 'work_order_started'})
+            elif rec.checkup_id:
+                rec.write({'state': 'execute_started'})
+            else:
+                rec.write({'state': 'confirm'})
 
     def not_checkup_car(self):
         for rec in self:
