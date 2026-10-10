@@ -27,3 +27,4 @@ from . import stock_move
 from . import sale_order
 from . import car_spare_parts_lines
 
+from . import customer_vehicle
