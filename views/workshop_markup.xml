@@ -37,7 +37,7 @@
   <record id="workshop_markup_spare_parts_view" model="ir.ui.view">
     <field name="name">mizan.car.work.procedure.markup.columns</field>
     <field name="model">mizan.car.work.procedure.master</field>
-    <field name="inherit_id" ref="car_work_procedure_form_view"/>
+    <field name="inherit_id" ref="work_procedure_form_view"/>
     <field name="arch" type="xml">
       <xpath expr="//field[@name='lines_spare_parts']/tree/field[@name='unit_cost']" position="after">
         <field name="markup_applied" optional="hide"/>
