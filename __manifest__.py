@@ -27,6 +27,7 @@
         'views/car_entry_card.xml',
         'views/customer_vehicle.xml',
         'views/car_work_procedure.xml',
+        'views/workshop_markup.xml',
          
         'views/car_checkup_procedure.xml',
         'views/wo_services_lines_view.xml',
