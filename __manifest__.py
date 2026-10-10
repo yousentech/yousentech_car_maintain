@@ -21,11 +21,11 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/setups_views.xml',
-        'views/customer_vehicle.xml',
         'wizard/res_config_setting.xml',
         'views/product_template.xml',
         'views/product_wizard.xml',
         'views/car_entry_card.xml',
+        'views/customer_vehicle.xml',
         'views/car_work_procedure.xml',
          
         'views/car_checkup_procedure.xml',
