@@ -55,4 +55,15 @@
     <field name="model_id" ref="model_mizan_customer_vehicle"/>
     <field name="domain_force">[('company_id', 'in', company_ids)]</field>
   </record>
+  <record id="entry_card_registered_vehicle_inherit" model="ir.ui.view">
+    <field name="name">mizan.car.entry.card.master.vehicle</field>
+    <field name="model">mizan.car.entry.card.master</field>
+    <field name="inherit_id" ref="entry_card_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='partner_id']" position="after">
+        <field name="vehicle_id" domain="[('partner_id', '=', partner_id), ('company_id', '=', company_id)]"
+               readonly="state not in ['draft', 'confirm']"/>
+      </xpath>
+    </field>
+  </record>
 </odoo>
