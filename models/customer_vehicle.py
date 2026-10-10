@@ -45,3 +45,31 @@ class MizanCustomerVehicle(models.Model):
         for vehicle in self:
             if vehicle.model_year and not 1886 <= vehicle.model_year <= fields.Date.today().year + 2:
                 raise ValidationError(_('سنة الصنع غير صحيحة.'))
+
+
+class MizanEntryCardVehicle(models.Model):
+    _inherit = 'mizan.car.entry.card.master'
+
+    vehicle_id = fields.Many2one(
+        'mizan.customer.vehicle', string='السيارة المسجلة',
+        domain="[('partner_id', '=', partner_id), ('company_id', '=', company_id)]",
+        copy=False, index=True,
+    )
+
+    @api.onchange('partner_id')
+    def _onchange_vehicle_partner(self):
+        if self.vehicle_id and self.vehicle_id.partner_id != self.partner_id:
+            self.vehicle_id = False
+
+    @api.onchange('vehicle_id')
+    def _onchange_registered_vehicle(self):
+        if not self.vehicle_id:
+            return
+        vehicle = self.vehicle_id
+        self.partner_id = vehicle.partner_id
+        self.car_panel_no = vehicle.plate_number or False
+        self.vin_no = vehicle.vin or False
+        self.car_manuf_id = vehicle.manufacturer_id
+        self.car_type_id = vehicle.car_type_id
+        self.car_size_id = vehicle.car_size_id
+        self.car_model = vehicle.car_type_id.name or False
