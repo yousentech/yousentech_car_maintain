@@ -34,6 +34,12 @@ class MizanCustomerVehicle(models.Model):
         for vehicle in self:
             vehicle.display_name = vehicle.plate_number or vehicle.vin or vehicle.partner_id.name or _('سيارة')
 
+    @api.constrains('plate_number')
+    def _check_plate_number(self):
+        for vehicle in self:
+            if not vehicle.plate_number or not vehicle.plate_number.strip():
+                raise ValidationError(_('رقم لوحة السيارة مطلوب.'))
+
     @api.constrains('vin')
     def _check_vin(self):
         for vehicle in self:
@@ -60,6 +66,17 @@ class MizanEntryCardVehicle(models.Model):
     def _onchange_vehicle_partner(self):
         if self.vehicle_id and self.vehicle_id.partner_id != self.partner_id:
             self.vehicle_id = False
+            self.car_panel_no = False
+            self.vin_no = False
+
+    @api.constrains('vehicle_id', 'partner_id', 'company_id')
+    def _check_vehicle_owner(self):
+        for card in self:
+            if card.vehicle_id and (
+                card.vehicle_id.partner_id != card.partner_id
+                or card.vehicle_id.company_id != card.company_id
+            ):
+                raise ValidationError(_('السيارة المختارة يجب أن تتبع العميل والشركة المحددين.'))
 
     @api.onchange('vehicle_id')
     def _onchange_registered_vehicle(self):
