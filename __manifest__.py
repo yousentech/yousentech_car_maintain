@@ -21,6 +21,7 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/setups_views.xml',
+        'views/customer_vehicle.xml',
         'wizard/res_config_setting.xml',
         'views/product_template.xml',
         'views/product_wizard.xml',
