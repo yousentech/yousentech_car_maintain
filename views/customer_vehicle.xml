@@ -60,9 +60,14 @@
     <field name="model">mizan.car.entry.card.master</field>
     <field name="inherit_id" ref="entry_card_form_view"/>
     <field name="arch" type="xml">
-      <xpath expr="//field[@name='partner_id']" position="after">
-        <field name="vehicle_id" domain="[('partner_id', '=', partner_id), ('company_id', '=', company_id)]"
-               readonly="state not in ['draft', 'confirm']"/>
+      <xpath expr="//field[@name='car_panel_no']" position="replace">
+        <field name="vehicle_id" string="لوحة السيارة"
+               domain="[('partner_id', '=', partner_id), ('company_id', '=', company_id)]"
+               context="{'default_partner_id': partner_id, 'default_company_id': company_id}"
+               options="{'no_quick_create': True, 'no_create_edit': False, 'no_create': False}"
+               required="car_no_required == True"
+               readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"/>
+        <field name="car_panel_no" invisible="1"/>
       </xpath>
     </field>
   </record>
