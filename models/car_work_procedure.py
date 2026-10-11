@@ -31,9 +31,9 @@ class mizan_car_work_procedure_master(models.Model):
     car_model = fields.Char(string="الموديل")
     car_type_id = fields.Many2one('mizan.car.types', string="نوع السيارة", )
     sale_order_id = fields.Many2one(
-        'sale.order', string="رقم امر البيع", readony=True, copy=False)
+        'sale.order', string="رقم امر البيع", readonly=True, copy=False)
     create_invoice_manually_id = fields.Many2one(
-        'account.move', copy=False, readony=True)
+        'account.move', copy=False, readonly=True)
     pay_type = fields.Selection(
         [('cash', 'نقدا'), ('bank', 'بنكي'), ('transfer', 'تحويل')], string="طريقة الدفع")
     checkup_id = fields.Many2one(
