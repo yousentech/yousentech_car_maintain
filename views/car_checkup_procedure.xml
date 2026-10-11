@@ -90,6 +90,7 @@
                                 
                                 <field name="car_type_id" readonly="1"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                      <field name="vehicle_model_year" readonly="1" invisible="not vehicle_model_year" />
 
                                 <field name="vin_no" readonly="1" />
 
