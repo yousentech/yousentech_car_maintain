@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, _
+from odoo import api, models, fields, _
+from odoo.exceptions import ValidationError
 
 class mizan_services_types(models.Model):
     _name = 'mizan.services.types'
@@ -38,6 +39,15 @@ class mizan_car_types(models.Model):
     name = fields.Char(string="الاسم")
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
     header_id = fields.Many2one('mizan.car.manufactory',string="الشركة المصنعة", ondelete='cascade')
+
+    @api.model
+    def name_create(self, name):
+        manufacturer_id = self.env.context.get('default_header_id')
+        if not manufacturer_id:
+            raise ValidationError(_('حدد الشركة المصنعة قبل إنشاء نوع سيارة جديد.'))
+        record = self.create({'name': name, 'header_id': manufacturer_id})
+        return record.name_get()[0]
+
 
 
 class mizan_car_size(models.Model):
