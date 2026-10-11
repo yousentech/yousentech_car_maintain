@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="entry_card_delivery_form_inherit" model="ir.ui.view">
+    <field name="name">mizan.car.entry.card.delivery.form</field>
+    <field name="model">mizan.car.entry.card.master</field>
+    <field name="inherit_id" ref="entry_card_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header/field[@name='state']" position="after">
+        <field name="delivery_state" widget="badge"/>
+        <button name="action_approve_delivery_credit" string="اعتماد البيع الآجل" type="object"
+                groups="yousentech_car_maintain.group_supervisor_priv"
+                invisible="state != 'execute_completed' or delivery_state == 'delivered' or credit_approved"/>
+        <button name="action_deliver_vehicle" string="تسليم السيارة وإغلاق الزيارة"
+                type="object" class="oe_highlight"
+                groups="yousentech_car_maintain.group_supervisor_priv"
+                invisible="state != 'execute_completed' or delivery_state == 'delivered'"/>
+      </xpath>
+      <xpath expr="//sheet/notebook" position="inside">
+        <page string="التسليم والإغلاق">
+          <group>
+            <group>
+              <field name="delivery_state" readonly="1"/>
+              <field name="delivery_financial_state" readonly="1"/>
+              <field name="delivery_odometer" readonly="delivery_state == 'delivered'"/>
+              <field name="credit_approved" readonly="1"/>
+              <field name="credit_approved_by" readonly="1"/>
+            </group>
+            <group>
+              <field name="delivery_date" readonly="1"/>
+              <field name="delivery_user_id" readonly="1"/>
+            </group>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+</odoo>
