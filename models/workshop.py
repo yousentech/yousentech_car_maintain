@@ -190,6 +190,7 @@ class WorkshopV2Order(models.Model):
             'currency': company.currency_id.symbol,
         }
 
+    @api.model
     def ui_detail(self, order_id):
         order = self.browse(order_id).exists()
         if not order:
