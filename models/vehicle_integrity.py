@@ -40,7 +40,13 @@ class WorkshopV2VehicleIntegrity(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        return super().create([self._normalize_identity(vals) for vals in vals_list])
+        vehicles = super().create([self._normalize_identity(vals) for vals in vals_list])
+        for vehicle in vehicles:
+            self.env['ycm.v2.vehicle.owner'].create({
+                'vehicle_id': vehicle.id, 'partner_id': vehicle.partner_id.id,
+                'reason': _('Initial registration'),
+            })
+        return vehicles
 
     def write(self, vals):
         vals = self._normalize_identity(vals)
@@ -52,7 +58,20 @@ class WorkshopV2VehicleIntegrity(models.Model):
                     ('state', 'not in', ('draft', 'cancelled')),
                 ]):
                     raise ValidationError(_('Ownership transfer requires a controlled workflow while active work orders exist.'))
-        return super().write(vals)
+        transfers = [(vehicle, vehicle.partner_id.id) for vehicle in self] if 'partner_id' in vals else []
+        result = super().write(vals)
+        for vehicle, previous_owner_id in transfers:
+            if vehicle.partner_id.id == previous_owner_id:
+                continue
+            active_history = self.env['ycm.v2.vehicle.owner'].search([
+                ('vehicle_id', '=', vehicle.id), ('date_to', '=', False),
+            ])
+            active_history.write({'date_to': fields.Datetime.now()})
+            self.env['ycm.v2.vehicle.owner'].create({
+                'vehicle_id': vehicle.id, 'partner_id': vehicle.partner_id.id,
+                'reason': _('Ownership transfer'),
+            })
+        return result
 
     @api.constrains('plate_key', 'plate_country', 'plate_type')
     def _validate_plate_identity(self):

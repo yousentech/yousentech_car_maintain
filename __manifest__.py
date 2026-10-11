@@ -5,7 +5,7 @@
     'category': 'Services/Maintenance',
     'author': 'YousenTech',
     'depends': ['base', 'web', 'product', 'account', 'stock'],
-    'data': ['security/workshop_security.xml', 'security/ir.model.access.csv', 'views/workshop_action.xml'],
+    'data': ['security/workshop_security.xml', 'security/ir.model.access.csv', 'views/workshop_action.xml', 'views/workshop_backend.xml'],
     'assets': {'web.assets_backend': [
         'yousentech_car_maintain/static/src/workshop/workshop.js',
         'yousentech_car_maintain/static/src/workshop/workshop.xml',

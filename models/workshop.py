@@ -15,6 +15,27 @@ class WorkshopV2Vehicle(models.Model):
     make = fields.Char()
     model = fields.Char()
     year = fields.Integer()
+    transmission = fields.Selection([('automatic', 'أوتوماتيك'), ('manual', 'عادي'), ('cvt', 'CVT'), ('other', 'أخرى')], string='نوع الجير')
+    color = fields.Char(string='اللون')
+    engine_number = fields.Char(string='رقم المحرك')
+    order_ids = fields.One2many('ycm.v2.order', 'vehicle_id', string='أوامر العمل')
+    order_count = fields.Integer(compute='_compute_order_count', string='عدد أوامر العمل')
+
+    def _compute_order_count(self):
+        counts = self.env['ycm.v2.order'].read_group(
+            [('vehicle_id', 'in', self.ids)], ['vehicle_id'], ['vehicle_id'])
+        mapping = {row['vehicle_id'][0]: row['vehicle_id_count'] for row in counts}
+        for vehicle in self:
+            vehicle.order_count = mapping.get(vehicle.id, 0)
+
+    def action_view_orders(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window', 'name': _('Vehicle work orders'),
+            'res_model': 'ycm.v2.order', 'view_mode': 'tree,form',
+            'domain': [('vehicle_id', '=', self.id)],
+            'context': {'default_vehicle_id': self.id, 'default_partner_id': self.partner_id.id},
+        }
     odometer = fields.Float()
     active = fields.Boolean(default=True)
 
