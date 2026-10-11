@@ -2,7 +2,6 @@
 """Vehicle registry foundation; existing visit fields remain unchanged."""
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
-from psycopg2 import IntegrityError
 
 
 class MizanCustomerVehicle(models.Model):
@@ -34,6 +33,14 @@ class MizanCustomerVehicle(models.Model):
     def _compute_display_name(self):
         for vehicle in self:
             vehicle.display_name = vehicle.plate_number or vehicle.vin or vehicle.partner_id.name or _('سيارة')
+
+    @api.model
+    def default_get(self, fields_list):
+        values = super().default_get(fields_list)
+        typed_plate = self.env.context.get('default_name')
+        if typed_plate and 'plate_number' in fields_list and not values.get('plate_number'):
+            values['plate_number'] = self._normalize_plate(typed_plate)
+        return values
 
     @api.model_create_multi
     def create(self, vals_list):
