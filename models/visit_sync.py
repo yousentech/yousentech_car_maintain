@@ -29,6 +29,58 @@ class EntryVisitSync(models.Model):
 
     vehicle_model_year = fields.Integer(string='سنة الصنع', related='vehicle_id.model_year', readonly=True)
 
+    def _has_commercial_documents(self):
+        self.ensure_one()
+        return bool(
+            self.maint_wo_id.sale_order_id
+            or self.maint_wo_id.create_invoice_manually_id
+            or self.checkup_id.create_invoice_manually_id
+        )
+
+    def confirm_btn(self):
+        for card in self:
+            if card.state != 'draft':
+                raise ValidationError(_('تأكيد الدخول متاح فقط في مرحلة الإعداد.'))
+            if not card.partner_id or not card.car_panel_no:
+                raise ValidationError(_('يجب اختيار العميل ولوحة السيارة قبل تأكيد الدخول.'))
+        return super().confirm_btn()
+
+    def return_to_modify(self):
+        for card in self:
+            if card.state not in ('confirm', 'execute_started', 'work_order_started'):
+                raise ValidationError(_('لا يمكن إعادة هذه المرحلة إلى الإعداد.'))
+            if card._has_commercial_documents():
+                raise ValidationError(_('لا يمكن استعادة التعديل بعد إنشاء مستندات تجارية.'))
+            if not self.env.user.has_group('yousentech_car_maintain.group_rtn_to_draft_and_cancel_priv'):
+                raise ValidationError(_('ليس لديك صلاحية استعادة التعديل.'))
+        return super().return_to_modify()
+
+    def execute_completed(self):
+        for card in self:
+            if card.state not in ('execute_started', 'work_order_started'):
+                raise ValidationError(_('إكمال التنفيذ متاح فقط بعد بدء الفحص أو أمر العمل.'))
+            if not card.checkup_id:
+                raise ValidationError(_('لا يمكن إكمال التنفيذ دون وجود فحص مرتبط.'))
+        return super().execute_completed()
+
+    def not_checkup_car(self):
+        for card in self:
+            if card.state != 'confirm' or card.checkup_id or card.maint_wo_id:
+                raise ValidationError(_('الخروج بدون فحص متاح فقط بعد التأكيد وقبل إنشاء الفحص.'))
+            if card._has_commercial_documents():
+                raise ValidationError(_('لا يمكن الخروج بدون فحص مع وجود مستندات تجارية.'))
+        return super().not_checkup_car()
+
+    def cancel_order_btn(self):
+        for card in self:
+            if card.state in ('cancel_order', 'execute_completed', 'not_checkup_car'):
+                raise ValidationError(_('لا يمكن إلغاء زيارة مغلقة أو ملغاة.'))
+            if card._has_commercial_documents():
+                raise ValidationError(_('لا يمكن الإلغاء بعد إنشاء مستند تجاري؛ عالج المستند أولًا.'))
+            if not self.env.user.has_group('yousentech_car_maintain.group_rtn_to_draft_and_cancel_priv'):
+                raise ValidationError(_('ليس لديك صلاحية إلغاء الزيارة.'))
+        return super().cancel_order_btn()
+
     def create_checkup_procedure(self):
         self.ensure_one()
         existing = self.env['mizan.car.checkup.procedure.master'].search([('entry_card_id', '=', self.id)], limit=1)
