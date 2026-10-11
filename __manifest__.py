@@ -26,6 +26,7 @@
         'views/product_wizard.xml',
         'views/car_entry_card.xml',
         'views/customer_vehicle.xml',
+        'views/vehicle_delivery.xml',
         'views/car_work_procedure.xml',
         'views/workshop_markup.xml',
          
