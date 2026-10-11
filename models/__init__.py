@@ -32,3 +32,5 @@ from . import customer_vehicle
 from . import workshop_markup
 
 from . import visit_sync
+
+from . import vehicle_delivery
