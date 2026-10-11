@@ -40,7 +40,7 @@ class mizan_car_entry_card_master(models.Model):
     gear_type = fields.Selection(
         [('auto_gear', 'تماتيك'), ('manual', 'عادي')], string="نوع الجير")
     car_size_id = fields.Many2one('mizan.car.size', string="المقاس",)
-    car_model = fields.Char(string="الموديل")
+    car_model = fields.Char(string="سنة الصنع / الموديل")
     car_manuf_id = fields.Many2one(
         'mizan.car.manufactory', string="الشركة المصنعة")
     car_type_id = fields.Many2one(
@@ -83,34 +83,9 @@ class mizan_car_entry_card_master(models.Model):
     maint_wo_id = fields.Many2one(
         'mizan.car.work.procedure.master', string="امر العمل", copy=False)
 
-    @api.onchange('partner_id', 'car_panel_no', 'partner_mobile', 'car_size_id', 'car_model', 'car_type_id', 'vin_no')
-    def update_data(self):
-        for rec in self:
-            if rec.partner_id:
-                if rec.maint_wo_id.sale_order_id:
-                    raise ValidationError(
-                        "تنبيه... لا يمكن تعديل البيانات لوجود امر بيع على هذا الفحص")
-
-                if rec.checkup_id:
-                    rec.checkup_id.write({'partner_id': rec.partner_id.id,
-                                          'car_panel_no': rec.car_panel_no,
-                                          'partner_mobile': rec.partner_mobile,
-                                          'car_size_id': rec.car_size_id.id,
-                                          'car_model': rec.car_model,
-                                          'car_type_id': rec.car_type_id.id,
-                                          'vin_no': rec.vin_no,
-                                          })
-
-                if rec.maint_wo_id:
-                    rec.maint_wo_id.write({'partner_id': rec.partner_id.id,
-                                           'car_panel_no': rec.car_panel_no,
-                                           'partner_mobile': rec.partner_mobile,
-                                           'car_size_id': rec.car_size_id.id,
-                                           'car_model': rec.car_model,
-                                           'car_type_id': rec.car_type_id.id,
-                                           'vin_no': rec.vin_no,
-                                           })
-
+    # Cross-screen persistence is handled by models/visit_sync.py.write().
+    # Never write linked database records from an onchange: the form can still
+    # be discarded, and onchange also runs on unsaved virtual records.
     @api.onchange('company_id')
     def _default_customer(self):
         for rec in self:
@@ -254,7 +229,7 @@ class mizan_car_entry_card_master(models.Model):
     def get_partner_mobile(self):
         for rec in self:
             if rec.partner_id:
-                rec.write({'partner_mobile': rec.partner_id.mobile})
+                rec.partner_mobile = rec.partner_id.mobile
 
     @api.constrains('partner_mobile')
     def set_line_branch(self):

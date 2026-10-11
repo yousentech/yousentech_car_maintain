@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="customer_vehicle_tree_view" model="ir.ui.view">
+    <field name="name">mizan.customer.vehicle.tree</field>
+    <field name="model">mizan.customer.vehicle</field>
+    <field name="arch" type="xml">
+      <tree string="سيارات العملاء">
+        <field name="plate_number"/>
+        <field name="partner_id"/>
+        <field name="vin"/>
+        <field name="manufacturer_id"/>
+        <field name="car_type_id"/>
+        <field name="model_year"/>
+        <field name="company_id" groups="base.group_multi_company"/>
+      </tree>
+    </field>
+  </record>
+  <record id="customer_vehicle_form_view" model="ir.ui.view">
+    <field name="name">mizan.customer.vehicle.form</field>
+    <field name="model">mizan.customer.vehicle</field>
+    <field name="arch" type="xml">
+      <form string="ملف السيارة">
+        <sheet>
+          <group>
+            <group>
+              <field name="partner_id"/>
+              <field name="plate_number"/>
+              <field name="vin"/>
+              <field name="company_id" groups="base.group_multi_company"/>
+            </group>
+            <group>
+              <field name="manufacturer_id"/>
+              <field name="car_type_id" domain="[('header_id', '=', manufacturer_id)]" context="{'default_header_id': manufacturer_id}"/>
+              <field name="car_size_id"/>
+              <field name="model_year"/>
+              <field name="color"/>
+              <field name="last_odometer"/>
+              <field name="active"/>
+            </group>
+          </group>
+          <group><field name="notes"/></group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="customer_vehicle_action" model="ir.actions.act_window">
+    <field name="name">سيارات العملاء</field>
+    <field name="res_model">mizan.customer.vehicle</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+  <menuitem id="customer_vehicle_menu" name="سيارات العملاء"
+            parent="mizan_car_system_menu" action="customer_vehicle_action" sequence="3"/>
+  <record id="customer_vehicle_company_rule" model="ir.rule">
+    <field name="name">Customer vehicles allowed companies</field>
+    <field name="model_id" ref="model_mizan_customer_vehicle"/>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+  </record>
+  <record id="entry_card_registered_vehicle_inherit" model="ir.ui.view">
+    <field name="name">mizan.car.entry.card.master.vehicle</field>
+    <field name="model">mizan.car.entry.card.master</field>
+    <field name="inherit_id" ref="entry_card_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='car_panel_no']" position="replace">
+        <field name="vehicle_id" string="لوحة السيارة"
+               domain="[('partner_id', '=', partner_id), ('company_id', '=', company_id)]"
+               context="{'default_partner_id': partner_id, 'default_company_id': company_id}"
+               options="{'no_quick_create': True, 'no_create_edit': False, 'no_create': False}"
+               readonly="state not in ['draft', 'confirm']"/>
+        <field name="car_panel_no" invisible="1"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

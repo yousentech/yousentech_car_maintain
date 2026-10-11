@@ -156,6 +156,8 @@ class cash_close_closed(models.Model):
     def un_closed_cash(self):
         for rec in self:
             if rec.account_move_id:
+                if rec.account_move_id.state == 'posted':
+                    raise ValidationError('لا يمكن حذف قيد محاسبي مرحّل عند إعادة فتح الصندوق. يجب عكس القيد بالإجراء المحاسبي المعتمد.')
                 rec.account_move_id.unlink()
 
     @api.depends('matched_amount', 'amount')

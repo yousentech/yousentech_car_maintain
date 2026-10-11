@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="workshop_markup_category_tree" model="ir.ui.view">
+    <field name="name">product.category.workshop.markup.tree</field>
+    <field name="model">product.category</field>
+    <field name="arch" type="xml">
+      <tree string="نسب زيادة قطع الغيار" editable="bottom">
+        <field name="name" readonly="1"/>
+        <field name="parent_id" readonly="1"/>
+        <field name="workshop_markup_enabled"/>
+        <field name="workshop_markup_percent"/>
+      </tree>
+    </field>
+  </record>
+  <record id="workshop_markup_category_action" model="ir.actions.act_window">
+    <field name="name">زيادة السعر حسب فئة المنتج</field>
+    <field name="res_model">product.category</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="workshop_markup_category_tree"/>
+  </record>
+  <menuitem id="workshop_markup_category_menu" name="زيادة السعر حسب فئة المنتج"
+            parent="mizan_car_setup_menu" action="workshop_markup_category_action" sequence="35"
+            groups="stock.group_stock_manager"/>
+  <record id="workshop_markup_category_form" model="ir.ui.view">
+    <field name="name">product.category.workshop.markup.form</field>
+    <field name="model">product.category</field>
+    <field name="inherit_id" ref="product.product_category_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet" position="inside">
+        <group string="تسعير قطع الغيار في الصيانة">
+          <field name="workshop_markup_enabled"/>
+          <field name="workshop_markup_percent" invisible="not workshop_markup_enabled"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+  <record id="workshop_markup_spare_parts_view" model="ir.ui.view">
+    <field name="name">mizan.car.work.procedure.markup.columns</field>
+    <field name="model">mizan.car.work.procedure.master</field>
+    <field name="inherit_id" ref="work_procedure_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='lines_spare_parts']/tree/field[@name='unit_cost']" position="after">
+        <field name="markup_applied" optional="hide"/>
+        <field name="markup_percent_snapshot" optional="hide"/>
+        <field name="markup_cost_snapshot" optional="hide"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

@@ -23,7 +23,7 @@ class mizan_register_payment(models.Model):
     invoice_amount = fields.Float(string="مبلغ الفاتورة", readonly=True)
     advanced_amount = fields.Float(string="المبلغ المقدم", readonly=True)
     remaining_amount = fields.Float(string="المبلغ المتبقي", readonly=True)
-    payment_amount = fields.Float(string="المبلغ المدفوع", reqiured=True)
+    payment_amount = fields.Float(string="المبلغ المدفوع", required=True)
     company_id = fields.Many2one(
         'res.company', default=lambda self: self.env.company,)
 

@@ -15,12 +15,12 @@
             />
             <button name="create_checkup_procedure" string="بدء الفحص" type="object"
               class="oe_highlight"
-              invisible="checkup_id != False or state in ['not_checkup_car','draft','cancel_order']"
+              invisible="checkup_id != False or state != 'confirm'"
               groups="yousentech_car_maintain.group_sales_man_priv"
             />
             <button name="not_checkup_car" string="الخروج بدون فحص" type="object"
               class="oe_highlight"
-              invisible="checkup_id != False or state in ['not_checkup_car','draft','cancel_order']"
+              invisible="checkup_id != False or state != 'confirm'"
               groups="yousentech_car_maintain.group_allow_delete_wo_priv"
             />
             <button name="execute_completed" string="اكتمال التنفيذ" type="object"
@@ -31,19 +31,19 @@
             <button name="return_to_modify" string="استعادة للتعديل" type="object"
               class="oe_highlight"
            
-              invisible="state not in ['confirm','execute_started','work_order_started','execute_completed']"
+              invisible="state not in ['confirm','execute_started','work_order_started']"
               groups="yousentech_car_maintain.group_supervisor_priv,yousentech_car_maintain.group_sales_man_priv,yousentech_car_maintain.group_rtn_to_draft_and_cancel_priv"
             />
 
 
             <button name="cancel_order_btn" string="الغاء امر التركيب" type="object"
               class="oe_highlight"
-              invisible="state in ['cancel_order']"
+              invisible="state in ['cancel_order','execute_completed','not_checkup_car']"
               groups="yousentech_car_maintain.group_sales_man_priv"
             />
 
             <field name="state" widget="statusbar"
-              statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order" />
+              statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,delivered,not_checkup_car,cancel_order" />
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
@@ -105,6 +105,7 @@
 
                       <field name="car_type_id" required="car_type_required == True"
                         readonly="is_user_sale_man ==False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                      <field name="vehicle_model_year" readonly="1" invisible="not vehicle_model_year" />
 
                       <field name="supervisor_name"
                         options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
@@ -116,15 +117,13 @@
                     </group>
                     <group>
                       <field name="order_date" string="تاريخ الطلب"
-                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order']" />
+                        readonly="state != 'draft' or is_user_sale_man == False" />
 
                       <field name="car_size_id"
                         options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
                         readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
 
-                      <field name="car_model"
-                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
-                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                      
 
                       <field name="gear_type"
                         readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
