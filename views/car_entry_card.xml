@@ -122,9 +122,7 @@
                         options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
                         readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
 
-                      <field name="car_model"
-                        readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
-                        options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" />
+                      
 
                       <field name="gear_type"
                         readonly="is_user_sale_man == False or state in ['execute_started','execute_completed','cancel_order','work_order_started']"
