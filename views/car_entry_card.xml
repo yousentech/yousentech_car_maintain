@@ -105,6 +105,7 @@
 
                       <field name="car_type_id" required="car_type_required == True"
                         readonly="is_user_sale_man ==False or state in ['execute_started','execute_completed','cancel_order','work_order_started']" />
+                      <field name="vehicle_model_year" readonly="1" invisible="not vehicle_model_year" />
 
                       <field name="supervisor_name"
                         options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"
