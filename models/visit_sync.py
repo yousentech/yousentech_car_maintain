@@ -59,8 +59,13 @@ class EntryVisitSync(models.Model):
         for card in self:
             if card.state not in ('execute_started', 'work_order_started'):
                 raise ValidationError(_('إكمال التنفيذ متاح فقط بعد بدء الفحص أو أمر العمل.'))
-            if not card.checkup_id:
-                raise ValidationError(_('لا يمكن إكمال التنفيذ دون وجود فحص مرتبط.'))
+            if not card.maint_wo_id:
+                raise ValidationError(_('لا يمكن إكمال التنفيذ دون إنشاء أمر عمل.'))
+            work = card.maint_wo_id
+            if not work.result_lines and not work.lines_spare_parts:
+                raise ValidationError(_('أمر العمل فارغ. أضف خدمة منفذة أو قطع غيار مستخدمة قبل إكمال التنفيذ.'))
+            if work.lines_spare_parts and any(line.qty_done <= 0 for line in work.lines_spare_parts):
+                raise ValidationError(_('يوجد سطر قطع غيار لم تُسجّل له كمية منفذة. أكمل الكميات أو احذف السطر غير المستخدم.'))
         return super().execute_completed()
 
     def not_checkup_car(self):
