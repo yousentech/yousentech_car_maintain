@@ -90,7 +90,7 @@ class WorkshopV2VehicleIntegrity(models.Model):
             for vehicle in self:
                 if vehicle.partner_id != new_owner and self.env['ycm.v2.order'].search_count([
                     ('vehicle_id', '=', vehicle.id),
-                    ('state', 'not in', ('draft', 'cancelled')),
+                    ('state', 'in', ('estimate', 'approved', 'in_progress')),
                 ]):
                     raise ValidationError(_('Ownership transfer requires a controlled workflow while active work orders exist.'))
         transfers = [(vehicle, vehicle.partner_id.id) for vehicle in self] if 'partner_id' in vals else []

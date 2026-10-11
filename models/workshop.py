@@ -54,18 +54,20 @@ class WorkshopV2Vehicle(models.Model):
     @api.model
     def _normalize_vals(self, vals):
         vals = dict(vals)
-        if vals.get('model_id') and not vals.get('make_id'):
+        if vals.get('model_id') and 'make_id' not in vals:
             model = self.env['ycm.v2.vehicle.model'].browse(vals['model_id']).exists()
             if model:
                 vals['make_id'] = model.make_id.id
-        if vals.get('make_id'):
-            make = self.env['ycm.v2.vehicle.make'].browse(vals['make_id']).exists()
-            if make:
-                vals['make'] = make.name
-        if vals.get('model_id'):
-            model = self.env['ycm.v2.vehicle.model'].browse(vals['model_id']).exists()
-            if model:
-                vals['model'] = model.name
+        if vals.get('make_id') and 'model_id' not in vals and self:
+            # Never silently retain a model belonging to another manufacturer.
+            if any(vehicle.model_id and vehicle.model_id.make_id.id != vals['make_id'] for vehicle in self):
+                vals['model_id'] = False
+        if 'make_id' in vals:
+            make = self.env['ycm.v2.vehicle.make'].browse(vals['make_id']).exists() if vals['make_id'] else False
+            vals['make'] = make.name if make else False
+        if 'model_id' in vals:
+            model = self.env['ycm.v2.vehicle.model'].browse(vals['model_id']).exists() if vals['model_id'] else False
+            vals['model'] = model.name if model else False
         for key in ('plate_number', 'vin'):
             if vals.get(key):
                 vals[key] = ''.join(vals[key].strip().upper().split()) if key == 'vin' else ' '.join(vals[key].strip().upper().split())

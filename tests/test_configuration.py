@@ -38,3 +38,40 @@ class TestWorkshopV2Configuration(TransactionCase):
         with self.assertRaises(ValidationError):
             Vehicle.create({'partner_id': second_owner.id, 'plate_number': 'owner100'})
         self.assertEqual(car.partner_id, first_owner)
+
+    def test_make_model_relationship_and_snapshot(self):
+        partner = self.env['res.partner'].create({'name': 'Catalog owner'})
+        Make = self.env['ycm.v2.vehicle.make']
+        Model = self.env['ycm.v2.vehicle.model']
+        toyota = Make.create({'name': 'Toyota TEST'})
+        hyundai = Make.create({'name': 'Hyundai TEST'})
+        yaris = Model.create({'name': 'Yaris TEST', 'make_id': toyota.id})
+        accent = Model.create({'name': 'Accent TEST', 'make_id': hyundai.id})
+        vehicle = self.env['ycm.v2.vehicle'].create({
+            'partner_id': partner.id, 'plate_number': 'CAT 123',
+            'make_id': toyota.id, 'model_id': yaris.id,
+        })
+        self.assertEqual(vehicle.make, toyota.name)
+        self.assertEqual(vehicle.model, yaris.name)
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            vehicle.write({'model_id': accent.id})
+        vehicle.write({'make_id': hyundai.id})
+        self.assertFalse(vehicle.model_id)
+        self.assertFalse(vehicle.model)
+        vehicle.write({'model_id': accent.id})
+        self.assertEqual(vehicle.model, accent.name)
+
+    def test_completed_order_does_not_block_owner_transfer(self):
+        original = self.env['res.partner'].create({'name': 'Previous Owner TEST'})
+        current = self.env['res.partner'].create({'name': 'Current Owner TEST'})
+        vehicle = self.env['ycm.v2.vehicle'].create({
+            'partner_id': original.id, 'plate_number': 'TRANSFER 123',
+        })
+        order = self.env['ycm.v2.order'].create({
+            'partner_id': original.id, 'vehicle_id': vehicle.id,
+        })
+        order.with_context(ycm_v2_transition=True).write({'state': 'completed'})
+        vehicle.write({'partner_id': current.id})
+        self.assertEqual(vehicle.partner_id, current)
+        self.assertEqual(order.partner_id, original)
+        self.assertEqual(len(vehicle.ownership_history_ids), 2)

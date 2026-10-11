@@ -33,13 +33,13 @@ export class WorkshopV2 extends Component {
             this.notification.add("اختر العميل وأدخل رقم اللوحة", { type: "warning" });
             return;
         }
+        if (!this.ui.vehicleDraft.make_id || !this.ui.vehicleDraft.model_id) {
+            this.notification.add("اختر الشركة المصنعة والموديل", { type: "warning" });
+            return;
+        }
         this.ui.savingVehicle = true;
         try {
             const data = { ...this.ui.vehicleDraft };
-            if (!data.make_id || !data.model_id) {
-                this.notification.add("اختر الشركة المصنعة والموديل", { type: "warning" });
-                return;
-            }
             data.make_id = Number(data.make_id);
             data.model_id = Number(data.model_id);
             data.year = data.year ? Number(data.year) : false;
