@@ -6,6 +6,8 @@ from odoo.exceptions import UserError
 class WorkshopVehicleDelivery(models.Model):
     _inherit = 'mizan.car.entry.card.master'
 
+    state = fields.Selection(selection_add=[('delivered', 'تم التسليم والإغلاق')], ondelete={'delivered': 'set default'})
+
     delivery_state = fields.Selection([
         ('pending', 'بانتظار التسليم'),
         ('delivered', 'تم التسليم والإغلاق'),
@@ -80,6 +82,7 @@ class WorkshopVehicleDelivery(models.Model):
                 raise UserError(_('الفاتورة غير مسددة. يلزم السداد أو اعتماد البيع الآجل من المشرف.'))
             card.with_context(workshop_delivery_action=True).write({
                 'delivery_state': 'delivered',
+                'state': 'delivered',
                 'delivery_date': fields.Datetime.now(),
                 'delivery_user_id': self.env.uid,
             })
