@@ -9,3 +9,7 @@ access_v2_workshop_user,Workshop Config Read,model_ycm_v2_workshop,group_worksho
 access_v2_workshop_manager,Workshop Config Manager,model_ycm_v2_workshop,group_workshop_manager,1,1,1,0
 access_v2_owner_user,Ownership History Read,model_ycm_v2_vehicle_owner,group_workshop_user,1,0,0,0
 access_v2_owner_manager,Ownership History Manager,model_ycm_v2_vehicle_owner,group_workshop_manager,1,1,1,0
+access_v2_make_user,Manufacturer Read,model_ycm_v2_vehicle_make,group_workshop_user,1,0,0,0
+access_v2_make_manager,Manufacturer Manager,model_ycm_v2_vehicle_make,group_workshop_manager,1,1,1,1
+access_v2_model_user,Vehicle Model Read,model_ycm_v2_vehicle_model,group_workshop_user,1,0,0,0
+access_v2_model_manager,Vehicle Model Manager,model_ycm_v2_vehicle_model,group_workshop_manager,1,1,1,1

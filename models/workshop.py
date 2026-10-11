@@ -12,8 +12,10 @@ class WorkshopV2Vehicle(models.Model):
     partner_id = fields.Many2one('res.partner', required=True, index=True, ondelete='restrict')
     plate_number = fields.Char(required=True, index=True)
     vin = fields.Char(index=True)
-    make = fields.Char()
-    model = fields.Char()
+    make = fields.Char(string='الشركة المصنعة (قديم)')
+    model = fields.Char(string='الموديل (قديم)')
+    make_id = fields.Many2one('ycm.v2.vehicle.make', string='الشركة المصنعة', ondelete='restrict', index=True)
+    model_id = fields.Many2one('ycm.v2.vehicle.model', string='الموديل', ondelete='restrict', index=True, domain="[('make_id', '=', make_id)]")
     year = fields.Integer()
     transmission = fields.Selection([('automatic', 'أوتوماتيك'), ('manual', 'عادي'), ('cvt', 'CVT'), ('other', 'أخرى')], string='نوع الجير')
     color = fields.Char(string='اللون')
@@ -52,6 +54,18 @@ class WorkshopV2Vehicle(models.Model):
     @api.model
     def _normalize_vals(self, vals):
         vals = dict(vals)
+        if vals.get('model_id') and not vals.get('make_id'):
+            model = self.env['ycm.v2.vehicle.model'].browse(vals['model_id']).exists()
+            if model:
+                vals['make_id'] = model.make_id.id
+        if vals.get('make_id'):
+            make = self.env['ycm.v2.vehicle.make'].browse(vals['make_id']).exists()
+            if make:
+                vals['make'] = make.name
+        if vals.get('model_id'):
+            model = self.env['ycm.v2.vehicle.model'].browse(vals['model_id']).exists()
+            if model:
+                vals['model'] = model.name
         for key in ('plate_number', 'vin'):
             if vals.get(key):
                 vals[key] = ''.join(vals[key].strip().upper().split()) if key == 'vin' else ' '.join(vals[key].strip().upper().split())
@@ -62,6 +76,17 @@ class WorkshopV2Vehicle(models.Model):
         for vehicle in self:
             if vehicle.vin and (len(vehicle.vin) != 17 or any(x in vehicle.vin for x in 'IOQ')):
                 raise ValidationError(_('VIN must contain 17 characters excluding I/O/Q.'))
+
+    @api.onchange('make_id')
+    def _onchange_make_id(self):
+        if self.model_id and self.model_id.make_id != self.make_id:
+            self.model_id = False
+
+    @api.constrains('make_id', 'model_id')
+    def _check_make_model(self):
+        for vehicle in self:
+            if vehicle.model_id and vehicle.model_id.make_id != vehicle.make_id:
+                raise ValidationError(_('The vehicle model must belong to the selected manufacturer.'))
 
     @api.constrains('year', 'plate_number')
     def _check_vehicle(self):
@@ -156,6 +181,8 @@ class WorkshopV2Order(models.Model):
         return {
             'orders': orders.read(fields_to_read),
             'customers': self.env['res.partner'].search([('active', '=', True), ('customer_rank', '>', 0)], limit=150).read(['name', 'phone']),
+            'makes': self.env['ycm.v2.vehicle.make'].search([('active', '=', True)]).read(['name']),
+            'models': self.env['ycm.v2.vehicle.model'].search([('active', '=', True), ('make_id.active', '=', True)]).read(['name', 'make_id']),
             'vehicles': self.env['ycm.v2.vehicle'].search([('company_id', '=', company.id)], limit=200).read(['plate_number', 'partner_id', 'make', 'model', 'year', 'odometer']),
             'products': Product.search([('sale_ok', '=', True)], limit=200).read(['display_name', 'list_price', 'detailed_type']),
             'currency': company.currency_id.symbol,
@@ -183,8 +210,8 @@ class WorkshopV2Order(models.Model):
             raise UserError(_('Select a valid customer.'))
         customer.check_access_rule('read')
         allowed = {
-            'plate_number', 'plate_country', 'plate_type', 'vin', 'make',
-            'model', 'year', 'transmission', 'color', 'engine_number', 'odometer',
+            'plate_number', 'plate_country', 'plate_type', 'vin',
+            'make_id', 'model_id', 'year', 'transmission', 'color', 'engine_number', 'odometer',
         }
         vals = {key: value for key, value in (vehicle_data or {}).items() if key in allowed}
         if not vals.get('plate_number') or not str(vals['plate_number']).strip():
@@ -199,6 +226,14 @@ class WorkshopV2Order(models.Model):
             if existing['partner_id'][0] == customer.id:
                 raise UserError(_('This vehicle already exists for this customer. Select it from the list.'))
             raise UserError(_('This vehicle belongs to another customer. Ownership transfer must be handled separately.'))
+        if not vals.get('make_id') or not vals.get('model_id'):
+            raise UserError(_('Select manufacturer and model.'))
+        make = self.env['ycm.v2.vehicle.make'].browse(int(vals['make_id'])).exists()
+        model = self.env['ycm.v2.vehicle.model'].browse(int(vals['model_id'])).exists()
+        if not make or not model or not make.active or not model.active or model.make_id != make:
+            raise UserError(_('Invalid manufacturer/model combination.'))
+        vals['make_id'] = make.id
+        vals['model_id'] = model.id
         vals.update({'partner_id': customer.id, 'company_id': self.env.company.id})
         return Vehicle.create(vals).id
 

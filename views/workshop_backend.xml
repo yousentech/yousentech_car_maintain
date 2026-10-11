@@ -1,4 +1,40 @@
 <odoo>
+    <record id="view_workshop_v2_make_tree" model="ir.ui.view">
+        <field name="name">ycm.v2.vehicle.make.tree</field>
+        <field name="model">ycm.v2.vehicle.make</field>
+        <field name="arch" type="xml"><tree><field name="name"/><field name="active"/></tree></field>
+    </record>
+    <record id="view_workshop_v2_make_form" model="ir.ui.view">
+        <field name="name">ycm.v2.vehicle.make.form</field>
+        <field name="model">ycm.v2.vehicle.make</field>
+        <field name="arch" type="xml">
+            <form string="الشركة المصنعة"><sheet><group><field name="name"/><field name="active"/></group>
+                <notebook><page string="الموديلات"><field name="model_ids">
+                    <tree editable="bottom"><field name="name"/><field name="active"/></tree>
+                </field></page></notebook>
+            </sheet></form>
+        </field>
+    </record>
+    <record id="view_workshop_v2_model_tree" model="ir.ui.view">
+        <field name="name">ycm.v2.vehicle.model.tree</field>
+        <field name="model">ycm.v2.vehicle.model</field>
+        <field name="arch" type="xml"><tree><field name="make_id"/><field name="name"/><field name="active"/></tree></field>
+    </record>
+    <record id="view_workshop_v2_model_form" model="ir.ui.view">
+        <field name="name">ycm.v2.vehicle.model.form</field>
+        <field name="model">ycm.v2.vehicle.model</field>
+        <field name="arch" type="xml"><form string="موديل السيارة"><sheet><group>
+            <field name="make_id"/><field name="name"/><field name="active"/>
+        </group></sheet></form></field>
+    </record>
+    <record id="action_workshop_v2_makes" model="ir.actions.act_window">
+        <field name="name">الشركات المصنعة</field><field name="res_model">ycm.v2.vehicle.make</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_workshop_v2_models" model="ir.actions.act_window">
+        <field name="name">موديلات السيارات</field><field name="res_model">ycm.v2.vehicle.model</field>
+        <field name="view_mode">tree,form</field>
+    </record>
     <record id="view_partner_workshop_v2_vehicles" model="ir.ui.view">
         <field name="name">res.partner.workshop.v2.vehicles</field>
         <field name="model">res.partner</field>
@@ -30,7 +66,7 @@
         <field name="arch" type="xml">
             <tree string="السيارات">
                 <field name="plate_number"/><field name="partner_id"/>
-                <field name="make"/><field name="model"/><field name="year"/>
+                <field name="make_id"/><field name="model_id"/><field name="year"/>
                 <field name="vin"/><field name="odometer"/>
             </tree>
         </field>
@@ -56,7 +92,7 @@
                             <field name="vin"/>
                         </group>
                         <group string="مواصفات السيارة">
-                            <field name="make"/><field name="model"/><field name="year"/>
+                            <field name="make_id"/><field name="model_id"/><field name="year"/>
                             <field name="transmission"/><field name="color"/>
                             <field name="engine_number"/><field name="odometer"/>
                         </group>
@@ -108,6 +144,12 @@
         <field name="name">سجل أوامر العمل</field>
         <field name="res_model">ycm.v2.order</field><field name="view_mode">tree</field>
     </record>
+    <menuitem id="menu_workshop_v2_makes" name="الشركات المصنعة"
+              parent="workshop_v2_root" action="action_workshop_v2_makes"
+              sequence="30" groups="yousentech_car_maintain.group_workshop_manager"/>
+    <menuitem id="menu_workshop_v2_models" name="موديلات السيارات"
+              parent="workshop_v2_root" action="action_workshop_v2_models"
+              sequence="31" groups="yousentech_car_maintain.group_workshop_manager"/>
     <menuitem id="menu_workshop_v2_customers" name="العملاء"
               parent="workshop_v2_root" action="action_workshop_v2_customers"
               sequence="9" groups="yousentech_car_maintain.group_workshop_user"/>

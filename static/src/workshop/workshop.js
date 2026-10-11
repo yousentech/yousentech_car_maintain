@@ -8,7 +8,7 @@ export class WorkshopV2 extends Component {
     setup() {
         this.orm = useService("orm");
         this.notification = useService("notification");
-        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, vehicleDraft: {}, currency: "" });
+        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, vehicleDraft: {}, currency: "" });
         onWillStart(() => this.refresh());
     }
     openVehicleModal() {
@@ -17,12 +17,16 @@ export class WorkshopV2 extends Component {
             return;
         }
         this.ui.vehicleDraft = {
-            plate_number: "", plate_country: "SA", plate_type: "private",
+            plate_number: "", plate_country: "SA", plate_type: "private", make_id: "", model_id: "",
             vin: "", make: "", model: "", year: "", transmission: "",
             color: "", engine_number: "", odometer: 0,
         };
         this.ui.showVehicleModal = true;
     }
+    get allowedModels() {
+        return this.ui.models.filter(m => String(m.make_id?.[0]) === String(this.ui.vehicleDraft.make_id));
+    }
+    onMakeChange() { this.ui.vehicleDraft.model_id = ""; }
     async saveVehicle() {
         if (this.ui.savingVehicle) return;
         if (!this.ui.customer || !this.ui.vehicleDraft.plate_number?.trim()) {
@@ -32,9 +36,15 @@ export class WorkshopV2 extends Component {
         this.ui.savingVehicle = true;
         try {
             const data = { ...this.ui.vehicleDraft };
+            if (!data.make_id || !data.model_id) {
+                this.notification.add("اختر الشركة المصنعة والموديل", { type: "warning" });
+                return;
+            }
+            data.make_id = Number(data.make_id);
+            data.model_id = Number(data.model_id);
             data.year = data.year ? Number(data.year) : false;
             data.odometer = Number(data.odometer) || 0;
-            for (const key of ["vin", "make", "model", "transmission", "color", "engine_number"]) {
+            for (const key of ["vin", "transmission", "color", "engine_number"]) {
                 if (!data[key]) data[key] = false;
             }
             const id = await this.orm.call("ycm.v2.order", "ui_register_vehicle", [Number(this.ui.customer), data]);
@@ -55,7 +65,7 @@ export class WorkshopV2 extends Component {
     async refresh() {
         try {
             const d = await this.orm.call("ycm.v2.order", "ui_bootstrap", []);
-            Object.assign(this.ui, { orders: d.orders, customers: d.customers, vehicles: d.vehicles, products: d.products, currency: d.currency });
+            Object.assign(this.ui, { orders: d.orders, customers: d.customers, vehicles: d.vehicles, makes: d.makes, models: d.models, products: d.products, currency: d.currency });
             if (this.ui.selected) await this.openOrder(this.ui.selected);
         } catch(e) { this.error(e); } finally { this.ui.loading = false; }
     }
