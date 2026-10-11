@@ -15,12 +15,12 @@
             />
             <button name="create_checkup_procedure" string="بدء الفحص" type="object"
               class="oe_highlight"
-              invisible="checkup_id != False or state in ['not_checkup_car','draft','cancel_order']"
+              invisible="checkup_id != False or state != 'confirm'"
               groups="yousentech_car_maintain.group_sales_man_priv"
             />
             <button name="not_checkup_car" string="الخروج بدون فحص" type="object"
               class="oe_highlight"
-              invisible="checkup_id != False or state in ['not_checkup_car','draft','cancel_order']"
+              invisible="checkup_id != False or state != 'confirm'"
               groups="yousentech_car_maintain.group_allow_delete_wo_priv"
             />
             <button name="execute_completed" string="اكتمال التنفيذ" type="object"
@@ -31,14 +31,14 @@
             <button name="return_to_modify" string="استعادة للتعديل" type="object"
               class="oe_highlight"
            
-              invisible="state not in ['confirm','execute_started','work_order_started','execute_completed']"
+              invisible="state not in ['confirm','execute_started','work_order_started']"
               groups="yousentech_car_maintain.group_supervisor_priv,yousentech_car_maintain.group_sales_man_priv,yousentech_car_maintain.group_rtn_to_draft_and_cancel_priv"
             />
 
 
             <button name="cancel_order_btn" string="الغاء امر التركيب" type="object"
               class="oe_highlight"
-              invisible="state in ['cancel_order']"
+              invisible="state in ['cancel_order','execute_completed','not_checkup_car']"
               groups="yousentech_car_maintain.group_sales_man_priv"
             />
 
