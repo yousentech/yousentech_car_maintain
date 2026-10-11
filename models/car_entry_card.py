@@ -229,7 +229,7 @@ class mizan_car_entry_card_master(models.Model):
     def get_partner_mobile(self):
         for rec in self:
             if rec.partner_id:
-                rec.write({'partner_mobile': rec.partner_id.mobile})
+                rec.partner_mobile = rec.partner_id.mobile
 
     @api.constrains('partner_mobile')
     def set_line_branch(self):
