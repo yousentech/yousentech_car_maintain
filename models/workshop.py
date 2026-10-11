@@ -153,12 +153,29 @@ class WorkshopV2Order(models.Model):
 
     @api.model
     def ui_create(self, customer_id, vehicle_id, complaint=''):
-        order = self.create({'partner_id': customer_id, 'vehicle_id': vehicle_id, 'complaint': complaint})
+        self.check_access_rights('create')
+        vehicle = self.env['ycm.v2.vehicle'].browse(int(vehicle_id)).exists()
+        customer = self.env['res.partner'].browse(int(customer_id)).exists()
+        if not vehicle or not customer:
+            raise UserError(_('Select a valid customer and vehicle.'))
+        vehicle.check_access_rule('read')
+        if vehicle.company_id != self.env.company:
+            raise UserError(_('The vehicle belongs to another company.'))
+        if vehicle.partner_id != customer:
+            raise UserError(_('The selected vehicle does not belong to this customer.'))
+        order = self.create({
+            'company_id': vehicle.company_id.id,
+            'partner_id': customer.id,
+            'vehicle_id': vehicle.id,
+            'complaint': complaint,
+        })
         return order.id
 
     def ui_add_line(self, product_id, kind, quantity=1):
         self.ensure_one()
         product = self.env['product.product'].browse(product_id).exists()
+        if self.state not in ('draft', 'estimate'):
+            raise UserError(_('The work order is locked.'))
         if not product or not product.sale_ok:
             raise UserError(_('Invalid catalog item.'))
         if kind not in ('service', 'part'):
