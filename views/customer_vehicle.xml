@@ -30,7 +30,7 @@
             </group>
             <group>
               <field name="manufacturer_id"/>
-              <field name="car_type_id" domain="[('header_id', '=', manufacturer_id)]" context="{'default_header_id': manufacturer_id, 'default_company_id': company_id}"/>
+              <field name="car_type_id" domain="[('header_id', '=', manufacturer_id)]" context="{'default_header_id': manufacturer_id}"/>
               <field name="car_size_id"/>
               <field name="model_year"/>
               <field name="color"/>
