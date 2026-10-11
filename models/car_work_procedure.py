@@ -595,9 +595,7 @@ class mizan_car_work_procedure_master(models.Model):
                         'display_type': False,
                     })
 
-            rec.write({'state': 'execute_completed'})
-            rec.entry_card_id.write({'state': 'execute_completed'})
-            rec.checkup_id.write({'state': 'execute_completed'})
+            # Creating a sale order is a commercial action, not proof of technical completion.
 
             rec.write({'sale_order_id': sale_order.id})
             sale_order.action_confirm()
