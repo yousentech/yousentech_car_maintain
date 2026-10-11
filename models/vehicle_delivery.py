@@ -103,3 +103,17 @@ class WorkshopVehicleDelivery(models.Model):
                 if protected:
                     raise UserError(_('الزيارة مسلّمة ومغلقة ولا يمكن تعديل بياناتها.'))
         return super().write(vals)
+
+
+class WorkshopDeliveryCheckupState(models.Model):
+    _inherit = 'mizan.car.checkup.procedure.master'
+
+    state = fields.Selection(selection_add=[('delivered', 'تم التسليم والإغلاق')],
+                             ondelete={'delivered': 'set default'})
+
+
+class WorkshopDeliveryWorkOrderState(models.Model):
+    _inherit = 'mizan.car.work.procedure.master'
+
+    state = fields.Selection(selection_add=[('delivered', 'تم التسليم والإغلاق')],
+                             ondelete={'delivered': 'set default'})
