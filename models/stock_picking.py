@@ -181,13 +181,9 @@ class stock_picking(models.Model):
             FROM wo_period_closed
             WHERE %s BETWEEN inv_closed_from_date AND inv_closed_to_date
         """
-        try:
-            self.env.cr.execute(sql_query, (date_field,))
-            result = self.env.cr.fetchone()
-            return result[0] > 0 if result else False
-        except Exception as e:
-            print(f"Error checking closed period: {str(e)}")
-            return False
+        self.env.cr.execute(sql_query, (date_field,))
+        result = self.env.cr.fetchone()
+        return bool(result and result[0])
 
     # def send_products_to_wo(self):
     #     for rec in self:
