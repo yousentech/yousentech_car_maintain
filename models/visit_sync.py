@@ -5,7 +5,7 @@ The entry card owns visit data; child screens can edit it, but changes are
 written back to the entry card and distributed to all existing child records.
 Commercial documents are intentionally never silently rewritten.
 """
-from odoo import models, _
+from odoo import fields, models, _
 from odoo.exceptions import ValidationError
 
 VISIT_FIELDS = (
@@ -26,6 +26,8 @@ def _visit_values(source, target):
 
 class EntryVisitSync(models.Model):
     _inherit = 'mizan.car.entry.card.master'
+
+    vehicle_model_year = fields.Integer(string='سنة الصنع', related='vehicle_id.model_year', readonly=True)
 
     def create_checkup_procedure(self):
         self.ensure_one()
@@ -68,6 +70,8 @@ class EntryVisitSync(models.Model):
 class CheckupVisitSync(models.Model):
     _inherit = 'mizan.car.checkup.procedure.master'
 
+    vehicle_model_year = fields.Integer(string='سنة الصنع', related='entry_card_id.vehicle_id.model_year', readonly=True)
+
     def create_work_order_procedure(self):
         self.ensure_one()
         existing = self.env['mizan.car.work.procedure.master'].search([('checkup_id', '=', self.id)], limit=1)
@@ -87,6 +91,9 @@ class CheckupVisitSync(models.Model):
 
 class WorkOrderVisitSync(models.Model):
     _inherit = 'mizan.car.work.procedure.master'
+
+    vehicle_model_year = fields.Integer(string='سنة الصنع', related='entry_card_id.vehicle_id.model_year', readonly=True)
+    drum_counter = fields.Char(string='عداد وقت الدخول', related='entry_card_id.drum_counter', readonly=True)
 
     def write(self, vals):
         changing = set(vals).intersection(VISIT_FIELDS)
