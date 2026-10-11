@@ -30,3 +30,5 @@ from . import car_spare_parts_lines
 from . import customer_vehicle
 
 from . import workshop_markup
+
+from . import visit_sync
