@@ -1,4 +1,29 @@
 <odoo>
+    <record id="view_partner_workshop_v2_vehicles" model="ir.ui.view">
+        <field name="name">res.partner.workshop.v2.vehicles</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="سيارات العميل" groups="yousentech_car_maintain.group_workshop_user">
+                    <field name="workshop_vehicle_ids" context="{'default_partner_id': id}">
+                        <tree>
+                            <field name="plate_number"/><field name="make"/>
+                            <field name="model"/><field name="year"/><field name="vin"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="سجل صيانة العميل" groups="yousentech_car_maintain.group_workshop_user">
+                    <field name="workshop_order_ids" readonly="1">
+                        <tree create="0" edit="0" delete="0">
+                            <field name="name"/><field name="vehicle_id"/>
+                            <field name="state"/><field name="amount_total"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
     <record id="view_workshop_v2_vehicle_tree" model="ir.ui.view">
         <field name="name">ycm.v2.vehicle.tree</field>
         <field name="model">ycm.v2.vehicle</field>
@@ -63,6 +88,13 @@
         <field name="name">السيارات</field><field name="res_model">ycm.v2.vehicle</field>
         <field name="view_mode">tree,form</field>
     </record>
+    <record id="action_workshop_v2_customers" model="ir.actions.act_window">
+        <field name="name">عملاء الورشة</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('customer_rank', '>', 0)]</field>
+        <field name="context">{'default_customer_rank': 1}</field>
+    </record>
     <record id="view_workshop_v2_order_tree" model="ir.ui.view">
         <field name="name">ycm.v2.order.tree</field><field name="model">ycm.v2.order</field>
         <field name="arch" type="xml">
@@ -76,6 +108,9 @@
         <field name="name">سجل أوامر العمل</field>
         <field name="res_model">ycm.v2.order</field><field name="view_mode">tree</field>
     </record>
+    <menuitem id="menu_workshop_v2_customers" name="العملاء"
+              parent="workshop_v2_root" action="action_workshop_v2_customers"
+              sequence="9" groups="yousentech_car_maintain.group_workshop_user"/>
     <menuitem id="menu_workshop_v2_vehicles" name="السيارات"
               parent="workshop_v2_root" action="action_workshop_v2_vehicles"
               sequence="10" groups="yousentech_car_maintain.group_workshop_user"/>

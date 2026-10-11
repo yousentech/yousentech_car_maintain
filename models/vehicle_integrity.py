@@ -38,8 +38,43 @@ class WorkshopV2VehicleIntegrity(models.Model):
             vals['plate_key'] = self._canonical_plate(vals['plate_number'])
         return vals
 
+    @api.model
+    def find_existing_vehicle(self, plate_number=False, vin=False,
+                              plate_country='SA', plate_type='private'):
+        """Look up a vehicle before intake; never reassign its owner silently."""
+        self.check_access_rights('read')
+        company = self.env.company
+        candidates = self.browse()
+        if vin:
+            normalized_vin = ''.join(str(vin).strip().upper().split())
+            candidates |= self.search([
+                ('company_id', '=', company.id), ('vin', '=', normalized_vin),
+            ], limit=1)
+        if plate_number:
+            key = self._canonical_plate(plate_number)
+            if key:
+                candidates |= self.search([
+                    ('company_id', '=', company.id),
+                    ('plate_country', '=', (plate_country or 'SA').strip().upper()),
+                    ('plate_type', '=', plate_type),
+                    ('plate_key', '=', key),
+                ], limit=1)
+        if len(candidates) > 1:
+            raise ValidationError(_('Plate and VIN belong to different registered vehicles.'))
+        return candidates.read(['plate_number', 'vin', 'partner_id', 'make', 'model', 'year'])
+
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            normalized = self._normalize_identity(vals)
+            matches = self.find_existing_vehicle(
+                normalized.get('plate_number'),
+                normalized.get('vin'),
+                normalized.get('plate_country', 'SA'),
+                normalized.get('plate_type', 'private'),
+            )
+            if matches:
+                raise ValidationError(_('Vehicle already registered. Select the existing vehicle instead.'))
         vehicles = super().create([self._normalize_identity(vals) for vals in vals_list])
         for vehicle in vehicles:
             self.env['ycm.v2.vehicle.owner'].create({

@@ -16,6 +16,9 @@ class WorkshopV2Partner(models.Model):
         for partner in self:
             partner.workshop_vehicle_count = counts.get(partner.id, 0)
 
+    workshop_order_ids = fields.One2many(
+        'ycm.v2.order', 'partner_id', string='سجل صيانة العميل')
+
     def action_view_workshop_vehicles(self):
         self.ensure_one()
         return {
