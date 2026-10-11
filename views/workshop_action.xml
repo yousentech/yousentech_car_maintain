@@ -1,0 +1,5 @@
+<odoo>
+    <record id="workshop_v2_client_action" model="ir.actions.client"><field name="name">مساحة أوامر العمل</field><field name="tag">ycm_v2.workshop</field></record>
+    <menuitem id="workshop_v2_root" name="الصيانة V2" sequence="12" groups="yousentech_car_maintain.group_workshop_user"/>
+    <menuitem id="workshop_v2_orders" name="أوامر العمل" parent="workshop_v2_root" action="workshop_v2_client_action" sequence="1" groups="yousentech_car_maintain.group_workshop_user"/>
+</odoo>

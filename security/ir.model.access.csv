@@ -1,53 +1,11 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_mizan_services_types,mizan.services.types,model_mizan_services_types,,1,1,1,1
-
-access_mizan_parts_results,mizan.parts.results,model_mizan_parts_results,,1,1,1,1
-access_mizan_car_manufactory,mizan.car.manufactory,model_mizan_car_manufactory,,1,1,1,1
-access_mizan_car_types,mizan.car.types,model_mizan_car_types,,1,1,1,1
-access_mizan_car_size,mizan.car.size,model_mizan_car_size,,1,1,1,1
-
-access_mizan_salesman_sides,mizan.salesman.sides,model_mizan_salesman_sides,,1,1,1,1
-access_mizan_sales_man,mizan.sales.man,model_mizan_sales_man,,1,1,1,1
-
-access_mizan_car_entry_card_master,mizan.car.entry.card.master,model_mizan_car_entry_card_master,,1,1,1,1
-
-access_mizan_car_checkup_procedure_master,mizan.car.checkup.procedure.master,model_mizan_car_checkup_procedure_master,,1,1,1,1
-access_mizan_car_checkup_procedure_line,mizan.car.checkup.procedure.line,model_mizan_car_checkup_procedure_line,,1,1,1,1
-
-access_mizan_car_work_procedure_master,mizan.car.work.procedure.master,model_mizan_car_work_procedure_master,,1,1,1,1
-access_mizan_car_work_procedure_line,mizan.car.work.procedure.line,model_mizan_car_work_procedure_line,,1,1,1,1
-
-access_mizan_car_spare_parts_lines,mizan.car.spare.parts.lines,model_mizan_car_spare_parts_lines,,1,1,1,1
-
-access_mizan_computers_codes,mizan.computers.codes,model_mizan_computers_codes,,1,1,1,1
-
-access_mizan_car_computer_codes_lines,mizan.car.computer.codes.lines,model_mizan_car_computer_codes_lines,,1,1,1,1
-
-access_mizan_default_results,mizan.default.results,model_mizan_default_results,,1,1,1,1
-
-access_mizan_wo_picking,mizan.wo.picking,model_mizan_wo_picking,,1,1,1,1
-
-access_mizan_picking_workstation,mizan.picking.workstation,model_mizan_picking_workstation,,1,1,1,1
-
-access_hr_technical_assignments,hr.technical.assignments,model_hr_technical_assignments,,1,1,1,1
-access_hr_supervisor_assignments,hr.supervisor.assignments,model_hr_supervisor_assignments,,1,1,1,1
-
-access_mizan_register_payment,mizan.register.payment,model_mizan_register_payment,,1,1,1,1
-access_cash_close_closed,cash.close.closed,model_cash_close_closed,,1,1,1,1
-
-access_emp_face_features,emp.face.features,model_emp_face_features,,1,1,1,1
-access_wo_sales_analysis,wo.sales.analysis,model_wo_sales_analysis,,1,1,1,1
-access_wo_work_order_analysis_view,wo.work.order.analysis.view,model_wo_work_order_analysis_view,,1,1,1,1
-access_wo_services_analysis_view,wo.services.analysis.view,model_wo_services_analysis_view,,1,1,1,1
-access_wo_spare_part_analysis_view,wo.spare.part.analysis.view,model_wo_spare_part_analysis_view,,1,1,1,1
-access_wo_technicals_analysis_view,wo.technicals.analysis.view,model_wo_technicals_analysis_view,,1,1,1,1
-access_wo_auditor_analysis_view,wo.auditor.analysis.view,model_wo_auditor_analysis_view,,1,1,1,1
-access_wo_period_closed,wo.period.closed,model_wo_period_closed,,1,1,1,1
-access_mizan_wo_report_module,mizan.wo.report.module,model_mizan_wo_report_module,,1,1,1,1
-access_mizan_product_wizard,mizan.product.wizard,model_mizan_product_wizard,,1,1,1,1
-
-access_mizan_wo_invoice_payments_report,mizan.wo.invoice.payments.report,model_mizan_wo_invoice_payments_report,,1,1,1,1
-access_mizan_wo_technical_report,mizan.wo.technical.report,model_mizan_wo_technical_report,,1,1,1,1
-access_mizan_message_confirm,mizan.message.confirm,model_mizan_message_confirm,,1,1,1,1
-access_mizan_customer_vehicle_user,mizan.customer.vehicle.user,model_mizan_customer_vehicle,base.group_user,1,1,1,0
-access_mizan_customer_vehicle_manager,mizan.customer.vehicle.manager,model_mizan_customer_vehicle,base.group_system,1,1,1,1
+access_v2_vehicle_user,Vehicle User,model_ycm_v2_vehicle,group_workshop_user,1,1,1,0
+access_v2_vehicle_manager,Vehicle Manager,model_ycm_v2_vehicle,group_workshop_manager,1,1,1,1
+access_v2_order_user,Order User,model_ycm_v2_order,group_workshop_user,1,1,1,0
+access_v2_order_manager,Order Manager,model_ycm_v2_order,group_workshop_manager,1,1,1,1
+access_v2_line_user,Line User,model_ycm_v2_order_line,group_workshop_user,1,1,1,0
+access_v2_line_manager,Line Manager,model_ycm_v2_order_line,group_workshop_manager,1,1,1,1
+access_v2_workshop_user,Workshop Config Read,model_ycm_v2_workshop,group_workshop_user,1,0,0,0
+access_v2_workshop_manager,Workshop Config Manager,model_ycm_v2_workshop,group_workshop_manager,1,1,1,0
+access_v2_owner_user,Ownership History Read,model_ycm_v2_vehicle_owner,group_workshop_user,1,0,0,0
+access_v2_owner_manager,Ownership History Manager,model_ycm_v2_vehicle_owner,group_workshop_manager,1,1,1,0
