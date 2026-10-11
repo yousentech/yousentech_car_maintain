@@ -27,6 +27,15 @@ def _visit_values(source, target):
 class EntryVisitSync(models.Model):
     _inherit = 'mizan.car.entry.card.master'
 
+    def create_checkup_procedure(self):
+        self.ensure_one()
+        existing = self.env['mizan.car.checkup.procedure.master'].search([('entry_card_id', '=', self.id)], limit=1)
+        if existing:
+            if existing.maint_wo_id and not self.user_has_groups('yousentech_car_maintain.group_use_checkup_procedure'):
+                return self.call_wo_procedure()
+            return self.call_checkup_procedure()
+        return super().create_checkup_procedure()
+
     def write(self, vals):
         changing = set(vals).intersection(VISIT_FIELDS)
         if changing and not self.env.context.get(SYNC_CONTEXT):
@@ -54,6 +63,13 @@ class EntryVisitSync(models.Model):
 
 class CheckupVisitSync(models.Model):
     _inherit = 'mizan.car.checkup.procedure.master'
+
+    def create_work_order_procedure(self):
+        self.ensure_one()
+        existing = self.env['mizan.car.work.procedure.master'].search([('checkup_id', '=', self.id)], limit=1)
+        if existing:
+            return self.call_wo_procedure()
+        return super().create_work_order_procedure()
 
     def write(self, vals):
         changing = set(vals).intersection(VISIT_FIELDS)
