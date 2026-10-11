@@ -40,6 +40,8 @@ class EntryVisitSync(models.Model):
         changing = set(vals).intersection(VISIT_FIELDS)
         if changing and not self.env.context.get(SYNC_CONTEXT):
             for card in self:
+                if not isinstance(card.id, int):
+                    continue
                 if card.maint_wo_id.sale_order_id or (
                     card.checkup_id.create_invoice_manually_id
                     and card.checkup_id.create_invoice_manually_id.state != 'cancel'
