@@ -44,7 +44,7 @@ class mizan_car_types(models.Model):
     def name_create(self, name):
         manufacturer_id = self.env.context.get('default_header_id')
         if not manufacturer_id:
-            raise ValidationError(_('حدد الشركة المصنعة قبل إنشاء نوع سيارة جديد.'))
+            return super().name_create(name)
         record = self.create({'name': name, 'header_id': manufacturer_id})
         return (record.id, record.display_name)
 
