@@ -89,4 +89,3 @@ class MizanEntryCardVehicle(models.Model):
         self.car_manuf_id = vehicle.manufacturer_id
         self.car_type_id = vehicle.car_type_id
         self.car_size_id = vehicle.car_size_id
-        self.car_model = str(vehicle.model_year) if vehicle.model_year else False
