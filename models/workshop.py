@@ -173,6 +173,36 @@ class WorkshopV2Order(models.Model):
         }
 
     @api.model
+    def ui_register_vehicle(self, customer_id, vehicle_data):
+        """Create a customer-owned vehicle from intake without bypassing ORM rules."""
+        self.check_access_rights('create')
+        Vehicle = self.env['ycm.v2.vehicle']
+        Vehicle.check_access_rights('create')
+        customer = self.env['res.partner'].browse(int(customer_id)).exists()
+        if not customer:
+            raise UserError(_('Select a valid customer.'))
+        customer.check_access_rule('read')
+        allowed = {
+            'plate_number', 'plate_country', 'plate_type', 'vin', 'make',
+            'model', 'year', 'transmission', 'color', 'engine_number', 'odometer',
+        }
+        vals = {key: value for key, value in (vehicle_data or {}).items() if key in allowed}
+        if not vals.get('plate_number') or not str(vals['plate_number']).strip():
+            raise UserError(_('Plate number is required.'))
+        matches = Vehicle.find_existing_vehicle(
+            vals['plate_number'], vals.get('vin'),
+            vals.get('plate_country') or 'SA',
+            vals.get('plate_type') or 'private',
+        )
+        if matches:
+            existing = matches[0]
+            if existing['partner_id'][0] == customer.id:
+                raise UserError(_('This vehicle already exists for this customer. Select it from the list.'))
+            raise UserError(_('This vehicle belongs to another customer. Ownership transfer must be handled separately.'))
+        vals.update({'partner_id': customer.id, 'company_id': self.env.company.id})
+        return Vehicle.create(vals).id
+
+    @api.model
     def ui_create(self, customer_id, vehicle_id, complaint=''):
         self.check_access_rights('create')
         vehicle = self.env['ycm.v2.vehicle'].browse(int(vehicle_id)).exists()
