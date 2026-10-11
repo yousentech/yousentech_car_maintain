@@ -75,3 +75,13 @@ class TestWorkshopV2Configuration(TransactionCase):
         self.assertEqual(vehicle.partner_id, current)
         self.assertEqual(order.partner_id, original)
         self.assertEqual(len(vehicle.ownership_history_ids), 2)
+
+    def test_intake_catalog_quick_create_and_reuse(self):
+        service = self.env['ycm.v2.vehicle.catalog.intake']
+        make = service.create_make('  TEST QUICK MAKE  ')
+        same = service.create_make('test quick make')
+        self.assertEqual(make['id'], same['id'])
+        model = service.create_model(make['id'], 'TEST QUICK MODEL')
+        same_model = service.create_model(make['id'], 'test quick model')
+        self.assertEqual(model['id'], same_model['id'])
+        self.assertEqual(model['make_id'][0], make['id'])

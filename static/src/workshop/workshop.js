@@ -8,7 +8,7 @@ export class WorkshopV2 extends Component {
     setup() {
         this.orm = useService("orm");
         this.notification = useService("notification");
-        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, vehicleDraft: {}, currency: "" });
+        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, savingCatalog: false, showMakeCreate: false, showModelCreate: false, newMakeName: "", newModelName: "", vehicleDraft: {}, currency: "" });
         onWillStart(() => this.refresh());
     }
     openVehicleModal() {
@@ -21,12 +21,47 @@ export class WorkshopV2 extends Component {
             vin: "", make: "", model: "", year: "", transmission: "",
             color: "", engine_number: "", odometer: 0,
         };
+        this.ui.showMakeCreate = false;
+        this.ui.showModelCreate = false;
         this.ui.showVehicleModal = true;
     }
     get allowedModels() {
         return this.ui.models.filter(m => String(m.make_id?.[0]) === String(this.ui.vehicleDraft.make_id));
     }
-    onMakeChange() { this.ui.vehicleDraft.model_id = ""; }
+    onMakeChange() {
+        this.ui.vehicleDraft.model_id = "";
+        this.ui.showModelCreate = false;
+    }
+    async createMake() {
+        const name = this.ui.newMakeName.trim();
+        if (!name || this.ui.savingCatalog) return;
+        this.ui.savingCatalog = true;
+        try {
+            const make = await this.orm.call("ycm.v2.vehicle.catalog.intake", "create_make", [name]);
+            if (!this.ui.makes.some(m => m.id === make.id)) this.ui.makes.push(make);
+            this.ui.vehicleDraft.make_id = String(make.id);
+            this.ui.vehicleDraft.model_id = "";
+            this.ui.showMakeCreate = false;
+            this.ui.newMakeName = "";
+            this.notification.add("تم اختيار الشركة المصنعة", { type: "success" });
+        } catch (e) { this.error(e); }
+        finally { this.ui.savingCatalog = false; }
+    }
+    async createModel() {
+        const name = this.ui.newModelName.trim();
+        const makeId = Number(this.ui.vehicleDraft.make_id);
+        if (!name || !makeId || this.ui.savingCatalog) return;
+        this.ui.savingCatalog = true;
+        try {
+            const model = await this.orm.call("ycm.v2.vehicle.catalog.intake", "create_model", [makeId, name]);
+            if (!this.ui.models.some(m => m.id === model.id)) this.ui.models.push(model);
+            this.ui.vehicleDraft.model_id = String(model.id);
+            this.ui.showModelCreate = false;
+            this.ui.newModelName = "";
+            this.notification.add("تم اختيار الموديل وربطه بالشركة المصنعة", { type: "success" });
+        } catch (e) { this.error(e); }
+        finally { this.ui.savingCatalog = false; }
+    }
     async saveVehicle() {
         if (this.ui.savingVehicle) return;
         if (!this.ui.customer || !this.ui.vehicleDraft.plate_number?.trim()) {

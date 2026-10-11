@@ -23,8 +23,30 @@
               <div class="col-md-3"><label class="form-label">دولة اللوحة</label><input class="form-control" t-model="ui.vehicleDraft.plate_country"/></div>
               <div class="col-md-3"><label class="form-label">نوع اللوحة</label><select class="form-select" t-model="ui.vehicleDraft.plate_type"><option value="private">خصوصي</option><option value="commercial">تجاري</option><option value="public">عام</option><option value="other">أخرى</option></select></div>
               <div class="col-md-6"><label class="form-label">رقم الشاصي VIN</label><input class="form-control" maxlength="17" t-model="ui.vehicleDraft.vin"/></div>
-              <div class="col-md-6"><label class="form-label">الشركة المصنعة *</label><select class="form-select" t-model="ui.vehicleDraft.make_id" t-on-change="onMakeChange"><option value="">اختر الشركة المصنعة</option><t t-foreach="ui.makes" t-as="make" t-key="make.id"><option t-att-value="make.id" t-esc="make.name"/></t></select></div>
-              <div class="col-md-6"><label class="form-label">الموديل *</label><select class="form-select" t-model="ui.vehicleDraft.model_id" t-att-disabled="!ui.vehicleDraft.make_id"><option value="">اختر الموديل</option><t t-foreach="allowedModels" t-as="model" t-key="model.id"><option t-att-value="model.id" t-esc="model.name"/></t></select></div>
+              <div class="col-md-6">
+                <label class="form-label">الشركة المصنعة *</label>
+                <select class="form-select" t-model="ui.vehicleDraft.make_id" t-on-change="onMakeChange">
+                  <option value="">اختر الشركة المصنعة</option>
+                  <t t-foreach="ui.makes" t-as="make" t-key="make.id"><option t-att-value="make.id" t-esc="make.name"/></t>
+                </select>
+                <button type="button" class="btn btn-link btn-sm p-0 mt-1" t-on-click="() => this.ui.showMakeCreate = !this.ui.showMakeCreate">+ إنشاء شركة مصنعة</button>
+                <div t-if="ui.showMakeCreate" class="input-group mt-2">
+                  <input class="form-control" placeholder="اسم الشركة الجديدة" t-model="ui.newMakeName"/>
+                  <button type="button" class="btn btn-outline-primary" t-att-disabled="ui.savingCatalog || !ui.newMakeName.trim()" t-on-click="createMake">إنشاء واختيار</button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">الموديل *</label>
+                <select class="form-select" t-model="ui.vehicleDraft.model_id" t-att-disabled="!ui.vehicleDraft.make_id">
+                  <option value="">اختر الموديل</option>
+                  <t t-foreach="allowedModels" t-as="model" t-key="model.id"><option t-att-value="model.id" t-esc="model.name"/></t>
+                </select>
+                <button type="button" class="btn btn-link btn-sm p-0 mt-1" t-att-disabled="!ui.vehicleDraft.make_id" t-on-click="() => this.ui.showModelCreate = !this.ui.showModelCreate">+ إنشاء موديل لهذه الشركة</button>
+                <div t-if="ui.showModelCreate &amp;&amp; ui.vehicleDraft.make_id" class="input-group mt-2">
+                  <input class="form-control" placeholder="اسم الموديل الجديد" t-model="ui.newModelName"/>
+                  <button type="button" class="btn btn-outline-primary" t-att-disabled="ui.savingCatalog || !ui.newModelName.trim()" t-on-click="createModel">إنشاء واختيار</button>
+                </div>
+              </div>
               <div class="col-md-3"><label class="form-label">سنة الصنع</label><input class="form-control" type="number" min="1886" t-model="ui.vehicleDraft.year"/></div>
               <div class="col-md-3"><label class="form-label">نوع الجير</label><select class="form-select" t-model="ui.vehicleDraft.transmission"><option value="">غير محدد</option><option value="automatic">أوتوماتيك</option><option value="manual">عادي</option><option value="cvt">CVT</option><option value="other">أخرى</option></select></div>
               <div class="col-md-4"><label class="form-label">اللون</label><input class="form-control" t-model="ui.vehicleDraft.color"/></div>
