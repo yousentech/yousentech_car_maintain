@@ -28,7 +28,7 @@ class WorkshopVehicleDelivery(models.Model):
             posted = invoices.filtered(lambda move: move.state == 'posted' and move.move_type == 'out_invoice')
             card.delivery_financial_state = (
                 'not_invoiced' if not posted
-                else 'paid' if all(move.payment_state in ('paid', 'reversed') for move in posted)
+                else 'paid' if all(move.payment_state in ('paid',) for move in posted)
                 else 'open'
             )
 
@@ -76,9 +76,9 @@ class WorkshopVehicleDelivery(models.Model):
             posted = invoices.filtered(lambda m: m.state == 'posted')
             if not posted:
                 raise UserError(_('يجب ترحيل فاتورة العميل قبل التسليم.'))
-            if any(m.payment_state not in ('paid', 'reversed') for m in posted) and not card.credit_approved:
+            if any(m.payment_state not in ('paid',) for m in posted) and not card.credit_approved:
                 raise UserError(_('الفاتورة غير مسددة. يلزم السداد أو اعتماد البيع الآجل من المشرف.'))
-            card.write({
+            card.with_context(workshop_delivery_action=True).write({
                 'delivery_state': 'delivered',
                 'delivery_date': fields.Datetime.now(),
                 'delivery_user_id': self.env.uid,
@@ -90,6 +90,8 @@ class WorkshopVehicleDelivery(models.Model):
         ):
             raise UserError(_('لا يمكن اعتماد البيع الآجل دون صلاحية المشرف.'))
         if any(key in vals for key in ('delivery_state', 'delivery_date', 'delivery_user_id')):
+            if not self.env.context.get('workshop_delivery_action'):
+                raise UserError(_('لا يمكن تغيير حالة التسليم مباشرة؛ استخدم زر تسليم السيارة.'))
             if not self.env.user.has_group('yousentech_car_maintain.group_supervisor_priv'):
                 raise UserError(_('تعديل بيانات التسليم محصور بالمشرف.'))
         for card in self:
