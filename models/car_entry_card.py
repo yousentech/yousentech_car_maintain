@@ -40,7 +40,7 @@ class mizan_car_entry_card_master(models.Model):
     gear_type = fields.Selection(
         [('auto_gear', 'تماتيك'), ('manual', 'عادي')], string="نوع الجير")
     car_size_id = fields.Many2one('mizan.car.size', string="المقاس",)
-    car_model = fields.Char(string="الموديل")
+    car_model = fields.Char(string="سنة الصنع / الموديل")
     car_manuf_id = fields.Many2one(
         'mizan.car.manufactory', string="الشركة المصنعة")
     car_type_id = fields.Many2one(
