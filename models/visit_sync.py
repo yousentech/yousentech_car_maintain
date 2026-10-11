@@ -48,8 +48,10 @@ class EntryVisitSync(models.Model):
         result = super().write(vals)
         if changing and not self.env.context.get(SYNC_CONTEXT):
             for card in self:
+                if not card.id or not isinstance(card.id, int):
+                    continue
                 for model, relation in (
-                    ('mizan.car.checkup.procedure.master', 'checkup_id'),
+                    ('mizan.car.checkup.procedure.master', 'entry_card_id'),
                     ('mizan.car.work.procedure.master', 'entry_card_id'),
                 ):
                     children = self.env[model].search([(relation, '=', card.id)])
