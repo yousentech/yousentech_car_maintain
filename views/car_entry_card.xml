@@ -43,7 +43,7 @@
             />
 
             <field name="state" widget="statusbar"
-              statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,not_checkup_car,cancel_order" />
+              statusbar_visible="draft,confirm,execute_started,work_order_started,execute_completed,delivered,not_checkup_car,cancel_order" />
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
