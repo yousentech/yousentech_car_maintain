@@ -2,6 +2,7 @@
 """Vehicle registry foundation; existing visit fields remain unchanged."""
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from psycopg2 import IntegrityError
 
 
 class MizanCustomerVehicle(models.Model):
@@ -12,7 +13,7 @@ class MizanCustomerVehicle(models.Model):
 
     partner_id = fields.Many2one('res.partner', string='العميل', required=True, index=True, ondelete='restrict')
     company_id = fields.Many2one('res.company', string='الشركة', required=True, default=lambda self: self.env.company, index=True)
-    plate_number = fields.Char(string='رقم اللوحة', index=True)
+    plate_number = fields.Char(string='رقم اللوحة', required=True, index=True)
     vin = fields.Char(string='رقم الهيكل', index=True, copy=False)
     manufacturer_id = fields.Many2one('mizan.car.manufactory', string='الشركة المصنعة')
     car_type_id = fields.Many2one('mizan.car.types', string='نوع السيارة')
@@ -33,6 +34,45 @@ class MizanCustomerVehicle(models.Model):
     def _compute_display_name(self):
         for vehicle in self:
             vehicle.display_name = vehicle.plate_number or vehicle.vin or vehicle.partner_id.name or _('سيارة')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('plate_number'):
+                vals['plate_number'] = self._normalize_plate(vals['plate_number'])
+        return super().create(vals_list)
+
+    def write(self, vals):
+        if vals.get('plate_number'):
+            vals = dict(vals, plate_number=self._normalize_plate(vals['plate_number']))
+        return super().write(vals)
+
+    @api.model
+    def _normalize_plate(self, plate):
+        return ' '.join((plate or '').strip().upper().split())
+
+    @api.constrains('partner_id', 'company_id', 'plate_number')
+    def _check_duplicate_customer_plate(self):
+        for vehicle in self:
+            if not vehicle.partner_id or not vehicle.plate_number:
+                continue
+            matches = self.search([('partner_id', '=', vehicle.partner_id.id),
+                                   ('company_id', '=', vehicle.company_id.id),
+                                   ('id', '!=', vehicle.id)])
+            if any(self._normalize_plate(other.plate_number) == self._normalize_plate(vehicle.plate_number)
+                   for other in matches):
+                raise ValidationError(_('هذه اللوحة مسجلة مسبقًا لنفس العميل، اختر السيارة الموجودة بدل إنشاء سجل مكرر.'))
+
+    @api.onchange('manufacturer_id')
+    def _onchange_manufacturer(self):
+        if self.car_type_id and self.car_type_id.header_id != self.manufacturer_id:
+            self.car_type_id = False
+
+    @api.constrains('manufacturer_id', 'car_type_id')
+    def _check_manufacturer_type(self):
+        for vehicle in self:
+            if vehicle.car_type_id and vehicle.car_type_id.header_id != vehicle.manufacturer_id:
+                raise ValidationError(_('نوع السيارة يجب أن يتبع الشركة المصنعة المختارة.'))
 
     @api.constrains('plate_number')
     def _check_plate_number(self):
