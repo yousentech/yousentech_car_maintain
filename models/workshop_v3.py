@@ -64,3 +64,27 @@ class WorkshopV3WorkOrder(models.Model):
             raise ValidationError(_("Line does not belong to this work order."))
         line.unlink()
         return True
+
+    def action_v3_update_line(self, kind, line_id, field, value):
+        self.ensure_one()
+        self.check_access_rights("write")
+        self.check_access_rule("write")
+        from odoo.exceptions import UserError, ValidationError
+        if self.sale_order_id or self.create_invoice_manually_id or self.state == "cancel_order":
+            raise UserError(_("Cannot edit lines after sale, invoice or cancellation."))
+        if kind not in ("service", "part"):
+            raise ValidationError(_("Invalid line type."))
+        allowed = {"unit_price"} if kind == "service" else {"unit_price", "qty_done"}
+        if field not in allowed:
+            raise ValidationError(_("Field cannot be edited."))
+        if not isinstance(value, (int, float)) or value < 0 or (field == "qty_done" and value <= 0):
+            raise ValidationError(_("Invalid numeric value."))
+        model = "mizan.car.work.procedure.line" if kind == "service" else "mizan.car.spare.parts.lines"
+        line = self.env[model].browse(int(line_id)).exists()
+        if not line or line.header_id != self:
+            raise ValidationError(_("Line does not belong to this order."))
+        vals = {field: value}
+        if field == "qty_done":
+            vals["qty"] = value
+        line.write(vals)
+        return True
