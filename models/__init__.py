@@ -34,3 +34,5 @@ from . import workshop_markup
 from . import visit_sync
 
 from . import vehicle_delivery
+
+from . import workshop_v3
