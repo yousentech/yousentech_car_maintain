@@ -8,8 +8,31 @@ export class WorkshopV2 extends Component {
     setup() {
         this.orm = useService("orm");
         this.notification = useService("notification");
-        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, savingCatalog: false, showMakeCreate: false, showModelCreate: false, newMakeName: "", newModelName: "", vehicleDraft: {}, currency: "", step: 1, busy: false, diagnosisDraft: "", catalogSearch: "", sidebarOpen: false, inspection: null, inspectionBusy: false });
+        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, savingCatalog: false, showMakeCreate: false, showModelCreate: false, newMakeName: "", newModelName: "", vehicleDraft: {}, currency: "", step: 1, busy: false, diagnosisDraft: "", catalogSearch: "", sidebarOpen: false, inspection: null, inspectionBusy: false, screen: "list" });
         onWillStart(() => this.refresh());
+    }
+    startNewOrder() {
+        this.ui.screen = "wizard";
+        this.ui.showCreate = true;
+        this.ui.selected = null;
+        this.ui.detail = null;
+        this.ui.step = 1;
+        this.ui.customer = "";
+        this.ui.vehicle = "";
+        this.ui.complaint = "";
+    }
+    showOrderList() {
+        this.ui.screen = "list";
+        this.ui.showCreate = false;
+    }
+    async openExistingOrder(id) {
+        await this.openOrder(id);
+        if (this.ui.detail && this.ui.selected === id) {
+            const states = { draft: 1, estimate: 4, approved: 5, in_progress: 5, completed: 6, cancelled: 6 };
+            this.ui.step = states[this.ui.detail.order.state] || 1;
+            this.ui.screen = "wizard";
+            this.ui.showCreate = false;
+        }
     }
     openVehicleModal() {
         if (!this.ui.customer) {
@@ -171,7 +194,7 @@ export class WorkshopV2 extends Component {
         if (!this.ui.customer || !this.ui.vehicle) return this.notification.add("اختر العميل والسيارة", { type: "warning" });
         try {
             const id = await this.orm.call("ycm.v2.order", "ui_create", [Number(this.ui.customer), Number(this.ui.vehicle), this.ui.complaint]);
-            this.ui.showCreate = false; this.ui.customer = ""; this.ui.vehicle = ""; this.ui.complaint = "";
+            this.ui.showCreate = false; this.ui.screen = "wizard"; this.ui.customer = ""; this.ui.vehicle = ""; this.ui.complaint = "";
             await this.refresh(); await this.openOrder(id); this.ui.step = 1;
         } catch(e) { this.error(e); }
     }

@@ -40,3 +40,27 @@
 .ycm-wizard-footer{display:flex;justify-content:space-between;background:white;border:1px solid var(--ycm-border);border-radius:12px;padding:12px 16px;margin-bottom:20px}
 @media(max-width:1200px){.ycm-wizard-grid{grid-template-columns:minmax(0,1fr)}.ycm-wizard-aside{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
 @media(max-width:760px){.ycm-work-head{padding:14px}.ycm-steps{display:flex;overflow-x:auto}.ycm-step{min-width:100px}.ycm-context{grid-template-columns:1fr}.ycm-info-grid,.ycm-wizard-aside{grid-template-columns:1fr}.ycm-wizard-grid .ycm-panel{padding:17px}}
+
+/* Full-screen work order wizard: separate index, no legacy split sidebar. */
+.ycm-layout-wizard{display:block;min-height:calc(100vh - 165px)}
+.ycm-layout-wizard .ycm-main{max-width:1680px;margin:0 auto;padding:20px 24px;width:100%}
+.ycm-top{min-height:88px;padding:16px 28px}
+.ycm-top-title,.ycm-top-actions{display:flex;align-items:center;gap:14px}
+.ycm-top-title h2{font-size:25px;margin:0 0 3px}
+.ycm-top-icon{display:grid;place-items:center;width:44px;height:44px;background:#eef0ff;border-radius:13px;font-size:23px}
+.ycm-new-order .ycm-work-head{margin-bottom:18px}
+.ycm-new-order .ycm-work-identity{margin-bottom:20px}
+.ycm-new-order .ycm-work-identity h3{font-size:22px}
+.ycm-new-order .ycm-step.is-disabled{opacity:.65;cursor:default}
+.ycm-intake-panel{max-width:1250px;margin:0 auto}
+.ycm-intake-panel .ycm-fields{gap:24px}
+.ycm-intake-panel textarea{min-height:110px}
+.ycm-intake-actions{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:18px;border-top:1px solid var(--ycm-border)}
+.ycm-order-index{max-width:1400px;margin:0 auto;padding:32px 28px}
+.ycm-index-heading h3{font-weight:750}
+.ycm-index-heading p{color:#7c899c}
+.ycm-index-search{max-width:450px;margin:22px 0}
+.ycm-index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.ycm-index-order{border:1px solid var(--ycm-border);box-shadow:0 3px 14px #1a304008;padding:20px}
+.ycm-empty-index{padding:50px 20px;color:#7c899c;background:#fff;border:1px dashed var(--ycm-border);border-radius:12px;grid-column:1/-1;text-align:center}
+@media(max-width:760px){.ycm-layout-wizard .ycm-main{padding:12px}.ycm-top{padding:12px 16px}.ycm-top-title h2{font-size:19px}.ycm-intake-panel .ycm-fields{grid-template-columns:1fr}.ycm-intake-actions{gap:12px}.ycm-order-index{padding:20px 12px}}
