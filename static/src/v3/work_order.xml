@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="yousentech_car_maintain.WorkshopV3Order">
+    <div class="o_workshop_v3" t-att-dir="env.services.user?.lang?.startsWith('ar') ? 'rtl' : 'ltr'">
+      <header class="o_workshop_v3_header">
+        <div><h2><t t-esc="displayName || 'Work Order'"/></h2><span t-if="order" t-esc="order.state"/></div>
+        <button class="btn btn-outline-primary" t-on-click="openLegacy">Open details</button>
+      </header>
+      <div t-if="state.loading" class="p-4">Loading…</div>
+      <div t-elif="state.error" class="alert alert-danger" t-esc="state.error"/>
+      <t t-elif="order">
+        <section class="o_workshop_v3_summary">
+          <div class="o_workshop_v3_panel">
+            <h5>Customer</h5>
+            <div t-esc="order.partner_id?.[1] || '—'"/>
+            <div t-esc="order.partner_mobile || '—'"/>
+          </div>
+          <div class="o_workshop_v3_panel">
+            <h5>Vehicle</h5>
+            <div t-esc="order.car_model || '—'"/>
+            <div t-esc="order.car_panel_no || '—'"/>
+            <div t-esc="order.vin_no || '—'"/>
+          </div>
+          <div class="o_workshop_v3_panel">
+            <h5>Order</h5>
+            <div t-esc="displayName"/>
+            <div t-esc="order.create_date || '—'"/>
+            <div t-esc="order.technical_name?.[1] || '—'"/>
+          </div>
+        </section>
+        <section class="o_workshop_v3_columns">
+          <div class="o_workshop_v3_panel">
+            <h4>Services (<t t-esc="serviceCount"/>)</h4>
+            <table class="table table-sm"><thead><tr><th>Service</th><th>Price</th><th>Total</th></tr></thead>
+              <tbody><tr t-foreach="state.services" t-as="line" t-key="line.id">
+                <td t-esc="line.product_id?.[1] || '—'"/><td t-esc="line.unit_price"/><td t-esc="line.total"/>
+              </tr></tbody>
+            </table>
+          </div>
+          <div class="o_workshop_v3_panel">
+            <h4>Spare parts (<t t-esc="partCount"/>)</h4>
+            <table class="table table-sm"><thead><tr><th>Part</th><th>Quantity</th></tr></thead>
+              <tbody><tr t-foreach="state.parts" t-as="line" t-key="line.id">
+                <td t-esc="line.product_id?.[1] || '—'"/><td t-esc="line.qty_done"/>
+              </tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="o_workshop_v3_panel o_workshop_v3_totals">
+          <div>Before tax: <strong t-esc="order.total_all_before_tax"/></div>
+          <div>Tax: <strong t-esc="order.total_tax"/></div>
+          <div>Advance: <strong t-esc="order.advance_amount"/></div>
+          <h3>Total: <t t-esc="order.total_all_with_tax"/></h3>
+        </section>
+      </t>
+    </div>
+  </t>
+</templates>
