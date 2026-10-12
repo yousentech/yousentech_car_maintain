@@ -34,7 +34,23 @@
                 <label class="ycm-field-label" for="ycm-diagnosis">ملاحظات الفحص والتشخيص</label>
                 <textarea id="ycm-diagnosis" class="form-control ycm-notes" t-model="ui.diagnosisDraft" t-att-readonly="!canEditLines" placeholder="اكتب نتائج الفحص والملاحظات الفنية..."/>
                 <div class="ycm-panel-actions"><button class="btn btn-primary" t-att-disabled="!canEditLines || ui.busy" t-on-click="saveDiagnosis">حفظ الفحص</button></div>
-                <p class="ycm-helper">مخطط الهيكل، صور الفحص وقوائم المكونات تحتاج نماذج بيانات مستقلة قبل تفعيلها؛ لا تُحفظ بيانات وهمية.</p>
+                <div t-if="ui.inspection" class="mt-3">
+  <h5 class="ycm-subheading">فحص المكونات الرئيسية</h5>
+  <div class="table-responsive"><table class="table ycm-table"><thead><tr><th>المكون</th><th>الحالة</th><th>ملاحظات</th></tr></thead><tbody>
+    <t t-foreach="inspectionComponents" t-as="item" t-key="item.key"><tr>
+      <td t-esc="item.name"/>
+      <td><select class="form-select" t-att-disabled="!canEditLines" t-att-value="ui.inspection.components[item.key].condition" t-on-change="(ev) => this.setInspectionCondition(item.key, ev)">
+        <option value="good">جيد</option><option value="inspect">يحتاج فحص</option><option value="repair">يحتاج صيانة</option><option value="damaged">تالف</option>
+      </select></td>
+      <td><input class="form-control" maxlength="500" t-att-disabled="!canEditLines" t-att-value="ui.inspection.components[item.key].notes" t-on-input="(ev) => this.setInspectionNote(item.key, ev)"/></td>
+    </tr></t>
+  </tbody></table></div>
+  <label class="ycm-field-label">ملاحظات الهيكل الخارجي</label>
+  <textarea class="form-control" t-model="ui.inspection.exterior_notes" t-att-readonly="!canEditLines"/>
+  <label class="ycm-field-label mt-2">ملاحظات إضافية</label>
+  <textarea class="form-control" t-model="ui.inspection.additional_notes" t-att-readonly="!canEditLines"/>
+  <div class="ycm-panel-actions"><button class="btn btn-primary" t-att-disabled="!canEditLines || ui.inspectionBusy" t-on-click="saveInspection">حفظ نتائج فحص المكونات</button></div>
+</div>
               </section>
               <section t-if="ui.step === 3" class="ycm-panel">
                 <div class="ycm-section-title"><h4>الخدمات وقطع الغيار</h4><p>اختر الأصناف من كتالوج Odoo، وتُحسب الضرائب من إعدادات الصنف.</p></div>

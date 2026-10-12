@@ -8,7 +8,7 @@ export class WorkshopV2 extends Component {
     setup() {
         this.orm = useService("orm");
         this.notification = useService("notification");
-        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, savingCatalog: false, showMakeCreate: false, showModelCreate: false, newMakeName: "", newModelName: "", vehicleDraft: {}, currency: "", step: 1, busy: false, diagnosisDraft: "", catalogSearch: "", sidebarOpen: false });
+        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, savingCatalog: false, showMakeCreate: false, showModelCreate: false, newMakeName: "", newModelName: "", vehicleDraft: {}, currency: "", step: 1, busy: false, diagnosisDraft: "", catalogSearch: "", sidebarOpen: false, inspection: null, inspectionBusy: false });
         onWillStart(() => this.refresh());
     }
     openVehicleModal() {
@@ -90,6 +90,28 @@ export class WorkshopV2 extends Component {
         } catch (e) { this.error(e); }
         finally { this.ui.savingVehicle = false; }
     }
+    get inspectionComponents() { return [["engine","المحرك"],["gearbox","ناقل الحركة"],["ac","نظام التكييف"],["brakes","نظام الفرامل"],["steering","نظام التوجيه"],["suspension","نظام التعليق"],["electrical","النظام الكهربائي"],["battery","البطارية"],["tires","الإطارات"],["fluids","الزيوت والسوائل"]].map(([key, name]) => ({ key, name })); }
+    setInspectionCondition(key, event) {
+        this.ui.inspection.components[key].condition = event.target.value;
+    }
+    setInspectionNote(key, event) {
+        this.ui.inspection.components[key].notes = event.target.value;
+    }
+    async saveInspection() {
+        if (!this.ui.selected || !this.canEditLines || this.ui.inspectionBusy) return;
+        this.ui.inspectionBusy = true;
+        try {
+            this.ui.inspection = await this.orm.call("ycm.v2.order", "ui_save_inspection", [[this.ui.selected], this.ui.inspection]);
+            this.loadInspectionDefaults();
+            this.notification.add("تم حفظ الفحص الفعلي", { type: "success" });
+        } catch (e) { this.error(e); } finally { this.ui.inspectionBusy = false; }
+    }
+    loadInspectionDefaults() {
+        if (!this.ui.inspection) this.ui.inspection = { exterior_notes: "", additional_notes: "", components: {} };
+        for (const item of this.inspectionComponents) {
+            if (!this.ui.inspection.components[item.key]) this.ui.inspection.components[item.key] = { condition: "inspect", notes: "" };
+        }
+    }
     get steps() { return ["الاستقبال", "الفحص", "الخدمات والقطع", "اعتماد العميل", "التنفيذ", "الإغلاق والتسليم"]; }
     get activeVehicle() { return this.ui.vehicles.find(v => v.id === this.ui.detail?.order?.vehicle_id?.[0]); }
     get activeCustomer() { return this.ui.customers.find(p => p.id === this.ui.detail?.order?.partner_id?.[0]); }
@@ -141,7 +163,7 @@ export class WorkshopV2 extends Component {
         } catch(e) { this.error(e); } finally { this.ui.loading = false; }
     }
     async openOrder(id) {
-        try { this.ui.selected = id; this.ui.detail = await this.orm.call("ycm.v2.order", "ui_detail", [id]); this.ui.diagnosisDraft = this.ui.detail.order.diagnosis || ""; }
+        try { this.ui.selected = id; this.ui.detail = await this.orm.call("ycm.v2.order", "ui_detail", [id]); this.ui.diagnosisDraft = this.ui.detail.order.diagnosis || ""; this.ui.inspection = await this.orm.call("ycm.v2.order", "ui_inspection_detail", [[id]]); this.loadInspectionDefaults(); }
         catch(e) { this.error(e); }
     }
     onCustomerChange() { this.ui.vehicle = ""; }
