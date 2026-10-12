@@ -28,6 +28,7 @@
         'views/customer_vehicle.xml',
         'views/vehicle_delivery.xml',
         'views/car_work_procedure.xml',
+        'views/v3_work_order_action.xml',
         'views/workshop_markup.xml',
          
         'views/car_checkup_procedure.xml',
@@ -68,8 +69,9 @@
     
     'assets': {
         'web.assets_backend': [
-            # 'yousentech_car_maintain/static/src/js/*.js',
-            # 'yousentech_car_maintain/static/src/css/*.css',
+            'yousentech_car_maintain/static/src/v3/work_order.js',
+            'yousentech_car_maintain/static/src/v3/work_order.xml',
+            'yousentech_car_maintain/static/src/v3/work_order.scss',
         ],
     },
     
