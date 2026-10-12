@@ -8,7 +8,7 @@ export class WorkshopV2 extends Component {
     setup() {
         this.orm = useService("orm");
         this.notification = useService("notification");
-        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, savingCatalog: false, showMakeCreate: false, showModelCreate: false, newMakeName: "", newModelName: "", vehicleDraft: {}, currency: "" });
+        this.ui = useState({ loading: true, orders: [], customers: [], vehicles: [], makes: [], models: [], products: [], detail: null, selected: null, search: "", kind: "service", product: "", qty: 1, customer: "", vehicle: "", complaint: "", showCreate: false, showVehicleModal: false, savingVehicle: false, savingCatalog: false, showMakeCreate: false, showModelCreate: false, newMakeName: "", newModelName: "", vehicleDraft: {}, currency: "", step: 1, busy: false, diagnosisDraft: "", catalogSearch: "", sidebarOpen: false });
         onWillStart(() => this.refresh());
     }
     openVehicleModal() {
@@ -90,6 +90,42 @@ export class WorkshopV2 extends Component {
         } catch (e) { this.error(e); }
         finally { this.ui.savingVehicle = false; }
     }
+    get steps() { return ["الاستقبال", "الفحص", "الخدمات والقطع", "اعتماد العميل", "التنفيذ", "الإغلاق والتسليم"]; }
+    get activeVehicle() { return this.ui.vehicles.find(v => v.id === this.ui.detail?.order?.vehicle_id?.[0]); }
+    get activeCustomer() { return this.ui.customers.find(p => p.id === this.ui.detail?.order?.partner_id?.[0]); }
+    get serviceLines() { return (this.ui.detail?.lines || []).filter(l => l.kind === "service"); }
+    get partLines() { return (this.ui.detail?.lines || []).filter(l => l.kind === "part"); }
+    get matchingProducts() {
+        const query = this.ui.catalogSearch.trim().toLowerCase();
+        return this.filteredProducts.filter(p => !query || p.display_name.toLowerCase().includes(query));
+    }
+    get canEditLines() { return ["draft", "estimate"].includes(this.ui.detail?.order?.state); }
+    get stepNotice() {
+        return {
+            4: "هذه المرحلة تعرض التقدير الحالي. إرسال الموافقة للعميل وتوثيقها إلكترونيًا غير مفعّل بعد؛ الاعتماد الحالي داخلي فقط.",
+            5: "متابعة الفنيين وصرف المخزون لم تُربط بعد بعمليات فعلية. يمكنك بدء التنفيذ من حالة أمر العمل.",
+            6: "إصدار الفاتورة وتسجيل الدفع والتسليم النهائي غير مفعّل في هذا الإصدار. اكتمال فني لا يعني تسليم السيارة.",
+        }[this.ui.step] || "";
+    }
+    selectStep(n) { if (n >= 1 && n <= 6 && this.ui.detail) this.ui.step = n; }
+    async saveDiagnosis() {
+        if (!this.ui.selected || this.ui.busy || !["draft", "estimate"].includes(this.ui.detail.order.state)) return;
+        this.ui.busy = true;
+        try {
+            await this.orm.call("ycm.v2.order", "ui_save_diagnosis", [this.ui.selected, this.ui.diagnosisDraft]);
+            await this.openOrder(this.ui.selected);
+            this.notification.add("تم حفظ ملاحظات الفحص", { type: "success" });
+        } catch (e) { this.error(e); } finally { this.ui.busy = false; }
+    }
+    async addCatalogProduct(id, kind) {
+        if (!this.canEditLines || this.ui.busy) return;
+        this.ui.busy = true;
+        try {
+            await this.orm.call("ycm.v2.order", "ui_add_line", [[this.ui.selected], id, kind, 1]);
+            await this.refresh();
+            this.notification.add("تمت إضافة البند", { type: "success" });
+        } catch (e) { this.error(e); } finally { this.ui.busy = false; }
+    }
     get filteredOrders() {
         const q = this.ui.search.trim().toLowerCase();
         return this.ui.orders.filter(o => !q || [o.name, o.partner_id?.[1], o.vehicle_id?.[1]].some(v => (v || "").toLowerCase().includes(q)));
@@ -105,7 +141,7 @@ export class WorkshopV2 extends Component {
         } catch(e) { this.error(e); } finally { this.ui.loading = false; }
     }
     async openOrder(id) {
-        try { this.ui.selected = id; this.ui.detail = await this.orm.call("ycm.v2.order", "ui_detail", [id]); }
+        try { this.ui.selected = id; this.ui.detail = await this.orm.call("ycm.v2.order", "ui_detail", [id]); this.ui.diagnosisDraft = this.ui.detail.order.diagnosis || ""; }
         catch(e) { this.error(e); }
     }
     onCustomerChange() { this.ui.vehicle = ""; }
@@ -114,7 +150,7 @@ export class WorkshopV2 extends Component {
         try {
             const id = await this.orm.call("ycm.v2.order", "ui_create", [Number(this.ui.customer), Number(this.ui.vehicle), this.ui.complaint]);
             this.ui.showCreate = false; this.ui.customer = ""; this.ui.vehicle = ""; this.ui.complaint = "";
-            await this.refresh(); await this.openOrder(id);
+            await this.refresh(); await this.openOrder(id); this.ui.step = 1;
         } catch(e) { this.error(e); }
     }
     async addLine() {

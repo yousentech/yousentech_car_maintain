@@ -203,6 +203,20 @@ class WorkshopV2Order(models.Model):
         }
 
     @api.model
+    def ui_save_diagnosis(self, order_id, diagnosis):
+        order = self.browse(int(order_id)).exists()
+        if not order:
+            raise UserError(_('Work order not found.'))
+        order.check_access_rule('write')
+        order.check_access_rights('write')
+        if order.state not in ('draft', 'estimate'):
+            raise UserError(_('Inspection notes are locked after approval.'))
+        if not isinstance(diagnosis, str) or len(diagnosis) > 10000:
+            raise UserError(_('Invalid inspection notes.'))
+        order.write({'diagnosis': diagnosis})
+        return True
+
+    @api.model
     def ui_register_vehicle(self, customer_id, vehicle_data):
         """Create a customer-owned vehicle from intake without bypassing ORM rules."""
         self.check_access_rights('create')

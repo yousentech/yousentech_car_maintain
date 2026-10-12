@@ -6,9 +6,73 @@
       <aside class="ycm-side"><input class="form-control mb-3" placeholder="بحث برقم الأمر أو العميل أو السيارة" t-model="ui.search"/><div class="ycm-scroll"><t t-foreach="filteredOrders" t-as="o" t-key="o.id"><button t-att-class="'ycm-order ' + (ui.selected === o.id ? 'active' : '')" t-on-click="() => this.openOrder(o.id)"><strong t-esc="o.name"/><span t-esc="o.partner_id?.[1] || ''"/><small><t t-esc="o.vehicle_id?.[1] || ''"/> · <t t-esc="o.state"/></small></button></t><div t-if="!filteredOrders.length" class="text-muted p-3">لا توجد أوامر عمل</div></div></aside>
       <main class="ycm-main">
         <section t-if="ui.showCreate" class="ycm-panel"><h4>استقبال سيارة جديدة</h4><div class="ycm-fields"><label>العميل<select class="form-select" t-model="ui.customer" t-on-change="onCustomerChange"><option value="">اختر العميل</option><t t-foreach="ui.customers" t-as="p" t-key="p.id"><option t-att-value="p.id" t-esc="p.name"/></t></select></label><label>السيارة<select class="form-select" t-model="ui.vehicle"><option value="">اختر السيارة</option><t t-foreach="allowedVehicles" t-as="v" t-key="v.id"><option t-att-value="v.id" t-esc="v.plate_number"/></t></select><button type="button" class="btn btn-outline-primary mt-2" t-on-click="openVehicleModal">+ تسجيل سيارة جديدة لهذا العميل</button></label></div><label class="d-block mt-2">الشكوى<textarea class="form-control" t-model="ui.complaint"/></label><button class="btn btn-primary mt-3" t-on-click="createOrder">إنشاء أمر العمل</button></section>
-        <t t-if="ui.detail"><div class="ycm-panel"><div class="d-flex justify-content-between gap-2 flex-wrap"><div><span class="ycm-eyebrow">WORK ORDER</span><h3 t-esc="ui.detail.order.name"/><div class="text-muted"><t t-esc="ui.detail.order.partner_id?.[1]"/> — <t t-esc="ui.detail.order.vehicle_id?.[1]"/></div></div><div class="ycm-status" t-esc="ui.detail.order.state"/></div><div class="ycm-actions mt-3"><button t-if="ui.detail.order.state === 'draft'" class="btn btn-outline-primary" t-on-click="() => this.transition('estimate')">إعداد التقدير</button><button t-if="ui.detail.order.state === 'estimate'" class="btn btn-primary" t-on-click="() => this.transition('approved')">اعتماد التقدير (داخلي)</button><button t-if="ui.detail.order.state === 'approved'" class="btn btn-primary" t-on-click="() => this.transition('in_progress')">بدء التنفيذ</button><button t-if="ui.detail.order.state === 'in_progress'" class="btn btn-primary" t-on-click="() => this.transition('completed')">اكتمال فني</button><button t-if="['draft','estimate','approved'].includes(ui.detail.order.state)" class="btn btn-outline-danger" t-on-click="() => this.transition('cancelled')">إلغاء</button></div></div>
-          <div class="ycm-panel"><div class="d-flex justify-content-between align-items-center"><h4>الخدمات وقطع الغيار</h4><span class="text-muted" t-esc="ui.detail.lines.length + ' بنود'"/></div><div class="table-responsive"><table class="table align-middle"><thead><tr><th>النوع</th><th>البيان</th><th>الكمية</th><th>السعر</th><th>الضريبة</th><th>الإجمالي</th></tr></thead><tbody><t t-foreach="ui.detail.lines" t-as="l" t-key="l.id"><tr><td><span t-att-class="'ycm-chip ' + (l.kind === 'part' ? 'part' : '')" t-esc="l.kind === 'part' ? 'قطعة' : 'خدمة'"/></td><td t-esc="l.name"/><td t-esc="l.qty"/><td t-esc="l.price_unit"/><td t-esc="l.price_tax"/><td class="fw-bold" t-esc="l.price_total"/></tr></t><tr t-if="!ui.detail.lines.length"><td colspan="6" class="text-muted">أضف خدمة أو قطعة غيار لبدء التقدير</td></tr></tbody></table></div><div t-if="['draft','estimate'].includes(ui.detail.order.state)" class="ycm-add"><select class="form-select" t-model="ui.kind"><option value="service">خدمة</option><option value="part">قطعة غيار</option></select><select class="form-select" t-model="ui.product"><option value="">اختر الصنف</option><t t-foreach="filteredProducts" t-as="p" t-key="p.id"><option t-att-value="p.id" t-esc="p.display_name"/></t></select><input class="form-control" type="number" min="0.01" step="1" t-model="ui.qty"/><button class="btn btn-primary" t-on-click="addLine">+ إضافة</button></div></div>
-          <div class="ycm-panel ycm-total"><span>إجمالي أمر العمل (شامل الضريبة)</span><h2><t t-esc="amount"/> <small t-esc="ui.currency"/></h2><div class="text-muted">قبل الضريبة: <t t-esc="ui.detail.order.amount_untaxed"/> · الضريبة: <t t-esc="ui.detail.order.amount_tax"/></div><p class="text-muted mt-2 mb-0">مرحلة V2 الأولى: لا يتم إنشاء قيود أو فواتير أو حركات مخزون من هذه الشاشة بعد.</p></div>
+        <t t-if="ui.detail">
+          <section class="ycm-work-head">
+            <div class="ycm-work-identity"><span class="ycm-eyebrow">WORK ORDER</span><h3 t-esc="ui.detail.order.name"/><span class="ycm-status" t-esc="ui.detail.order.state"/></div>
+            <div class="ycm-steps" role="navigation" aria-label="مراحل أمر العمل">
+              <t t-foreach="steps" t-as="stepName" t-key="stepName">
+                <button type="button" t-att-class="'ycm-step ' + (ui.step === stepName_index + 1 ? 'is-active' : '')" t-on-click="() => this.selectStep(stepName_index + 1)">
+                  <span class="ycm-step-number" t-esc="stepName_index + 1"/><span t-esc="stepName"/>
+                </button>
+              </t>
+            </div>
+          </section>
+          <section class="ycm-context">
+            <div><span class="ycm-muted">العميل</span><strong t-esc="ui.detail.order.partner_id?.[1] || '—'"/><small t-esc="activeCustomer?.phone || ''"/></div>
+            <div><span class="ycm-muted">السيارة</span><strong t-esc="ui.detail.order.vehicle_id?.[1] || '—'"/><small t-esc="activeVehicle ? [activeVehicle.make, activeVehicle.model, activeVehicle.year].filter(Boolean).join(' · ') : ''"/></div>
+            <div><span class="ycm-muted">الحالة</span><strong t-esc="ui.detail.order.state"/></div>
+          </section>
+          <div class="ycm-wizard-grid">
+            <div class="ycm-wizard-body">
+              <section t-if="ui.step === 1" class="ycm-panel">
+                <div class="ycm-section-title"><h4>الاستقبال</h4><p>بيانات السيارة والشكوى المسجلة عند فتح أمر العمل.</p></div>
+                <div class="ycm-info-grid"><div><span>العميل</span><strong t-esc="ui.detail.order.partner_id?.[1]"/></div><div><span>السيارة</span><strong t-esc="ui.detail.order.vehicle_id?.[1]"/></div><div><span>قراءة العداد</span><strong t-esc="ui.detail.order.odometer_in"/></div><div><span>موعد التسليم المتوقع</span><strong t-esc="ui.detail.order.promised_at || 'غير محدد'"/></div></div>
+                <label class="ycm-field-label">شكوى العميل</label><div class="ycm-readonly" t-esc="ui.detail.order.complaint || 'لم تُسجل شكوى'"/>
+              </section>
+              <section t-if="ui.step === 2" class="ycm-panel">
+                <div class="ycm-section-title"><h4>الفحص العام للسيارة</h4><p>توثيق تشخيص الفني قبل إعداد الخدمات والقطع.</p></div>
+                <label class="ycm-field-label" for="ycm-diagnosis">ملاحظات الفحص والتشخيص</label>
+                <textarea id="ycm-diagnosis" class="form-control ycm-notes" t-model="ui.diagnosisDraft" t-att-readonly="!canEditLines" placeholder="اكتب نتائج الفحص والملاحظات الفنية..."/>
+                <div class="ycm-panel-actions"><button class="btn btn-primary" t-att-disabled="!canEditLines || ui.busy" t-on-click="saveDiagnosis">حفظ الفحص</button></div>
+                <p class="ycm-helper">مخطط الهيكل، صور الفحص وقوائم المكونات تحتاج نماذج بيانات مستقلة قبل تفعيلها؛ لا تُحفظ بيانات وهمية.</p>
+              </section>
+              <section t-if="ui.step === 3" class="ycm-panel">
+                <div class="ycm-section-title"><h4>الخدمات وقطع الغيار</h4><p>اختر الأصناف من كتالوج Odoo، وتُحسب الضرائب من إعدادات الصنف.</p></div>
+                <div class="ycm-catalog-controls">
+                  <div class="ycm-tabs"><button t-att-class="ui.kind === 'service' ? 'active' : ''" t-on-click="() => { this.ui.kind = 'service'; this.ui.catalogSearch = ''; }">الخدمات</button><button t-att-class="ui.kind === 'part' ? 'active' : ''" t-on-click="() => { this.ui.kind = 'part'; this.ui.catalogSearch = ''; }">قطع الغيار</button></div>
+                  <input class="form-control" placeholder="بحث عن صنف..." t-model="ui.catalogSearch"/>
+                </div>
+                <div class="ycm-catalog-list"><t t-foreach="matchingProducts" t-as="p" t-key="p.id"><div class="ycm-catalog-item"><div><strong t-esc="p.display_name"/><small><t t-esc="p.list_price"/> <t t-esc="ui.currency"/></small></div><button class="btn btn-outline-primary btn-sm" t-att-disabled="!canEditLines || ui.busy" t-on-click="() => this.addCatalogProduct(p.id, ui.kind)">إضافة +</button></div></t><p t-if="!matchingProducts.length" class="ycm-helper">لا توجد أصناف مطابقة.</p></div>
+                <h5 class="ycm-subheading">الخدمات المختارة</h5><div class="table-responsive"><table class="table ycm-table"><thead><tr><th>الخدمة</th><th>الكمية</th><th>قبل الضريبة</th><th>الضريبة</th><th>الإجمالي</th></tr></thead><tbody><t t-foreach="serviceLines" t-as="l" t-key="l.id"><tr><td t-esc="l.name"/><td t-esc="l.qty"/><td t-esc="l.price_subtotal"/><td t-esc="l.price_tax"/><td t-esc="l.price_total"/></tr></t><tr t-if="!serviceLines.length"><td colspan="5" class="ycm-muted">لا توجد خدمات مضافة.</td></tr></tbody></table></div>
+                <h5 class="ycm-subheading">قطع الغيار المختارة</h5><div class="table-responsive"><table class="table ycm-table"><thead><tr><th>القطعة</th><th>الكمية</th><th>قبل الضريبة</th><th>الضريبة</th><th>الإجمالي</th></tr></thead><tbody><t t-foreach="partLines" t-as="l" t-key="l.id"><tr><td t-esc="l.name"/><td t-esc="l.qty"/><td t-esc="l.price_subtotal"/><td t-esc="l.price_tax"/><td t-esc="l.price_total"/></tr></t><tr t-if="!partLines.length"><td colspan="5" class="ycm-muted">لا توجد قطع غيار مضافة.</td></tr></tbody></table></div>
+              </section>
+              <section t-if="ui.step === 4" class="ycm-panel">
+                <div class="ycm-section-title"><h4>اعتماد العميل</h4><p>مراجعة تقدير الخدمات وقطع الغيار قبل بدء التنفيذ.</p></div>
+                <div class="ycm-info-grid"><div><span>عدد الخدمات</span><strong t-esc="serviceLines.length"/></div><div><span>عدد القطع</span><strong t-esc="partLines.length"/></div><div><span>الإجمالي</span><strong><t t-esc="amount"/> <t t-esc="ui.currency"/></strong></div></div>
+                <div class="ycm-warning" t-esc="stepNotice"/>
+                <button t-if="ui.detail.order.state === 'draft'" class="btn btn-outline-primary" t-on-click="() => this.transition('estimate')">إعداد التقدير</button>
+                <button t-if="ui.detail.order.state === 'estimate'" class="btn btn-primary" t-on-click="() => this.transition('approved')">اعتماد داخلي للتقدير</button>
+              </section>
+              <section t-if="ui.step === 5" class="ycm-panel">
+                <div class="ycm-section-title"><h4>التنفيذ</h4><p>عرض البنود المعتمدة وحالة التنفيذ الفعلية.</p></div>
+                <div class="ycm-warning" t-esc="stepNotice"/>
+                <div class="ycm-info-grid"><div><span>الخدمات</span><strong t-esc="serviceLines.length"/></div><div><span>قطع الغيار</span><strong t-esc="partLines.length"/></div></div>
+                <button t-if="ui.detail.order.state === 'approved'" class="btn btn-primary mt-3" t-on-click="() => this.transition('in_progress')">بدء التنفيذ</button>
+                <button t-if="ui.detail.order.state === 'in_progress'" class="btn btn-outline-primary mt-3" t-on-click="() => this.transition('completed')">تسجيل اكتمال فني</button>
+              </section>
+              <section t-if="ui.step === 6" class="ycm-panel">
+                <div class="ycm-section-title"><h4>الإغلاق والتسليم</h4><p>ملخص أمر العمل قبل التسليم.</p></div>
+                <div class="ycm-warning" t-esc="stepNotice"/>
+                <div class="ycm-info-grid"><div><span>حالة أمر العمل</span><strong t-esc="ui.detail.order.state"/></div><div><span>إجمالي المستحق</span><strong><t t-esc="amount"/> <t t-esc="ui.currency"/></strong></div></div>
+                <p class="ycm-helper">لن يظهر زر تسليم نهائي قبل ربط فحص الجودة والفواتير والمدفوعات والتوقيع ببيانات فعلية.</p>
+              </section>
+            </div>
+            <aside class="ycm-wizard-aside">
+              <div class="ycm-panel"><h5>ملخص الأسعار</h5><div class="ycm-price-row"><span>قبل الضريبة</span><strong t-esc="ui.detail.order.amount_untaxed"/></div><div class="ycm-price-row"><span>الضريبة</span><strong t-esc="ui.detail.order.amount_tax"/></div><div class="ycm-price-row ycm-price-total"><span>الإجمالي</span><strong><t t-esc="amount"/> <t t-esc="ui.currency"/></strong></div></div>
+              <div class="ycm-panel"><h5>معلومات الأمر</h5><div class="ycm-price-row"><span>رقم الأمر</span><strong t-esc="ui.detail.order.name"/></div><div class="ycm-price-row"><span>العميل</span><strong t-esc="ui.detail.order.partner_id?.[1]"/></div><div class="ycm-price-row"><span>السيارة</span><strong t-esc="ui.detail.order.vehicle_id?.[1]"/></div></div>
+            </aside>
+          </div>
+          <footer class="ycm-wizard-footer"><button class="btn btn-light" t-att-disabled="ui.step === 1" t-on-click="() => this.selectStep(ui.step - 1)">السابق</button><button class="btn btn-primary" t-att-disabled="ui.step === 6" t-on-click="() => this.selectStep(ui.step + 1)">التالي</button></footer>
         </t><div t-else="" class="ycm-empty"><h3>أهلاً بك في ورشة V2</h3><p>اختر أمر عمل من القائمة أو أنشئ أمرًا جديدًا.</p></div>
       </main>
     </div>
