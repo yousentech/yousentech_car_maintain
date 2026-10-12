@@ -9,7 +9,7 @@ export class ReceptionApp extends Component {
   this.orm = useService("orm");
   this.notification = useService("notification");
   this.action = useService("action");
-  this.state = useState({busy:false,partner:0,vehicle:0,customers:[],vehicles:[],makes:[],models:[],orders:[],order:null,form:this.blank(),showCar:false,car:{},complaints:[""],requests:[],photos:[],error:"",unsaved:false});
+  this.state = useState({busy:false,partner:0,vehicle:0,customers:[],vehicles:[],makes:[],models:[],branches:[],advisors:[],orders:[],order:null,form:this.blank(),showCar:false,car:{},complaints:[""],requests:[],photos:[],error:"",unsaved:false});
   onWillStart(async()=>{await this.loadChoices();});
  }
  blank(){return {odometer_in:0,odometer_out:0,arrival_at:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16),branch_id:false,advisor_id:false,reception_notes:"",internal_notes:"",customer_source:"",work_source:"",no_parts_needed:false,warranty:false,intake_method:"branch"};}
@@ -17,12 +17,14 @@ export class ReceptionApp extends Component {
  get selectedVehicle(){return this.state.vehicles.find(x=>x.id===this.state.vehicle);}
  async loadChoices(){
   try {
-   const [customers,makes,models,orders] = await Promise.all([
+   const [customers,makes,models,branches,advisors,orders] = await Promise.all([
     this.orm.searchRead("res.partner",[["name","!=",false]],["name","mobile","phone","email"],{limit:250}),
     this.orm.searchRead("yt.reception.make",[],["name"],{limit:250}),
     this.orm.searchRead("yt.reception.model",[],["name","make_id"],{limit:400}),
+    this.orm.searchRead("res.company",[],["name"],{limit:100}),
+    this.orm.searchRead("res.users",[["share","=",false]],["name"],{limit:100}),
     this.orm.searchRead("yt.reception.order",[],["name","partner_id","vehicle_id","state"],{limit:50,order:"id desc"})]);
-   Object.assign(this.state,{customers,makes,models,orders});
+   Object.assign(this.state,{customers,makes,models,branches,advisors,orders});
   }catch(e){this.fail(e);}
  }
  fail(e){this.state.error=e?.message||String(e);this.notification.add(this.state.error,{type:"danger"});}
@@ -51,7 +53,7 @@ export class ReceptionApp extends Component {
    await this.loadVehicles();this.state.vehicle=ids[0];this.state.showCar=false;this.notification.add("تم تسجيل السيارة",{type:"success"});
   }catch(e){this.fail(e);}finally{this.state.busy=false;}
  }
- update(k,ev){this.state.form[k]=ev.target.type==="checkbox"?ev.target.checked:ev.target.type==="number"?Number(ev.target.value):ev.target.value;this.changed();}
+ update(k,ev){this.state.form[k]=ev.target.type==="checkbox"?ev.target.checked:ev.target.type==="number"?Number(ev.target.value):["branch_id","advisor_id"].includes(k)?Number(ev.target.value)||false:ev.target.value;this.changed();}
  async save(){
   if(!this.state.partner||!this.state.vehicle){this.notification.add("العميل والسيارة مطلوبان",{type:"warning"});return;}
   this.state.busy=true;

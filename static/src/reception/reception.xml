@@ -21,7 +21,7 @@
   <label>عداد وقت الدخول <input type="number" min="0" t-att-value="state.form.odometer_in" t-on-input="ev=>update('odometer_in',ev)"/></label>
   <label>عداد وقت الخروج <input type="number" min="0" t-att-value="state.form.odometer_out" t-on-input="ev=>update('odometer_out',ev)"/></label>
   <label>طريقة الاستلام <select t-att-value="state.form.intake_method" t-on-change="ev=>update('intake_method',ev)"><option value="branch">في الفرع</option><option value="pickup">استلام من العميل</option></select></label>
-  <label>الفرع <input placeholder="يحدد حسب الشركة" disabled="disabled"/></label>
+  <label>الفرع <select t-att-value="state.form.branch_id||0" t-on-change="ev=>update('branch_id',ev)"><option value="0">اختر الفرع</option><t t-foreach="state.branches" t-as="b" t-key="b.id"><option t-att-value="b.id" t-esc="b.name"/></t></select></label><label>الفني المستلم <select t-att-value="state.form.advisor_id||0" t-on-change="ev=>update('advisor_id',ev)"><option value="0">اختر الموظف</option><t t-foreach="state.advisors" t-as="u" t-key="u.id"><option t-att-value="u.id" t-esc="u.name"/></t></select></label>
  </div></section>
 </div>
 <div class="rec-col">
@@ -37,7 +37,7 @@
   <label>اللون <input readonly="readonly" t-att-value="selectedVehicle?.color||''"/></label>
  </div></section>
  <section class="rec-card"><h3>⚙ بيانات إضافية</h3><div class="rec-inner rec-fields">
-  <label>مصدر العميل <input t-att-value="state.form.customer_source" t-on-input="ev=>update('customer_source',ev)"/></label>
+  <label>نوع لوحة السيارة <input readonly="readonly" t-att-value="selectedVehicle?.plate_type||''"/></label><label>حالة لوحة السيارة <input readonly="readonly" t-att-value="selectedVehicle?.plate_condition||''"/></label><label>مصدر العميل <input t-att-value="state.form.customer_source" t-on-input="ev=>update('customer_source',ev)"/></label>
   <label>مصدر العمل <input t-att-value="state.form.work_source" t-on-input="ev=>update('work_source',ev)"/></label>
   <label class="rec-checkbox"><input type="checkbox" t-att-checked="state.form.no_parts_needed" t-on-change="ev=>update('no_parts_needed',ev)"/> أمر البيع لا يحتاج قطع</label>
   <label class="rec-checkbox"><input type="checkbox" t-att-checked="state.form.warranty" t-on-change="ev=>update('warranty',ev)"/> إضافة ضمان</label>
