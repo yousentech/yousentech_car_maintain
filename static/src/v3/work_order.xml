@@ -30,18 +30,18 @@
         </section>
         <section class="o_workshop_v3_columns">
           <div class="o_workshop_v3_panel">
-            <h4>Services (<t t-esc="serviceCount"/>)</h4><div class="o_workshop_v3_add"><input type="number" min="1" class="form-control" placeholder="service product ID" t-model="state.serviceProduct"/><button class="btn btn-primary" t-att-disabled="state.busy" t-on-click="() => this.addLine('service')">Add service</button></div>
-            <table class="table table-sm"><thead><tr><th>Service</th><th>Price</th><th>Total</th></tr></thead>
+            <h4>Services (<t t-esc="serviceCount"/>)</h4><div class="o_workshop_v3_add"><select class="form-select" t-model="state.serviceProduct"><option value="">اختر الخدمة</option><option t-foreach="state.serviceOptions" t-as="p" t-key="p.id" t-att-value="p.id" t-esc="p.display_name"/></select><button class="btn btn-primary" t-att-disabled="state.busy" t-on-click="() => this.addLine('service')">Add service</button></div>
+            <table class="table table-sm"><thead><tr><th>Service</th><th>Price</th><th>Total</th><th>إجراء</th></tr></thead>
               <tbody><tr t-foreach="state.services" t-as="line" t-key="line.id">
-                <td t-esc="line.product_id?.[1] || '—'"/><td t-esc="line.unit_price"/><td t-esc="line.total"/><td><button class="btn btn-sm btn-outline-danger" t-att-disabled="state.busy" t-on-click="() => this.removeLine('service', line.id)">×</button></td>
+                <td t-esc="line.product_id?.[1] || '—'"/><td><input class="form-control form-control-sm" type="number" min="0" step="any" t-att-value="line.unit_price" t-att-disabled="state.busy" t-on-change="(ev) => this.changeLine('service', line.id, 'unit_price', ev)"/></td><td t-esc="line.total"/><td><button class="btn btn-sm btn-outline-danger" t-att-disabled="state.busy" t-on-click="() => this.removeLine('service', line.id)">×</button></td>
               </tr></tbody>
             </table>
           </div>
           <div class="o_workshop_v3_panel">
-            <h4>Spare parts (<t t-esc="partCount"/>)</h4><div class="o_workshop_v3_add"><input type="number" min="1" class="form-control" placeholder="part product ID" t-model="state.partProduct"/><input type="number" min="0.01" step="any" class="form-control" t-model="state.partQty"/><button class="btn btn-primary" t-att-disabled="state.busy" t-on-click="() => this.addLine('part')">Add part</button></div>
-            <table class="table table-sm"><thead><tr><th>Part</th><th>Quantity</th></tr></thead>
+            <h4>Spare parts (<t t-esc="partCount"/>)</h4><div class="o_workshop_v3_add"><select class="form-select" t-model="state.partProduct"><option value="">اختر قطعة الغيار</option><option t-foreach="state.partOptions" t-as="p" t-key="p.id" t-att-value="p.id" t-esc="p.display_name"/></select><input type="number" min="0.01" step="any" class="form-control" t-model="state.partQty"/><button class="btn btn-primary" t-att-disabled="state.busy" t-on-click="() => this.addLine('part')">Add part</button></div>
+            <table class="table table-sm"><thead><tr><th>Part</th><th>Quantity</th><th>إجراء</th></tr></thead>
               <tbody><tr t-foreach="state.parts" t-as="line" t-key="line.id">
-                <td t-esc="line.product_id?.[1] || '—'"/><td t-esc="line.qty_done"/><td><button class="btn btn-sm btn-outline-danger" t-att-disabled="state.busy" t-on-click="() => this.removeLine('part', line.id)">×</button></td>
+                <td t-esc="line.product_id?.[1] || '—'"/><td><input class="form-control form-control-sm" type="number" min="0.01" step="any" t-att-value="line.qty_done" t-att-disabled="state.busy" t-on-change="(ev) => this.changeLine('part', line.id, 'qty_done', ev)"/></td><td><button class="btn btn-sm btn-outline-danger" t-att-disabled="state.busy" t-on-click="() => this.removeLine('part', line.id)">×</button></td>
               </tr></tbody>
             </table>
           </div>
