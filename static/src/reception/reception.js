@@ -9,7 +9,7 @@ export class ReceptionApp extends Component {
   this.orm = useService("orm");
   this.notification = useService("notification");
   this.action = useService("action");
-  this.state = useState({busy:false,partner:0,vehicle:0,customers:[],vehicles:[],makes:[],models:[],branches:[],advisors:[],orders:[],order:null,form:this.blank(),showCar:false,car:{},complaints:[""],requests:[],photos:[],error:"",unsaved:false});
+  this.state = useState({busy:false,partner:0,vehicle:0,customers:[],vehicles:[],makes:[],models:[],branches:[],advisors:[],orders:[],order:null,form:this.blank(),showCar:false,car:{},complaints:[""],requests:[],photos:[],error:"",unsaved:false,previewPhoto:0});
   onWillStart(async()=>{await this.loadChoices();});
  }
  blank(){return {odometer_in:0,odometer_out:0,arrival_at:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16),branch_id:false,advisor_id:false,reception_notes:"",internal_notes:"",customer_source:"",work_source:"",no_parts_needed:false,warranty:false,intake_method:"branch"};}
@@ -86,7 +86,12 @@ export class ReceptionApp extends Component {
  removeRow(k,i){this.state[k].splice(i,1);this.changed();}
  row(k,i,ev){this.state[k][i]=ev.target.value;this.changed();}
  async upload(ev){
-  const files=Array.from(ev.target.files||[]);if(!this.state.order){this.notification.add("احفظ أمر العمل قبل رفع الصور",{type:"warning"});return;}
+  const files=Array.from(ev.target.files||[]);
+  await this.processFiles(files);
+  ev.target.value="";
+ }
+ async dropPhotos(ev){ev.preventDefault();await this.processFiles(Array.from(ev.dataTransfer?.files||[]));}
+ async processFiles(files){if(!this.state.order){this.notification.add("احفظ أمر العمل قبل رفع الصور",{type:"warning"});return;}
   this.state.busy=true;
   try{
    for(const file of files){
@@ -95,7 +100,7 @@ export class ReceptionApp extends Component {
     await this.orm.create("yt.reception.photo",[{order_id:this.state.order.id,name:file.name,data,mimetype:file.type}]);
    }
    await this.open(this.state.order.id);this.notification.add("تم رفع الصور",{type:"success"});
-  }catch(e){this.fail(e);}finally{this.state.busy=false;ev.target.value="";}
+  }catch(e){this.fail(e);}finally{this.state.busy=false;}
  }
  async delPhoto(id){if(!window.confirm("حذف الصورة؟"))return;try{await this.orm.unlink("yt.reception.photo",[id]);await this.open(this.state.order.id);}catch(e){this.fail(e);}}
  async primaryPhoto(id){try{const all=this.state.photos.map(p=>p.id);for(const photoId of all)await this.orm.write("yt.reception.photo",[photoId],{is_primary:photoId===id});await this.open(this.state.order.id);}catch(e){this.fail(e);}}
