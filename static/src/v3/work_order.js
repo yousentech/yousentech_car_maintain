@@ -34,7 +34,7 @@ export class WorkshopV3Order extends Component {
                 this.state.order = rows[0];
                 const [services, parts] = await Promise.all([
                     this.orm.read("mizan.car.work.procedure.line", rows[0].result_lines || [], ["product_id", "unit_price", "total", "technical_name"]),
-                    this.orm.read("mizan.car.spare.parts.lines", rows[0].lines_spare_parts || [], ["product_id", "qty_done"]),
+                    this.orm.read("mizan.car.spare.parts.lines", rows[0].lines_spare_parts || [], ["product_id", "qty_done", "unit_price", "total"]),
                 ]);
                 this.state.services = services;
                 this.state.parts = parts;
@@ -53,10 +53,33 @@ export class WorkshopV3Order extends Component {
         const domain = [["detailed_type", "=", kind === "service" ? "service" : "product"]];
         if (query) domain.push(["name", "ilike", query]);
         const company = this.order?.company_id?.[0];
-        if (company) domain.push("|", ["company_id", "=", false], ["company_id", "=", company]);
-        const results = await this.orm.searchRead("product.product", domain, ["display_name", "list_price"], { limit: 20 });
+        if (company) domain.unshift("|", ["company_id", "=", false], ["company_id", "=", company]);
+        const results = await this.orm.searchRead("product.product", domain, ["display_name", "list_price"], { limit: 30 });
         if (kind === "service") this.state.serviceOptions = results;
         else this.state.partOptions = results;
+    }
+
+    async onSearch(kind, event) {
+        const query = event.target.value;
+        if (kind === "service") this.state.serviceSearch = query;
+        else this.state.partSearch = query;
+        try {
+            await this.searchProducts(kind, query);
+        } catch (error) {
+            this.notification.add(error.message || _t("Product search failed"), { type: "danger" });
+        }
+    }
+
+    get editable() {
+        return Boolean(this.order && !this.order.sale_order_id && !this.order.create_invoice_manually_id && this.order.state !== "cancel_order");
+    }
+
+    get serviceSubtotal() {
+        return this.state.services.reduce((sum, line) => sum + (Number(line.total) || 0), 0);
+    }
+
+    get partSubtotal() {
+        return this.state.parts.reduce((sum, line) => sum + (Number(line.total) || 0), 0);
     }
 
     async selectProduct(kind, event) {
@@ -66,7 +89,7 @@ export class WorkshopV3Order extends Component {
     }
 
     async changeLine(kind, id, field, event) {
-        if (this.state.busy) return;
+        if (this.state.busy || !this.editable) return;
         const value = Number(event.target.value);
         if (!Number.isFinite(value) || value < 0 || (field === "qty_done" && value <= 0)) {
             this.notification.add(_t("Invalid value"), { type: "warning" });
@@ -99,7 +122,7 @@ export class WorkshopV3Order extends Component {
 
     async addLine(kind) {
         const productId = Number(kind === "service" ? this.state.serviceProduct : this.state.partProduct);
-        if (!Number.isSafeInteger(productId) || productId <= 0 || this.state.busy) return;
+        if (!Number.isSafeInteger(productId) || productId <= 0 || this.state.busy || !this.editable) return;
         this.state.busy = true;
         try {
             await this.orm.call("mizan.car.work.procedure.master", "action_v3_add_line", [[this.order.id], kind, productId, kind === "part" ? Number(this.state.partQty) : 1]);
@@ -116,7 +139,7 @@ export class WorkshopV3Order extends Component {
         this.state.busy = true;
         try {
             await this.orm.call("mizan.car.work.procedure.master", "action_v3_remove_line", [[this.order.id], kind, id]);
-            await this.action.doAction({ type: "ir.actions.client", tag: "workshop_v3.order", params: { order_id: this.order.id } });
+            await this.reload();
         } catch (error) {
             this.notification.add(error.message || _t("Unable to remove line"), { type: "danger" });
         } finally {
