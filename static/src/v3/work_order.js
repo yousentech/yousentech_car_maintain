@@ -13,7 +13,7 @@ export class WorkshopV3Order extends Component {
         this.orm = useService("orm");
         this.action = useService("action");
         this.notification = useService("notification");
-        this.state = useState({ loading: true, busy: false, order: null, services: [], parts: [], error: null, serviceProduct: "", partProduct: "", partQty: 1 });
+        this.state = useState({ loading: true, busy: false, order: null, services: [], parts: [], error: null, serviceProduct: "", partProduct: "", partQty: 1, serviceSearch: "", partSearch: "", serviceOptions: [], partOptions: [] });
         onWillStart(async () => {
             const orderId = Number(this.props.action?.params?.order_id);
             if (!Number.isSafeInteger(orderId) || orderId <= 0) {
@@ -38,6 +38,7 @@ export class WorkshopV3Order extends Component {
                 ]);
                 this.state.services = services;
                 this.state.parts = parts;
+                await Promise.all([this.searchProducts("service", ""), this.searchProducts("part", "")]);
             } catch (error) {
                 this.state.error = error.message || _t("Unable to load work order.");
                 this.notification.add(this.state.error, { type: "danger" });
@@ -47,13 +48,62 @@ export class WorkshopV3Order extends Component {
         });
     }
 
+
+    async searchProducts(kind, query) {
+        const domain = [["detailed_type", "=", kind === "service" ? "service" : "product"]];
+        if (query) domain.push(["name", "ilike", query]);
+        const company = this.order?.company_id?.[0];
+        if (company) domain.push("|", ["company_id", "=", false], ["company_id", "=", company]);
+        const results = await this.orm.searchRead("product.product", domain, ["display_name", "list_price"], { limit: 20 });
+        if (kind === "service") this.state.serviceOptions = results;
+        else this.state.partOptions = results;
+    }
+
+    async selectProduct(kind, event) {
+        const value = event.target.value;
+        if (kind === "service") this.state.serviceProduct = value;
+        else this.state.partProduct = value;
+    }
+
+    async changeLine(kind, id, field, event) {
+        if (this.state.busy) return;
+        const value = Number(event.target.value);
+        if (!Number.isFinite(value) || value < 0 || (field === "qty_done" && value <= 0)) {
+            this.notification.add(_t("Invalid value"), { type: "warning" });
+            return;
+        }
+        this.state.busy = true;
+        try {
+            await this.orm.call("mizan.car.work.procedure.master", "action_v3_update_line", [[this.order.id], kind, id, field, value]);
+            await this.reload();
+        } catch (error) {
+            this.notification.add(error.message || _t("Unable to update line"), { type: "danger" });
+        } finally { this.state.busy = false; }
+    }
+
+    async reload() {
+        const rows = await this.orm.read("mizan.car.work.procedure.master", [this.order.id], [
+            "partner_id", "state", "car_panel_no", "vin_no", "car_model", "partner_mobile",
+            "sale_order_id", "advance_amount", "total_all_before_tax", "total_tax",
+            "total_all_with_tax", "result_lines", "lines_spare_parts", "technical_name",
+            "create_date", "company_id",
+        ]);
+        this.state.order = rows[0];
+        const [services, parts] = await Promise.all([
+            this.orm.read("mizan.car.work.procedure.line", rows[0].result_lines || [], ["product_id", "unit_price", "total", "technical_name"]),
+            this.orm.read("mizan.car.spare.parts.lines", rows[0].lines_spare_parts || [], ["product_id", "qty_done", "unit_price", "total"]),
+        ]);
+        this.state.services = services;
+        this.state.parts = parts;
+    }
+
     async addLine(kind) {
         const productId = Number(kind === "service" ? this.state.serviceProduct : this.state.partProduct);
         if (!Number.isSafeInteger(productId) || productId <= 0 || this.state.busy) return;
         this.state.busy = true;
         try {
             await this.orm.call("mizan.car.work.procedure.master", "action_v3_add_line", [[this.order.id], kind, productId, kind === "part" ? Number(this.state.partQty) : 1]);
-            await this.action.doAction({ type: "ir.actions.client", tag: "workshop_v3.order", params: { order_id: this.order.id } });
+            await this.reload();
         } catch (error) {
             this.notification.add(error.message || _t("Unable to add line"), { type: "danger" });
         } finally {
