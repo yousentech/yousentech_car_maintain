@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
   <t t-name="yousentech_car_maintain.WorkshopV3Order">
-    <div class="o_workshop_v3" t-att-dir="env.services.user?.lang?.startsWith('ar') ? 'rtl' : 'ltr'">
+    <div class="o_workshop_v3">
       <header class="o_workshop_v3_header">
         <div><h2><t t-esc="displayName || 'Work Order'"/></h2><span t-if="order" t-esc="order.state"/></div>
         <button class="btn btn-outline-primary" t-on-click="openLegacy">Open details</button>
