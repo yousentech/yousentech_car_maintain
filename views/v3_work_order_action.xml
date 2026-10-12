@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="action_workshop_v3_order" model="ir.actions.client">
+    <field name="name">Work Order V3</field>
+    <field name="tag">workshop_v3.order</field>
+  </record>
+  <record id="view_workshop_v3_order_launch" model="ir.ui.view">
+    <field name="name">mizan.car.work.procedure.master.v3.launch</field>
+    <field name="model">mizan.car.work.procedure.master</field>
+    <field name="inherit_id" ref="yousentech_car_maintain.work_procedure_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//form/header" position="inside">
+        <button name="action_open_workshop_v3" type="object" string="Work Order V3" class="btn-primary"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>
