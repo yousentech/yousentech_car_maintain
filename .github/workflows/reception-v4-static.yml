@@ -1,0 +1,24 @@
+name: Reception V4 static checks
+on:
+  push:
+    branches: [develop_v4]
+  workflow_dispatch:
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax and XML well-formedness
+        run: |
+          python - <<'PY'
+          import pathlib, ast, xml.etree.ElementTree as ET
+          root=pathlib.Path('.')
+          python_files=list(root.rglob('*.py'))
+          xml_files=list(root.rglob('*.xml'))
+          for p in python_files: ast.parse(p.read_text(encoding='utf-8'),filename=str(p))
+          for p in xml_files: ET.parse(str(p))
+          print(f'Validated {len(python_files)} Python and {len(xml_files)} XML files')
+          PY
+      - name: JavaScript syntax
+        run: |
+          find static -type f -name '*.js' -print0 | xargs -0 -r -n 1 node --check
