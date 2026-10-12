@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+a_make,yt.reception.make,model_yt_reception_make,base.group_user,1,1,1,0
+a_model,yt.reception.model,model_yt_reception_model,base.group_user,1,1,1,0
+a_vehicle,yt.reception.vehicle,model_yt_reception_vehicle,base.group_user,1,1,1,0
+a_order,yt.reception.order,model_yt_reception_order,base.group_user,1,1,1,0
+a_complaint,yt.reception.complaint,model_yt_reception_complaint,base.group_user,1,1,1,1
+a_request,yt.reception.request,model_yt_reception_request,base.group_user,1,1,1,1
+a_photo,yt.reception.photo,model_yt_reception_photo,base.group_user,1,1,1,1

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+<t t-name="yt_reception.App" owl="1">
+<div class="yt-rec" dir="rtl">
+<header class="rec-top">
+ <div class="rec-brand"><span class="brand-icon">🔧</span><div><h2>أمر العمل</h2><small t-esc="state.order?.name||'جديد'"/></div><span class="rec-badge">جديد</span></div>
+ <div class="rec-steps"><t t-foreach="['قبل البدء','الفحص','الخدمات والقطع','اعتماد العميل','التنفيذ','إغلاق']" t-as="s" t-key="s"><div t-att-class="'rec-step '+(s_index===0?'is-active':'is-off')"><span class="step-dot" t-esc="s_index+1"/><small t-esc="s"/></div></t></div>
+ <div class="rec-actions"><button t-on-click="save" t-att-disabled="state.busy" class="rec-btn primary">💾 حفظ</button><button t-on-click="newOrder" class="rec-btn secondary">✕ إلغاء</button></div>
+</header>
+<div t-if="state.error" class="rec-error" t-esc="state.error"/>
+<div class="rec-cols">
+<div class="rec-col">
+ <section class="rec-card rec-top-card"><h3>👤 العميل</h3><div class="rec-inner">
+  <label>العميل <span class="required">*</span></label>
+  <select t-att-disabled="Boolean(state.order)" t-att-value="state.partner" t-on-change="customerChange"><option value="0">اختر العميل</option><t t-foreach="state.customers" t-as="p" t-key="p.id"><option t-att-value="p.id" t-esc="p.name"/></t></select>
+  <div class="rec-contact" t-if="selectedPartner"><div>☎ <span t-esc="selectedPartner.mobile||selectedPartner.phone||'لا يوجد رقم'"/></div><div>✉ <span t-esc="selectedPartner.email||'لا يوجد بريد'"/></div><div class="rec-icons"><button t-on-click="call" t-att-disabled="!phone()">اتصال</button><button t-on-click="whatsapp" t-att-disabled="!phone()">واتساب</button></div></div>
+  <button class="rec-link" t-att-disabled="!state.partner" t-on-click="openPartner">عرض بيانات العميل ↗</button>
+ </div></section>
+ <section class="rec-card"><h3>▤ معلومات الاستقبال</h3><div class="rec-inner rec-fields">
+  <label class="wide">تاريخ ووقت الدخول <input type="datetime-local" t-att-value="state.form.arrival_at" t-on-change="ev=>update('arrival_at',ev)"/></label>
+  <label>عداد وقت الدخول <input type="number" min="0" t-att-value="state.form.odometer_in" t-on-input="ev=>update('odometer_in',ev)"/></label>
+  <label>عداد وقت الخروج <input type="number" min="0" t-att-value="state.form.odometer_out" t-on-input="ev=>update('odometer_out',ev)"/></label>
+  <label>طريقة الاستلام <select t-att-value="state.form.intake_method" t-on-change="ev=>update('intake_method',ev)"><option value="branch">في الفرع</option><option value="pickup">استلام من العميل</option></select></label>
+  <label>الفرع <input placeholder="يحدد حسب الشركة" disabled="disabled"/></label>
+ </div></section>
+</div>
+<div class="rec-col">
+ <section class="rec-card rec-top-card"><h3>🚙 السيارة <button class="rec-mini-button" t-on-click="createCar">＋ تسجيل سيارة جديدة</button></h3><div class="rec-inner rec-fields">
+  <label class="wide">رقم لوحة السيارة <span class="required">*</span><select t-att-disabled="Boolean(state.order)" t-att-value="state.vehicle" t-on-change="ev=>state.vehicle=Number(ev.target.value)"><option value="0">اختر السيارة المسجلة</option><t t-foreach="state.vehicles" t-as="v" t-key="v.id"><option t-att-value="v.id" t-esc="v.plate"/></t></select></label>
+  <label>الشركة المصنعة <input readonly="readonly" t-att-value="selectedVehicle?.make_id?.[1]||''"/></label>
+  <label>الموديل <input readonly="readonly" t-att-value="selectedVehicle?.model_id?.[1]||''"/></label>
+  <label>سنة الصنع <input readonly="readonly" t-att-value="selectedVehicle?.year||''"/></label>
+  <label>نوع القير <input readonly="readonly" t-att-value="selectedVehicle?.gear||''"/></label>
+  <label>رقم الشاصي (VIN) <input readonly="readonly" t-att-value="selectedVehicle?.vin||''"/></label>
+  <label>رقم المحرك <input readonly="readonly" t-att-value="selectedVehicle?.engine_number||''"/></label>
+  <label>قراءة العداد (كم) <input readonly="readonly" t-att-value="selectedVehicle?.odometer||''"/></label>
+  <label>اللون <input readonly="readonly" t-att-value="selectedVehicle?.color||''"/></label>
+ </div></section>
+ <section class="rec-card"><h3>⚙ بيانات إضافية</h3><div class="rec-inner rec-fields">
+  <label>مصدر العميل <input t-att-value="state.form.customer_source" t-on-input="ev=>update('customer_source',ev)"/></label>
+  <label>مصدر العمل <input t-att-value="state.form.work_source" t-on-input="ev=>update('work_source',ev)"/></label>
+  <label class="rec-checkbox"><input type="checkbox" t-att-checked="state.form.no_parts_needed" t-on-change="ev=>update('no_parts_needed',ev)"/> أمر البيع لا يحتاج قطع</label>
+  <label class="rec-checkbox"><input type="checkbox" t-att-checked="state.form.warranty" t-on-change="ev=>update('warranty',ev)"/> إضافة ضمان</label>
+  <label class="wide">ملاحظات الاستقبال <textarea t-att-value="state.form.reception_notes" t-on-input="ev=>update('reception_notes',ev)"/></label>
+ </div></section>
+</div>
+<div class="rec-col">
+ <section class="rec-card rec-top-card"><h3>📷 صور قبل البدء</h3><div class="rec-inner">
+  <label class="rec-upload"><span class="upload-icon">☁</span><strong>اسحب الصور هنا أو اضغط للاختيار</strong><small>يمكن إضافة عدة صور JPG / PNG</small><input type="file" accept="image/jpeg,image/png" multiple="multiple" t-on-change="upload"/></label>
+  <div class="rec-thumbnails"><t t-foreach="state.photos" t-as="p" t-key="p.id"><div class="rec-photo"><img t-att-src="'/web/image/yt.reception.photo/'+p.id+'/data'" t-att-alt="p.name"/><small t-esc="p.name"/><div><button t-on-click="()=>primaryPhoto(p.id)" t-att-disabled="p.is_primary">★</button><button t-on-click="()=>delPhoto(p.id)">🗑</button></div></div></t></div>
+ </div></section>
+ <section class="rec-card"><h3>☏ الشكاوى من العميل</h3><div class="rec-inner"><t t-foreach="state.complaints" t-as="item" t-key="item_index"><div class="rec-line"><span t-esc="item_index+1"/><input t-att-value="item" t-on-input="ev=>row('complaints',item_index,ev)" placeholder="أدخل شكوى العميل"/><button t-on-click="()=>removeRow('complaints',item_index)">🗑</button></div></t><button class="rec-add" t-on-click="()=>addRow('complaints')">＋ إضافة شكوى</button></div></section>
+ <section class="rec-card"><h3>☷ خدمات إضافية مطلوبة من العميل</h3><div class="rec-inner"><t t-foreach="state.requests" t-as="item" t-key="item_index"><div class="rec-line"><span t-esc="item_index+1"/><input t-att-value="item" t-on-input="ev=>row('requests',item_index,ev)" placeholder="الخدمة المطلوبة"/><button t-on-click="()=>removeRow('requests',item_index)">🗑</button></div></t><button class="rec-add" t-on-click="()=>addRow('requests')">＋ إضافة خدمة</button></div></section>
+</div>
+</div>
+<section class="rec-internal"><strong>📝 ملاحظات داخلية</strong><textarea placeholder="ملاحظات للفنيين لا تظهر للعميل..." t-att-value="state.form.internal_notes" t-on-input="ev=>update('internal_notes',ev)"/></section>
+<section class="rec-history" t-if="state.orders.length"><h3>أوامر العمل المحفوظة</h3><div class="rec-history-items"><t t-foreach="state.orders" t-as="o" t-key="o.id"><button t-on-click="()=>open(o.id)"><strong t-esc="o.name"/> <small t-esc="o.partner_id?.[1]||''"/></button></t></div></section>
+<div class="rec-footer"><button class="rec-btn secondary" disabled="disabled">السابق</button><span t-esc="state.unsaved?'● لديك تغييرات غير محفوظة':'المرحلة 1 من 6 — قبل البدء'"/><button class="rec-btn secondary" disabled="disabled">التالي بعد اعتماد شاشة الاستقبال</button></div>
+<div class="rec-overlay" t-if="state.showCar"><div class="rec-dialog"><h3>تسجيل سيارة جديدة <button t-on-click="()=>state.showCar=false">✕</button></h3><div class="rec-fields rec-inner">
+<label>رقم اللوحة <input t-att-value="state.car.plate" t-on-input="ev=>carField('plate',ev)"/></label>
+<label>دولة اللوحة <input t-att-value="state.car.plate_country" t-on-input="ev=>carField('plate_country',ev)"/></label>
+<label>نوع اللوحة <select t-att-value="state.car.plate_type" t-on-change="ev=>carField('plate_type',ev)"><option value="private">خصوصي</option><option value="commercial">تجاري</option><option value="other">أخرى</option></select></label>
+<label>حالة اللوحة <select t-att-value="state.car.plate_condition" t-on-change="ev=>carField('plate_condition',ev)"><option value="good">جيدة</option><option value="damaged">متضررة</option></select></label>
+<label>الشركة المصنعة <select t-att-value="state.car.make_id" t-on-change="ev=>{carField('make_id',ev);state.car.model_id=false}"><option value="">اختر</option><t t-foreach="state.makes" t-as="m" t-key="m.id"><option t-att-value="m.id" t-esc="m.name"/></t></select></label>
+<label>الموديل <select t-att-value="state.car.model_id" t-on-change="ev=>carField('model_id',ev)"><option value="">اختر</option><t t-foreach="filteredModels" t-as="m" t-key="m.id"><option t-att-value="m.id" t-esc="m.name"/></t></select></label>
+<label>سنة الصنع <input type="number" t-att-value="state.car.year" t-on-input="ev=>carField('year',ev)"/></label>
+<label>ناقل الحركة <select t-att-value="state.car.gear" t-on-change="ev=>carField('gear',ev)"><option value="auto">أوتوماتيك</option><option value="manual">عادي</option></select></label>
+<label>رقم الشاصي <input t-att-value="state.car.vin" t-on-input="ev=>carField('vin',ev)"/></label>
+<label>رقم المحرك <input t-att-value="state.car.engine_number" t-on-input="ev=>carField('engine_number',ev)"/></label>
+<label>اللون <input t-att-value="state.car.color" t-on-input="ev=>carField('color',ev)"/></label>
+<label>قراءة العداد <input type="number" min="0" t-att-value="state.car.odometer" t-on-input="ev=>carField('odometer',ev)"/></label>
+</div><footer><button class="rec-btn primary" t-att-disabled="state.busy" t-on-click="submitCar">حفظ السيارة</button><button class="rec-btn secondary" t-on-click="()=>state.showCar=false">إلغاء</button></footer></div></div>
+</div>
+</t>
+</templates>

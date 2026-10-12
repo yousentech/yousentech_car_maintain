@@ -1,0 +1,1 @@
+Reception implementation draft on develop_v4. Python/XML/OWL rendering and installation runtime validation pending. Only stage 1 is active; later stages are disabled. GitHub source is NOT production-certified.
