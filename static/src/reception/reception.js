@@ -12,13 +12,13 @@ export class ReceptionApp extends Component {
   this.state = useState({busy:false,partner:0,vehicle:0,customers:[],vehicles:[],makes:[],models:[],orders:[],order:null,form:this.blank(),showCar:false,car:{},complaints:[""],requests:[],photos:[],error:"",unsaved:false});
   onWillStart(async()=>{await this.loadChoices();});
  }
- blank(){return {odometer_in:0,odometer_out:0,arrival_at:"",branch_id:false,advisor_id:false,reception_notes:"",internal_notes:"",customer_source:"",work_source:"",no_parts_needed:false,warranty:false,intake_method:"branch"};}
+ blank(){return {odometer_in:0,odometer_out:0,arrival_at:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16),branch_id:false,advisor_id:false,reception_notes:"",internal_notes:"",customer_source:"",work_source:"",no_parts_needed:false,warranty:false,intake_method:"branch"};}
  get selectedPartner(){return this.state.customers.find(x=>x.id===this.state.partner);}
  get selectedVehicle(){return this.state.vehicles.find(x=>x.id===this.state.vehicle);}
  async loadChoices(){
   try {
    const [customers,makes,models,orders] = await Promise.all([
-    this.orm.searchRead("res.partner",[["customer_rank",">",0]],["name","mobile","phone","email"],{limit:250}),
+    this.orm.searchRead("res.partner",[["name","!=",false]],["name","mobile","phone","email"],{limit:250}),
     this.orm.searchRead("yt.reception.make",[],["name"],{limit:250}),
     this.orm.searchRead("yt.reception.model",[],["name","make_id"],{limit:400}),
     this.orm.searchRead("yt.reception.order",[],["name","partner_id","vehicle_id","state"],{limit:50,order:"id desc"})]);
@@ -57,12 +57,14 @@ export class ReceptionApp extends Component {
   this.state.busy=true;
   try{
    const clean=a=>a.map(x=>x.trim()).filter(Boolean);
+   const values={...this.state.form};
+   if(values.arrival_at){const local=new Date(values.arrival_at.replace(" ","T").replace(/Z$/,""));if(!Number.isNaN(local.getTime()))values.arrival_at=local.toISOString().slice(0,19).replace("T"," ");}
    if(this.state.complaints.some(x=>!x.trim())||this.state.requests.some(x=>!x.trim()))throw new Error("أكمل بنود الشكاوى والخدمات أو احذف الصفوف الفارغة.");
    if(this.state.order){
-    this.state.order=await this.orm.call("yt.reception.order","save_reception",[[this.state.order.id],this.state.form,clean(this.state.complaints),clean(this.state.requests)]);
+    this.state.order=await this.orm.call("yt.reception.order","save_reception",[[this.state.order.id],values,clean(this.state.complaints),clean(this.state.requests)]);
    }else{
-    const values={partner_id:this.state.partner,vehicle_id:this.state.vehicle,...this.state.form,complaint_ids:clean(this.state.complaints).map(name=>[0,0,{name}]),request_ids:clean(this.state.requests).map(name=>[0,0,{name}])};
-    const ids=await this.orm.create("yt.reception.order",[values]);
+    const createValues={partner_id:this.state.partner,vehicle_id:this.state.vehicle,...values,complaint_ids:clean(this.state.complaints).map(name=>[0,0,{name}]),request_ids:clean(this.state.requests).map(name=>[0,0,{name}])};
+    const ids=await this.orm.create("yt.reception.order",[createValues]);
     await this.open(ids[0]);
    }
    this.state.unsaved=false;this.notification.add("تم حفظ الاستقبال بنجاح",{type:"success"});await this.loadChoices();
@@ -73,6 +75,7 @@ export class ReceptionApp extends Component {
    const o=await this.orm.call("yt.reception.order","get_reception",[[id]]);
    this.state.order=o;this.state.partner=o.partner_id[0];await this.loadVehicles();this.state.vehicle=o.vehicle_id[0];
    this.state.form=Object.fromEntries(Object.keys(this.blank()).map(k=>[k,o[k]??this.blank()[k]]));
+   if(o.arrival_at){const d=new Date(o.arrival_at.replace(" ","T")+"Z");this.state.form.arrival_at=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);}
    this.state.complaints=o.complaints.map(c=>c.name);this.state.requests=o.requests.map(r=>r.name);this.state.photos=o.photos;this.state.unsaved=false;
   }catch(e){this.fail(e);}
  }
@@ -97,6 +100,7 @@ export class ReceptionApp extends Component {
  phone(){const p=this.selectedPartner;return (p?.mobile||p?.phone||"").replace(/[^+\d]/g,"");}
  call(){const p=this.phone();if(p)window.location.href="tel:"+p;}
  whatsapp(){const p=this.phone().replace(/\D/g,"");if(p)window.open("https://wa.me/"+p,"_blank","noopener,noreferrer");}
+ createPartner(){this.action.doAction({type:"ir.actions.act_window",res_model:"res.partner",views:[[false,"form"]],target:"new",context:{default_customer_rank:1}});}
  openPartner(){if(this.state.partner)this.action.doAction({type:"ir.actions.act_window",res_model:"res.partner",res_id:this.state.partner,views:[[false,"form"]],target:"current"});}
  get filteredModels(){return this.state.models.filter(m=>m.make_id?.[0]===Number(this.state.car.make_id));}
 }

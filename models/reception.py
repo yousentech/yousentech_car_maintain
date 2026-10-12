@@ -43,7 +43,15 @@ class WorkshopVehicle(models.Model):
                 vals['plate'] = re.sub(r'[\s\-]+','',vals['plate']).upper()
             if vals.get('vin'):
                 vals['vin'] = vals['vin'].strip().upper()
+            else:
+                vals['vin'] = False
         return super().create(vals_list)
+    def write(self, vals):
+        if 'plate' in vals and vals['plate']:
+            vals['plate'] = re.sub(r'[\s\-]+','',vals['plate']).upper()
+        if 'vin' in vals:
+            vals['vin'] = vals['vin'].strip().upper() if vals['vin'] else False
+        return super().write(vals)
     @api.constrains('model_id','make_id','odometer','vin','year','plate')
     def _check_vehicle(self):
         for rec in self:
