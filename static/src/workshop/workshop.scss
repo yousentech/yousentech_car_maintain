@@ -64,3 +64,31 @@
 .ycm-index-order{border:1px solid var(--ycm-border);box-shadow:0 3px 14px #1a304008;padding:20px}
 .ycm-empty-index{padding:50px 20px;color:#7c899c;background:#fff;border:1px dashed var(--ycm-border);border-radius:12px;grid-column:1/-1;text-align:center}
 @media(max-width:760px){.ycm-layout-wizard .ycm-main{padding:12px}.ycm-top{padding:12px 16px}.ycm-top-title h2{font-size:19px}.ycm-intake-panel .ycm-fields{grid-template-columns:1fr}.ycm-intake-actions{gap:12px}.ycm-order-index{padding:20px 12px}}
+
+/* Workshop reference layout: inspection and catalog, scoped to OWL V2 */
+.ycm-v2 .ycm-inspection-stage{min-width:0}
+.ycm-v2 .ycm-inspection-header{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:20px 24px}
+.ycm-v2 .ycm-inspection-header h4{font-size:20px;font-weight:750;margin:0 0 7px}
+.ycm-v2 .ycm-inspection-header p{margin:0}
+.ycm-v2 .ycm-inspection-meta{display:flex;gap:20px;flex-wrap:wrap;font-size:13px}
+.ycm-v2 .ycm-inspection-meta span{display:flex;flex-direction:column;gap:6px}
+.ycm-v2 .ycm-inspection-columns{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,1fr);gap:16px;align-items:start}
+.ycm-v2 .ycm-inspection-columns .ycm-panel{padding:18px;margin-bottom:14px}
+.ycm-v2 .ycm-inspection-columns .ycm-subheading{margin:0 0 16px}
+.ycm-v2 .ycm-inspection-table{margin:0;min-width:530px}
+.ycm-v2 .ycm-inspection-table th,.ycm-v2 .ycm-inspection-table td{vertical-align:middle;padding:8px}
+.ycm-v2 .ycm-inspection-table td:first-child{min-width:140px}
+.ycm-v2 .ycm-inspection-table .form-control,.ycm-v2 .ycm-inspection-table .form-select{min-width:135px;font-size:12px}
+.ycm-v2 .ycm-exterior-notes{min-height:235px}
+.ycm-v2 .ycm-inspection-right textarea{min-height:105px}
+.ycm-v2 .ycm-inspection-save{display:flex;justify-content:flex-end;gap:10px;margin-bottom:18px}
+.ycm-v2 .ycm-service-stage{display:grid;grid-template-columns:minmax(245px,29%) minmax(0,1fr);gap:16px;align-items:start}
+.ycm-v2 .ycm-service-catalog{border:1px solid var(--ycm-border);border-radius:12px;padding:15px;min-width:0}
+.ycm-v2 .ycm-service-selected{min-width:0}
+.ycm-v2 .ycm-service-catalog .ycm-catalog-controls{align-items:stretch;flex-direction:column}
+.ycm-v2 .ycm-service-catalog .ycm-catalog-controls input{max-width:none}
+.ycm-v2 .ycm-service-catalog .ycm-catalog-list{max-height:600px}
+.ycm-v2 .ycm-service-selected .ycm-subheading{margin:0 0 12px}
+.ycm-v2 .ycm-service-selected .ycm-table{margin-bottom:22px}
+@media(max-width:1150px){.ycm-v2 .ycm-inspection-columns,.ycm-v2 .ycm-service-stage{grid-template-columns:1fr}}
+@media(max-width:760px){.ycm-v2 .ycm-inspection-header{flex-direction:column;align-items:stretch}.ycm-v2 .ycm-inspection-save{flex-wrap:wrap}}

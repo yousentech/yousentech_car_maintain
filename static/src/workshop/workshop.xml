@@ -33,39 +33,54 @@
                 <div class="ycm-info-grid"><div><span>العميل</span><strong t-esc="ui.detail.order.partner_id?.[1]"/></div><div><span>السيارة</span><strong t-esc="ui.detail.order.vehicle_id?.[1]"/></div><div><span>قراءة العداد</span><strong t-esc="ui.detail.order.odometer_in"/></div><div><span>موعد التسليم المتوقع</span><strong t-esc="ui.detail.order.promised_at || 'غير محدد'"/></div></div>
                 <label class="ycm-field-label">شكوى العميل</label><div class="ycm-readonly" t-esc="ui.detail.order.complaint || 'لم تُسجل شكوى'"/>
               </section>
-              <section t-if="ui.step === 2" class="ycm-panel">
-                <div class="ycm-section-title"><h4>الفحص العام للسيارة</h4><p>توثيق تشخيص الفني قبل إعداد الخدمات والقطع.</p></div>
-                <label class="ycm-field-label" for="ycm-diagnosis">ملاحظات الفحص والتشخيص</label>
-                <textarea id="ycm-diagnosis" class="form-control ycm-notes" t-model="ui.diagnosisDraft" t-att-readonly="!canEditLines" placeholder="اكتب نتائج الفحص والملاحظات الفنية..."/>
-                <div class="ycm-panel-actions"><button class="btn btn-primary" t-att-disabled="!canEditLines || ui.busy" t-on-click="saveDiagnosis">حفظ الفحص</button></div>
-                <div t-if="ui.inspection" class="mt-3">
-  <h5 class="ycm-subheading">فحص المكونات الرئيسية</h5>
-  <div class="table-responsive"><table class="table ycm-table"><thead><tr><th>المكون</th><th>الحالة</th><th>ملاحظات</th></tr></thead><tbody>
-    <t t-foreach="inspectionComponents" t-as="item" t-key="item.key"><tr>
-      <td t-esc="item.name"/>
-      <td><select class="form-select" t-att-disabled="!canEditLines" t-att-value="ui.inspection.components[item.key].condition" t-on-change="(ev) => this.setInspectionCondition(item.key, ev)">
-        <option value="good">جيد</option><option value="inspect">يحتاج فحص</option><option value="repair">يحتاج صيانة</option><option value="damaged">تالف</option>
-      </select></td>
-      <td><input class="form-control" maxlength="500" t-att-disabled="!canEditLines" t-att-value="ui.inspection.components[item.key].notes" t-on-input="(ev) => this.setInspectionNote(item.key, ev)"/></td>
-    </tr></t>
-  </tbody></table></div>
-  <label class="ycm-field-label">ملاحظات الهيكل الخارجي</label>
-  <textarea class="form-control" t-model="ui.inspection.exterior_notes" t-att-readonly="!canEditLines"/>
-  <label class="ycm-field-label mt-2">ملاحظات إضافية</label>
-  <textarea class="form-control" t-model="ui.inspection.additional_notes" t-att-readonly="!canEditLines"/>
-  <div class="ycm-panel-actions"><button class="btn btn-primary" t-att-disabled="!canEditLines || ui.inspectionBusy" t-on-click="saveInspection">حفظ نتائج فحص المكونات</button></div>
-</div>
+              <section t-if="ui.step === 2" class="ycm-inspection-stage">
+                <div class="ycm-inspection-header ycm-panel">
+                  <div><h4>▣ الفحص العام للسيارة</h4><p class="ycm-muted">سجل حالة السيارة وملاحظات الفحص الأولي قبل تحديد الخدمات والقطع.</p></div>
+                  <div class="ycm-inspection-meta"><span>الفني المسؤول: <strong t-esc="ui.inspection?.inspector_id || 'لم يحدد'"/></span><span>وقت الفحص: <strong t-esc="ui.inspection?.inspected_at || 'لم يسجل'"/></span></div>
+                </div>
+                <div t-if="ui.inspection" class="ycm-inspection-columns">
+                  <div class="ycm-inspection-left">
+                    <div class="ycm-panel"><h5 class="ycm-subheading">فحص المكونات الرئيسية</h5>
+                      <div class="table-responsive"><table class="table ycm-table ycm-inspection-table"><thead><tr><th>المكونات</th><th>الحالة</th><th>ملاحظات</th></tr></thead><tbody>
+                        <t t-foreach="inspectionComponents" t-as="item" t-key="item.key"><tr>
+                          <td><strong t-esc="item.name"/></td>
+                          <td><select class="form-select" t-att-disabled="!canEditLines" t-att-value="ui.inspection.components[item.key].condition" t-on-change="(ev) => this.setInspectionCondition(item.key, ev)">
+                            <option value="good">🟢 جيد</option><option value="inspect">🟠 يحتاج فحص</option><option value="repair">🔴 يحتاج صيانة</option><option value="damaged">🔴 تالف</option>
+                          </select></td>
+                          <td><input class="form-control" placeholder="ملاحظة..." maxlength="500" t-att-disabled="!canEditLines" t-att-value="ui.inspection.components[item.key].notes" t-on-input="(ev) => this.setInspectionNote(item.key, ev)"/></td>
+                        </tr></t>
+                      </tbody></table></div>
+                    </div>
+                    <div class="ycm-panel"><h5 class="ycm-subheading">مستوى السوائل</h5><p class="ycm-muted">تُوثّق حالة الزيوت والسوائل في صف المكونات أعلاه لحين إضافة نموذج قياس مستقل.</p></div>
+                  </div>
+                  <div class="ycm-inspection-right">
+                    <div class="ycm-panel"><h5 class="ycm-subheading">حالة الهيكل الخارجي</h5>
+                      <p class="ycm-muted">فحص الهيكل وتسجيل الأضرار الظاهرة</p>
+                      <label class="ycm-field-label">ملاحظات الهيكل الخارجي</label>
+                      <textarea class="form-control ycm-exterior-notes" placeholder="اكتب ملاحظات الهيكل هنا..." t-model="ui.inspection.exterior_notes" t-att-readonly="!canEditLines"/>
+                    </div>
+                    <div class="ycm-panel"><h5 class="ycm-subheading">ملاحظات إضافية</h5><textarea class="form-control" t-model="ui.inspection.additional_notes" t-att-readonly="!canEditLines" placeholder="أي ملاحظات إضافية عن حالة السيارة..."/></div>
+                    <div class="ycm-panel"><h5 class="ycm-subheading">ملاحظات الفحص والتشخيص</h5>
+                      <textarea class="form-control" t-model="ui.diagnosisDraft" t-att-readonly="!canEditLines" placeholder="اكتب نتائج التشخيص الفني..."/>
+                    </div>
+                  </div>
+                </div>
+                <div class="ycm-inspection-save">
+                  <button class="btn btn-outline-primary" t-att-disabled="!canEditLines || ui.busy" t-on-click="saveDiagnosis">حفظ التشخيص</button>
+                  <button class="btn btn-primary" t-att-disabled="!canEditLines || ui.inspectionBusy" t-on-click="saveInspection">حفظ نتائج الفحص</button>
+                </div>
               </section>
               <section t-if="ui.step === 3" class="ycm-panel">
                 <div class="ycm-section-title"><h4>الخدمات وقطع الغيار</h4><p>اختر الأصناف من كتالوج Odoo، وتُحسب الضرائب من إعدادات الصنف.</p></div>
-                <div class="ycm-catalog-controls">
+                <div class="ycm-service-stage"><div class="ycm-service-catalog"><h5 class="ycm-subheading">قائمة الخدمات والقطع</h5><div class="ycm-catalog-controls">
                   <div class="ycm-tabs"><button t-att-class="ui.kind === 'service' ? 'active' : ''" t-on-click="() => { this.ui.kind = 'service'; this.ui.catalogSearch = ''; }">الخدمات</button><button t-att-class="ui.kind === 'part' ? 'active' : ''" t-on-click="() => { this.ui.kind = 'part'; this.ui.catalogSearch = ''; }">قطع الغيار</button></div>
                   <input class="form-control" placeholder="بحث عن صنف..." t-model="ui.catalogSearch"/>
                 </div>
                 <div class="ycm-catalog-list"><t t-foreach="matchingProducts" t-as="p" t-key="p.id"><div class="ycm-catalog-item"><div><strong t-esc="p.display_name"/><small><t t-esc="p.list_price"/> <t t-esc="ui.currency"/></small></div><button class="btn btn-outline-primary btn-sm" t-att-disabled="!canEditLines || ui.busy" t-on-click="() => this.addCatalogProduct(p.id, ui.kind)">إضافة +</button></div></t><p t-if="!matchingProducts.length" class="ycm-helper">لا توجد أصناف مطابقة.</p></div>
-                <h5 class="ycm-subheading">الخدمات المختارة</h5><div class="table-responsive"><table class="table ycm-table"><thead><tr><th>الخدمة</th><th>الكمية</th><th>قبل الضريبة</th><th>الضريبة</th><th>الإجمالي</th></tr></thead><tbody><t t-foreach="serviceLines" t-as="l" t-key="l.id"><tr><td t-esc="l.name"/><td t-esc="l.qty"/><td t-esc="l.price_subtotal"/><td t-esc="l.price_tax"/><td t-esc="l.price_total"/></tr></t><tr t-if="!serviceLines.length"><td colspan="5" class="ycm-muted">لا توجد خدمات مضافة.</td></tr></tbody></table></div>
+                </div><div class="ycm-service-selected">                <h5 class="ycm-subheading">الخدمات المختارة</h5><div class="table-responsive"><table class="table ycm-table"><thead><tr><th>الخدمة</th><th>الكمية</th><th>قبل الضريبة</th><th>الضريبة</th><th>الإجمالي</th></tr></thead><tbody><t t-foreach="serviceLines" t-as="l" t-key="l.id"><tr><td t-esc="l.name"/><td t-esc="l.qty"/><td t-esc="l.price_subtotal"/><td t-esc="l.price_tax"/><td t-esc="l.price_total"/></tr></t><tr t-if="!serviceLines.length"><td colspan="5" class="ycm-muted">لا توجد خدمات مضافة.</td></tr></tbody></table></div>
                 <h5 class="ycm-subheading">قطع الغيار المختارة</h5><div class="table-responsive"><table class="table ycm-table"><thead><tr><th>القطعة</th><th>الكمية</th><th>قبل الضريبة</th><th>الضريبة</th><th>الإجمالي</th></tr></thead><tbody><t t-foreach="partLines" t-as="l" t-key="l.id"><tr><td t-esc="l.name"/><td t-esc="l.qty"/><td t-esc="l.price_subtotal"/><td t-esc="l.price_tax"/><td t-esc="l.price_total"/></tr></t><tr t-if="!partLines.length"><td colspan="5" class="ycm-muted">لا توجد قطع غيار مضافة.</td></tr></tbody></table></div>
               </section>
+              </div>
               <section t-if="ui.step === 4" class="ycm-panel">
                 <div class="ycm-section-title"><h4>اعتماد العميل</h4><p>مراجعة تقدير الخدمات وقطع الغيار قبل بدء التنفيذ.</p></div>
                 <div class="ycm-info-grid"><div><span>عدد الخدمات</span><strong t-esc="serviceLines.length"/></div><div><span>عدد القطع</span><strong t-esc="partLines.length"/></div><div><span>الإجمالي</span><strong><t t-esc="amount"/> <t t-esc="ui.currency"/></strong></div></div>
