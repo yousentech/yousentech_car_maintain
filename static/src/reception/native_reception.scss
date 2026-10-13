@@ -398,3 +398,29 @@
 .yt-native-reception.yt-inspection-form .yt-inspection-category-picker .o_tag{
   margin:0!important;max-width:100%;border-radius:16px;
 }
+
+/* Compact inline label and full-width selector; direction inherited from Odoo. */
+.yt-native-reception.yt-inspection-form .yt-rec-native-card .yt-inspection-category-picker{
+  padding:8px 12px!important;margin:7px 12px 9px!important;gap:3px!important;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row{
+  display:grid;grid-template-columns:145px minmax(0,1fr);align-items:center;
+  column-gap:12px;min-width:0;width:100%;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row .yt-inspection-picker-heading{
+  margin:0;white-space:nowrap;font-size:13px;line-height:1.3;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row > .o_field_widget{
+  min-width:0!important;width:100%!important;max-width:100%!important;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row .o_field_tags{
+  min-height:36px!important;padding:3px 8px!important;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-hint{
+  margin:0;line-height:1.3;font-size:11px;
+}
+@media(max-width:640px){
+ .yt-native-reception.yt-inspection-form .yt-inspection-picker-row{
+   grid-template-columns:1fr;row-gap:6px;
+ }
+}

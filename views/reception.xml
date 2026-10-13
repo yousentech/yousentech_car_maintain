@@ -227,8 +227,10 @@
             <div class="yt-rec-native-card yt-rec-card-vehicle">
        <h3><i class="fa fa-check-square-o" aria-hidden="true"/> فحص مكونات السيارة</h3>
        <div class="yt-inspection-category-picker">
-        <div class="yt-inspection-picker-heading"><i class="fa fa-tags" title="تصنيفات الفحص"/> <span>تصنيفات الفحص</span></div>
-        <field name="inspection_category_ids" nolabel="1" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}" readonly="inspection_state == 'done'"/>
+        <div class="yt-inspection-picker-row">
+         <div class="yt-inspection-picker-heading"><i class="fa fa-tags" title="تصنيفات الفحص"/> <span>تصنيفات الفحص</span></div>
+         <field name="inspection_category_ids" nolabel="1" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}" readonly="inspection_state == 'done'"/>
+        </div>
         <div class="yt-inspection-picker-hint"><i class="fa fa-info-circle" title="معلومة"/> اختر تصنيفاً أو أكثر؛ تُعرض مكوناتها تلقائياً وتُحفظ نتائج المكونات المشتركة.</div>
        </div>
        <div class="yt-inspection-lines-heading"><i class="fa fa-list-alt" title="مكونات الفحص"/> مكونات الفحص</div>
