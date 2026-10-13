@@ -706,3 +706,10 @@
 .yt-workshop-finance-form .yt-wo-finance-fold>summary .yt-wo-finance-chevron{margin-right:auto;transition:transform .18s ease}
 .yt-workshop-finance-form .yt-wo-finance-fold[open]>summary .yt-wo-finance-chevron{transform:rotate(180deg)}
 .yt-workshop-finance-form .yt-wo-finance-fold[open]>summary{border-bottom:1px solid #e2eaf4}
+
+
+/* Entire finance card folds, while retaining nested invoice section. */
+.yt-workshop-finance-form .yt-wo-finance-collapsible>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;user-select:none}
+.yt-workshop-finance-form .yt-wo-finance-collapsible>summary::-webkit-details-marker{display:none}
+.yt-workshop-finance-form .yt-wo-finance-main-chevron{margin-right:auto;transition:transform .18s ease}
+.yt-workshop-finance-form .yt-wo-finance-collapsible[open] .yt-wo-finance-main-chevron{transform:rotate(180deg)}
