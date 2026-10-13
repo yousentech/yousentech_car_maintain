@@ -145,6 +145,14 @@ class WorkshopSale(models.Model):
             'context': {'default_order_id': self.ensure_one().id},
         }
 
+    def action_reopen_workshop(self):
+        for order in self:
+            if order.state != 'cancelled':
+                raise UserError(_('إعادة الفتح متاحة لأوامر العمل الملغاة فقط.'))
+            order.write({'state': 'draft'})
+            order.message_post(body=_('تمت إعادة فتح أمر العمل مع الاحتفاظ بالمستندات المالية السابقة.'))
+        return True
+
     def action_create_workshop_credit_note(self):
         self.ensure_one()
         invoices = self._workshop_financial_documents().filtered(
