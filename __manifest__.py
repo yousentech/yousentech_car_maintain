@@ -3,7 +3,7 @@
  'version': '17.0.4.3.0',
  'category': 'Services/Automotive',
  'license': 'LGPL-3',
- 'depends': ['base', 'web', 'mail', 'hr', 'product', 'sale_management', 'sale_stock', 'account'],
+ 'depends': ['base', 'web', 'mail', 'hr', 'product', 'sale_management', 'sale_stock', 'account', 'yousentech_inventory_default', 'yousentech_inventory_minus_quantity'],
  'data': [
   'security/ir.model.access.csv',
   'security/record_rules.xml',

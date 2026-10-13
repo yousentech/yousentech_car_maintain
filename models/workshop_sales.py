@@ -137,21 +137,56 @@ class WorkshopSale(models.Model):
             allowed_company_ids=[self.company_id.id],
         ).free_qty
 
+    @api.model
+    def _workshop_default_warehouse(self, company):
+        config = self.env['res.user.inventory.config'].search([
+            ('user_id', '=', self.env.uid), ('company_id', '=', company.id),
+            ('operation_type', '=', 'outgoing')], limit=1)
+        warehouse = config.default_warehouse_id or company.default_warehouse_id
+        if not warehouse or warehouse.company_id != company:
+            raise UserError(_('حدد مستودع المبيعات الافتراضي للمستخدم أو الشركة أولاً.'))
+        if config.allowed_warehouse_ids and warehouse not in config.allowed_warehouse_ids:
+            raise UserError(_('المستودع الافتراضي غير مسموح للمستخدم.'))
+        return warehouse
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('location_id'):
+                company = self.env['res.company'].browse(vals.get('company_id') or self.env.company.id)
+                vals['location_id'] = self._workshop_default_warehouse(company).lot_stock_id.id
+        return super().create(vals_list)
+
+    @api.onchange('company_id')
+    def _onchange_workshop_company_location(self):
+        for order in self:
+            if order.company_id:
+                order.location_id = order._workshop_default_warehouse(order.company_id).lot_stock_id
+
     def _check_part_availability(self):
         self.ensure_one()
-        parts = self.sale_line_ids.filtered(lambda l: l.product_id.type == 'product')
-        if parts and not self.location_id:
-            raise UserError(_('حدد موقع قطع الغيار قبل إنشاء أمر البيع.'))
+        warehouse = self._get_workshop_warehouse()
+        location = self.location_id or warehouse.lot_stock_id
+        if location != warehouse.lot_stock_id:
+            raise UserError(_('موقع قطع الغيار يجب أن يطابق موقع صرف المستودع المعتمد.'))
+        user = self.env.user
+        policy = user.has_group('yousentech_inventory_minus_quantity.group_prevent_selling_negative_value')
+        exempt = user.override_negative_quantities and user.negative_quantity_type == 'all_orders'
+        if not policy or exempt:
+            return
         needed = {}
-        for line in parts:
+        for line in self.sale_line_ids:
             product = line.product_id
-            qty = line.product_id.uom_id._compute_quantity(line.product_uom_qty, product.uom_id)
+            if product.detailed_type != 'product' or product.categ_id.temp_categ_flag:
+                continue
+            qty = product.uom_id._compute_quantity(line.product_uom_qty, product.uom_id)
             needed[product] = needed.get(product, 0.0) + qty
         for product, qty in needed.items():
-            free = self._available_at_workshop_location(product)
-            if float_compare(free, qty, precision_rounding=product.uom_id.rounding) < 0:
-                raise UserError(_('الكمية المتاحة من %s في الموقع المحدد هي %s، والمطلوب %s.') % (
-                    product.display_name, free, qty))
+            quants = self.env['stock.quant'].search([
+                ('product_id', '=', product.id), ('location_id', '=', location.id),
+                ('warehouse_id', '=', warehouse.id)])
+            reserved = sum(quants.mapped('reserved_quantity'))
+            product.validate_product_quentity(qty, reserved, warehouse.id, location.ids)
 
     def action_create_sale_and_invoice(self):
         self.ensure_one()
@@ -165,8 +200,10 @@ class WorkshopSale(models.Model):
             return self.action_open_sale_order()
         if self.company_id not in self.env.companies:
             raise UserError(_('ليس لديك صلاحية على شركة أمر العمل.'))
-        self._check_part_availability()
         warehouse = self._get_workshop_warehouse()
+        if not self.location_id:
+            self.location_id = warehouse.lot_stock_id
+        self._check_part_availability()
         # Sale confirmation sources inventory from the warehouse stock location.
         # Do not display stock from a different location as if it were saleable.
         if self.sale_line_ids.filtered(lambda l: l.product_id.type == 'product') and self.location_id != warehouse.lot_stock_id:
@@ -213,16 +250,7 @@ class WorkshopSale(models.Model):
 
     def _get_workshop_warehouse(self):
         self.ensure_one()
-        warehouse = self.env['stock.warehouse'].search([
-            ('company_id', '=', self.company_id.id),
-            ('view_location_id', 'parent_of', self.location_id.id),
-        ], limit=1) if self.location_id else self.env['stock.warehouse']
-        if not warehouse:
-            warehouse = self.env['stock.warehouse'].search([
-                ('company_id', '=', self.company_id.id)], limit=1)
-        if not warehouse:
-            raise UserError(_('لا يوجد مستودع لشركة أمر العمل.'))
-        return warehouse
+        return self._workshop_default_warehouse(self.company_id)
 
     def action_open_sale_order(self):
         self.ensure_one()
