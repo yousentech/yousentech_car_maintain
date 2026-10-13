@@ -185,6 +185,8 @@ class WorkshopSale(models.Model):
         self.ensure_one()
         if self.state == 'cancelled':
             raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
+        if not self.workshop_approved:
+            raise UserError(_('يجب اعتماد أمر العمل قبل تسجيل أي دفعة.'))
         remaining = self._workshop_remaining_to_collect()
         if self.currency_id.is_zero(remaining):
             raise UserError(_('لا يوجد مبلغ متبقٍ للتحصيل لأمر العمل.'))
@@ -514,7 +516,9 @@ class WorkshopSale(models.Model):
             raise UserError(_('أضف الخدمات أو قطع الغيار أولاً.'))
         if self.sale_order_id:
             self._reconcile_workshop_advances()
-        return self.action_open_sale_order()
+            return self.action_open_sale_order()
+        if not self.workshop_approved:
+            raise UserError(_('يجب اعتماد أمر العمل قبل إنشاء أمر البيع والفاتورة.'))
         if self.company_id not in self.env.companies:
             raise UserError(_('ليس لديك صلاحية على شركة أمر العمل.'))
         # Validate the user's configured sales journal before creating or confirming a sale order.
@@ -740,6 +744,8 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
         order = self.order_id
         if order.state == 'cancelled':
             raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
+        if not order.workshop_approved:
+            raise UserError(_('يجب اعتماد أمر العمل قبل تسجيل أي دفعة.'))
         if self.amount <= 0:
             raise ValidationError(_('مبلغ الدفعة يجب أن يكون أكبر من صفر.'))
         if self.currency_id.compare_amounts(self.amount, order._workshop_remaining_to_collect()) > 0:
