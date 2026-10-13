@@ -309,47 +309,47 @@ class WorkshopSale(models.Model):
             # from sale_line_ids only when they are not already represented.
             lines = order.service_line_ids | order.part_line_ids
             lines |= order.sale_line_ids.filtered(lambda line: line not in lines)
-            services = sum(
-                line.product_uom_qty * line.price_unit for line in lines
-                if line.product_id.type == 'service'
-            )
-            parts = sum(
-                line.product_uom_qty * line.price_unit for line in lines
-                if line.product_id.type in ('product', 'consu')
-            )
-            untaxed = sum(line.product_uom_qty * line.price_unit for line in lines)
+            settings = self.env['yt.workshop.finance.settings'].search(
+                [('company_id', '=', order.company_id.id)], limit=1)
+            entries = []
+            services = parts = gross_excluded = 0.0
+            for line in lines:
+                if not line.product_id or not line.product_uom_qty:
+                    continue
+                taxes = settings.tax_id if settings.tax_id else line.product_id.taxes_id.filtered(
+                    lambda tax: tax.company_id == order.company_id)
+                original = taxes.compute_all(
+                    line.price_unit, currency=order.currency_id,
+                    quantity=line.product_uom_qty, product=line.product_id,
+                    partner=order.partner_id) if taxes else {
+                        'total_excluded': line.price_unit * line.product_uom_qty,
+                        'total_included': line.price_unit * line.product_uom_qty}
+                base = original['total_excluded']
+                gross_excluded += base
+                if line.product_id.type == 'service':
+                    services += base
+                elif line.product_id.type in ('product', 'consu'):
+                    parts += base
+                entries.append((line, taxes, base))
+            discount = min(gross_excluded, max(0.0,
+                gross_excluded * order.discount_value / 100.0
+                if order.discount_type == 'percent' else order.discount_value))
+            factor = (gross_excluded - discount) / gross_excluded if gross_excluded else 1.0
+            tax_total = 0.0
+            for line, taxes, base in entries:
+                if not taxes:
+                    continue
+                result = taxes.compute_all(
+                    line.price_unit * factor, currency=order.currency_id,
+                    quantity=line.product_uom_qty, product=line.product_id,
+                    partner=order.partner_id)
+                tax_total += result['total_included'] - result['total_excluded']
             order.service_amount = services
             order.parts_amount = parts
-            discount = min(
-                untaxed,
-                untaxed * order.discount_value / 100.0
-                if order.discount_type == 'percent' else order.discount_value,
-            )
-            settings = self.env['yt.workshop.finance.settings'].search(
-                [('company_id', '=', order.company_id.id)], limit=1,
-            )
-            tax = 0.0
-            if untaxed:
-                for line in lines:
-                    if not line.product_id or not line.product_uom_qty:
-                        continue
-                    taxes = settings.tax_id if settings.tax_id else line.product_id.taxes_id.filtered(
-                        lambda t: t.company_id == order.company_id
-                    )
-                    if taxes:
-                        base = (line.product_uom_qty * line.price_unit) * (untaxed - discount) / untaxed
-                        result = taxes.compute_all(
-                            base / line.product_uom_qty,
-                            currency=order.currency_id,
-                            quantity=line.product_uom_qty,
-                            product=line.product_id,
-                            partner=order.partner_id,
-                        )
-                        tax += result['total_included'] - result['total_excluded']
-            order.amount_untaxed = untaxed
+            order.amount_untaxed = gross_excluded - discount
             order.discount_amount = discount
-            order.amount_tax = tax
-            order.amount_total = untaxed - discount + tax
+            order.amount_tax = tax_total
+            order.amount_total = order.amount_untaxed + tax_total
 
     @api.onchange('service_line_ids', 'part_line_ids', 'sale_line_ids', 'discount_type', 'discount_value')
     def _onchange_workshop_totals(self):
@@ -511,20 +511,22 @@ class WorkshopSale(models.Model):
         if self.sale_line_ids.filtered(lambda l: l.product_id.type == 'product') and self.location_id != self._workshop_source_location(warehouse):
             raise UserError(_('موقع قطع الغيار (%s) لا يطابق موقع الصرف الأساسي للمستودع (%s). اختر موقع الصرف الصحيح قبل إنشاء أمر البيع، أو اضبط مسار المخزون للمستودع.') % (self.location_id.display_name, self._workshop_source_location(warehouse).display_name))
         lines = []
-        untaxed = sum(self.sale_line_ids.mapped('line_subtotal'))
-        discount = min(untaxed, untaxed * self.discount_value / 100.0 if self.discount_type == 'percent' else self.discount_value)
+        self._compute_workshop_amounts()
+        settings = self.env['yt.workshop.finance.settings'].search(
+            [('company_id', '=', self.company_id.id)], limit=1)
+        gross_excluded = self.amount_untaxed + self.discount_amount
+        factor = self.amount_untaxed / gross_excluded if gross_excluded else 1.0
         for line in self.sale_line_ids:
             product = line.product_id.with_company(self.company_id)
             if not product.sale_ok:
                 raise UserError(_('الصنف %s غير متاح للبيع.') % product.display_name)
-            settings = self.env['yt.workshop.finance.settings'].search([('company_id', '=', self.company_id.id)], limit=1)
             taxes = settings.tax_id if settings.tax_id else product.taxes_id.filtered(lambda t: t.company_id == self.company_id)
             lines.append((0, 0, {
                 'product_id': product.id,
                 'name': line.name,
                 'product_uom_qty': line.product_uom_qty,
                 'product_uom': product.uom_id.id,
-                'price_unit': line.price_unit * (1 - discount / untaxed) if untaxed else line.price_unit,
+                'price_unit': line.price_unit * factor,
                 'tax_id': [(6, 0, taxes.ids)],
             }))
         so_vals = {
