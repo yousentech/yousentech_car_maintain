@@ -274,6 +274,7 @@ class WorkshopSale(models.Model):
     discount_value = fields.Float(string='قيمة الخصم', digits='Product Price')
     service_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     parts_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
+    amount_before_discount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     amount_untaxed = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     discount_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     amount_tax = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
@@ -339,6 +340,7 @@ class WorkshopSale(models.Model):
                 tax_total += result['total_included'] - result['total_excluded']
             order.service_amount = services
             order.parts_amount = parts
+            order.amount_before_discount = gross_excluded
             order.amount_untaxed = gross_excluded - discount
             order.discount_amount = discount
             order.amount_tax = tax_total
