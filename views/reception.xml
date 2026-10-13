@@ -184,6 +184,7 @@
   <field name="name">yt.reception.order.inspection.form</field><field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
    <form string="فحص السيارة" class="yt-native-reception yt-inspection-form">
+    <field name="company_id" invisible="1"/>
     <header>
      <button name="action_back_to_reception" type="object" string="السابق: الاستقبال" class="btn-secondary" icon="fa-arrow-right"/>
      <button name="action_load_inspection_components" type="object" string="إضافة المكونات المفعّلة" class="btn-secondary" invisible="inspection_state == 'done' or state != 'draft'"/>
