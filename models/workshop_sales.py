@@ -287,6 +287,8 @@ class WorkshopSale(models.Model):
     sale_order_id = fields.Many2one('sale.order', string='أمر البيع', readonly=True, copy=False)
     invoice_ids = fields.Many2many('account.move', string='الفواتير', compute='_compute_invoices')
     invoice_count = fields.Integer(compute='_compute_invoices')
+    refund_ids = fields.Many2many('account.move', string='المرتجعات', compute='_compute_invoices')
+    refund_count = fields.Integer(compute='_compute_invoices')
     currency_id = fields.Many2one(related='company_id.currency_id', readonly=True)
     discount_type = fields.Selection([('fixed', 'مبلغ ثابت'), ('percent', 'نسبة مئوية')], default='fixed', string='نوع الخصم')
     discount_value = fields.Float(string='قيمة الخصم', digits='Product Price')
@@ -378,8 +380,12 @@ class WorkshopSale(models.Model):
     def _compute_invoices(self):
         for order in self:
             documents = order._workshop_financial_documents()
-            order.invoice_ids = documents
-            order.invoice_count = len(documents)
+            invoices = documents.filtered(lambda move: move.move_type == 'out_invoice')
+            refunds = documents.filtered(lambda move: move.move_type == 'out_refund')
+            order.invoice_ids = invoices
+            order.invoice_count = len(invoices)
+            order.refund_ids = refunds
+            order.refund_count = len(refunds)
 
     @api.constrains('location_id', 'company_id')
     def _check_stock_location_company(self):
@@ -601,9 +607,20 @@ class WorkshopSale(models.Model):
 
     def action_open_workshop_invoices(self):
         self.ensure_one()
-        return {'type': 'ir.actions.act_window', 'name': _('الفواتير والمرتجعات لأمر العمل'),
+        invoices = self._workshop_financial_documents().filtered(
+            lambda move: move.move_type == 'out_invoice')
+        return {'type': 'ir.actions.act_window', 'name': _('فواتير أمر العمل'),
                 'res_model': 'account.move', 'view_mode': 'tree,form',
-                'domain': [('id', 'in', self.invoice_ids.ids)],
+                'domain': [('id', 'in', invoices.ids)],
+                'context': {'create': False}}
+
+    def action_open_workshop_refunds(self):
+        self.ensure_one()
+        refunds = self._workshop_financial_documents().filtered(
+            lambda move: move.move_type == 'out_refund')
+        return {'type': 'ir.actions.act_window', 'name': _('مرتجعات أمر العمل'),
+                'res_model': 'account.move', 'view_mode': 'tree,form',
+                'domain': [('id', 'in', refunds.ids)],
                 'context': {'create': False}}
 
     def action_open_workshop(self):
