@@ -231,6 +231,7 @@
    <form string="تسجيل دفعة مقدمة" create="false" class="yt-workshop-advance-wizard">
     <field name="company_id" invisible="1"/>
     <field name="currency_id" invisible="1"/>
+    <field name="allowed_journal_ids" invisible="1"/>
     <field name="available_payment_method_line_ids" invisible="1"/>
     <div class="yt-advance-header">
      <div class="yt-advance-header-icon"><i class="fa fa-money"/></div>
