@@ -55,6 +55,5 @@
 <label>قراءة العداد <input type="number" min="0" t-att-value="state.car.odometer" t-on-input="ev=>carField('odometer',ev)"/></label>
 </div><footer><button class="rec-btn primary" t-att-disabled="state.busy" t-on-click="submitCar">حفظ السيارة</button><button class="rec-btn secondary" t-on-click="()=>state.showCar=false">إلغاء</button></footer></div></div>
 </div>
-</div>
 </t>
 </templates>
