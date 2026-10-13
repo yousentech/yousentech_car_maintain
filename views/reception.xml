@@ -70,7 +70,6 @@
           <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1"/></div>
           <div class="yt-rec-field-row"><label for="odometer_out" string="عداد الخروج"/><field name="odometer_out" nolabel="1"/></div>
          </div>
-         <div class="yt-rec-field-row yt-rec-warranty-row"><label for="warranty" string="إضافة ضمان"/><field name="warranty" nolabel="1"/></div>
         </div>
        </div>
       </div>
