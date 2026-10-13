@@ -632,16 +632,20 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
     memo = fields.Char(string='البيان')
 
     @api.model
+    @api.model
     def default_get(self, fields_list):
         values = super().default_get(fields_list)
         order_id = values.get('order_id') or self.env.context.get('default_order_id')
-        if order_id and 'journal_id' in fields_list:
+        if order_id:
             order = self.env['yt.reception.order'].browse(order_id).exists()
             if order:
-                wizard = self.new({'order_id': order.id})
-                default_journal = wizard._customer_default_payment_journal()
-                if default_journal:
-                    values['journal_id'] = default_journal.id
+                if 'journal_id' in fields_list:
+                    wizard = self.new({'order_id': order.id})
+                    journal = wizard._customer_default_payment_journal()
+                    if journal:
+                        values['journal_id'] = journal.id
+                if 'amount' in fields_list:
+                    values['amount'] = order._workshop_remaining_to_collect()
         return values
 
     def _customer_payment_journals(self):
