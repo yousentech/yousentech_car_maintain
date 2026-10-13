@@ -9,6 +9,17 @@ export class ReceptionApp extends Component {
   this.orm = useService("orm");
   this.notification = useService("notification");
   this.action = useService("action");
+  // OWL template arrow callbacks call extracted methods without an implicit this.
+  // Bind every template-facing method once to retain component context.
+  for (const method of [
+   "toggleSection", "carField", "update", "addRow", "removeRow", "row",
+   "open", "createPartner", "openPartner", "createCar", "submitCar",
+   "addManufacturer", "addVehicleModel", "save", "newOrder",
+   "customerChange", "loadChoices", "call", "whatsapp",
+   "upload", "dropPhotos", "primaryPhoto", "delPhoto",
+  ]) {
+   this[method] = this[method].bind(this);
+  }
   this.state = useState({busy:false,partner:0,vehicle:0,customers:[],vehicles:[],makes:[],models:[],branches:[],advisors:[],orders:[],order:null,form:this.blank(),showCar:false,car:{},complaints:[],requests:[],expanded:{complaints:false,requests:false},photos:[],error:"",unsaved:false,previewPhoto:0});
   onWillStart(async()=>{await this.loadChoices();});
  }
