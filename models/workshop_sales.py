@@ -738,6 +738,7 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
         })
         payment.action_post()
         order.write({'advance_payment_ids': [(4, payment.id)]})
+        order._reconcile_workshop_advances()
         return {'type': 'ir.actions.act_window_close'}
 
 class WorkshopCancelWizard(models.TransientModel):
