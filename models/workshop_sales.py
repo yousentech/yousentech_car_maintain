@@ -9,6 +9,7 @@ class WorkshopSaleLine(models.Model):
     _order = 'sequence, id'
 
     sequence = fields.Integer(default=10)
+    inspection_category_id = fields.Many2one('yt.inspection.category', string='تصنيف الفحص', readonly=True, copy=False, ondelete='restrict')
     order_id = fields.Many2one('yt.reception.order', required=True, ondelete='cascade')
     company_id = fields.Many2one(related='order_id.company_id', store=True)
     product_id = fields.Many2one('product.product', required=True, domain="[('sale_ok','=',True)]")
@@ -47,6 +48,31 @@ class WorkshopSaleLine(models.Model):
 
 class WorkshopSale(models.Model):
     _inherit = 'yt.reception.order'
+
+    workshop_approved = fields.Boolean(string='أمر العمل معتمد', readonly=True, copy=False, tracking=True)
+
+    def action_approve_workshop(self):
+        for order in self:
+            if order.state == 'cancelled':
+                raise UserError(_('لا يمكن اعتماد أمر عمل ملغي.'))
+            if not order.sale_line_ids:
+                raise UserError(_('أضف خدمة أو قطعة غيار قبل الاعتماد.'))
+            order.workshop_approved = True
+        return True
+
+    def action_register_workshop_payment(self):
+        self.ensure_one()
+        invoices = self.invoice_ids.filtered(lambda move: move.state == 'posted' and move.amount_residual > 0)
+        if not invoices:
+            raise UserError(_('لا توجد فاتورة مرحلة ذات مبلغ مستحق لتسجيل دفعة.'))
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('تسجيل دفعة'),
+            'res_model': 'account.payment.register',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_model': 'account.move', 'active_ids': invoices.ids},
+        }
 
     location_id = fields.Many2one(
         'stock.location', string='موقع قطع الغيار',

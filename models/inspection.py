@@ -8,6 +8,7 @@ class InspectionCategory(models.Model):
     _order = 'sequence, id'
     name = fields.Char(required=True, translate=True)
     sequence = fields.Integer(default=10)
+    service_price = fields.Float(string='سعر خدمة الفحص', digits='Product Price', default=0.0)
     active = fields.Boolean(default=True)
     component_ids = fields.One2many('yt.inspection.component', 'category_id', string='مكونات التصنيف')
     service_product_id = fields.Many2one(
@@ -16,6 +17,12 @@ class InspectionCategory(models.Model):
         ondelete='restrict',
         help='الصنف الذي يمكن استخدامه لاحقاً في فاتورة خدمة الفحص.',
     )
+
+    @api.constrains('service_price')
+    def _check_service_price(self):
+        for category in self:
+            if category.service_price < 0:
+                raise ValidationError(_('سعر خدمة الفحص لا يمكن أن يكون سالباً.'))
 
     @api.constrains('service_product_id')
     def _check_service_product(self):
@@ -203,8 +210,33 @@ class ReceptionInspection(models.Model):
             unchecked = lines.filtered(lambda l: l.condition == 'not_checked' and l.required_at_inspection)
             if unchecked:
                 raise ValidationError(_('يجب فحص المكونات الإلزامية: %s') % ', '.join(unchecked.mapped('component_name')))
+            order._sync_inspection_services()
             order.inspection_state = 'done'
         return True
+
+    def _sync_inspection_services(self):
+        for order in self:
+            if order.sale_order_id:
+                raise UserError(_('لا يمكن تغيير خدمات الفحص بعد إنشاء أمر البيع.'))
+            for category in order.inspection_category_ids:
+                if not category.service_product_id:
+                    category.action_create_service_product()
+                product = category.service_product_id
+                existing = order.sale_line_ids.filtered(lambda line: line.inspection_category_id == category)
+                values = {
+                    'product_id': product.id,
+                    'name': product.display_name,
+                    'product_uom_qty': 1.0,
+                    'price_unit': category.service_price,
+                }
+                if existing:
+                    existing[:1].write(values)
+                else:
+                    self.env['yt.reception.sale.line'].create({
+                        'order_id': order.id,
+                        'inspection_category_id': category.id,
+                        **values,
+                    })
 
     def action_reopen_inspection(self):
         if not self.env.user.has_group('base.group_system'):
