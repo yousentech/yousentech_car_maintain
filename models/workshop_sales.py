@@ -476,10 +476,14 @@ class WorkshopSale(models.Model):
             raise UserError(_('لا توجد يومية مبيعات متاحة لشركة أمر العمل.'))
         config = self.env.user.journals_ids.filtered(
             lambda row: row.company_id == self.company_id and row.journal_type == 'sale')
-        for candidate in (config.mapped('default_journal_id'), self.company_id.sale_journal_id):
-            journal = candidate.filtered(lambda j: j in allowed)
-            if journal:
-                return journal[:1]
+        user_default = config.mapped('default_journal_id')
+        if user_default:
+            if len(user_default) != 1 or user_default not in allowed:
+                raise UserError(_('يومية المبيعات الافتراضية للمستخدم غير مسموحة في شركة أمر العمل. صحح إعدادات المستخدم.'))
+            return user_default
+        company_default = self.company_id.sale_journal_id
+        if company_default and company_default in allowed:
+            return company_default
         if len(allowed) == 1:
             return allowed
         raise UserError(_('توجد عدة يوميات مبيعات مسموحة دون يومية افتراضية صالحة. اضبط الافتراضي للمستخدم أو الشركة أولاً.'))
@@ -496,6 +500,8 @@ class WorkshopSale(models.Model):
             return self.action_open_sale_order()
         if self.company_id not in self.env.companies:
             raise UserError(_('ليس لديك صلاحية على شركة أمر العمل.'))
+        # Validate the user's configured sales journal before creating or confirming a sale order.
+        sale_journal = self._workshop_default_sale_journal()
         warehouse = self._get_workshop_warehouse()
         if not self.location_id:
             self.location_id = self._workshop_source_location(warehouse)
@@ -546,7 +552,6 @@ class WorkshopSale(models.Model):
         invoiceable = so.order_line.filtered(lambda l: l.qty_to_invoice > 0)
         if len(invoiceable) != len(so.order_line.filtered(lambda l: not l.display_type)):
             raise UserError(_('لا يمكن إصدار الفاتورة تلقائياً: توجد قطع تتطلب إثبات التسليم أولاً حسب سياسة فوترة الصنف. لم يتم إنشاء أمر بيع أو فاتورة.'))
-        sale_journal = self._workshop_default_sale_journal()
         invoices = so.with_context(default_journal_id=sale_journal.id)._create_invoices()
         if not invoices:
             raise UserError(_('لم تتوفر بنود قابلة للفوترة.'))
