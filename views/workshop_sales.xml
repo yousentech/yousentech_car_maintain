@@ -53,6 +53,27 @@
         <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
         <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/></div><div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" placeholder="رقم الجوال" widget="phone"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
        </div>
+       <div class="yt-rec-native-card yt-rec-card-intake">
+        <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
+        <div class="yt-rec-intake-fields yt-rec-form-rows">
+         <div class="yt-rec-field-pair">
+          <div class="yt-rec-field-row"><label for="arrival_at" string="تاريخ ووقت الدخول"/><field name="arrival_at" nolabel="1"/></div>
+          <div class="yt-rec-field-row"><label for="intake_method" string="طريقة الاستلام"/><field name="intake_method" nolabel="1"/></div>
+         </div>
+         <div class="yt-rec-field-pair">
+          <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1"/></div>
+          <div class="yt-rec-field-row"><label for="odometer_out" string="عداد الخروج"/><field name="odometer_out" nolabel="1"/></div>
+         </div>
+        </div>
+       </div>
+
+     <div class="yt-rec-notes-full">
+       <div class="yt-rec-native-card yt-rec-customer-notes-card">
+        <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
+        <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
+       </div>
+     </div>
+
        </div>
        <div class="yt-rec-native-col yt-rec-col-vehicle">
        <div class="yt-rec-native-card yt-rec-card-vehicle">
@@ -121,27 +142,6 @@
       <details class="yt-rec-native-card yt-rec-other-card yt-wo-extra-bottom">
        <summary><i class="fa fa-sliders"/> بيانات أخرى <i class="fa fa-chevron-down yt-rec-toggle-icon"/></summary>
        <div class="yt-wo-extra-body">
-       <div class="yt-rec-native-card yt-rec-card-intake">
-        <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
-        <div class="yt-rec-intake-fields yt-rec-form-rows">
-         <div class="yt-rec-field-pair">
-          <div class="yt-rec-field-row"><label for="arrival_at" string="تاريخ ووقت الدخول"/><field name="arrival_at" nolabel="1"/></div>
-          <div class="yt-rec-field-row"><label for="intake_method" string="طريقة الاستلام"/><field name="intake_method" nolabel="1"/></div>
-         </div>
-         <div class="yt-rec-field-pair">
-          <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1"/></div>
-          <div class="yt-rec-field-row"><label for="odometer_out" string="عداد الخروج"/><field name="odometer_out" nolabel="1"/></div>
-         </div>
-        </div>
-       </div>
-
-     <div class="yt-rec-notes-full">
-       <div class="yt-rec-native-card yt-rec-customer-notes-card">
-        <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
-        <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
-       </div>
-     </div>
-
       <details class="yt-rec-native-card yt-rec-card-complaints"><summary><i class="fa fa-comments-o" aria-hidden="true"/> شكاوى العميل (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
        <field name="complaint_ids" nolabel="1">
         <tree editable="bottom"><field name="name" string="الشكوى" required="1"/></tree>
