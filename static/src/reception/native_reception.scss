@@ -623,3 +623,38 @@
 .yt-workshop-finance-form .yt-wo-vehicle .yt-wo-card-content{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:1000px){.yt-workshop-finance-form .yt-wo-bottom-cards{grid-template-columns:1fr}}
 @media(max-width:680px){.yt-workshop-finance-form .yt-wo-vehicle .yt-wo-card-content{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* Work orders: compact RTL financial Kanban cards. */
+.yt-wo-kanban.o_kanban_view .o_kanban_renderer{gap:18px;padding:22px;align-content:start}
+.yt-wo-kanban .o_kanban_record{width:340px;max-width:100%;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.yt-wo-kanban .yt-wo-k-card{overflow:hidden;border:1px solid #dbe4f4;border-radius:16px;background:#fff;box-shadow:0 5px 18px rgba(38,57,101,.08);transition:transform .16s ease,box-shadow .16s ease;cursor:pointer;text-align:right}
+.yt-wo-kanban .yt-wo-k-card:hover{transform:translateY(-3px);box-shadow:0 11px 26px rgba(38,57,101,.15)}
+.yt-wo-kanban .yt-wo-k-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 17px;background:linear-gradient(120deg,#eff5ff,#f7f3ff);border-bottom:1px solid #e5eaf7}
+.yt-wo-kanban .yt-wo-k-heading{display:flex;flex-direction:column;gap:3px;min-width:0}
+.yt-wo-kanban .yt-wo-k-eyebrow{font-size:11px;color:#687b9c;font-weight:650}
+.yt-wo-kanban .yt-wo-k-number{font-size:17px;font-weight:800;color:#243b72;overflow-wrap:anywhere}
+.yt-wo-kanban .yt-wo-k-status{font-size:11px;font-weight:800;padding:5px 11px;border-radius:100px;white-space:nowrap}
+.yt-wo-kanban .yt-wo-k-status-active{color:#187b56;background:#def8e9}
+.yt-wo-kanban .yt-wo-k-status-cancelled{color:#a23d43;background:#ffe8e8}
+.yt-wo-kanban .yt-wo-k-cancelled{opacity:.8}
+.yt-wo-kanban .yt-wo-k-content{padding:15px 17px 11px;display:flex;flex-direction:column;gap:11px}
+.yt-wo-kanban .yt-wo-k-detail{display:flex;align-items:center;gap:10px;min-width:0}
+.yt-wo-kanban .yt-wo-k-icon{width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;font-size:15px}
+.yt-wo-kanban .yt-wo-k-icon-customer{color:#3d62bc;background:#edf3ff}
+.yt-wo-kanban .yt-wo-k-icon-car{color:#8b5bbb;background:#f5efff}
+.yt-wo-kanban .yt-wo-k-detail-text{min-width:0;display:flex;flex-direction:column;gap:2px}
+.yt-wo-kanban .yt-wo-k-detail-text small,.yt-wo-kanban .yt-wo-k-totals small,.yt-wo-kanban .yt-wo-k-footer small{font-size:11px;color:#7584a0}
+.yt-wo-kanban .yt-wo-k-detail-text strong{font-size:13px;font-weight:750;color:#293b5d;overflow-wrap:anywhere}
+.yt-wo-kanban .yt-wo-k-subdetail{display:flex;flex-wrap:wrap;gap:7px 14px;color:#667895;font-size:11px;padding:4px 0}
+.yt-wo-kanban .yt-wo-k-subdetail i{color:#8297bd;margin-left:4px}
+.yt-wo-kanban .yt-wo-k-totals{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 17px 15px}
+.yt-wo-kanban .yt-wo-k-totals>div{display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:10px;background:#eef7ff}
+.yt-wo-kanban .yt-wo-k-totals>div+div{background:#f1f9f5}
+.yt-wo-kanban .yt-wo-k-totals strong{font-size:13px;color:#245b91;font-weight:800}
+.yt-wo-kanban .yt-wo-k-totals>div+div strong{color:#207d59}
+.yt-wo-kanban .yt-wo-k-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 17px;background:#f6f3ff;border-top:1px solid #eae3fb}
+.yt-wo-kanban .yt-wo-k-footer>div{display:flex;flex-direction:column;gap:2px}
+.yt-wo-kanban .yt-wo-k-footer strong{font-size:19px;font-weight:850;color:#593ab0}
+.yt-wo-kanban .yt-wo-k-open{font-size:12px;font-weight:750;color:#5940a6}
+@media(max-width:650px){.yt-wo-kanban.o_kanban_view .o_kanban_renderer{padding:12px;gap:12px}.yt-wo-kanban .o_kanban_record{width:100%}}
