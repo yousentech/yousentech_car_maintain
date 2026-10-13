@@ -39,9 +39,6 @@ class InspectionCategory(models.Model):
             category.service_product_id = product.id
         return True
 
-    def action_print_inspection(self):
-        return self.env.ref('yousentech_car_maintain.action_report_vehicle_inspection').report_action(self)
-
     component_count = fields.Integer(compute='_compute_component_count', string='عدد المكونات')
 
     def _compute_component_count(self):
@@ -115,6 +112,10 @@ class InspectionLine(models.Model):
 
 class ReceptionInspection(models.Model):
     _inherit = 'yt.reception.order'
+
+    def action_print_inspection(self):
+        return self.env.ref('yousentech_car_maintain.action_report_vehicle_inspection').report_action(self)
+
 
     inspection_state = fields.Selection([
         ('draft', 'مسودة'), ('done', 'مكتمل')
