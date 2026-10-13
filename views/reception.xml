@@ -152,7 +152,7 @@
     <field name="invoice_count"/>
     <templates>
      <t t-name="kanban-box">
-      <div t-attf-class="oe_kanban_global_click yt-wo-k-card #{record.state.raw_value == 'cancelled' ? 'yt-wo-k-cancelled' : 'yt-wo-k-active'}" dir="rtl">
+      <div t-attf-class="yt-wo-k-card #{record.state.raw_value == 'cancelled' ? 'yt-wo-k-cancelled' : 'yt-wo-k-active'}" dir="rtl">
        <div class="yt-wo-k-top">
         <div class="yt-wo-k-heading">
          <span class="yt-wo-k-eyebrow">أمر عمل</span>
@@ -183,7 +183,7 @@
        </div>
        <div class="yt-wo-k-footer">
         <div><small>الإجمالي</small><strong><field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/></strong></div>
-        <span class="yt-wo-k-open">فتح الأمر <i class="fa fa-arrow-left"/></span>
+        <button type="object" name="action_open_workshop" class="yt-wo-k-open btn btn-link">فتح الأمر <i class="fa fa-arrow-left"/></button>
        </div>
       </div>
      </t>
@@ -213,7 +213,7 @@
  <record id="action_reception_native_form_view" model="ir.actions.act_window.view">
   <field name="sequence" eval="3"/>
   <field name="view_mode">form</field>
-  <field name="view_id" ref="view_reception_order_form"/>
+  <field name="view_id" ref="view_reception_workshop_form"/>
   <field name="act_window_id" ref="action_reception_native"/>
  </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
