@@ -611,3 +611,15 @@
 @media(max-width:1450px){.yt-workshop-finance-form .yt-wo-summary{grid-template-columns:1fr}.yt-workshop-finance-form .yt-wo-kpis-six{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:1000px){.yt-workshop-finance-form .yt-wo-service-grid,.yt-workshop-finance-form .yt-wo-finance-layout{grid-template-columns:1fr}}
 @media(max-width:680px){.yt-workshop-finance-form .yt-wo-kpis-six{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Collapsible operation/discount cards and distinct reception-linked vehicle panel. */
+.yt-workshop-finance-form .yt-wo-bottom-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.yt-workshop-finance-form .yt-wo-fold summary{display:flex;align-items:center;gap:9px;padding:14px 16px;background:#f4efff;color:#283d69;font-size:14px;font-weight:750;cursor:pointer;list-style:none}
+.yt-workshop-finance-form .yt-wo-fold summary::-webkit-details-marker{display:none}
+.yt-workshop-finance-form .yt-wo-stock summary{background:#eaf7ff}
+.yt-workshop-finance-form .yt-wo-fold .yt-wo-chevron{margin-right:auto;transition:transform .15s}
+.yt-workshop-finance-form .yt-wo-fold:not([open]) .yt-wo-chevron{transform:rotate(90deg)}
+.yt-workshop-finance-form .yt-wo-vehicle h3{background:#eaf7ff}
+.yt-workshop-finance-form .yt-wo-vehicle .yt-wo-card-content{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:1000px){.yt-workshop-finance-form .yt-wo-bottom-cards{grid-template-columns:1fr}}
+@media(max-width:680px){.yt-workshop-finance-form .yt-wo-vehicle .yt-wo-card-content{grid-template-columns:repeat(2,minmax(0,1fr))}}

@@ -31,14 +31,12 @@ class WorkshopSaleLine(models.Model):
                 line.name = line.product_id.display_name
                 line.price_unit = line.product_id.lst_price
 
-    @api.depends('product_id', 'order_id.location_id')
+    @api.depends('product_id', 'order_id.location_id', 'order_id.company_id')
     def _compute_available_qty(self):
         for line in self:
             line.available_qty = 0.0
             if line.product_id and line.order_id.location_id and line.product_id.type == 'product':
-                line.available_qty = line.product_id.with_company(line.order_id.company_id).with_context(
-                    location=line.order_id.location_id.id
-                ).free_qty
+                line.available_qty = line.order_id._available_at_workshop_location(line.product_id)
 
     @api.constrains('product_uom_qty', 'price_unit')
     def _check_values(self):
@@ -117,6 +115,16 @@ class WorkshopSale(models.Model):
             if order.location_id and order.location_id.company_id and order.location_id.company_id != order.company_id:
                 raise ValidationError(_('موقع المخزون يجب أن يتبع شركة أمر العمل.'))
 
+    def _available_at_workshop_location(self, product):
+        """Same company/location calculation for displayed stock and validation."""
+        self.ensure_one()
+        if not self.location_id or not product or product.type != 'product':
+            return 0.0
+        return product.with_company(self.company_id).with_context(
+            location=self.location_id.id,
+            allowed_company_ids=[self.company_id.id],
+        ).free_qty
+
     def _check_part_availability(self):
         self.ensure_one()
         parts = self.sale_line_ids.filtered(lambda l: l.product_id.type == 'product')
@@ -128,7 +136,7 @@ class WorkshopSale(models.Model):
             qty = line.product_id.uom_id._compute_quantity(line.product_uom_qty, product.uom_id)
             needed[product] = needed.get(product, 0.0) + qty
         for product, qty in needed.items():
-            free = product.with_company(self.company_id).with_context(location=self.location_id.id).free_qty
+            free = self._available_at_workshop_location(product)
             if float_compare(free, qty, precision_rounding=product.uom_id.rounding) < 0:
                 raise UserError(_('الكمية المتاحة من %s في الموقع المحدد هي %s، والمطلوب %s.') % (
                     product.display_name, free, qty))
@@ -146,6 +154,11 @@ class WorkshopSale(models.Model):
         if self.company_id not in self.env.companies:
             raise UserError(_('ليس لديك صلاحية على شركة أمر العمل.'))
         self._check_part_availability()
+        warehouse = self._get_workshop_warehouse()
+        # Sale confirmation sources inventory from the warehouse stock location.
+        # Do not display stock from a different location as if it were saleable.
+        if self.sale_line_ids.filtered(lambda l: l.product_id.type == 'product') and self.location_id != warehouse.lot_stock_id:
+            raise UserError(_('موقع قطع الغيار (%s) لا يطابق موقع الصرف الأساسي للمستودع (%s). اختر موقع الصرف الصحيح قبل إنشاء أمر البيع، أو اضبط مسار المخزون للمستودع.') % (self.location_id.display_name, warehouse.lot_stock_id.display_name))
         lines = []
         untaxed = sum(self.sale_line_ids.mapped('line_subtotal'))
         discount = min(untaxed, untaxed * self.discount_value / 100.0 if self.discount_type == 'percent' else self.discount_value)
@@ -168,7 +181,7 @@ class WorkshopSale(models.Model):
             'company_id': self.company_id.id,
             'client_order_ref': self.name,
             'origin': self.name,
-            'warehouse_id': self._get_workshop_warehouse().id,
+            'warehouse_id': warehouse.id,
             'order_line': lines,
         })
         self.sale_order_id = so.id

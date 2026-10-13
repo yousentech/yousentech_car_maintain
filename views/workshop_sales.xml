@@ -61,19 +61,22 @@
       </div>
       <div class="yt-wo-top-grid">
        <section class="yt-wo-card yt-wo-customer">
-        <h3><i class="fa fa-user"/> بيانات العميل والسيارة</h3>
+        <h3><i class="fa fa-user"/> بيانات العميل</h3>
         <div class="yt-wo-card-content">
          <div class="yt-wo-field"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" readonly="1"/></div>
-         <div class="yt-wo-field"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" readonly="1"/></div>
          <div class="yt-wo-field"><label for="arrival_at" string="تاريخ الدخول"/><field name="arrival_at" nolabel="1" readonly="1"/></div>
         </div>
        </section>
-       <section class="yt-wo-card yt-wo-location">
-        <h3><i class="fa fa-cubes"/> بيانات التشغيل والمخزون</h3>
+       <section class="yt-wo-card yt-wo-vehicle">
+        <h3><i class="fa fa-car"/> بيانات السيارة</h3>
         <div class="yt-wo-card-content">
-         <div class="yt-wo-field"><label for="location_id" string="موقع قطع الغيار"/><field name="location_id" nolabel="1" options="{'no_create': True}" readonly="sale_order_id"/></div>
-         <div class="yt-wo-field"><label for="sale_order_id" string="أمر البيع"/><field name="sale_order_id" nolabel="1" readonly="1"/></div>
-         <div class="yt-wo-field"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="vehicle_id" string="السيارة / اللوحة"/><field name="vehicle_id" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div>
         </div>
        </section>
       </div>
@@ -110,27 +113,26 @@
         </div>
        </section>
       </div>
-      <section class="yt-wo-card yt-wo-financial yt-wo-financial-wide">
-       <h3><i class="fa fa-percent"/> الخصم والملخص المالي</h3>
-       <div class="yt-wo-finance-body yt-wo-finance-layout">
-        <div class="yt-wo-discount-inputs">
-         <h4>إعدادات الخصم</h4>
+      <div class="yt-wo-bottom-cards">
+       <details class="yt-wo-card yt-wo-fold yt-wo-discount" open="open">
+        <summary><i class="fa fa-percent"/> الخصم <i class="fa fa-chevron-down yt-wo-chevron"/></summary>
+        <div class="yt-wo-finance-body">
          <group col="2">
           <field name="discount_type" string="نوع الخصم" readonly="sale_order_id"/>
           <field name="discount_value" string="قيمة الخصم" readonly="sale_order_id"/>
          </group>
-         <div class="yt-wo-finance-hint">تُحتسب الضريبة بعد تطبيق الخصم. وتُنشأ الفاتورة من أمر البيع وفق سياسة فوترة الأصناف وتسليم قطع الغيار.</div>
+         <div class="yt-wo-finance-hint">تظهر قيمة الخصم والضريبة والإجمالي في الملخص العلوي.</div>
         </div>
-        <div class="yt-wo-finance-totals">
-         <div class="yt-wo-total-line"><span>قيمة الخدمات</span><field name="service_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
-         <div class="yt-wo-total-line"><span>قيمة قطع الغيار</span><field name="parts_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
-         <div class="yt-wo-total-line"><span>قبل الخصم والضريبة</span><field name="amount_untaxed" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
-         <div class="yt-wo-total-line"><span>الخصم</span><field name="discount_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
-         <div class="yt-wo-total-line"><span>الضريبة</span><field name="amount_tax" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
-         <div class="yt-wo-total-line yt-wo-total-final"><span>الإجمالي المستحق</span><field name="amount_total" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
+       </details>
+       <details class="yt-wo-card yt-wo-fold yt-wo-stock" open="open">
+        <summary><i class="fa fa-cubes"/> بيانات التشغيل والمخزون <i class="fa fa-chevron-down yt-wo-chevron"/></summary>
+        <div class="yt-wo-card-content">
+         <div class="yt-wo-field"><label for="location_id" string="موقع قطع الغيار"/><field name="location_id" nolabel="1" options="{'no_create': True}" readonly="sale_order_id"/></div>
+         <div class="yt-wo-field"><label for="sale_order_id" string="أمر البيع"/><field name="sale_order_id" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1" readonly="1"/></div>
         </div>
-       </div>
-      </section>
+       </details>
+      </div>
      </div>
     </sheet>
    </form>
