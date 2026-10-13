@@ -134,8 +134,8 @@
  <record id="action_reception_native" model="ir.actions.act_window">
   <field name="name">أوامر العمل</field>
   <field name="res_model">yt.reception.order</field>
-  <field name="view_mode">tree,form</field>
-  <field name="views" eval="[(ref('view_reception_order_tree'),'tree'),(ref('view_reception_order_form'),'form')]"/>
+  <field name="view_mode">form,tree</field>
+  <field name="views" eval="[(ref('view_reception_order_form'),'form'),(ref('view_reception_order_tree'),'tree')]"/>
   <field name="context">{'default_state':'draft'}</field>
  </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
