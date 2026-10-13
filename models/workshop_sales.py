@@ -77,8 +77,15 @@ class WorkshopSale(models.Model):
             if order.discount_value < 0 or (order.discount_type == 'percent' and order.discount_value > 100):
                 raise ValidationError(_('الخصم يجب أن يكون غير سالب، والنسبة لا تتجاوز 100%.'))
 
-    @api.depends('sale_line_ids.product_uom_qty', 'sale_line_ids.price_unit',
-                 'sale_line_ids.product_id', 'discount_type', 'discount_value', 'company_id')
+    @api.depends(
+        'sale_line_ids', 'sale_line_ids.product_uom_qty',
+        'sale_line_ids.price_unit', 'sale_line_ids.product_id',
+        'service_line_ids', 'service_line_ids.product_uom_qty',
+        'service_line_ids.price_unit', 'service_line_ids.product_id',
+        'part_line_ids', 'part_line_ids.product_uom_qty',
+        'part_line_ids.price_unit', 'part_line_ids.product_id',
+        'discount_type', 'discount_value', 'company_id', 'partner_id',
+    )
     def _compute_workshop_amounts(self):
         for order in self:
             services = sum(order.sale_line_ids.filtered(lambda l: l.product_id.type == 'service').mapped('line_subtotal'))
@@ -101,6 +108,11 @@ class WorkshopSale(models.Model):
             order.amount_tax = tax
             order.amount_total = untaxed - discount + tax
 
+
+    @api.onchange('service_line_ids', 'part_line_ids', 'discount_type', 'discount_value')
+    def _onchange_workshop_totals(self):
+        """Refresh KPI values for unsaved inline One2many changes."""
+        self._compute_workshop_amounts()
 
     @api.depends('sale_order_id.invoice_ids')
     def _compute_invoices(self):
