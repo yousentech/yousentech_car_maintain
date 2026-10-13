@@ -35,36 +35,79 @@
   <field name="name">yt.reception.order.workshop.form</field>
   <field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <form string="أمر العمل" class="yt-native-reception">
+   <form string="أمر العمل" class="yt-native-reception yt-workshop-finance-form">
     <header>
      <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="sale_order_id or state == 'cancelled'"/>
      <button name="action_open_sale_order" type="object" string="عرض أمر البيع" invisible="not sale_order_id"/>
      <button name="action_open_workshop_invoices" type="object" string="عرض الفواتير" invisible="not invoice_count"/>
-     <button name="action_open_inspection" type="object" string="العودة إلى الفحص"/>
+     <button name="action_open_inspection" type="object" string="العودة إلى الفحص" icon="fa-arrow-right"/>
      <field name="state" widget="statusbar"/>
     </header>
     <sheet>
      <field name="company_id" invisible="1"/>
      <field name="invoice_count" invisible="1"/>
-     <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
-     <group string="بيانات أمر العمل" col="4">
-      <field name="partner_id" readonly="1"/>
-      <field name="vehicle_id" readonly="1"/>
-      <field name="location_id" options="{'no_create': True}" readonly="sale_order_id"/>
-      <field name="sale_order_id" readonly="1"/>
-     </group>
-     <group string="الخدمات وقطع الغيار">
-      <field name="sale_line_ids" nolabel="1" readonly="sale_order_id">
-       <tree editable="bottom">
-        <field name="sequence" widget="handle"/>
-        <field name="product_id"/>
-        <field name="name"/>
-        <field name="product_uom_qty"/>
-        <field name="available_qty" readonly="1"/>
-        <field name="price_unit"/>
-       </tree>
-      </field>
-     </group>
+     <field name="currency_id" invisible="1"/>
+     <div class="yt-wo-dashboard" dir="rtl">
+      <div class="yt-wo-summary">
+       <div class="yt-wo-summary-title"><span class="yt-wo-icon"><i class="fa fa-wrench"/></span><div><small>ملخص أمر العمل</small><h2><field name="name" readonly="1" nolabel="1"/></h2><span>صيانة وخدمات السيارة</span></div></div>
+       <div class="yt-wo-kpis">
+        <div class="yt-wo-kpi yt-wo-blue"><small>قيمة الخدمات وقطع الغيار</small><field name="amount_untaxed" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
+        <div class="yt-wo-kpi yt-wo-green"><small>الخصم</small><field name="discount_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
+        <div class="yt-wo-kpi yt-wo-orange"><small>الضريبة</small><field name="amount_tax" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
+        <div class="yt-wo-kpi yt-wo-purple"><small>الإجمالي النهائي</small><field name="amount_total" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
+       </div>
+      </div>
+      <div class="yt-wo-top-grid">
+       <section class="yt-wo-card yt-wo-customer">
+        <h3><i class="fa fa-user"/> بيانات العميل والسيارة</h3>
+        <div class="yt-wo-card-content">
+         <div class="yt-wo-field"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="arrival_at" string="تاريخ الدخول"/><field name="arrival_at" nolabel="1" readonly="1"/></div>
+        </div>
+       </section>
+       <section class="yt-wo-card yt-wo-location">
+        <h3><i class="fa fa-cubes"/> بيانات التشغيل والمخزون</h3>
+        <div class="yt-wo-card-content">
+         <div class="yt-wo-field"><label for="location_id" string="موقع قطع الغيار"/><field name="location_id" nolabel="1" options="{'no_create': True}" readonly="sale_order_id"/></div>
+         <div class="yt-wo-field"><label for="sale_order_id" string="أمر البيع"/><field name="sale_order_id" nolabel="1" readonly="1"/></div>
+         <div class="yt-wo-field"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1" readonly="1"/></div>
+        </div>
+       </section>
+      </div>
+      <div class="yt-wo-bottom-grid">
+       <section class="yt-wo-card yt-wo-lines">
+        <h3><i class="fa fa-list-alt"/> الخدمات وقطع الغيار</h3>
+        <div class="yt-wo-table-wrap">
+         <field name="sale_line_ids" nolabel="1" readonly="sale_order_id">
+          <tree editable="bottom" default_order="sequence,id">
+           <field name="sequence" widget="handle"/>
+           <field name="product_id" string="الخدمة / الصنف"/>
+           <field name="name" string="الوصف"/>
+           <field name="product_uom_qty" string="الكمية"/>
+           <field name="available_qty" string="المتاح" readonly="1"/>
+           <field name="price_unit" string="سعر الوحدة"/>
+           <field name="line_subtotal" string="الإجمالي" readonly="1"/>
+          </tree>
+         </field>
+        </div>
+       </section>
+       <section class="yt-wo-card yt-wo-financial">
+        <h3><i class="fa fa-percent"/> الخصم والملخص المالي</h3>
+        <div class="yt-wo-finance-body">
+         <group col="2">
+          <field name="discount_type" string="نوع الخصم" readonly="sale_order_id"/>
+          <field name="discount_value" string="قيمة الخصم" readonly="sale_order_id"/>
+         </group>
+         <div class="yt-wo-total-line"><span>قبل الخصم والضريبة</span><field name="amount_untaxed" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
+         <div class="yt-wo-total-line"><span>الخصم</span><field name="discount_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
+         <div class="yt-wo-total-line"><span>الضريبة</span><field name="amount_tax" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
+         <div class="yt-wo-total-line yt-wo-total-final"><span>الإجمالي المستحق</span><field name="amount_total" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}" nolabel="1"/></div>
+         <div class="yt-wo-finance-hint">الفاتورة تُنشأ من أمر البيع وفق سياسة فوترة المنتجات وتسليم قطع الغيار.</div>
+        </div>
+       </section>
+      </div>
+     </div>
     </sheet>
    </form>
   </field>

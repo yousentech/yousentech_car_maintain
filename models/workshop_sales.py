@@ -17,6 +17,12 @@ class WorkshopSaleLine(models.Model):
     price_unit = fields.Float(string='سعر الوحدة', digits='Product Price')
     available_qty = fields.Float(string='المتاح بالموقع', compute='_compute_available_qty', digits='Product Unit of Measure')
     sale_line_id = fields.Many2one('sale.order.line', readonly=True, copy=False)
+    line_subtotal = fields.Float(string='الإجمالي', compute='_compute_line_subtotal', digits='Product Price')
+
+    @api.depends('product_uom_qty', 'price_unit')
+    def _compute_line_subtotal(self):
+        for line in self:
+            line.line_subtotal = line.product_uom_qty * line.price_unit
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
@@ -53,6 +59,40 @@ class WorkshopSale(models.Model):
     sale_order_id = fields.Many2one('sale.order', string='أمر البيع', readonly=True, copy=False)
     invoice_ids = fields.Many2many('account.move', string='الفواتير', compute='_compute_invoices')
     invoice_count = fields.Integer(compute='_compute_invoices')
+    currency_id = fields.Many2one(related='company_id.currency_id', readonly=True)
+    discount_type = fields.Selection([('fixed', 'مبلغ ثابت'), ('percent', 'نسبة مئوية')], default='fixed', string='نوع الخصم')
+    discount_value = fields.Float(string='قيمة الخصم', digits='Product Price')
+    amount_untaxed = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
+    discount_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
+    amount_tax = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
+    amount_total = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
+
+    @api.constrains('discount_type', 'discount_value')
+    def _check_discount(self):
+        for order in self:
+            if order.discount_value < 0 or (order.discount_type == 'percent' and order.discount_value > 100):
+                raise ValidationError(_('الخصم يجب أن يكون غير سالب، والنسبة لا تتجاوز 100%.'))
+
+    @api.depends('sale_line_ids.product_uom_qty', 'sale_line_ids.price_unit',
+                 'sale_line_ids.product_id', 'discount_type', 'discount_value', 'company_id')
+    def _compute_workshop_amounts(self):
+        for order in self:
+            untaxed = sum(order.sale_line_ids.mapped('line_subtotal'))
+            discount = min(untaxed, untaxed * order.discount_value / 100.0 if order.discount_type == 'percent' else order.discount_value)
+            settings = self.env['yt.workshop.finance.settings'].search([('company_id', '=', order.company_id.id)], limit=1)
+            tax = 0.0
+            if untaxed:
+                for line in order.sale_line_ids:
+                    taxes = settings.tax_id if settings.tax_id else line.product_id.taxes_id.filtered(lambda t: t.company_id == order.company_id)
+                    if taxes:
+                        base = line.line_subtotal * (untaxed - discount) / untaxed
+                        result = taxes.compute_all(base / line.product_uom_qty, currency=order.currency_id, quantity=line.product_uom_qty, product=line.product_id, partner=order.partner_id)
+                        tax += result['total_included'] - result['total_excluded']
+            order.amount_untaxed = untaxed
+            order.discount_amount = discount
+            order.amount_tax = tax
+            order.amount_total = untaxed - discount + tax
+
 
     @api.depends('sale_order_id.invoice_ids')
     def _compute_invoices(self):
@@ -97,6 +137,8 @@ class WorkshopSale(models.Model):
             raise UserError(_('ليس لديك صلاحية على شركة أمر العمل.'))
         self._check_part_availability()
         lines = []
+        untaxed = sum(self.sale_line_ids.mapped('line_subtotal'))
+        discount = min(untaxed, untaxed * self.discount_value / 100.0 if self.discount_type == 'percent' else self.discount_value)
         for line in self.sale_line_ids:
             product = line.product_id.with_company(self.company_id)
             if not product.sale_ok:
@@ -108,7 +150,7 @@ class WorkshopSale(models.Model):
                 'name': line.name,
                 'product_uom_qty': line.product_uom_qty,
                 'product_uom': product.uom_id.id,
-                'price_unit': line.price_unit,
+                'price_unit': line.price_unit * (1 - discount / untaxed) if untaxed else line.price_unit,
                 'tax_id': [(6, 0, taxes.ids)],
             }))
         so = self.env['sale.order'].with_company(self.company_id).create({
