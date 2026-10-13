@@ -658,3 +658,11 @@
 .yt-wo-kanban .yt-wo-k-footer strong{font-size:19px;font-weight:850;color:#593ab0}
 .yt-wo-kanban .yt-wo-k-open{font-size:12px;font-weight:750;color:#5940a6}
 @media(max-width:650px){.yt-wo-kanban.o_kanban_view .o_kanban_renderer{padding:12px;gap:12px}.yt-wo-kanban .o_kanban_record{width:100%}}
+
+
+/* Customer and vehicle on one row; newest active work orders first. */
+.yt-wo-kanban .yt-wo-k-people-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:start}
+.yt-wo-kanban .yt-wo-k-people-row .yt-wo-k-detail{min-width:0;gap:7px}
+.yt-wo-kanban .yt-wo-k-people-row .yt-wo-k-icon{width:30px;height:30px;font-size:13px}
+.yt-wo-kanban .yt-wo-k-people-row .yt-wo-k-detail-text{min-width:0;overflow:hidden}
+.yt-wo-kanban .yt-wo-k-people-row .yt-wo-k-detail-text strong{font-size:12px;overflow-wrap:anywhere}
