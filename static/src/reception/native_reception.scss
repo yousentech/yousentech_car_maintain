@@ -666,3 +666,35 @@
 .yt-wo-kanban .yt-wo-k-people-row .yt-wo-k-icon{width:30px;height:30px;font-size:13px}
 .yt-wo-kanban .yt-wo-k-people-row .yt-wo-k-detail-text{min-width:0;overflow:hidden}
 .yt-wo-kanban .yt-wo-k-people-row .yt-wo-k-detail-text strong{font-size:12px;overflow-wrap:anywhere}
+
+
+/* Workshop finance: full-width, readable RTL accounting section. */
+.yt-workshop-finance-form .yt-wo-finance-tab{overflow:hidden;border:1px solid #dce6f5;border-radius:13px;background:#fff;margin-top:14px}
+.yt-workshop-finance-form .yt-wo-finance-heading{padding:13px 18px;background:#eef2ff;color:#334b84;font-size:14px;font-weight:800;border-bottom:1px solid #dce6f5}
+.yt-workshop-finance-form .yt-wo-finance-heading i{margin-left:8px}
+.yt-workshop-finance-form .yt-wo-finance-body{padding:16px;min-width:0}
+.yt-workshop-finance-form .yt-wo-finance-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.yt-workshop-finance-form .yt-wo-finance-kpi{display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px;border:1px solid #e2eaf7;border-radius:11px;background:#f6f9ff}
+.yt-workshop-finance-form .yt-wo-finance-kpi small{font-size:12px;font-weight:700;color:#60728f}
+.yt-workshop-finance-form .yt-wo-finance-kpi .o_field_widget{font-size:18px;font-weight:800;color:#2e4f8a}
+.yt-workshop-finance-form .yt-wo-finance-credited{background:#fff7ee;border-color:#f6e6d1}
+.yt-workshop-finance-form .yt-wo-finance-credited .o_field_widget{color:#a66b27}
+.yt-workshop-finance-form .yt-wo-finance-paid{background:#effaf3;border-color:#d9f0e0}
+.yt-workshop-finance-form .yt-wo-finance-paid .o_field_widget{color:#18805a}
+.yt-workshop-finance-form .yt-wo-finance-refunded{background:#fff5f5;border-color:#f6e2e2}
+.yt-workshop-finance-form .yt-wo-finance-refunded .o_field_widget{color:#b25458}
+.yt-workshop-finance-form .yt-wo-finance-due{background:#fff9eb;border-color:#f3e8c8}
+.yt-workshop-finance-form .yt-wo-finance-due .o_field_widget{color:#9d751c}
+.yt-workshop-finance-form .yt-wo-finance-return{background:#f6f2ff;border-color:#e8dffa}
+.yt-workshop-finance-form .yt-wo-finance-return .o_field_widget{color:#7651a9}
+.yt-workshop-finance-form .yt-wo-finance-actions{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:18px}
+.yt-workshop-finance-form .yt-wo-finance-section{margin-top:14px;min-width:0;border:1px solid #e2eaf4;border-radius:10px;overflow:hidden}
+.yt-workshop-finance-form .yt-wo-finance-section h4{margin:0;padding:12px 15px;background:#f4f7fc;color:#30486f;font-size:13px;font-weight:800;border-bottom:1px solid #e2eaf4}
+.yt-workshop-finance-form .yt-wo-finance-section h4 i{margin-left:7px}
+.yt-workshop-finance-form .yt-wo-finance-section .o_field_x2many{display:block;width:100%;max-width:100%;min-width:0}
+.yt-workshop-finance-form .yt-wo-finance-section .o_list_renderer{width:100%;overflow-x:auto}
+.yt-workshop-finance-form .yt-wo-finance-section .o_list_table{width:100%;min-width:600px}
+.yt-workshop-finance-form .yt-wo-finance-section .o_list_table th{font-weight:750;color:#344f7b;background:#f9fbff}
+.yt-workshop-finance-form .yt-wo-finance-cancel-reason{margin-top:15px;display:flex;flex-direction:column;gap:7px}
+@media(max-width:850px){.yt-workshop-finance-form .yt-wo-finance-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.yt-workshop-finance-form .yt-wo-finance-kpis{grid-template-columns:1fr}.yt-workshop-finance-form .yt-wo-finance-body{padding:10px}}
