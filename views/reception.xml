@@ -3,7 +3,138 @@
  <record id="seq_reception_order" model="ir.sequence">
   <field name="name">Workshop Reception</field><field name="code">yt.reception.order</field><field name="prefix">WO2/%(year)s/</field><field name="padding">5</field>
  </record>
- <record id="action_reception_owl" model="ir.actions.client"><field name="name">أوامر العمل</field><field name="tag">yt_workshop_v4.reception_app</field></record>
+ <record id="view_reception_make_form" model="ir.ui.view">
+  <field name="name">yt.reception.make.form</field><field name="model">yt.reception.make</field>
+  <field name="arch" type="xml"><form string="الشركة المصنعة"><sheet><group><field name="name"/><field name="active"/></group></sheet></form></field>
+ </record>
+ <record id="view_reception_model_form" model="ir.ui.view">
+  <field name="name">yt.reception.model.form</field><field name="model">yt.reception.model</field>
+  <field name="arch" type="xml"><form string="موديل السيارة"><sheet><group><field name="name"/><field name="make_id"/><field name="active"/></group></sheet></form></field>
+ </record>
+ <record id="view_reception_vehicle_form" model="ir.ui.view">
+  <field name="name">yt.reception.vehicle.form</field><field name="model">yt.reception.vehicle</field>
+  <field name="arch" type="xml">
+   <form string="تسجيل سيارة">
+    <sheet>
+     <group>
+      <group string="العميل واللوحة">
+       <field name="company_id" groups="base.group_multi_company"/>
+       <field name="partner_id"/>
+       <field name="plate"/>
+       <field name="plate_country"/>
+       <field name="plate_type"/>
+       <field name="plate_condition"/>
+      </group>
+      <group string="بيانات السيارة">
+       <field name="make_id"/>
+       <field name="model_id" domain="[('make_id','=',make_id)]" context="{'default_make_id': make_id}"/>
+       <field name="year"/>
+       <field name="gear"/>
+       <field name="vin"/>
+       <field name="engine_number"/>
+       <field name="color"/>
+       <field name="odometer"/>
+      </group>
+     </group>
+    </sheet>
+   </form>
+  </field>
+ </record>
+ <record id="view_reception_order_form" model="ir.ui.view">
+  <field name="name">yt.reception.order.native.form</field>
+  <field name="model">yt.reception.order</field>
+  <field name="arch" type="xml">
+   <form string="أمر العمل - قبل البدء" class="yt-native-reception">
+    <header>
+     <button name="action_cancel" type="object" string="إلغاء أمر العمل" invisible="state != 'draft'" confirm="هل تريد إلغاء أمر العمل؟"/>
+     <field name="state" widget="statusbar" statusbar_visible="draft,cancelled"/>
+    </header>
+    <sheet>
+     <div class="yt-rec-wizard-steps" role="group" aria-label="مراحل أمر العمل">
+      <span class="yt-rec-step yt-rec-step-active">١ · قبل البدء</span>
+      <span class="yt-rec-step">٢ · الفحص</span>
+      <span class="yt-rec-step">٣ · الخدمات والقطع</span>
+      <span class="yt-rec-step">٤ · اعتماد العميل</span>
+      <span class="yt-rec-step">٥ · التنفيذ</span>
+      <span class="yt-rec-step">٦ · إغلاق</span>
+     </div>
+     <div class="oe_title"><h1><field name="name" readonly="1" placeholder="أمر عمل جديد"/></h1></div>
+     <field name="company_id" invisible="1"/>
+     <div class="yt-rec-native-grid">
+      <div class="yt-rec-native-col">
+       <div class="yt-rec-native-card">
+        <h3>معلومات الاستقبال</h3>
+        <group>
+         <field name="arrival_at"/>
+         <field name="intake_method"/>
+         <field name="odometer_in"/>
+         <field name="odometer_out"/>
+         <field name="branch_id"/>
+         <field name="advisor_id"/>
+         <field name="work_source"/>
+         <field name="warranty"/>
+         <field name="reception_notes" placeholder="ملاحظات الاستقبال..."/>
+        </group>
+       </div>
+      </div>
+      <div class="yt-rec-native-col">
+       <div class="yt-rec-native-card">
+        <h3>معلومات السيارة</h3>
+        <group>
+         <field name="vehicle_id" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/>
+        </group>
+        <div class="alert alert-info" role="note">يمكن البحث عن سيارة، أو استخدام «إنشاء وتحرير» لفتح نموذج تسجيل السيارة القياسي.</div>
+       </div>
+      </div>
+      <div class="yt-rec-native-col">
+       <div class="yt-rec-native-card">
+        <h3>معلومات العميل</h3>
+        <group>
+         <field name="partner_id"/>
+         <field name="customer_source"/>
+        </group>
+       </div>
+       <div class="yt-rec-native-card yt-rec-internal-card">
+        <h3>ملاحظات داخلية</h3>
+        <group><field name="internal_notes" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></group>
+       </div>
+      </div>
+     </div>
+     <div class="yt-rec-native-bottom">
+      <div class="yt-rec-native-card">
+       <h3>شكاوى العميل (اختياري)</h3>
+       <field name="complaint_ids" nolabel="1">
+        <tree editable="bottom"><field name="name" string="الشكوى" required="1"/></tree>
+       </field>
+      </div>
+      <div class="yt-rec-native-card">
+       <h3>خدمات إضافية مطلوبة (اختياري)</h3>
+       <field name="request_ids" nolabel="1">
+        <tree editable="bottom"><field name="name" string="الخدمة" required="1"/></tree>
+       </field>
+       <group><field name="no_parts_needed"/></group>
+      </div>
+     </div>
+    </sheet>
+    <div class="oe_chatter"><field name="message_follower_ids"/><field name="message_ids"/></div>
+   </form>
+  </field>
+ </record>
+ <record id="view_reception_order_tree" model="ir.ui.view">
+  <field name="name">yt.reception.order.tree</field><field name="model">yt.reception.order</field>
+  <field name="arch" type="xml">
+   <tree string="أوامر العمل" default_order="id desc">
+    <field name="name"/><field name="arrival_at"/><field name="partner_id"/><field name="vehicle_id"/><field name="state"/>
+   </tree>
+  </field>
+ </record>
+ <record id="action_reception_native" model="ir.actions.act_window">
+  <field name="name">الاستقبال وأوامر العمل</field>
+  <field name="res_model">yt.reception.order</field>
+  <field name="view_mode">tree,form</field>
+  <field name="views" eval="[(ref('view_reception_order_tree'),'tree'),(ref('view_reception_order_form'),'form')]"/>
+  <field name="context">{'default_state':'draft'}</field>
+ </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
- <menuitem id="menu_workshop_reception" name="الاستقبال وأوامر العمل" parent="menu_workshop_root" action="action_reception_owl" sequence="10"/>
+ <menuitem id="menu_workshop_reception" name="الاستقبال وأوامر العمل" parent="menu_workshop_root" action="action_reception_native" sequence="10"/>
 </odoo>
