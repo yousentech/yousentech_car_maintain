@@ -175,6 +175,10 @@ class ReceptionOrder(models.Model):
         if any(order.state != 'draft' for order in self) and any(key not in ('state',) for key in vals):
             raise AccessError(_('لا يمكن تعديل استقبال ملغي.'))
         return super().write(vals)
+    def action_open_inspection(self):
+        self.ensure_one()
+        return {'type': 'ir.actions.act_window', 'name': 'فحص السيارة', 'res_model': 'yt.reception.order', 'view_mode': 'form', 'views': [(self.env.ref('yousentech_car_maintain.view_reception_inspection_form').id, 'form')], 'res_id': self.id, 'target': 'current'}
+
     def action_cancel(self):
         self.check_access_rights('write')
         self.write({'state':'cancelled'})

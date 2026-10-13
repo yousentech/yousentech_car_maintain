@@ -6,3 +6,8 @@ a_order,yt.reception.order,model_yt_reception_order,base.group_user,1,1,1,0
 a_complaint,yt.reception.complaint,model_yt_reception_complaint,base.group_user,1,1,1,1
 a_request,yt.reception.request,model_yt_reception_request,base.group_user,1,1,1,1
 a_photo,yt.reception.photo,model_yt_reception_photo,base.group_user,1,1,1,1
+a_inspection_category,yt.inspection.category,model_yt_inspection_category,base.group_system,1,1,1,0
+a_inspection_component,yt.inspection.component,model_yt_inspection_component,base.group_system,1,1,1,0
+a_inspection_component_user,yt.inspection.component user,model_yt_inspection_component,base.group_user,1,0,0,0
+a_inspection_category_user,yt.inspection.category user,model_yt_inspection_category,base.group_user,1,0,0,0
+a_inspection_line,yt.inspection.line,model_yt_inspection_line,base.group_user,1,1,1,1

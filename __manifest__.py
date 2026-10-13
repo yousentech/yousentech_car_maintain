@@ -1,6 +1,6 @@
 {
  'name': 'YousenTech Workshop Reception V4',
- 'version': '17.0.4.2.0',
+ 'version': '17.0.4.3.0',
  'category': 'Services/Automotive',
  'license': 'LGPL-3',
  'depends': ['base', 'web', 'mail'],
