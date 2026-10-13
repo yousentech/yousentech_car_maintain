@@ -61,20 +61,14 @@
      <div class="oe_title"><h1><field name="name" readonly="1" invisible="not name or name == '/'"/><span class="yt-rec-new-title" invisible="name and name != '/'">أمر عمل جديد</span></h1></div>
      <field name="company_id" string="الشركة" invisible="1"/>
      <div class="yt-rec-native-grid">
-      <div class="yt-rec-native-col yt-rec-col-intake">
-       <div class="yt-rec-native-card yt-rec-card-intake">
-        <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
-        <div class="yt-rec-intake-fields yt-rec-form-rows">
-         <div class="yt-rec-field-row"><label for="arrival_at" string="تاريخ ووقت الدخول"/><field name="arrival_at" nolabel="1"/></div>
-         <div class="yt-rec-field-row"><label for="intake_method" string="طريقة الاستلام"/><field name="intake_method" nolabel="1"/></div>
-         <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1"/></div>
-         <div class="yt-rec-field-row"><label for="advisor_id" string="الفني المستلم"/><field name="advisor_id" nolabel="1"/></div>
-         <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1"/></div>
-         <div class="yt-rec-field-row"><label for="odometer_out" string="عداد الخروج"/><field name="odometer_out" nolabel="1"/></div>
-         <div class="yt-rec-field-row"><label for="work_source" string="مصدر العمل"/><field name="work_source" nolabel="1"/></div>
-         <div class="yt-rec-field-row"><label for="warranty" string="إضافة ضمان"/><field name="warranty" nolabel="1"/></div>
-        </div>
-        <div class="yt-rec-notes-field yt-rec-textarea-block"><label for="reception_notes" string="ملاحظات الاستقبال"/><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
+      <div class="yt-rec-native-col yt-rec-col-customer">
+       <div class="yt-rec-native-card yt-rec-card-customer">
+        <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
+        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
+       </div>
+       <div class="yt-rec-native-card yt-rec-internal-card">
+        <h3><i class="fa fa-sticky-note-o" aria-hidden="true"/> ملاحظات داخلية</h3>
+        <div class="yt-rec-textarea-block"><field name="internal_notes" string="ملاحظات داخلية" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></div>
        </div>
       </div>
       <div class="yt-rec-native-col yt-rec-col-vehicle">
@@ -88,14 +82,20 @@
         </div>
        </div>
       </div>
-      <div class="yt-rec-native-col yt-rec-col-customer">
-       <div class="yt-rec-native-card yt-rec-card-customer">
-        <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
-        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
-       </div>
-       <div class="yt-rec-native-card yt-rec-internal-card">
-        <h3><i class="fa fa-sticky-note-o" aria-hidden="true"/> ملاحظات داخلية</h3>
-        <div class="yt-rec-textarea-block"><field name="internal_notes" string="ملاحظات داخلية" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></div>
+      <div class="yt-rec-native-col yt-rec-col-intake">
+       <div class="yt-rec-native-card yt-rec-card-intake">
+        <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
+        <div class="yt-rec-intake-fields yt-rec-form-rows">
+         <div class="yt-rec-field-pair">         <div class="yt-rec-field-row"><label for="arrival_at" string="تاريخ ووقت الدخول"/><field name="arrival_at" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="intake_method" string="طريقة الاستلام"/><field name="intake_method" nolabel="1"/></div></div>
+         <div class="yt-rec-field-pair">         <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="advisor_id" string="الفني المستلم"/><field name="advisor_id" nolabel="1"/></div></div>
+         <div class="yt-rec-field-pair">         <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="odometer_out" string="عداد الخروج"/><field name="odometer_out" nolabel="1"/></div></div>
+         <div class="yt-rec-field-pair">         <div class="yt-rec-field-row"><label for="work_source" string="مصدر العمل"/><field name="work_source" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="warranty" string="إضافة ضمان"/><field name="warranty" nolabel="1"/></div></div>
+        </div>
+        <div class="yt-rec-notes-field yt-rec-textarea-block"><label for="reception_notes" string="ملاحظات الاستقبال"/><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
        </div>
       </div>
      </div>
