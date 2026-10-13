@@ -9,7 +9,7 @@
  </record>
  <record id="view_reception_model_form" model="ir.ui.view">
   <field name="name">yt.reception.model.form</field><field name="model">yt.reception.model</field>
-  <field name="arch" type="xml"><form string="موديل السيارة"><sheet><group><field name="name"/><field name="make_id"/><field name="active"/></group></sheet></form></field>
+  <field name="arch" type="xml"><form string="موديل السيارة"><sheet><group><field name="name"/><field name="make_id" string="الشركة المصنعة" placeholder="ابحث عن الشركة المصنعة أو أنشئ شركة"/><field name="active"/></group></sheet></form></field>
  </record>
  <record id="view_reception_vehicle_form" model="ir.ui.view">
   <field name="name">yt.reception.vehicle.form</field><field name="model">yt.reception.vehicle</field>
@@ -18,22 +18,22 @@
     <sheet>
      <group>
       <group string="العميل واللوحة">
-       <field name="company_id" groups="base.group_multi_company"/>
-       <field name="partner_id"/>
-       <field name="plate"/>
-       <field name="plate_country"/>
-       <field name="plate_type"/>
-       <field name="plate_condition"/>
+       <field name="company_id" string="الشركة" groups="base.group_multi_company"/>
+       <field name="partner_id" string="العميل"/>
+       <field name="plate" string="رقم اللوحة"/>
+       <field name="plate_country" string="دولة اللوحة"/>
+       <field name="plate_type" string="نوع اللوحة"/>
+       <field name="plate_condition" string="حالة اللوحة"/>
       </group>
       <group string="بيانات السيارة">
-       <field name="make_id"/>
-       <field name="model_id" domain="[('make_id','=',make_id)]" context="{'default_make_id': make_id}"/>
-       <field name="year"/>
-       <field name="gear"/>
-       <field name="vin"/>
-       <field name="engine_number"/>
-       <field name="color"/>
-       <field name="odometer"/>
+       <field name="make_id" string="الشركة المصنعة"/>
+       <field name="model_id" string="الموديل" placeholder="اختر الموديل أو أنشئ موديلًا" domain="[('make_id','=',make_id)]" context="{'default_make_id': make_id}"/>
+       <field name="year" string="سنة الصنع"/>
+       <field name="gear" string="ناقل الحركة"/>
+       <field name="vin" string="رقم الشاصي (VIN)"/>
+       <field name="engine_number" string="رقم المحرك"/>
+       <field name="color" string="اللون"/>
+       <field name="odometer" string="قراءة العداد"/>
       </group>
      </group>
     </sheet>
@@ -51,69 +51,67 @@
     </header>
     <sheet>
      <div class="yt-rec-wizard-steps" role="group" aria-label="مراحل أمر العمل">
-      <span class="yt-rec-step yt-rec-step-active">١ · قبل البدء</span>
-      <span class="yt-rec-step">٢ · الفحص</span>
-      <span class="yt-rec-step">٣ · الخدمات والقطع</span>
-      <span class="yt-rec-step">٤ · اعتماد العميل</span>
-      <span class="yt-rec-step">٥ · التنفيذ</span>
-      <span class="yt-rec-step">٦ · إغلاق</span>
+      <span class="yt-rec-step yt-rec-step-active"><b>١</b> قبل البدء</span>
+      <span class="yt-rec-step"><b>٢</b> الفحص</span>
+      <span class="yt-rec-step"><b>٣</b> الخدمات والقطع</span>
+      <span class="yt-rec-step"><b>٤</b> اعتماد العميل</span>
+      <span class="yt-rec-step"><b>٥</b> التنفيذ</span>
+      <span class="yt-rec-step"><b>٦</b> إغلاق</span>
      </div>
-     <div class="oe_title"><h1><field name="name" readonly="1" placeholder="أمر عمل جديد"/></h1></div>
-     <field name="company_id" invisible="1"/>
+     <div class="oe_title"><h1><field name="name" readonly="1" invisible="not name or name == '/'"/><span class="yt-rec-new-title" invisible="name and name != '/'">أمر عمل جديد</span></h1></div>
+     <field name="company_id" string="الشركة" invisible="1"/>
      <div class="yt-rec-native-grid">
-      <div class="yt-rec-native-col">
-       <div class="yt-rec-native-card">
-        <h3>معلومات الاستقبال</h3>
+      <div class="yt-rec-native-col yt-rec-col-intake">
+       <div class="yt-rec-native-card yt-rec-card-intake">
+        <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
         <group>
-         <field name="arrival_at"/>
-         <field name="intake_method"/>
-         <field name="odometer_in"/>
-         <field name="odometer_out"/>
-         <field name="branch_id"/>
-         <field name="advisor_id"/>
-         <field name="work_source"/>
-         <field name="warranty"/>
-         <field name="reception_notes" placeholder="ملاحظات الاستقبال..."/>
+         <field name="arrival_at" string="تاريخ ووقت الدخول"/>
+         <field name="intake_method" string="طريقة الاستلام"/>
+         <field name="odometer_in" string="قراءة العداد عند الدخول"/>
+         <field name="odometer_out" string="قراءة العداد عند الخروج"/>
+         <field name="branch_id" string="الفرع"/>
+         <field name="advisor_id" string="الفني المستلم"/>
+         <field name="work_source" string="مصدر العمل"/>
+         <field name="warranty" string="إضافة ضمان"/>
+         <field name="reception_notes" string="ملاحظات الاستقبال" placeholder="ملاحظات الاستقبال..."/>
         </group>
        </div>
       </div>
-      <div class="yt-rec-native-col">
-       <div class="yt-rec-native-card">
-        <h3>معلومات السيارة</h3>
+      <div class="yt-rec-native-col yt-rec-col-vehicle">
+       <div class="yt-rec-native-card yt-rec-card-vehicle">
+        <h3><i class="fa fa-car" aria-hidden="true"/> معلومات السيارة</h3>
         <group>
-         <field name="vehicle_id" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/>
+         <field name="vehicle_id" string="السيارة" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/>
         </group>
         <div class="alert alert-info" role="note">يمكن البحث عن سيارة، أو استخدام «إنشاء وتحرير» لفتح نموذج تسجيل السيارة القياسي.</div>
        </div>
       </div>
-      <div class="yt-rec-native-col">
-       <div class="yt-rec-native-card">
-        <h3>معلومات العميل</h3>
+      <div class="yt-rec-native-col yt-rec-col-customer">
+       <div class="yt-rec-native-card yt-rec-card-customer">
+        <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
         <group>
-         <field name="partner_id"/>
-         <field name="customer_source"/>
+         <field name="partner_id" string="العميل" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/>
+         <field name="customer_source" string="مصدر العميل"/>
         </group>
        </div>
        <div class="yt-rec-native-card yt-rec-internal-card">
-        <h3>ملاحظات داخلية</h3>
-        <group><field name="internal_notes" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></group>
+        <h3><i class="fa fa-sticky-note-o" aria-hidden="true"/> ملاحظات داخلية</h3>
+        <group><field name="internal_notes" string="ملاحظات داخلية" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></group>
        </div>
       </div>
      </div>
      <div class="yt-rec-native-bottom">
-      <div class="yt-rec-native-card">
-       <h3>شكاوى العميل (اختياري)</h3>
+      <details class="yt-rec-native-card yt-rec-card-complaints"><summary><i class="fa fa-comments-o" aria-hidden="true"/> شكاوى العميل (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" aria-hidden="true"/></summary>
        <field name="complaint_ids" nolabel="1">
         <tree editable="bottom"><field name="name" string="الشكوى" required="1"/></tree>
        </field>
-      </div>
-      <div class="yt-rec-native-card">
-       <h3>خدمات إضافية مطلوبة (اختياري)</h3>
+      </details>
+      <details class="yt-rec-native-card yt-rec-card-services"><summary><i class="fa fa-list-ul" aria-hidden="true"/> خدمات إضافية مطلوبة (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" aria-hidden="true"/></summary>
        <field name="request_ids" nolabel="1">
         <tree editable="bottom"><field name="name" string="الخدمة" required="1"/></tree>
        </field>
-       <group><field name="no_parts_needed"/></group>
-      </div>
+       <group><field name="no_parts_needed" string="أمر العمل لا يحتاج قطع"/></group>
+      </details>
      </div>
     </sheet>
     <div class="oe_chatter"><field name="message_follower_ids"/><field name="message_ids"/></div>
@@ -124,7 +122,7 @@
   <field name="name">yt.reception.order.tree</field><field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
    <tree string="أوامر العمل" default_order="id desc">
-    <field name="name"/><field name="arrival_at"/><field name="partner_id"/><field name="vehicle_id"/><field name="state"/>
+    <field name="name"/><field name="arrival_at" string="تاريخ ووقت الدخول"/><field name="partner_id" string="العميل"/><field name="vehicle_id" string="السيارة"/><field name="state"/>
    </tree>
   </field>
  </record>
