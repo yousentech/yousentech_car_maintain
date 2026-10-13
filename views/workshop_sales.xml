@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ <record id="view_reception_sales_extension" model="ir.ui.view">
+  <field name="name">yt.reception.order.sales.extension</field>
+  <field name="model">yt.reception.order</field>
+  <field name="inherit_id" ref="view_reception_order_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="//form/header" position="inside">
+    <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="sale_order_id or state == 'cancelled'"/>
+    <button name="action_open_sale_order" type="object" string="أمر البيع" invisible="not sale_order_id"/>
+    <button name="action_open_workshop_invoices" type="object" string="الفواتير" invisible="not invoice_count"/>
+   </xpath>
+   <xpath expr="//form/sheet" position="inside">
+    <group string="الخدمات وقطع الغيار والمخزون">
+     <field name="company_id" invisible="1"/>
+     <field name="location_id" options="{'no_create': True}" readonly="sale_order_id"/>
+     <field name="sale_order_id" readonly="1"/>
+     <field name="invoice_count" invisible="1"/>
+     <field name="sale_line_ids" readonly="sale_order_id">
+      <tree editable="bottom">
+       <field name="sequence" widget="handle"/>
+       <field name="product_id"/>
+       <field name="name"/>
+       <field name="product_uom_qty"/>
+       <field name="available_qty" readonly="1"/>
+       <field name="price_unit"/>
+      </tree>
+     </field>
+    </group>
+   </xpath>
+  </field>
+ </record>
+</odoo>

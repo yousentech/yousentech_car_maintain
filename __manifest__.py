@@ -3,11 +3,12 @@
  'version': '17.0.4.3.0',
  'category': 'Services/Automotive',
  'license': 'LGPL-3',
- 'depends': ['base', 'web', 'mail', 'hr', 'product'],
+ 'depends': ['base', 'web', 'mail', 'hr', 'product', 'sale_management', 'sale_stock', 'account'],
  'data': [
   'security/ir.model.access.csv',
   'security/record_rules.xml',
   'views/reception.xml',
+  'views/workshop_sales.xml',
   'reports/inspection_report.xml',
  ],
  'assets': {
