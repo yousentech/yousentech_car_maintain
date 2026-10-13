@@ -453,3 +453,36 @@
 }
 @media(max-width:1050px){.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:540px){.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid{grid-template-columns:minmax(0,1fr)!important}}
+
+/* Inspection components table visually belongs to the category selector card. */
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .yt-inspection-category-picker{
+ margin:8px 12px 0!important;padding:8px 12px!important;
+ border-radius:9px 9px 0 0!important;border-bottom:0!important;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker)>.o_field_one2many{
+ display:block;margin:0 12px 12px!important;width:calc(100% - 24px)!important;
+ border:1px solid #dfe3f6;border-top:0;border-radius:0 0 9px 9px;
+ overflow:hidden;background:#fff;box-sizing:border-box;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table{
+ margin:0!important;width:100%;border:0!important;border-radius:0!important;
+ border-collapse:collapse;table-layout:fixed;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table thead{
+ background:#eef1fb!important;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table thead th{
+ padding:10px 12px!important;font-size:13px;text-align:center;vertical-align:middle;
+ border-bottom:1px solid #dfe3f6;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody td{
+ padding:7px 12px!important;vertical-align:middle;border-bottom:1px solid #e8ecf6;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody tr:last-child td{
+ border-bottom:0;
+}
+@media(max-width:900px){
+ .yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker)>.o_field_one2many{
+ overflow-x:auto;
+ }
+}
