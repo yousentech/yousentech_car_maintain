@@ -114,15 +114,11 @@
         </div>
        </section>
       </div>
-     <div class="yt-rec-notes-full">
-       <div class="yt-rec-native-card yt-rec-customer-notes-card">
+      <div class="yt-wo-bottom-cards">
+       <div class="yt-rec-native-card yt-rec-customer-notes-card yt-wo-notes-bottom-card">
         <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
         <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
        </div>
-     </div>
-
-
-      <div class="yt-wo-bottom-cards">
        <details class="yt-wo-card yt-wo-fold yt-wo-discount" open="open">
         <summary><i class="fa fa-percent"/> الخصم <i class="fa fa-chevron-down yt-wo-chevron"/></summary>
         <div class="yt-wo-finance-body">
@@ -131,13 +127,6 @@
           <field name="discount_value" string="قيمة الخصم" readonly="sale_order_id"/>
          </group>
          <div class="yt-wo-finance-hint">تظهر قيمة الخصم والضريبة والإجمالي في الملخص العلوي.</div>
-        </div>
-       </details>
-       <details class="yt-wo-card yt-wo-fold yt-wo-stock" open="open">
-        <summary><i class="fa fa-cubes"/> بيانات التشغيل والمخزون <i class="fa fa-chevron-down yt-wo-chevron"/></summary>
-        <div class="yt-wo-card-content">
-         <div class="yt-wo-field"><label for="location_id" string="موقع قطع الغيار"/><field name="location_id" nolabel="1" options="{'no_create': True}" readonly="sale_order_id"/></div>
-         <div class="yt-wo-field"><label for="sale_order_id" string="أمر البيع"/><field name="sale_order_id" nolabel="1" readonly="1"/></div>
         </div>
        </details>
       </div>
@@ -186,6 +175,10 @@
       <details class="yt-rec-native-card yt-rec-other-card yt-wo-extra-bottom">
        <summary><i class="fa fa-sliders"/> بيانات أخرى <i class="fa fa-chevron-down yt-rec-toggle-icon"/></summary>
        <div class="yt-wo-extra-body">
+        <div class="yt-wo-extra-stock-fields">
+         <div class="yt-rec-field-row"><label for="location_id" string="موقع قطع الغيار"/><field name="location_id" nolabel="1" options="{'no_create': True}" readonly="sale_order_id"/></div>
+         <div class="yt-rec-field-row"><label for="sale_order_id" string="أمر البيع"/><field name="sale_order_id" nolabel="1" readonly="1"/></div>
+        </div>
       <div class="yt-rec-native-card yt-rec-other-details">
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
