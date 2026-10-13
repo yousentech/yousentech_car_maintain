@@ -10,6 +10,38 @@ class InspectionCategory(models.Model):
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
     component_ids = fields.One2many('yt.inspection.component', 'category_id', string='مكونات التصنيف')
+    service_product_id = fields.Many2one(
+        'product.product', string='الصنف الخدمي',
+        domain="[('detailed_type', '=', 'service')]",
+        ondelete='restrict',
+        help='الصنف الذي يمكن استخدامه لاحقاً في فاتورة خدمة الفحص.',
+    )
+
+    @api.constrains('service_product_id')
+    def _check_service_product(self):
+        for category in self:
+            if category.service_product_id and category.service_product_id.detailed_type != 'service':
+                raise ValidationError(_('الصنف المرتبط بتصنيف الفحص يجب أن يكون خدمياً.'))
+
+    def action_create_service_product(self):
+        Product = self.env['product.product']
+        for category in self:
+            if category.service_product_id:
+                raise UserError(_('هذا التصنيف مرتبط بالفعل بصنف خدمي.'))
+            if not category.name or not category.name.strip():
+                raise ValidationError(_('أدخل اسم التصنيف أولاً.'))
+            product = Product.create({
+                'name': _('خدمة فحص: %s') % category.name,
+                'detailed_type': 'service',
+                'sale_ok': True,
+                'purchase_ok': False,
+            })
+            category.service_product_id = product.id
+        return True
+
+    def action_print_inspection(self):
+        return self.env.ref('yousentech_car_maintain.action_report_vehicle_inspection').report_action(self)
+
     component_count = fields.Integer(compute='_compute_component_count', string='عدد المكونات')
 
     def _compute_component_count(self):

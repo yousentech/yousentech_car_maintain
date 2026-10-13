@@ -532,3 +532,16 @@
     grid-template-columns:1fr!important;
   }
 }
+
+/* Keep selection badges vertically aligned with all other inspection cells. */
+.yt-native-reception.yt-inspection-form .o_list_table tbody td:has(.o_field_selection_badge){
+ vertical-align:middle!important;
+}
+.yt-native-reception.yt-inspection-form .o_list_table tbody td .o_field_selection_badge{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ min-height:32px!important;height:100%!important;margin:0!important;padding:0!important;
+}
+.yt-native-reception.yt-inspection-form .o_list_table tbody td .o_field_selection_badge .o_selection_badge{
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ margin:0!important;line-height:20px!important;vertical-align:middle!important;
+}
