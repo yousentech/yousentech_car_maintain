@@ -137,7 +137,7 @@ class WorkshopSale(models.Model):
         self.ensure_one()
         warehouse = self.env['stock.warehouse'].search([
             ('company_id', '=', self.company_id.id),
-            ('lot_stock_id', 'child_of', self.location_id.id),
+            ('view_location_id', 'parent_of', self.location_id.id),
         ], limit=1) if self.location_id else self.env['stock.warehouse']
         if not warehouse:
             warehouse = self.env['stock.warehouse'].search([

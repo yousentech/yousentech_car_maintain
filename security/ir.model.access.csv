@@ -11,3 +11,4 @@ a_inspection_component,yt.inspection.component,model_yt_inspection_component,bas
 a_inspection_component_user,yt.inspection.component user,model_yt_inspection_component,base.group_user,1,0,0,0
 a_inspection_category_user,yt.inspection.category user,model_yt_inspection_category,base.group_user,1,0,0,0
 a_inspection_line,yt.inspection.line,model_yt_inspection_line,base.group_user,1,1,1,1
+a_workshop_sale_line,yt.reception.sale.line,model_yt_reception_sale_line,base.group_user,1,1,1,1
