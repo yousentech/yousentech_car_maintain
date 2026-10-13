@@ -58,7 +58,7 @@ class WorkshopVehicle(models.Model):
         if 'vin' in vals:
             vals['vin'] = vals['vin'].strip().upper() if vals['vin'] else False
         return super().write(vals)
-    @api.constrains('model_id','make_id','odometer','vin','year','plate')
+    @api.constrains('model_id','make_id','odometer','vin','year','plate','plate_country','plate_type')
     def _check_vehicle(self):
         for rec in self:
             if rec.model_id and rec.model_id.make_id != rec.make_id:
@@ -69,8 +69,12 @@ class WorkshopVehicle(models.Model):
                 raise ValidationError(_('سنة صنع السيارة غير صحيحة.'))
             if rec.vin and (len(rec.vin) != 17 or re.search('[IOQ]',rec.vin) or not re.fullmatch('[A-HJ-NPR-Z0-9]{17}',rec.vin)):
                 raise ValidationError(_('رقم الشاصي يجب أن يكون 17 خانة ولا يحتوي I أو O أو Q.'))
-            if not rec.plate:
+            if not (rec.plate or '').strip():
                 raise ValidationError(_('رقم اللوحة مطلوب.'))
+            if not re.fullmatch(r'[A-Z0-9\u0621-\u064A]+', rec.plate):
+                raise ValidationError(_('رقم اللوحة يجب أن يحتوي حروفاً وأرقاماً فقط.'))
+            if not (rec.plate_country or '').strip():
+                raise ValidationError(_('دولة اللوحة مطلوبة.'))
 
 class ReceptionComplaint(models.Model):
     _name = 'yt.reception.complaint'
@@ -152,13 +156,21 @@ class ReceptionOrder(models.Model):
             if order.vehicle_id and (order.vehicle_id.partner_id != order.partner_id or order.vehicle_id.company_id != order.company_id):
                 order.vehicle_id = False
 
-    @api.constrains('partner_id','vehicle_id','company_id','odometer_in','odometer_out')
+    @api.constrains('partner_id','vehicle_id','company_id','odometer_in','odometer_out','partner_mobile')
     def _validate_reception(self):
         for rec in self:
             if rec.vehicle_id.partner_id != rec.partner_id or rec.vehicle_id.company_id != rec.company_id:
                 raise ValidationError(_('السيارة يجب أن تتبع العميل والشركة المحددين.'))
             if rec.odometer_in < 0 or rec.odometer_out < 0:
                 raise ValidationError(_('قراءة العداد لا يمكن أن تكون سالبة.'))
+            if rec.odometer_out and rec.odometer_out < rec.odometer_in:
+                raise ValidationError(_('عداد الخروج لا يمكن أن يكون أقل من عداد الدخول.'))
+            mobile = (rec.partner_mobile or '').strip()
+            if mobile:
+                digits = re.sub(r'[^0-9]', '', mobile)
+                if (not re.fullmatch(r'\+?[0-9\s()\-]+', mobile)
+                        or not 7 <= len(digits) <= 15):
+                    raise ValidationError(_('رقم جوال العميل غير صحيح؛ أدخل من 7 إلى 15 رقماً مع رمز الدولة عند الحاجة.'))
     def write(self, vals):
         if any(order.state != 'draft' for order in self) and any(key not in ('state',) for key in vals):
             raise AccessError(_('لا يمكن تعديل استقبال ملغي.'))
