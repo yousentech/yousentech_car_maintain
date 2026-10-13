@@ -228,19 +228,32 @@
   <field name="name">yt.workshop.advance.payment.wizard.form</field>
   <field name="model">yt.workshop.advance.payment.wizard</field>
   <field name="arch" type="xml">
-   <form string="تسجيل دفعة مقدمة" create="false">
-    <group>
-     <field name="order_id"/>
-     <field name="company_id" invisible="1"/>
-     <field name="partner_id" readonly="1"/>
-     <field name="currency_id" invisible="1"/>
-     <field name="available_payment_method_line_ids" invisible="1"/>
-     <field name="journal_id" options="{'no_create': True}"/>
-     <field name="payment_method_line_id" options="{'no_create': True, 'no_create_edit': True}"/>
-     <field name="amount"/>
-     <field name="payment_date"/>
-     <field name="memo"/>
-    </group>
+   <form string="تسجيل دفعة مقدمة" create="false" class="yt-workshop-advance-wizard">
+    <field name="company_id" invisible="1"/>
+    <field name="currency_id" invisible="1"/>
+    <field name="available_payment_method_line_ids" invisible="1"/>
+    <div class="yt-advance-header">
+     <div class="yt-advance-header-icon"><i class="fa fa-money"/></div>
+     <div>
+      <h2>تسجيل دفعة مقدمة</h2>
+      <p>تحصيل مبلغ من العميل قبل إصدار الفاتورة وربطه بأمر العمل</p>
+     </div>
+    </div>
+    <div class="yt-advance-content">
+     <div class="yt-advance-context">
+      <div class="yt-advance-context-field"><span>أمر العمل</span><field name="order_id" nolabel="1" readonly="1"/></div>
+      <div class="yt-advance-context-field"><span>العميل</span><field name="partner_id" nolabel="1" readonly="1"/></div>
+     </div>
+     <div class="yt-advance-section-title"><i class="fa fa-credit-card"/> تفاصيل التحصيل</div>
+     <div class="yt-advance-fields">
+      <div class="yt-advance-field"><label for="journal_id" string="الصندوق / البنك"/><field name="journal_id" nolabel="1" options="{'no_create': True}"/></div>
+      <div class="yt-advance-field"><label for="payment_method_line_id" string="طريقة الدفع"/><field name="payment_method_line_id" nolabel="1" options="{'no_create': True, 'no_create_edit': True}"/></div>
+      <div class="yt-advance-field yt-advance-amount"><label for="amount" string="المبلغ"/><field name="amount" nolabel="1"/></div>
+      <div class="yt-advance-field"><label for="payment_date" string="تاريخ الدفعة"/><field name="payment_date" nolabel="1"/></div>
+      <div class="yt-advance-field yt-advance-field-wide"><label for="memo" string="البيان"/><field name="memo" nolabel="1" placeholder="مثال: دفعة مقدمة لصيانة السيارة"/></div>
+     </div>
+     <div class="yt-advance-hint"><i class="fa fa-info-circle"/> تُسجّل الدفعة على حساب العميل ويمكن تسويتها مع الفاتورة لاحقًا.</div>
+    </div>
     <footer>
      <button name="action_confirm_advance" type="object" string="تأكيد الدفعة" class="btn-primary"/>
      <button string="إلغاء" special="cancel" class="btn-secondary"/>
