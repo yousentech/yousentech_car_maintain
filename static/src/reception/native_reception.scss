@@ -589,3 +589,25 @@
 .yt-workshop-finance-form .yt-wo-finance-hint{font-size:11px;color:#7b859a;margin-top:14px;line-height:1.8}
 @media(max-width:1100px){.yt-workshop-finance-form .yt-wo-summary{grid-template-columns:1fr}.yt-workshop-finance-form .yt-wo-summary-title{border-left:0}.yt-workshop-finance-form .yt-wo-bottom-grid{grid-template-columns:1fr}}
 @media(max-width:680px){.yt-workshop-finance-form .yt-wo-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.yt-workshop-finance-form .yt-wo-top-grid{grid-template-columns:1fr}.yt-workshop-finance-form .yt-wo-card-content{grid-template-columns:1fr 1fr}.yt-workshop-finance-form .yt-wo-table-wrap{overflow-x:auto}}
+
+/* Work order refinement: six summary cards, twin service tables, full-width finance. */
+.yt-workshop-finance-form .yt-wo-summary{grid-template-columns:minmax(230px,1fr) minmax(0,5fr)}
+.yt-workshop-finance-form .yt-wo-summary-title h2{font-size:clamp(26px,2.1vw,38px);line-height:1.25;letter-spacing:.3px}
+.yt-workshop-finance-form .yt-wo-summary-title h2 .o_field_widget{font-size:inherit;font-weight:800}
+.yt-workshop-finance-form .yt-wo-kpis-six{grid-template-columns:repeat(6,minmax(0,1fr))}
+.yt-workshop-finance-form .yt-wo-kpi{min-height:80px;justify-content:space-between}
+.yt-workshop-finance-form .yt-wo-kpi .o_field_widget{font-size:clamp(14px,1.1vw,20px)}
+.yt-workshop-finance-form .yt-wo-teal{background:#e9f9f8;border-color:#c9e9e7;color:#087f7a}
+.yt-workshop-finance-form .yt-wo-neutral{background:#f4f6fb;border-color:#dfe5f0;color:#41567d}
+.yt-workshop-finance-form .yt-wo-service-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch}
+.yt-workshop-finance-form .yt-wo-services h3{background:#eaf6ff}
+.yt-workshop-finance-form .yt-wo-parts h3{background:#fff3e7}
+.yt-workshop-finance-form .yt-wo-service-grid .yt-wo-table-wrap{min-height:230px;overflow-x:auto}
+.yt-workshop-finance-form .yt-wo-service-grid .o_list_table{min-width:540px}
+.yt-workshop-finance-form .yt-wo-financial-wide{width:100%}
+.yt-workshop-finance-form .yt-wo-finance-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,1fr);gap:26px;padding:18px 22px}
+.yt-workshop-finance-form .yt-wo-discount-inputs h4{font-size:14px;font-weight:750;margin:4px 0 16px;color:#39456d}
+.yt-workshop-finance-form .yt-wo-finance-totals{background:#faf9ff;border:1px solid #e8e0fa;border-radius:10px;padding:8px 16px}
+@media(max-width:1450px){.yt-workshop-finance-form .yt-wo-summary{grid-template-columns:1fr}.yt-workshop-finance-form .yt-wo-kpis-six{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1000px){.yt-workshop-finance-form .yt-wo-service-grid,.yt-workshop-finance-form .yt-wo-finance-layout{grid-template-columns:1fr}}
+@media(max-width:680px){.yt-workshop-finance-form .yt-wo-kpis-six{grid-template-columns:repeat(2,minmax(0,1fr))}}

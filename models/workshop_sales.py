@@ -56,12 +56,18 @@ class WorkshopSale(models.Model):
         check_company=True,
     )
     sale_line_ids = fields.One2many('yt.reception.sale.line', 'order_id', string='الخدمات وقطع الغيار')
+    service_line_ids = fields.One2many('yt.reception.sale.line', 'order_id', string='الخدمات',
+                                       domain=[('product_id.type', '=', 'service')])
+    part_line_ids = fields.One2many('yt.reception.sale.line', 'order_id', string='قطع الغيار',
+                                    domain=[('product_id.type', 'in', ['product', 'consu'])])
     sale_order_id = fields.Many2one('sale.order', string='أمر البيع', readonly=True, copy=False)
     invoice_ids = fields.Many2many('account.move', string='الفواتير', compute='_compute_invoices')
     invoice_count = fields.Integer(compute='_compute_invoices')
     currency_id = fields.Many2one(related='company_id.currency_id', readonly=True)
     discount_type = fields.Selection([('fixed', 'مبلغ ثابت'), ('percent', 'نسبة مئوية')], default='fixed', string='نوع الخصم')
     discount_value = fields.Float(string='قيمة الخصم', digits='Product Price')
+    service_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
+    parts_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     amount_untaxed = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     discount_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     amount_tax = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
@@ -77,7 +83,11 @@ class WorkshopSale(models.Model):
                  'sale_line_ids.product_id', 'discount_type', 'discount_value', 'company_id')
     def _compute_workshop_amounts(self):
         for order in self:
+            services = sum(order.sale_line_ids.filtered(lambda l: l.product_id.type == 'service').mapped('line_subtotal'))
+            parts = sum(order.sale_line_ids.filtered(lambda l: l.product_id.type in ('product', 'consu')).mapped('line_subtotal'))
             untaxed = sum(order.sale_line_ids.mapped('line_subtotal'))
+            order.service_amount = services
+            order.parts_amount = parts
             discount = min(untaxed, untaxed * order.discount_value / 100.0 if order.discount_type == 'percent' else order.discount_value)
             settings = self.env['yt.workshop.finance.settings'].search([('company_id', '=', order.company_id.id)], limit=1)
             tax = 0.0
