@@ -50,16 +50,9 @@
      <field name="state" widget="statusbar" statusbar_visible="draft,cancelled"/>
     </header>
     <sheet>
-     <div class="yt-rec-wizard-steps" role="group" aria-label="مراحل أمر العمل">
-      <span class="yt-rec-step yt-rec-step-active"><b>١</b> قبل البدء</span>
-      <span class="yt-rec-step"><b>٢</b> الفحص</span>
-      <span class="yt-rec-step"><b>٣</b> الخدمات والقطع</span>
-      <span class="yt-rec-step"><b>٤</b> اعتماد العميل</span>
-      <span class="yt-rec-step"><b>٥</b> التنفيذ</span>
-      <span class="yt-rec-step"><b>٦</b> إغلاق</span>
-     </div>
      <div class="oe_title"><h1><field name="name" readonly="1" invisible="not name or name == '/'"/><span class="yt-rec-new-title" invisible="name and name != '/'">أمر عمل جديد</span></h1></div>
      <field name="company_id" string="الشركة" invisible="1"/>
+     <div class="yt-rec-content-frame">
      <div class="yt-rec-native-grid">
       <div class="yt-rec-native-col yt-rec-col-customer">
        <div class="yt-rec-native-card yt-rec-card-customer">
@@ -111,6 +104,7 @@
        </field>
        <group><field name="no_parts_needed" string="أمر العمل لا يحتاج قطع"/></group>
       </details>
+     </div>
      </div>
     </sheet>
     <div class="oe_chatter"><field name="message_follower_ids"/><field name="message_ids"/></div>
