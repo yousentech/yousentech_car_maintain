@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models, Command, _
 from odoo.exceptions import ValidationError, UserError
 
 
@@ -82,7 +82,8 @@ class ReceptionInspection(models.Model):
         ('draft', 'مسودة'), ('done', 'مكتمل')
     ], default='draft', required=True, copy=False, tracking=True)
     inspection_at = fields.Datetime(default=fields.Datetime.now, copy=False)
-    inspector_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    inspector_id = fields.Many2one('hr.employee', string='فني الفحص', domain="[('is_workshop_technician', '=', True)]")
+    inspection_category_ids = fields.Many2many('yt.inspection.category', string='تصنيفات الفحص')
     inspection_location = fields.Selection([
         ('workshop', 'داخل الورشة'), ('outside', 'خارج الورشة')
     ], default='workshop', required=True)
@@ -90,12 +91,38 @@ class ReceptionInspection(models.Model):
     inspection_exterior_notes = fields.Text()
     inspection_line_ids = fields.One2many('yt.inspection.line', 'order_id', string='مكونات الفحص', copy=False)
 
+    @api.onchange('inspection_category_ids')
+    def _onchange_inspection_categories(self):
+        """Synchronize components with chosen categories while retaining entered results."""
+        for order in self:
+            if order.inspection_state == 'done':
+                continue
+            components = self.env['yt.inspection.component'].search([
+                ('active', '=', True),
+                ('category_id', 'in', order.inspection_category_ids.ids),
+            ], order='category_id,sequence,id')
+            previous = {
+                line.component_id.id: (line.condition, line.notes)
+                for line in order.inspection_line_ids if line.component_id
+            }
+            order.inspection_line_ids = [
+                Command.clear(),
+                *[
+                    Command.create({
+                        'component_id': component.id,
+                        'condition': previous.get(component.id, ('not_checked', False))[0],
+                        'notes': previous.get(component.id, ('not_checked', False))[1],
+                    })
+                    for component in components
+                ],
+            ]
+
     def action_load_inspection_components(self):
         for order in self:
             if order.state != 'draft' or order.inspection_state == 'done':
                 raise UserError(_('لا يمكن تعديل فحص أمر عمل مغلق أو معتمد.'))
             existing = set(order.inspection_line_ids.mapped('component_id').ids)
-            components = self.env['yt.inspection.component'].search([('active', '=', True)])
+            components = self.env['yt.inspection.component'].search([('active', '=', True), ('category_id', 'in', order.inspection_category_ids.ids)])
             vals = [{'order_id': order.id, 'component_id': c.id} for c in components if c.id not in existing]
             if vals:
                 self.env['yt.inspection.line'].create(vals)
@@ -107,12 +134,16 @@ class ReceptionInspection(models.Model):
                 raise UserError(_('لا يمكن اعتماد فحص أمر عمل ملغي.'))
             if order.inspection_state == 'done':
                 continue
+            if order.inspector_id and not order.inspector_id.is_workshop_technician:
+                raise ValidationError(_('فني الفحص يجب أن يكون موظفاً مؤشراً كفني ورشة.'))
             if not order.inspector_id or not order.inspection_at:
                 raise ValidationError(_('فني الفحص وتاريخ الفحص مطلوبان.'))
+            if not order.inspection_category_ids:
+                raise ValidationError(_('اختر تصنيف فحص واحداً على الأقل.'))
             lines = order.inspection_line_ids
             if not lines:
                 raise ValidationError(_('أضف مكونات الفحص أولاً.'))
-            mandatory = self.env['yt.inspection.component'].search([('active', '=', True), ('required', '=', True)])
+            mandatory = self.env['yt.inspection.component'].search([('active', '=', True), ('required', '=', True), ('category_id', 'in', order.inspection_category_ids.ids)])
             missing = mandatory - lines.mapped('component_id')
             if missing:
                 raise ValidationError(_('مكونات إلزامية غير مضافة: %s') % ', '.join(missing.mapped('name')))

@@ -298,3 +298,15 @@
 .yt-native-reception.yt-inspection-form .yt-rec-content-frame>.yt-rec-native-grid:last-child .o_field_widget{display:block;padding:14px;width:100%;max-width:none}
 .yt-native-reception.yt-inspection-form .yt-rec-content-frame textarea{width:100%!important;min-height:88px;border:1px solid #d2def5;border-radius:8px}
 @media(max-width:550px){.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-pair{grid-template-columns:minmax(0,1fr)}}
+
+/* Inspection: same white framed controls and card rhythm as reception. */
+.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-row>.o_field_widget{min-height:38px;border:1px solid #d2def5;border-radius:8px;background:#fff;padding:3px 8px;box-sizing:border-box}
+.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-row .o_input{border:0!important;box-shadow:none!important;min-height:30px}
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker{padding:14px 16px 10px;display:flex;flex-direction:column;gap:9px}
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker>.o_field_widget{width:100%;min-height:40px;border:1px solid #d2def5;border-radius:9px;padding:6px 10px;background:#fff}
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker p{margin:0;font-size:12px}
+.yt-native-reception.yt-inspection-form .yt-rec-content-frame>.yt-rec-native-card .o_list_renderer{border:1px solid #dce5f7;border-radius:10px;overflow:auto;background:#fff}
+.yt-native-reception.yt-inspection-form .o_list_table thead th{background:#f0f3ff;color:#283d67;font-weight:700;padding:13px 12px}
+.yt-native-reception.yt-inspection-form .o_list_table tbody td{padding:11px 12px;vertical-align:middle;border-bottom:1px solid #e9edf5}
+.yt-native-reception.yt-inspection-form .o_list_table tbody tr:nth-child(even){background:#fafbff}
+.yt-native-reception.yt-inspection-form .o_list_table .o_input{border:1px solid #d2def5;border-radius:7px;min-height:34px;padding:5px 8px}
