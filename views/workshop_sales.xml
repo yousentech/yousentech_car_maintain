@@ -152,13 +152,8 @@
          <div class="yt-wo-finance-kpi yt-wo-finance-due"><small>المتبقي للتحصيل</small><field name="finance_due" nolabel="1" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
          <div class="yt-wo-finance-kpi yt-wo-finance-return"><small>المتبقي للرد</small><field name="finance_to_refund" nolabel="1" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
         </div>
-        <div class="yt-wo-finance-actions">
-         <button name="action_register_workshop_payment" type="object" string="تسجيل دفعة فاتورة" class="btn-primary" invisible="not invoice_count"/>
-         <button name="action_register_workshop_advance" type="object" string="دفعة مقدمة" class="btn-secondary"/>
-         <button name="action_create_workshop_credit_note" type="object" string="إنشاء إشعار دائن" class="btn-secondary" invisible="not invoice_count"/>
-        </div>
-        <div class="yt-wo-finance-section">
-         <h4><i class="fa fa-file-text-o"/> الفواتير والإشعارات الدائنة</h4>
+        <details class="yt-wo-finance-section yt-wo-finance-fold">
+         <summary><i class="fa fa-file-text-o"/> الفواتير والإشعارات الدائنة <i class="fa fa-chevron-down yt-wo-finance-chevron"/></summary>
          <field name="finance_invoice_ids" nolabel="1" readonly="1">
           <tree create="false" delete="false" edit="false">
            <field name="name" string="رقم المستند"/>
@@ -169,7 +164,7 @@
            <field name="payment_state" string="حالة السداد"/>
           </tree>
          </field>
-        </div>
+        </details>
         <div class="yt-wo-finance-section">
          <h4><i class="fa fa-money"/> الدفعات</h4>
          <field name="finance_payment_ids" nolabel="1" readonly="1">
