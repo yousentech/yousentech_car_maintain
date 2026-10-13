@@ -103,8 +103,8 @@
        </field>
        <group><field name="no_parts_needed" string="أمر العمل لا يحتاج قطع"/></group>
       </details>
-      <div class="yt-rec-native-card yt-rec-other-card">
-        <h3><i class="fa fa-sliders" aria-hidden="true"/> بيانات أخرى</h3>
+      <details class="yt-rec-native-card yt-rec-other-card">
+        <summary><i class="fa fa-sliders" aria-hidden="true"/> بيانات أخرى<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1"/></div>
@@ -112,7 +112,7 @@
          </div>
         </div>
         <div class="yt-rec-textarea-block"><label for="internal_notes" string="ملاحظات داخلية"/><field name="internal_notes" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></div>
-       </div>
+       </details>
 
      </div>
      </div>
