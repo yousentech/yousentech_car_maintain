@@ -35,6 +35,12 @@ class WorkshopVehicle(models.Model):
     engine_number = fields.Char()
     odometer = fields.Float()
     color = fields.Char()
+    @api.onchange('make_id')
+    def _onchange_make_id(self):
+        for vehicle in self:
+            if vehicle.model_id and vehicle.model_id.make_id != vehicle.make_id:
+                vehicle.model_id = False
+
     _sql_constraints = [('vin_unique','unique(vin)','رقم الشاصي مسجل مسبقاً.'),('plate_unique','unique(company_id,plate_country,plate_type,plate)','هوية اللوحة مسجلة مسبقاً.')]
     @api.model_create_multi
     def create(self, vals_list):
@@ -132,6 +138,12 @@ class ReceptionOrder(models.Model):
         for vals in vals_list:
             vals['name'] = self.env['ir.sequence'].next_by_code('yt.reception.order') or '/'
         return super().create(vals_list)
+    @api.onchange('partner_id', 'company_id')
+    def _onchange_partner_company(self):
+        for order in self:
+            if order.vehicle_id and (order.vehicle_id.partner_id != order.partner_id or order.vehicle_id.company_id != order.company_id):
+                order.vehicle_id = False
+
     @api.constrains('partner_id','vehicle_id','company_id','odometer_in','odometer_out')
     def _validate_reception(self):
         for rec in self:
