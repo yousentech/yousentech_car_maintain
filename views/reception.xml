@@ -163,8 +163,26 @@
   <field name="name">أوامر العمل</field>
   <field name="res_model">yt.reception.order</field>
   <field name="view_mode">kanban,tree,form</field>
-  <field name="views" eval="[(ref('view_reception_order_kanban'),'kanban'),(ref('view_reception_order_tree'),'tree'),(ref('view_reception_order_form'),'form')]"/>
+  <field name="view_id" ref="view_reception_order_kanban"/>
   <field name="context">{'default_state':'draft'}</field>
+ </record>
+ <record id="action_reception_native_kanban_view" model="ir.actions.act_window.view">
+  <field name="sequence" eval="1"/>
+  <field name="view_mode">kanban</field>
+  <field name="view_id" ref="view_reception_order_kanban"/>
+  <field name="act_window_id" ref="action_reception_native"/>
+ </record>
+ <record id="action_reception_native_tree_view" model="ir.actions.act_window.view">
+  <field name="sequence" eval="2"/>
+  <field name="view_mode">tree</field>
+  <field name="view_id" ref="view_reception_order_tree"/>
+  <field name="act_window_id" ref="action_reception_native"/>
+ </record>
+ <record id="action_reception_native_form_view" model="ir.actions.act_window.view">
+  <field name="sequence" eval="3"/>
+  <field name="view_mode">form</field>
+  <field name="view_id" ref="view_reception_order_form"/>
+  <field name="act_window_id" ref="action_reception_native"/>
  </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
  <menuitem id="menu_workshop_reception" name="أوامر العمل" parent="menu_workshop_root" action="action_reception_native" sequence="10"/>
