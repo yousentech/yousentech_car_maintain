@@ -139,7 +139,7 @@
  </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
  <menuitem id="menu_workshop_reception" name="الاستقبال وأوامر العمل" parent="menu_workshop_root" action="action_reception_native" sequence="10"/>
- <record id="view_inspection_category_tree" model="ir.ui.view"><field name="name">yt.inspection.category.tree</field><field name="model">yt.inspection.category</field><field name="arch" type="xml"><tree editable="bottom"><field name="sequence" widget="handle"/><field name="name"/><field name="active"/></tree></field></record>
+ <record id="view_inspection_category_tree" model="ir.ui.view"><field name="name">yt.inspection.category.tree</field><field name="model">yt.inspection.category</field><field name="arch" type="xml"><tree string="تصنيفات الفحص" default_order="sequence,id"><field name="sequence" widget="handle"/><field name="name" string="التصنيف"/><field name="component_count" string="عدد المكونات"/><field name="active" string="نشط"/></tree></field></record>
  <record id="view_inspection_category_form" model="ir.ui.view">
   <field name="name">yt.inspection.category.form</field>
   <field name="model">yt.inspection.category</field>
@@ -166,7 +166,7 @@
         <field name="sequence" widget="handle"/>
         <field name="name" string="اسم المكون" required="1" placeholder="مثال: مستوى زيت المحرك"/>
         <field name="required" string="فحص إلزامي"/>
-        <field name="active" string="نشط" column_invisible="True"/>
+        <field name="active" string="نشط"/>
        </tree>
       </field>
      </div>
@@ -175,7 +175,7 @@
   </field>
  </record>
  <record id="view_inspection_component_tree" model="ir.ui.view"><field name="name">yt.inspection.component.tree</field><field name="model">yt.inspection.component</field><field name="arch" type="xml"><tree editable="bottom"><field name="sequence" widget="handle"/><field name="name"/><field name="category_id"/><field name="required"/><field name="active"/></tree></field></record>
- <record id="action_inspection_categories" model="ir.actions.act_window"><field name="name">تصنيفات ومكونات الفحص</field><field name="res_model">yt.inspection.category</field><field name="view_mode">tree,form</field></record>
+ <record id="action_inspection_categories" model="ir.actions.act_window"><field name="name">تصنيفات ومكونات الفحص</field><field name="res_model">yt.inspection.category</field><field name="view_mode">tree,form</field><field name="views" eval="[(ref('view_inspection_category_tree'),'tree'),(ref('view_inspection_category_form'),'form')]"/></record>
  <record id="action_inspection_components" model="ir.actions.act_window"><field name="name">مكونات الفحص</field><field name="res_model">yt.inspection.component</field><field name="view_mode">tree,form</field></record>
  <menuitem id="menu_inspection_config" name="إعدادات الفحص" parent="menu_workshop_root" sequence="90" groups="base.group_system"/>
  <menuitem id="menu_inspection_categories" name="تصنيفات ومكونات الفحص" parent="menu_inspection_config" action="action_inspection_categories" sequence="10"/>
