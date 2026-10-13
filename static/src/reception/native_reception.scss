@@ -486,3 +486,49 @@
  overflow-x:auto;
  }
 }
+
+/* V4 inspection: readable compact category tags and aligned component values. */
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row{
+  grid-template-columns:145px minmax(0,1fr)!important;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row > .o_field_widget{
+  display:flex!important;align-items:center;justify-content:flex-start;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row .o_field_tags{
+  width:100%!important;min-height:36px!important;max-height:none!important;
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;
+  flex-wrap:wrap!important;gap:6px!important;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row .o_tag,
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row .o_tag_badge_text{
+  max-width:none!important;width:auto!important;white-space:normal!important;
+  overflow:visible!important;text-overflow:clip!important;line-height:1.35;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row .o_tag{
+  min-height:25px;padding:3px 8px!important;display:inline-flex;align-items:center;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-picker-row .o_field_tags .o_input{
+  flex:0 1 115px!important;min-width:85px!important;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table thead th,
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody td{
+  text-align:center!important;vertical-align:middle!important;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody td .o_field_widget{
+  width:100%;min-width:0;text-align:center!important;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody td .o_input{
+  text-align:center!important;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody td .o_field_selection_badge{
+  justify-content:center!important;
+}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody td .o_field_many2one_selection,
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody td .o_field_many2one{
+  text-align:center!important;
+}
+@media(max-width:640px){
+  .yt-native-reception.yt-inspection-form .yt-inspection-picker-row{
+    grid-template-columns:1fr!important;
+  }
+}
