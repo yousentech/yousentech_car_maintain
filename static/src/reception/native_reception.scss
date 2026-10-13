@@ -310,3 +310,20 @@
 .yt-native-reception.yt-inspection-form .o_list_table tbody td{padding:11px 12px;vertical-align:middle;border-bottom:1px solid #e9edf5}
 .yt-native-reception.yt-inspection-form .o_list_table tbody tr:nth-child(even){background:#fafbff}
 .yt-native-reception.yt-inspection-form .o_list_table .o_input{border:1px solid #d2def5;border-radius:7px;min-height:34px;padding:5px 8px}
+
+/* Unified inspection category and component configuration */
+.yt-inspection-settings .o_form_sheet{max-width:1400px!important;background:#f7f9fe!important;padding:24px!important;border:1px solid #e1e8f8;border-radius:16px}
+.yt-inspection-settings-header{margin:0 0 20px;padding:4px 2px}
+.yt-inspection-settings-header h2{font-size:22px;font-weight:750;color:#19345d;margin:0 0 6px}
+.yt-inspection-settings-header p,.yt-inspection-settings-hint{color:#7888a3;font-size:13px;margin:0 0 14px}
+.yt-inspection-settings-card{background:#fff;border:1px solid #dce5f9;border-radius:13px;overflow:hidden;margin:0 0 18px;box-shadow:0 3px 12px rgba(33,62,112,.035)}
+.yt-inspection-settings-title{padding:13px 18px;background:#eef3ff;border-bottom:1px solid #dce5f9;color:#1d3764;font-weight:750;font-size:15px}
+.yt-inspection-settings-title .fa{color:#5465df;margin-inline-end:8px}
+.yt-inspection-settings-category .o_group{padding:18px;margin:0}
+.yt-inspection-settings-card .o_input{min-height:36px;border:1px solid #d1ddf5;border-radius:8px;background:#fff}
+.yt-inspection-settings-hint{padding:15px 18px 0;margin:0}
+.yt-inspection-settings-components>.o_field_widget{display:block;padding:12px 18px 20px}
+.yt-inspection-settings-components .o_list_renderer{border:1px solid #e1e7f5;border-radius:9px;overflow:auto}
+.yt-inspection-settings-components .o_list_table thead th{background:#f2f5ff;color:#263c66;font-weight:700;padding:12px}
+.yt-inspection-settings-components .o_list_table tbody td{padding:10px 12px;border-bottom:1px solid #edf0f7}
+@media(max-width:767px){.yt-inspection-settings .o_form_sheet{padding:12px!important}.yt-inspection-settings-category .o_group{padding:12px}.yt-inspection-settings-components>.o_field_widget{padding:10px}}
