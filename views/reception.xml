@@ -231,7 +231,7 @@
        
        <field name="inspection_line_ids" nolabel="1" readonly="inspection_state == 'done' or state != 'draft'">
         <tree editable="bottom" default_order="sequence,id" decoration-success="condition == 'good'" decoration-warning="condition == 'follow_up'" decoration-danger="condition == 'bad'">
-         <field name="component_id" string="مكون الفحص" readonly="1"/>
+         <field name="component_id" string="مكون الفحص" readonly="1" force_save="1"/>
          <field name="category_id" string="التصنيف" readonly="1"/>
          <field name="condition" string="نتيجة الفحص" widget="selection_badge" required="1"/>
          <field name="notes" string="ملاحظات المكون" placeholder="أضف ملاحظة عند الحاجة..."/>
