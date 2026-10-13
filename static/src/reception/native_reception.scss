@@ -144,3 +144,24 @@
  .yt-native-reception .yt-rec-content-frame{padding:10px}
  .yt-native-reception .yt-rec-native-grid{gap:10px}
 }
+
+/* Two balanced primary cards; native Odoo direction and field widgets. */
+.yt-native-reception .yt-rec-two-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.yt-native-reception .yt-rec-col-customer-intake{display:flex;flex-direction:column;gap:14px;min-width:0}
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-col-vehicle{min-width:0}
+.yt-native-reception .yt-rec-notes-full{margin-top:14px}
+.yt-native-reception .yt-rec-notes-full .yt-rec-native-card{width:100%}
+.yt-native-reception .yt-rec-notes-full .yt-rec-textarea-block{padding:14px}
+.yt-native-reception .yt-rec-notes-full textarea{min-height:64px;width:100%}
+.yt-native-reception .yt-rec-customer-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.yt-native-reception .yt-rec-customer-fields>.yt-rec-field-row:first-child{grid-column:1/-1}
+.yt-native-reception .yt-rec-customer-fields>.yt-rec-field-row{min-width:0}
+.yt-native-reception .yt-rec-customer-fields .o_field_widget{width:100%;min-width:0}
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-intake{margin-top:0}
+@media(max-width:950px){
+ .yt-native-reception .yt-rec-two-card-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:500px){
+ .yt-native-reception .yt-rec-customer-fields{grid-template-columns:minmax(0,1fr)}
+ .yt-native-reception .yt-rec-customer-fields>.yt-rec-field-row:first-child{grid-column:auto}
+}
