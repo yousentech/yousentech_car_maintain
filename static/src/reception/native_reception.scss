@@ -370,3 +370,31 @@
 .yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table th.o_list_record_remove,.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table td.o_list_record_remove{display:none!important}
 .yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_one2many .o_field_x2many_list_row_add{display:none!important}
 @media(max-width:1100px){.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_one2many{overflow-x:auto}.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table{min-width:760px}}
+
+/* Single-outline category selector: Odoo tags widget owns the visible field border. */
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker > .o_field_widget,
+.yt-native-reception.yt-inspection-form .yt-rec-native-card .yt-inspection-category-picker > .o_field_widget{
+  border:0!important;background:transparent!important;border-radius:0!important;
+  padding:0!important;margin:0!important;min-height:0!important;
+  width:100%!important;box-shadow:none!important;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker .o_field_tags,
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker .o_field_many2many_tags{
+  box-sizing:border-box;max-width:100%;min-width:0;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker .o_field_tags{
+  display:flex;align-items:center;flex-wrap:wrap;gap:5px;
+  min-height:40px!important;padding:5px 9px!important;
+  border:1px solid #cfd9f1!important;border-radius:8px!important;
+  background:#fff!important;box-shadow:none!important;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker .o_field_tags:focus-within{
+  border-color:#7889ed!important;box-shadow:0 0 0 2px rgba(98,108,231,.10)!important;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker .o_field_tags .o_input{
+  border:0!important;outline:0!important;box-shadow:none!important;
+  background:transparent!important;min-width:130px;max-width:100%;flex:1 1 130px;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-category-picker .o_tag{
+  margin:0!important;max-width:100%;border-radius:16px;
+}
