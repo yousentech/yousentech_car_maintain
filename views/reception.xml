@@ -227,10 +227,11 @@
             <div class="yt-rec-native-card yt-rec-card-vehicle">
        <h3><i class="fa fa-check-square-o" aria-hidden="true"/> فحص مكونات السيارة</h3>
        <div class="yt-inspection-category-picker">
-        <label for="inspection_category_ids" string="تصنيفات الفحص"/>
+        <div class="yt-inspection-picker-heading"><i class="fa fa-tags" title="تصنيفات الفحص"/> <span>تصنيفات الفحص</span></div>
         <field name="inspection_category_ids" nolabel="1" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}" readonly="inspection_state == 'done'"/>
-        <p class="text-muted">اختر التصنيفات؛ تظهر مكوناتها تلقائياً. عند تغيير التصنيف تُحفظ نتائج المكونات المشتركة.</p>
+        <div class="yt-inspection-picker-hint"><i class="fa fa-info-circle" title="معلومة"/> اختر تصنيفاً أو أكثر؛ تُعرض مكوناتها تلقائياً وتُحفظ نتائج المكونات المشتركة.</div>
        </div>
+       <div class="yt-inspection-lines-heading"><i class="fa fa-list-alt" title="مكونات الفحص"/> مكونات الفحص</div>
        <field name="inspection_line_ids" nolabel="1" readonly="inspection_state == 'done' or state != 'draft'">
         <tree editable="bottom" default_order="sequence,id" decoration-success="condition == 'good'" decoration-warning="condition == 'follow_up'" decoration-danger="condition == 'bad'">
          <field name="sequence" invisible="1"/>
