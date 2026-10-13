@@ -135,7 +135,7 @@
   <field name="name">yt.reception.order.kanban</field>
   <field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <kanban default_order="id desc" class="yt-wo-kanban" sample="0">
+   <kanban default_order="state asc, id desc" class="yt-wo-kanban" sample="0">
     <field name="name"/>
     <field name="partner_id"/>
     <field name="partner_mobile"/>
@@ -162,6 +162,7 @@
         <span t-else="" class="yt-wo-k-status yt-wo-k-status-active">جديد</span>
        </div>
        <div class="yt-wo-k-content">
+        <div class="yt-wo-k-people-row">
         <div class="yt-wo-k-detail">
          <span class="yt-wo-k-icon yt-wo-k-icon-customer"><i class="fa fa-user"/></span>
          <div class="yt-wo-k-detail-text"><small>العميل</small><strong><field name="partner_id"/></strong></div>
@@ -169,6 +170,7 @@
         <div class="yt-wo-k-detail">
          <span class="yt-wo-k-icon yt-wo-k-icon-car"><i class="fa fa-car"/></span>
          <div class="yt-wo-k-detail-text"><small>السيارة</small><strong><field name="vehicle_id"/></strong></div>
+        </div>
         </div>
         <div class="yt-wo-k-subdetail">
          <span><i class="fa fa-phone"/> <field name="partner_mobile"/></span>
