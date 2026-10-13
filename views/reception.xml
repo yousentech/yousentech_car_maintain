@@ -208,19 +208,13 @@
        </div>
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-car" aria-hidden="true"/> السيارة والعميل</h3>
-        <div class="yt-rec-form-rows">
-         <div class="yt-rec-field-pair">
+        <div class="yt-rec-form-rows yt-inspection-customer-grid">
           <div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" readonly="1"/></div>
-          <div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" readonly="1"/></div>
-         </div>
-         <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" readonly="1"/></div>
+          <div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" readonly="1"/></div>
           <div class="yt-rec-field-row"><label for="vehicle_make_id" string="نوع السيارة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/></div>
-         </div>
-         <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/></div>
           <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1" readonly="1"/></div>
-         </div>
         </div>
        </div>
       </div>
@@ -256,6 +250,20 @@
      </div>
     </sheet>
    </form>
+  </field>
+ </record>
+ <record id="view_workshop_employee_form" model="ir.ui.view">
+  <field name="name">hr.employee.workshop.settings.form</field>
+  <field name="model">hr.employee</field>
+  <field name="inherit_id" ref="hr.view_employee_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="//notebook" position="inside">
+    <page string="إعدادات الورشة" name="workshop_settings">
+     <group string="مهام الورشة">
+      <field name="is_workshop_technician" string="فني ورشة"/>
+     </group>
+    </page>
+   </xpath>
   </field>
  </record>
 </odoo>

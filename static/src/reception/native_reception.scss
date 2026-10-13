@@ -424,3 +424,32 @@
    grid-template-columns:1fr;row-gap:6px;
  }
 }
+
+/* Inspection: three balanced fields per row, centered values; Odoo controls RTL. */
+.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:12px!important;padding:14px 16px!important;align-items:start;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid>.yt-rec-field-row{
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ gap:6px!important;min-width:0;width:100%;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid>.yt-rec-field-row>label{
+ display:block;width:100%;margin:0;min-height:20px;line-height:20px;
+ font-size:12px;font-weight:650;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid>.yt-rec-field-row>.o_field_widget{
+ width:100%!important;max-width:100%!important;min-width:0;margin:0!important;
+ min-height:38px;box-sizing:border-box;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid .o_input,
+.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid .o_field_widget .o_input,
+.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid .o_field_widget .o_field_many2one_selection{
+ text-align:center!important;width:100%!important;box-sizing:border-box;
+}
+.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid .o_field_widget:not(:has(.o_input)){
+ display:flex;align-items:center;justify-content:center;text-align:center;
+ border:1px solid #cbd8ee;border-radius:8px;background:#fff;padding:7px 10px;
+}
+@media(max-width:1050px){.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:540px){.yt-native-reception.yt-inspection-form .yt-inspection-customer-grid{grid-template-columns:minmax(0,1fr)!important}}
