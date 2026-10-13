@@ -183,7 +183,8 @@
        </div>
        <div class="yt-wo-k-footer">
         <div><small>الإجمالي</small><strong><field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/></strong></div>
-        <button type="object" name="action_open_workshop" class="yt-wo-k-open btn btn-link">فتح الأمر <i class="fa fa-arrow-left"/></button>
+        <button t-if="record.state.raw_value == 'cancelled'" type="object" name="action_reopen_workshop" class="yt-wo-k-open btn btn-link">إعادة فتح أمر العمل <i class="fa fa-refresh"/></button>
+        <button t-else="" type="object" name="action_open_workshop" class="yt-wo-k-open btn btn-link">فتح الأمر <i class="fa fa-arrow-left"/></button>
        </div>
       </div>
      </t>
