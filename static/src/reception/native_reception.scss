@@ -723,3 +723,29 @@
 .yt-workshop-finance-form .yt-wo-extra-stock-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:12px}
 .yt-workshop-finance-form .yt-wo-extra-stock-fields .yt-rec-field-row{min-width:0}
 @media(max-width:700px){.yt-workshop-finance-form .yt-wo-extra-stock-fields{grid-template-columns:1fr}}
+
+
+/* Advance payment dialog: compact, accessible, right-to-left form. */
+.o_form_view.yt-workshop-advance-wizard{direction:rtl}
+.yt-workshop-advance-wizard .yt-advance-header{display:flex;align-items:center;gap:14px;padding:18px 22px;background:linear-gradient(110deg,#f0f5ff,#f8faff);border-bottom:1px solid #e0e8f5}
+.yt-workshop-advance-wizard .yt-advance-header-icon{width:44px;height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:#e3ecff;color:#365ea1;font-size:21px}
+.yt-workshop-advance-wizard .yt-advance-header h2{font-size:17px;font-weight:800;color:#253c65;margin:0 0 5px}
+.yt-workshop-advance-wizard .yt-advance-header p{font-size:12px;color:#657996;margin:0}
+.yt-workshop-advance-wizard .yt-advance-content{padding:20px 22px}
+.yt-workshop-advance-wizard .yt-advance-context{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.yt-workshop-advance-wizard .yt-advance-context-field{background:#f6f8fc;border:1px solid #e2e9f4;border-radius:10px;padding:11px 13px;min-width:0}
+.yt-workshop-advance-wizard .yt-advance-context-field>span{display:block;font-size:11px;font-weight:700;color:#7586a0;margin-bottom:5px}
+.yt-workshop-advance-wizard .yt-advance-context-field .o_field_widget{font-size:13px;font-weight:750;color:#344d78}
+.yt-workshop-advance-wizard .yt-advance-section-title{font-size:13px;font-weight:800;color:#36527d;margin:0 0 13px}
+.yt-workshop-advance-wizard .yt-advance-section-title i{margin-left:7px}
+.yt-workshop-advance-wizard .yt-advance-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 16px}
+.yt-workshop-advance-wizard .yt-advance-field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.yt-workshop-advance-wizard .yt-advance-field>label{font-size:12px;font-weight:700;color:#506786;margin:0}
+.yt-workshop-advance-wizard .yt-advance-field .o_field_widget{width:100%;min-width:0}
+.yt-workshop-advance-wizard .yt-advance-field input,.yt-workshop-advance-wizard .yt-advance-field select{min-height:36px;border-radius:7px}
+.yt-workshop-advance-wizard .yt-advance-field-wide{grid-column:1/-1}
+.yt-workshop-advance-wizard .yt-advance-amount input{font-size:17px;font-weight:800;color:#246c56}
+.yt-workshop-advance-wizard .yt-advance-hint{margin-top:17px;padding:10px 13px;border:1px solid #dce8f7;border-radius:9px;background:#f3f8ff;color:#617898;font-size:12px}
+.yt-workshop-advance-wizard .yt-advance-hint i{margin-left:7px}
+.yt-workshop-advance-wizard footer{padding:12px 22px;display:flex;gap:9px;justify-content:flex-start;border-top:1px solid #e4eaf3}
+@media(max-width:600px){.yt-workshop-advance-wizard .yt-advance-context,.yt-workshop-advance-wizard .yt-advance-fields{grid-template-columns:1fr}.yt-workshop-advance-wizard .yt-advance-content{padding:14px}.yt-workshop-advance-wizard .yt-advance-header{padding:14px}}
