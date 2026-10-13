@@ -142,18 +142,6 @@
       <details class="yt-rec-native-card yt-rec-other-card yt-wo-extra-bottom">
        <summary><i class="fa fa-sliders"/> بيانات أخرى <i class="fa fa-chevron-down yt-rec-toggle-icon"/></summary>
        <div class="yt-wo-extra-body">
-      <details class="yt-rec-native-card yt-rec-card-complaints"><summary><i class="fa fa-comments-o" aria-hidden="true"/> شكاوى العميل (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
-       <field name="complaint_ids" nolabel="1">
-        <tree editable="bottom"><field name="name" string="الشكوى" required="1"/></tree>
-       </field>
-      </details>
-      <details class="yt-rec-native-card yt-rec-card-services"><summary><i class="fa fa-list-ul" aria-hidden="true"/> خدمات إضافية مطلوبة (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
-       <field name="request_ids" nolabel="1">
-        <tree editable="bottom"><field name="name" string="الخدمة" required="1"/></tree>
-       </field>
-       <group><field name="no_parts_needed" string="أمر العمل لا يحتاج قطع"/></group>
-      </details>
-
       <div class="yt-rec-native-card yt-rec-other-details">
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
