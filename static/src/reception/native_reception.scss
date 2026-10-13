@@ -93,3 +93,24 @@
 .yt-native-reception .yt-rec-native-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
 @media(max-width:1250px){.yt-native-reception .yt-rec-native-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.yt-native-reception .yt-rec-col-customer{grid-column:1/-1}}
 @media(max-width:760px){.yt-native-reception .yt-rec-native-grid{grid-template-columns:minmax(0,1fr)}.yt-native-reception .yt-rec-col-customer{grid-column:auto}.yt-native-reception .yt-rec-field-row{grid-template-columns:minmax(0,1fr);gap:5px}.yt-native-reception .yt-rec-form-rows{padding:14px}.yt-native-reception .yt-rec-vehicle-summary{grid-template-columns:minmax(0,1fr)}}
+
+/* Reception V4: compact paired fields, customer first in Odoo's native RTL flow. */
+.yt-native-reception .yt-rec-intake-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.yt-native-reception .yt-rec-field-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
+.yt-native-reception .yt-rec-field-pair>.yt-rec-field-row{display:flex;flex-direction:column;align-items:stretch;gap:6px;min-width:0}
+.yt-native-reception .yt-rec-field-pair>.yt-rec-field-row>label{min-height:20px;line-height:1.4}
+.yt-native-reception .yt-rec-field-pair>.yt-rec-field-row>.o_field_widget{width:100%!important;min-width:0;max-width:none!important}
+.yt-native-reception .yt-rec-field-pair>.yt-rec-field-row .o_input{width:100%!important}
+.yt-native-reception .yt-rec-intake-fields .o_field_boolean{min-height:38px;display:flex;align-items:center}
+.yt-native-reception .yt-rec-native-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1fr) minmax(0,1.1fr)}
+.yt-native-reception .yt-rec-col-customer{grid-column:auto}
+@media(max-width:1250px){
+ .yt-native-reception .yt-rec-native-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .yt-native-reception .yt-rec-col-customer{grid-column:auto}
+ .yt-native-reception .yt-rec-col-intake{grid-column:1/-1}
+}
+@media(max-width:760px){
+ .yt-native-reception .yt-rec-native-grid{grid-template-columns:minmax(0,1fr)}
+ .yt-native-reception .yt-rec-col-intake{grid-column:auto}
+}
+@media(max-width:440px){.yt-native-reception .yt-rec-field-pair{grid-template-columns:minmax(0,1fr)}}
