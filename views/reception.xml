@@ -131,30 +131,43 @@
    </tree>
   </field>
  </record>
+ <record id="view_reception_order_kanban" model="ir.ui.view">
+  <field name="name">yt.reception.order.kanban</field>
+  <field name="model">yt.reception.order</field>
+  <field name="arch" type="xml">
+   <kanban default_order="id desc" class="o_kanban_mobile">
+    <field name="name"/>
+    <field name="partner_id"/>
+    <field name="vehicle_id"/>
+    <field name="arrival_at"/>
+    <field name="state"/>
+    <templates>
+     <t t-name="kanban-box">
+      <div class="oe_kanban_global_click o_kanban_record">
+       <div class="o_kanban_record_top">
+        <strong><field name="name"/></strong>
+        <span class="badge rounded-pill" t-if="record.state.raw_value == 'cancelled'">ملغي</span>
+       </div>
+       <div class="o_kanban_record_body mt-2">
+        <div><i class="fa fa-user me-1"/><field name="partner_id"/></div>
+        <div><i class="fa fa-car me-1"/><field name="vehicle_id"/></div>
+        <div><i class="fa fa-calendar me-1"/><field name="arrival_at"/></div>
+       </div>
+      </div>
+     </t>
+    </templates>
+   </kanban>
+  </field>
+ </record>
  <record id="action_reception_native" model="ir.actions.act_window">
   <field name="name">أوامر العمل</field>
   <field name="res_model">yt.reception.order</field>
-  <field name="view_mode">form,tree</field>
-  <field name="views" eval="[(ref('view_reception_order_form'),'form'),(ref('view_reception_order_tree'),'tree')]"/>
+  <field name="view_mode">kanban,tree,form</field>
+  <field name="views" eval="[(ref('view_reception_order_kanban'),'kanban'),(ref('view_reception_order_tree'),'tree'),(ref('view_reception_order_form'),'form')]"/>
   <field name="context">{'default_state':'draft'}</field>
  </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
- <record id="action_workshop_start_reception" model="ir.actions.server">
-  <field name="name">بدء أمر عمل من الاستقبال</field>
-  <field name="model_id" ref="model_yt_reception_order"/>
-  <field name="state">code</field>
-  <field name="code">action = {
-    'type': 'ir.actions.act_window',
-    'name': 'الاستقبال - أمر عمل جديد',
-    'res_model': 'yt.reception.order',
-    'view_mode': 'form,tree',
-    'views': [(env.ref('yousentech_car_maintain.view_reception_order_form').id, 'form'),
-              (env.ref('yousentech_car_maintain.view_reception_order_tree').id, 'tree')],
-    'target': 'current',
-    'context': {'default_state': 'draft'},
-}</field>
- </record>
- <menuitem id="menu_workshop_reception" name="أوامر العمل" parent="menu_workshop_root" action="action_workshop_start_reception" sequence="10"/>
+ <menuitem id="menu_workshop_reception" name="أوامر العمل" parent="menu_workshop_root" action="action_reception_native" sequence="10"/>
  <record id="view_inspection_category_tree" model="ir.ui.view"><field name="name">yt.inspection.category.tree</field><field name="model">yt.inspection.category</field><field name="arch" type="xml"><tree string="تصنيفات الفحص" default_order="sequence,id"><field name="sequence" widget="handle"/><field name="name" string="التصنيف"/><field name="service_product_id" string="الصنف الخدمي"/><field name="service_price" string="سعر الخدمة"/><field name="component_count" string="عدد المكونات"/><field name="active" string="نشط"/></tree></field></record>
  <record id="view_inspection_category_form" model="ir.ui.view">
   <field name="name">yt.inspection.category.form</field>
