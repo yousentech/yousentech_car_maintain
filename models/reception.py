@@ -179,6 +179,21 @@ class ReceptionOrder(models.Model):
         self.ensure_one()
         return {'type': 'ir.actions.act_window', 'name': 'فحص السيارة', 'res_model': 'yt.reception.order', 'view_mode': 'form', 'views': [(self.env.ref('yousentech_car_maintain.view_reception_inspection_form').id, 'form')], 'res_id': self.id, 'target': 'current'}
 
+    def action_back_to_reception(self):
+        """Return to the native reception form for the same work order."""
+        self.ensure_one()
+        self.check_access_rights('read')
+        self.check_access_rule('read')
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'الاستقبال وأوامر العمل',
+            'res_model': 'yt.reception.order',
+            'view_mode': 'form',
+            'views': [(self.env.ref('yousentech_car_maintain.view_reception_order_form').id, 'form')],
+            'res_id': self.id,
+            'target': 'current',
+        }
+
     def action_cancel(self):
         self.check_access_rights('write')
         self.write({'state':'cancelled'})

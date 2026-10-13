@@ -46,7 +46,7 @@
   <field name="arch" type="xml">
    <form string="أمر العمل - قبل البدء" class="yt-native-reception">
     <header>
-     <button name="action_open_inspection" type="object" string="الانتقال إلى الفحص" class="btn-primary" invisible="state != 'draft' or not id"/>
+     <button name="action_open_inspection" type="object" string="التالي: الفحص" class="btn-primary" invisible="state != 'draft' or not id"/>
      <button name="action_cancel" type="object" string="إلغاء أمر العمل" invisible="state != 'draft'" confirm="هل تريد إلغاء أمر العمل؟"/>
      <field name="state" widget="statusbar" statusbar_visible="draft,cancelled"/>
     </header>
@@ -151,6 +151,7 @@
   <field name="arch" type="xml">
    <form string="فحص السيارة" class="yt-native-reception yt-inspection-form">
     <header>
+     <button name="action_back_to_reception" type="object" string="السابق: الاستقبال" class="btn-secondary" icon="fa-arrow-right"/>
      <button name="action_load_inspection_components" type="object" string="إضافة المكونات المفعّلة" class="btn-secondary" invisible="inspection_state == 'done' or state != 'draft'"/>
      <button name="action_finish_inspection" type="object" string="اعتماد الفحص والمتابعة" class="btn-primary" invisible="inspection_state == 'done' or state != 'draft'"/>
      <button name="action_reopen_inspection" type="object" string="إعادة فتح الفحص" groups="base.group_system" invisible="inspection_state != 'done'"/>
