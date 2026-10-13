@@ -105,3 +105,11 @@
 .yt-rec .rec-dialog-field .rec-mini-button{margin-top:8px}
 @media(max-width:1180px){.yt-rec .rec-main-cols{grid-template-columns:repeat(2,minmax(0,1fr))}.yt-rec .rec-main-cols>.rec-customer-col{grid-column:1/-1}.yt-rec .rec-top{flex-wrap:wrap}.yt-rec .rec-steps{order:3;flex-basis:100%;max-width:none}}
 @media(max-width:760px){.yt-rec{padding:10px}.yt-rec .rec-main-cols{grid-template-columns:minmax(0,1fr)}.yt-rec .rec-main-cols>.rec-customer-col{grid-column:auto}.yt-rec .rec-note-strip{display:block}.yt-rec .rec-note-strip h3{padding:8px 0}.yt-rec .rec-accordion-head{padding:8px;flex-wrap:wrap}.yt-rec .rec-accordion-body .rec-line,.yt-rec .rec-table-head{grid-template-columns:28px minmax(0,1fr) 52px}.yt-rec .rec-steps{overflow-x:auto;justify-content:flex-start}.yt-rec .rec-fields{grid-template-columns:minmax(0,1fr)}}
+
+/* Notes belong inside the customer column, directly after customer details. */
+.yt-rec .rec-main-cols>.rec-customer-col{display:flex;flex-direction:column;gap:14px;align-self:start}
+.yt-rec .rec-customer-col .rec-note-strip{display:block;width:100%;margin:0;padding:0;background:#fff}
+.yt-rec .rec-customer-col .rec-note-strip h3{padding:12px 15px;min-height:48px;background:linear-gradient(100deg,#f2f5ff,#eaf0ff);border-bottom:1px solid #eef1f8}
+.yt-rec .rec-customer-col .rec-note-strip .rec-inner{padding:12px 15px 15px}
+.yt-rec .rec-customer-col .rec-note-strip label{font-size:12px;color:#65738f}
+.yt-rec .rec-customer-col .rec-note-strip textarea{margin-top:7px!important;min-height:76px!important;max-height:150px;font-size:14px!important}
