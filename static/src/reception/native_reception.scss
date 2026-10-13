@@ -210,3 +210,23 @@
  }
  .yt-native-reception .yt-rec-two-card-grid .yt-rec-customer-fields>.yt-rec-field-row:first-child{grid-column:auto}
 }
+
+/* Align primary partner/vehicle inputs with their sibling fields (Odoo RTL inherited). */
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-customer-fields,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-primary-fields{
+ padding-inline:14px!important;
+}
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-customer .yt-rec-field-row:first-child,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-vehicle .yt-rec-primary-fields .yt-rec-field-row{
+ width:100%!important;max-width:none!important;min-width:0;
+ padding:0!important;margin:0!important;box-sizing:border-box;
+}
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-customer .yt-rec-field-row:first-child>.o_field_widget,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-vehicle .yt-rec-primary-fields .o_field_widget{
+ width:100%!important;max-width:none!important;min-width:0;
+ margin:0!important;padding:0!important;box-sizing:border-box;
+}
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-customer .yt-rec-field-row:first-child .o_input,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-vehicle .yt-rec-primary-fields .o_input{
+ width:100%!important;max-width:100%!important;box-sizing:border-box;
+}
