@@ -114,3 +114,33 @@
  .yt-native-reception .yt-rec-col-intake{grid-column:auto}
 }
 @media(max-width:440px){.yt-native-reception .yt-rec-field-pair{grid-template-columns:minmax(0,1fr)}}
+
+/* Booking-inspired compact reception sheet: Odoo controls text direction. */
+.o_form_view.yt-native-reception .o_form_sheet_bg{background:#f7f9fc}
+.o_form_view.yt-native-reception .o_form_sheet{
+ max-width:none!important;width:calc(100% - 24px);margin:8px auto 14px;
+ padding:12px 14px 18px;background:#fff;border:1px solid #e3e9f4;
+ border-radius:18px;box-shadow:0 3px 16px #1e36580b;
+}
+.yt-native-reception .oe_title{margin:0 0 10px!important;padding:0 4px}
+.yt-native-reception .oe_title h1{margin:0;font-size:21px;line-height:1.4}
+.yt-native-reception .yt-rec-new-title{font-size:21px}
+.yt-native-reception .yt-rec-content-frame{
+ background:#fff;border:1px solid #e3e9f4;border-radius:15px;
+ padding:16px;box-shadow:0 2px 12px #1e365808;
+}
+.yt-native-reception .yt-rec-native-grid{gap:14px}
+.yt-native-reception .yt-rec-native-col{gap:14px}
+.yt-native-reception .yt-rec-native-card{background:#fff;box-shadow:0 3px 12px #233a7009}
+.yt-native-reception .yt-rec-native-card>h3{padding:11px 15px}
+.yt-native-reception .yt-rec-form-rows{padding:14px;gap:10px}
+.yt-native-reception .yt-rec-field-pair{gap:10px}
+.yt-native-reception .yt-rec-textarea-block{padding:0 14px 14px}
+.yt-native-reception .yt-rec-internal-card .yt-rec-textarea-block{padding-top:14px}
+.yt-native-reception .yt-rec-vehicle-details{margin:0 14px 14px}
+.yt-native-reception .yt-rec-native-bottom{margin-top:14px;gap:12px}
+@media(max-width:760px){
+ .o_form_view.yt-native-reception .o_form_sheet{width:calc(100% - 12px);padding:8px}
+ .yt-native-reception .yt-rec-content-frame{padding:10px}
+ .yt-native-reception .yt-rec-native-grid{gap:10px}
+}
