@@ -576,10 +576,27 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
     partner_id = fields.Many2one('res.partner', related='order_id.partner_id', readonly=True)
     journal_id = fields.Many2one('account.journal', string='الصندوق / البنك', required=True,
         domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
+    payment_method_line_id = fields.Many2one(
+        'account.payment.method.line', string='طريقة الدفع', required=True,
+        domain="[('id', 'in', available_payment_method_line_ids)]")
+    available_payment_method_line_ids = fields.Many2many(
+        'account.payment.method.line', compute='_compute_available_payment_methods')
     amount = fields.Monetary(string='المبلغ', required=True, currency_field='currency_id')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     payment_date = fields.Date(string='تاريخ الدفعة', default=fields.Date.context_today, required=True)
     memo = fields.Char(string='البيان')
+
+    @api.depends('journal_id')
+    def _compute_available_payment_methods(self):
+        for wizard in self:
+            wizard.available_payment_method_line_ids = wizard.journal_id.inbound_payment_method_line_ids
+
+    @api.onchange('journal_id')
+    def _onchange_journal_id(self):
+        for wizard in self:
+            available = wizard.journal_id.inbound_payment_method_line_ids
+            if wizard.payment_method_line_id not in available:
+                wizard.payment_method_line_id = available[:1] if len(available) == 1 else False
 
     def action_confirm_advance(self):
         self.ensure_one()
@@ -590,9 +607,9 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
             raise ValidationError(_('مبلغ الدفعة يجب أن يكون أكبر من صفر.'))
         if self.journal_id.company_id != order.company_id:
             raise ValidationError(_('يجب اختيار صندوق أو بنك تابع لشركة أمر العمل.'))
-        method = self.journal_id.inbound_payment_method_line_ids[:1]
-        if not method:
-            raise UserError(_('يجب إعداد وسيلة دفع واردة على الصندوق أو البنك.'))
+        method = self.payment_method_line_id
+        if not method or method not in self.journal_id.inbound_payment_method_line_ids:
+            raise ValidationError(_('اختر طريقة دفع واردة صالحة للصندوق أو البنك المحدد.'))
         payment = self.env['account.payment'].with_company(order.company_id).create({
             'payment_type': 'inbound',
             'partner_type': 'customer',
