@@ -180,51 +180,45 @@ class WorkshopSale(models.Model):
         for order in self:
             order.payment_count = len(order.advance_payment_ids)
 
-    def action_register_workshop_payment(self):
-        """Register an invoice payment using Odoo's native payment wizard."""
-        self.ensure_one()
-        if self.state == 'cancelled':
-            raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
-        invoices = self._workshop_financial_documents().filtered(
-            lambda move: move.state == 'posted'
-            and move.move_type == 'out_invoice'
-            and move.amount_residual > 0
-            and move.company_id == self.company_id
-        )
-        if not invoices:
-            raise UserError(_(
-                'لا توجد فاتورة مرحلة بمبلغ مستحق. '
-                'لتسجيل مبلغ قبل إصدار الفاتورة استخدم زر دفعة مقدمة.'
-            ))
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('تسجيل دفعة فاتورة'),
-            'res_model': 'account.payment.register',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {
-                'active_model': 'account.move',
-                'active_ids': invoices.ids,
-                'active_id': invoices[0].id,
-                'allowed_company_ids': [self.company_id.id],
-            },
-        }
-
     def action_register_workshop_advance(self):
-        """Collect an advance before invoicing without a fake invoice."""
+        """Single collection entry point for advances and outstanding invoices."""
         self.ensure_one()
         if self.state == 'cancelled':
             raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
+        remaining = self._workshop_remaining_to_collect()
+        if self.currency_id.is_zero(remaining):
+            raise UserError(_('لا يوجد مبلغ متبقٍ للتحصيل لأمر العمل.'))
         return {
             'type': 'ir.actions.act_window',
-            'name': _('تسجيل دفعة مقدمة'),
+            'name': _('تسجيل دفعة'),
             'res_model': 'yt.workshop.advance.payment.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'context': {
-                'default_order_id': self.id,
-            },
+            'context': {'default_order_id': self.id,
+                        'allowed_company_ids': [self.company_id.id]},
         }
+
+    def _workshop_remaining_to_collect(self):
+        self.ensure_one()
+        self._compute_workshop_amounts()
+        payments = self.advance_payment_ids.filtered(
+            lambda p: p.state == 'posted' and p.company_id == self.company_id
+            and p.partner_id == self.partner_id)
+        received = sum(p.currency_id._convert(
+            p.amount, self.currency_id, self.company_id, p.date)
+            for p in payments.filtered(lambda p: p.payment_type == 'inbound'))
+        refunded = sum(p.currency_id._convert(
+            p.amount, self.currency_id, self.company_id, p.date)
+            for p in payments.filtered(lambda p: p.payment_type == 'outbound'))
+        documents = self._workshop_financial_documents().filtered(
+            lambda m: m.state == 'posted')
+        credited = sum(documents.filtered(
+            lambda m: m.move_type == 'out_refund').mapped('amount_total'))
+        ceiling = sum(documents.filtered(
+            lambda m: m.move_type == 'out_invoice').mapped('amount_total'))
+        if not ceiling:
+            ceiling = self.amount_total
+        return max(0.0, ceiling - credited - received + refunded)
 
     def action_open_workshop_payments(self):
         self.ensure_one()
@@ -237,31 +231,30 @@ class WorkshopSale(models.Model):
             'context': {'create': False},
         }
 
-    def action_reconcile_workshop_advances(self):
+    def _reconcile_workshop_advances(self):
+        """Match posted customer advances with posted invoice receivables."""
         self.ensure_one()
-        invoices = self.invoice_ids.filtered(
+        invoices = self._workshop_financial_documents().filtered(
             lambda inv: inv.state == 'posted' and inv.move_type == 'out_invoice'
             and inv.amount_residual > 0)
-        if not invoices:
-            raise UserError(_('يجب ترحيل فاتورة مستحقة أولاً لتسوية الدفعات المقدمة.'))
         payments = self.advance_payment_ids.filtered(
             lambda p: p.state == 'posted' and p.payment_type == 'inbound'
             and p.partner_id == self.partner_id and p.company_id == self.company_id)
-        if not payments:
-            raise UserError(_('لا توجد دفعات مقدمة مرحلة قابلة للتسوية.'))
-        invoice_lines = invoices.line_ids.filtered(
-            lambda l: l.account_id.account_type == 'asset_receivable' and not l.reconciled)
-        payment_lines = payments.move_id.line_ids.filtered(
-            lambda l: l.account_id.account_type == 'asset_receivable' and not l.reconciled)
-        reconciled = False
-        for account in (invoice_lines | payment_lines).mapped('account_id'):
-            lines = (invoice_lines | payment_lines).filtered(lambda l: l.account_id == account)
-            if lines.filtered(lambda l: l.debit > 0) and lines.filtered(lambda l: l.credit > 0):
-                lines.reconcile()
-                reconciled = True
-        if not reconciled:
-            raise UserError(_('لا توجد قيود مدينة ودائنة متطابقة في حساب ذمم العميل للتسوية.'))
-        return self.action_open_workshop_invoices()
+        for invoice in invoices:
+            for payment in payments:
+                if invoice.currency_id != payment.currency_id:
+                    continue
+                invoice_lines = invoice.line_ids.filtered(
+                    lambda l: l.account_id.account_type == 'asset_receivable'
+                    and not l.reconciled)
+                payment_lines = payment.move_id.line_ids.filtered(
+                    lambda l: l.account_id.account_type == 'asset_receivable'
+                    and not l.reconciled)
+                for account in invoice_lines.mapped('account_id'):
+                    debit_lines = invoice_lines.filtered(lambda l: l.account_id == account)
+                    credit_lines = payment_lines.filtered(lambda l: l.account_id == account)
+                    if debit_lines and credit_lines:
+                        (debit_lines | credit_lines).reconcile()
 
     location_id = fields.Many2one(
         'stock.location', string='موقع قطع الغيار',
@@ -497,7 +490,8 @@ class WorkshopSale(models.Model):
         if not self.sale_line_ids:
             raise UserError(_('أضف الخدمات أو قطع الغيار أولاً.'))
         if self.sale_order_id:
-            return self.action_open_sale_order()
+            self._reconcile_workshop_advances()
+        return self.action_open_sale_order()
         if self.company_id not in self.env.companies:
             raise UserError(_('ليس لديك صلاحية على شركة أمر العمل.'))
         # Validate the user's configured sales journal before creating or confirming a sale order.
