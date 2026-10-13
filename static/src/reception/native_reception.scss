@@ -1,6 +1,6 @@
 /* Reception V4: scoped native Odoo form styling only. */
 .o_form_view.yt-native-reception .o_form_sheet_bg{overflow:visible;background:#f6f8fc}
-.o_form_view.yt-native-reception .o_form_sheet{max-width:none!important;width:calc(100% - 32px);margin:16px auto;padding:20px 22px 32px;background:#f7f9fd;border:1px solid #e9edf7;border-radius:16px;box-shadow:none;direction:rtl}
+.o_form_view.yt-native-reception .o_form_sheet{max-width:none!important;width:calc(100% - 32px);margin:16px auto;padding:20px 22px 32px;background:#f7f9fd;border:1px solid #e9edf7;border-radius:16px;box-shadow:none}
 .yt-native-reception .yt-rec-wizard-steps{display:flex;align-items:center;gap:0;margin:0 0 22px;padding:12px 10px;background:#fff;border:1px solid #e8ecf7;border-radius:14px}
 .yt-native-reception .yt-rec-step{position:relative;display:flex;flex:1 1 0;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;color:#74809b;padding:7px 5px;font-weight:600;font-size:13px}
 .yt-native-reception .yt-rec-step:not(:last-child):after{content:"";position:absolute;top:21px;left:-18%;width:36%;height:2px;background:#dce3f3}
@@ -28,7 +28,7 @@
 .yt-native-reception .yt-rec-native-card>.o_group,.yt-native-reception .yt-rec-native-card>.o_field_widget,.yt-native-reception .yt-rec-native-card>.alert{margin:14px 16px}
 .yt-native-reception .yt-rec-native-card .o_group{width:auto;min-width:0}
 .yt-native-reception .yt-rec-native-card .o_field_widget{max-width:100%}
-.yt-native-reception .yt-rec-native-card .o_form_label{color:#314367;font-weight:600;text-align:right}
+.yt-native-reception .yt-rec-native-card .o_form_label{color:#314367;font-weight:600}
 .yt-native-reception .yt-rec-native-card .o_input,.yt-native-reception .yt-rec-native-card textarea{border-color:#d9e2f2;border-radius:7px;min-height:36px}
 .yt-native-reception .yt-rec-native-bottom{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:16px}
 .yt-native-reception .yt-rec-native-bottom .o_field_x2many{display:block;min-width:0}
@@ -56,3 +56,18 @@
 .yt-native-reception .yt-rec-native-bottom{margin-top:14px}
 @media(max-width:1150px){.yt-native-reception .yt-rec-native-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.yt-native-reception .yt-rec-native-grid{grid-template-columns:minmax(0,1fr)}.yt-native-reception .yt-rec-intake-fields,.yt-native-reception .yt-rec-vehicle-details>.o_group{display:block}}
+
+/* Odoo owns RTL; use bordered, comfortable native form controls. */
+.yt-native-reception .yt-rec-native-card input.o_input,
+.yt-native-reception .yt-rec-native-card textarea,
+.yt-native-reception .yt-rec-native-card select.o_input,
+.yt-native-reception .yt-rec-native-card .o_field_widget .o_input:not([type="checkbox"]){border:1px solid #cbd8ee!important;border-radius:8px!important;background:#fff;min-height:38px;padding:7px 10px;box-shadow:0 1px 2px #223b6610}
+.yt-native-reception .yt-rec-native-card input.o_input:focus,
+.yt-native-reception .yt-rec-native-card textarea:focus{border-color:#6b83eb!important;box-shadow:0 0 0 3px #6482ed1c!important}
+.yt-native-reception .yt-rec-native-card .o_group{column-gap:14px;row-gap:12px}
+.yt-native-reception .yt-rec-native-card .o_form_label{line-height:1.6;margin-bottom:4px}
+.yt-native-reception .yt-rec-native-col,.yt-native-reception .yt-rec-native-grid{gap:18px}
+.yt-native-reception .yt-rec-native-card>.o_group{margin:18px 18px 20px}
+.yt-native-reception .yt-rec-vehicle-details{margin:0 18px 18px;padding:14px}
+.yt-native-reception .yt-rec-notes-field textarea,.yt-native-reception .yt-rec-internal-card textarea{min-height:90px}
+@media(max-width:700px){.yt-native-reception .yt-rec-native-card>.o_group{margin:14px 12px}}
