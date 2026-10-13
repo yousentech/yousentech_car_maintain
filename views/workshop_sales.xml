@@ -141,8 +141,8 @@
         </div>
        </details>
       </div>
-      <div class="yt-wo-card yt-wo-finance-tab">
-       <div class="yt-wo-finance-heading"><i class="fa fa-credit-card"/> الأمور المالية</div>
+      <details class="yt-wo-card yt-wo-finance-tab yt-wo-finance-collapsible">
+       <summary class="yt-wo-finance-heading"><i class="fa fa-credit-card"/> الأمور المالية <i class="fa fa-chevron-down yt-wo-finance-main-chevron"/></summary>
        <div class="yt-wo-finance-body">
         <div class="yt-wo-finance-kpis">
          <div class="yt-wo-finance-kpi yt-wo-finance-billed"><small>إجمالي الفواتير</small><field name="finance_invoiced" nolabel="1" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
@@ -182,7 +182,7 @@
          <field name="cancel_reason" nolabel="1" readonly="1"/>
         </div>
        </div>
-      </div>
+      </details>
       <details class="yt-rec-native-card yt-rec-other-card yt-wo-extra-bottom">
        <summary><i class="fa fa-sliders"/> بيانات أخرى <i class="fa fa-chevron-down yt-rec-toggle-icon"/></summary>
        <div class="yt-wo-extra-body">
