@@ -140,12 +140,46 @@
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
  <menuitem id="menu_workshop_reception" name="الاستقبال وأوامر العمل" parent="menu_workshop_root" action="action_reception_native" sequence="10"/>
  <record id="view_inspection_category_tree" model="ir.ui.view"><field name="name">yt.inspection.category.tree</field><field name="model">yt.inspection.category</field><field name="arch" type="xml"><tree editable="bottom"><field name="sequence" widget="handle"/><field name="name"/><field name="active"/></tree></field></record>
+ <record id="view_inspection_category_form" model="ir.ui.view">
+  <field name="name">yt.inspection.category.form</field>
+  <field name="model">yt.inspection.category</field>
+  <field name="arch" type="xml">
+   <form string="تصنيف ومكونات الفحص" class="yt-inspection-settings">
+    <sheet>
+     <div class="yt-inspection-settings-header">
+      <h2>إعداد تصنيف الفحص</h2>
+      <p>عرّف التصنيف وأضف مكوناته في مكان واحد. ستظهر المكونات في فحص السيارة عند اختيار التصنيف.</p>
+     </div>
+     <div class="yt-inspection-settings-card yt-inspection-settings-category">
+      <div class="yt-inspection-settings-title"><i class="fa fa-folder-open" title="التصنيف"/> بيانات التصنيف</div>
+      <group col="4">
+       <field name="name" string="اسم التصنيف" placeholder="مثال: المحرك" colspan="2"/>
+       <field name="sequence" string="الترتيب"/>
+       <field name="active" string="نشط"/>
+      </group>
+     </div>
+     <div class="yt-inspection-settings-card yt-inspection-settings-components">
+      <div class="yt-inspection-settings-title"><i class="fa fa-check-square-o" title="المكونات"/> مكونات التصنيف</div>
+      <p class="yt-inspection-settings-hint">أضف مكونات الفحص، وحدد الإلزامي منها. يمكنك سحب الصفوف لتغيير ترتيب العرض.</p>
+      <field name="component_ids" nolabel="1" context="{'default_category_id': id}">
+       <tree editable="bottom" string="مكونات الفحص">
+        <field name="sequence" widget="handle"/>
+        <field name="name" string="اسم المكون" required="1" placeholder="مثال: مستوى زيت المحرك"/>
+        <field name="required" string="فحص إلزامي"/>
+        <field name="active" string="نشط" column_invisible="True"/>
+       </tree>
+      </field>
+     </div>
+    </sheet>
+   </form>
+  </field>
+ </record>
  <record id="view_inspection_component_tree" model="ir.ui.view"><field name="name">yt.inspection.component.tree</field><field name="model">yt.inspection.component</field><field name="arch" type="xml"><tree editable="bottom"><field name="sequence" widget="handle"/><field name="name"/><field name="category_id"/><field name="required"/><field name="active"/></tree></field></record>
- <record id="action_inspection_categories" model="ir.actions.act_window"><field name="name">تصنيفات الفحص</field><field name="res_model">yt.inspection.category</field><field name="view_mode">tree,form</field></record>
+ <record id="action_inspection_categories" model="ir.actions.act_window"><field name="name">تصنيفات ومكونات الفحص</field><field name="res_model">yt.inspection.category</field><field name="view_mode">tree,form</field></record>
  <record id="action_inspection_components" model="ir.actions.act_window"><field name="name">مكونات الفحص</field><field name="res_model">yt.inspection.component</field><field name="view_mode">tree,form</field></record>
  <menuitem id="menu_inspection_config" name="إعدادات الفحص" parent="menu_workshop_root" sequence="90" groups="base.group_system"/>
- <menuitem id="menu_inspection_categories" name="تصنيفات الفحص" parent="menu_inspection_config" action="action_inspection_categories" sequence="10"/>
- <menuitem id="menu_inspection_components" name="مكونات الفحص" parent="menu_inspection_config" action="action_inspection_components" sequence="20"/>
+ <menuitem id="menu_inspection_categories" name="تصنيفات ومكونات الفحص" parent="menu_inspection_config" action="action_inspection_categories" sequence="10"/>
+
  <record id="view_reception_inspection_form" model="ir.ui.view">
   <field name="name">yt.reception.order.inspection.form</field><field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
