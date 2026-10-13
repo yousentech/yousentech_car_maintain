@@ -3,7 +3,7 @@
  <record id="seq_reception_order" model="ir.sequence">
   <field name="name">Workshop Reception</field><field name="code">yt.reception.order</field><field name="prefix">WO2/%(year)s/</field><field name="padding">5</field>
  </record>
- <record id="action_reception_owl" model="ir.actions.client"><field name="name">أوامر العمل</field><field name="tag">yt_reception.app</field></record>
+ <record id="action_reception_owl" model="ir.actions.client"><field name="name">أوامر العمل</field><field name="tag">yt_workshop_v4.reception_app</field></record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
  <menuitem id="menu_workshop_reception" name="الاستقبال وأوامر العمل" parent="menu_workshop_root" action="action_reception_owl" sequence="10"/>
 </odoo>

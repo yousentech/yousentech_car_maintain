@@ -111,4 +111,4 @@ export class ReceptionApp extends Component {
  openPartner(){if(this.state.partner)this.action.doAction({type:"ir.actions.act_window",res_model:"res.partner",res_id:this.state.partner,views:[[false,"form"]],target:"current"});}
  get filteredModels(){return this.state.models.filter(m=>m.make_id?.[0]===Number(this.state.car.make_id));}
 }
-registry.category("actions").add("yt_reception.app",ReceptionApp);
+registry.category("actions").add("yt_workshop_v4.reception_app",ReceptionApp);
