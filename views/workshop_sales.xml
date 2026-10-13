@@ -67,13 +67,6 @@
         </div>
        </div>
 
-     <div class="yt-rec-notes-full">
-       <div class="yt-rec-native-card yt-rec-customer-notes-card">
-        <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
-        <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
-       </div>
-     </div>
-
        </div>
        <div class="yt-rec-native-col yt-rec-col-vehicle">
        <div class="yt-rec-native-card yt-rec-card-vehicle">
@@ -120,6 +113,14 @@
         </div>
        </section>
       </div>
+     <div class="yt-rec-notes-full">
+       <div class="yt-rec-native-card yt-rec-customer-notes-card">
+        <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
+        <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
+       </div>
+     </div>
+
+
       <div class="yt-wo-bottom-cards">
        <details class="yt-wo-card yt-wo-fold yt-wo-discount" open="open">
         <summary><i class="fa fa-percent"/> الخصم <i class="fa fa-chevron-down yt-wo-chevron"/></summary>

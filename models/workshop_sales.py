@@ -162,28 +162,55 @@ class WorkshopSale(models.Model):
     )
     def _compute_workshop_amounts(self):
         for order in self:
-            services = sum(order.sale_line_ids.filtered(lambda l: l.product_id.type == 'service').mapped('line_subtotal'))
-            parts = sum(order.sale_line_ids.filtered(lambda l: l.product_id.type in ('product', 'consu')).mapped('line_subtotal'))
-            untaxed = sum(order.sale_line_ids.mapped('line_subtotal'))
+            # The editable service/part widgets may contain unsaved NewId lines
+            # that are not yet present in the inverse sale_line_ids cache.
+            # Compute from the visible collections and keep persisted lines
+            # from sale_line_ids only when they are not already represented.
+            lines = order.service_line_ids | order.part_line_ids
+            lines |= order.sale_line_ids.filtered(lambda line: line not in lines)
+            services = sum(
+                line.product_uom_qty * line.price_unit for line in lines
+                if line.product_id.type == 'service'
+            )
+            parts = sum(
+                line.product_uom_qty * line.price_unit for line in lines
+                if line.product_id.type in ('product', 'consu')
+            )
+            untaxed = sum(line.product_uom_qty * line.price_unit for line in lines)
             order.service_amount = services
             order.parts_amount = parts
-            discount = min(untaxed, untaxed * order.discount_value / 100.0 if order.discount_type == 'percent' else order.discount_value)
-            settings = self.env['yt.workshop.finance.settings'].search([('company_id', '=', order.company_id.id)], limit=1)
+            discount = min(
+                untaxed,
+                untaxed * order.discount_value / 100.0
+                if order.discount_type == 'percent' else order.discount_value,
+            )
+            settings = self.env['yt.workshop.finance.settings'].search(
+                [('company_id', '=', order.company_id.id)], limit=1,
+            )
             tax = 0.0
             if untaxed:
-                for line in order.sale_line_ids:
-                    taxes = settings.tax_id if settings.tax_id else line.product_id.taxes_id.filtered(lambda t: t.company_id == order.company_id)
+                for line in lines:
+                    if not line.product_id or not line.product_uom_qty:
+                        continue
+                    taxes = settings.tax_id if settings.tax_id else line.product_id.taxes_id.filtered(
+                        lambda t: t.company_id == order.company_id
+                    )
                     if taxes:
-                        base = line.line_subtotal * (untaxed - discount) / untaxed
-                        result = taxes.compute_all(base / line.product_uom_qty, currency=order.currency_id, quantity=line.product_uom_qty, product=line.product_id, partner=order.partner_id)
+                        base = (line.product_uom_qty * line.price_unit) * (untaxed - discount) / untaxed
+                        result = taxes.compute_all(
+                            base / line.product_uom_qty,
+                            currency=order.currency_id,
+                            quantity=line.product_uom_qty,
+                            product=line.product_id,
+                            partner=order.partner_id,
+                        )
                         tax += result['total_included'] - result['total_excluded']
             order.amount_untaxed = untaxed
             order.discount_amount = discount
             order.amount_tax = tax
             order.amount_total = untaxed - discount + tax
 
-
-    @api.onchange('service_line_ids', 'part_line_ids', 'discount_type', 'discount_value')
+    @api.onchange('service_line_ids', 'part_line_ids', 'sale_line_ids', 'discount_type', 'discount_value')
     def _onchange_workshop_totals(self):
         """Refresh KPI values for unsaved inline One2many changes."""
         self._compute_workshop_amounts()
