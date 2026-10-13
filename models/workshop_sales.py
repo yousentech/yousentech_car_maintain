@@ -60,19 +60,67 @@ class WorkshopSale(models.Model):
             order.workshop_approved = True
         return True
 
+    advance_payment_ids = fields.Many2many(
+        'account.payment', 'yt_workshop_advance_payment_rel',
+        'order_id', 'payment_id', string='دفعات أمر العمل', copy=False, readonly=True)
+    payment_count = fields.Integer(compute='_compute_workshop_payment_count')
+
+    @api.depends('advance_payment_ids')
+    def _compute_workshop_payment_count(self):
+        for order in self:
+            order.payment_count = len(order.advance_payment_ids)
+
     def action_register_workshop_payment(self):
         self.ensure_one()
-        invoices = self.invoice_ids.filtered(lambda move: move.state == 'posted' and move.amount_residual > 0)
-        if not invoices:
-            raise UserError(_('لا توجد فاتورة مرحلة ذات مبلغ مستحق لتسجيل دفعة.'))
+        if self.state == 'cancelled':
+            raise UserError(_('لا يمكن تسجيل دفعة لأمر عمل ملغي.'))
         return {
             'type': 'ir.actions.act_window',
-            'name': _('تسجيل دفعة'),
-            'res_model': 'account.payment.register',
+            'name': _('تسجيل دفعة مقدمة'),
+            'res_model': 'yt.workshop.advance.payment.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'context': {'active_model': 'account.move', 'active_ids': invoices.ids},
+            'context': {'default_order_id': self.id,
+                        'default_company_id': self.company_id.id,
+                        'default_partner_id': self.partner_id.id},
         }
+
+    def action_open_workshop_payments(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('دفعات أمر العمل'),
+            'res_model': 'account.payment',
+            'view_mode': 'tree,form',
+            'domain': [('id', 'in', self.advance_payment_ids.ids)],
+            'context': {'create': False},
+        }
+
+    def action_reconcile_workshop_advances(self):
+        self.ensure_one()
+        invoices = self.invoice_ids.filtered(
+            lambda inv: inv.state == 'posted' and inv.move_type == 'out_invoice'
+            and inv.amount_residual > 0)
+        if not invoices:
+            raise UserError(_('يجب ترحيل فاتورة مستحقة أولاً لتسوية الدفعات المقدمة.'))
+        payments = self.advance_payment_ids.filtered(
+            lambda p: p.state == 'posted' and p.payment_type == 'inbound'
+            and p.partner_id == self.partner_id and p.company_id == self.company_id)
+        if not payments:
+            raise UserError(_('لا توجد دفعات مقدمة مرحلة قابلة للتسوية.'))
+        invoice_lines = invoices.line_ids.filtered(
+            lambda l: l.account_id.account_type == 'asset_receivable' and not l.reconciled)
+        payment_lines = payments.move_id.line_ids.filtered(
+            lambda l: l.account_id.account_type == 'asset_receivable' and not l.reconciled)
+        reconciled = False
+        for account in (invoice_lines | payment_lines).mapped('account_id'):
+            lines = (invoice_lines | payment_lines).filtered(lambda l: l.account_id == account)
+            if lines.filtered(lambda l: l.debit > 0) and lines.filtered(lambda l: l.credit > 0):
+                lines.reconcile()
+                reconciled = True
+        if not reconciled:
+            raise UserError(_('لا توجد قيود مدينة ودائنة متطابقة في حساب ذمم العميل للتسوية.'))
+        return self.action_open_workshop_invoices()
 
     location_id = fields.Many2one(
         'stock.location', string='موقع قطع الغيار',
@@ -349,3 +397,44 @@ class WorkshopFinanceSettings(models.Model):
         return {'type': 'ir.actions.act_window', 'name': _('إعدادات الورشة المالية'),
                 'res_model': self._name, 'view_mode': 'form',
                 'res_id': record.id, 'target': 'current'}
+
+
+class WorkshopAdvancePaymentWizard(models.TransientModel):
+    _name = 'yt.workshop.advance.payment.wizard'
+    _description = 'تسجيل دفعة مقدمة لأمر العمل'
+
+    order_id = fields.Many2one('yt.reception.order', required=True, readonly=True)
+    company_id = fields.Many2one('res.company', related='order_id.company_id', readonly=True)
+    partner_id = fields.Many2one('res.partner', related='order_id.partner_id', readonly=True)
+    journal_id = fields.Many2one('account.journal', string='الصندوق / البنك', required=True,
+        domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
+    amount = fields.Monetary(string='المبلغ', required=True, currency_field='currency_id')
+    currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
+    payment_date = fields.Date(string='تاريخ الدفعة', default=fields.Date.context_today, required=True)
+    memo = fields.Char(string='البيان')
+
+    def action_confirm_advance(self):
+        self.ensure_one()
+        order = self.order_id
+        if order.state == 'cancelled':
+            raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
+        if self.amount <= 0:
+            raise ValidationError(_('مبلغ الدفعة يجب أن يكون أكبر من صفر.'))
+        if self.journal_id.company_id != order.company_id:
+            raise ValidationError(_('يجب اختيار صندوق أو بنك تابع لشركة أمر العمل.'))
+        method = self.journal_id.inbound_payment_method_line_ids[:1]
+        if not method:
+            raise UserError(_('يجب إعداد وسيلة دفع واردة على الصندوق أو البنك.'))
+        payment = self.env['account.payment'].with_company(order.company_id).create({
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'partner_id': order.partner_id.id,
+            'amount': self.amount,
+            'date': self.payment_date,
+            'journal_id': self.journal_id.id,
+            'payment_method_line_id': method.id,
+            'ref': self.memo or _('دفعة مقدمة لأمر العمل %s') % order.name,
+        })
+        payment.action_post()
+        order.write({'advance_payment_ids': [(4, payment.id)]})
+        return {'type': 'ir.actions.act_window_close'}

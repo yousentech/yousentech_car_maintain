@@ -7,21 +7,28 @@
    <form string="أمر العمل" create="false" class="yt-native-reception yt-workshop-finance-form">
     <header>
      <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="sale_order_id or state == 'cancelled' or not workshop_approved"/>
-     <button name="action_open_sale_order" type="object" string="عرض أمر البيع" invisible="not sale_order_id"/>
-     <button name="action_open_workshop_invoices" type="object" string="عرض الفواتير" invisible="not invoice_count"/>
      <button name="action_approve_workshop" type="object" string="اعتماد أمر العمل" class="btn-secondary" invisible="workshop_approved or state == 'cancelled'"/>
-     <button name="action_register_workshop_payment" type="object" string="تسجيل دفعة" invisible="not invoice_count"/>
+     <button name="action_register_workshop_payment" type="object" string="تسجيل دفعة مقدمة" invisible="state == 'cancelled'"/>\n     <button name="action_reconcile_workshop_advances" type="object" string="تسوية الدفعات" invisible="not invoice_count or not payment_count"/>
      <button name="action_open_inspection" type="object" string="إنشاء فحص" icon="fa-stethoscope" invisible="inspection_state == 'done' or state == 'cancelled'"/>
      <button name="action_back_to_reception" type="object" string="الرجوع إلى الاستقبال" icon="fa-arrow-right"/>
      <field name="state" widget="statusbar"/>
     </header>
     <sheet>
      <field name="company_id" invisible="1"/>
-     <field name="invoice_count" invisible="1"/>
+     <field name="invoice_count" invisible="1"/>\n     <field name="payment_count" invisible="1"/>
      <field name="workshop_approved" invisible="1"/>
      <field name="inspection_state" invisible="1"/>
      <field name="currency_id" invisible="1"/>
      <div class="oe_button_box" name="button_box">
+      <button name="action_open_sale_order" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="not sale_order_id">
+       <div class="o_stat_info"><span class="o_stat_text">أمر البيع</span></div>
+      </button>
+      <button name="action_open_workshop_invoices" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="not invoice_count">
+       <field name="invoice_count" widget="statinfo" string="الفواتير"/>
+      </button>
+      <button name="action_open_workshop_payments" type="object" class="oe_stat_button" icon="fa-money" invisible="not payment_count">
+       <field name="payment_count" widget="statinfo" string="الدفعات"/>
+      </button>
       <button name="action_open_inspection" type="object" class="oe_stat_button" icon="fa-stethoscope" invisible="inspection_state != 'done'">
        <div class="o_stat_info"><span class="o_stat_text">الفحص المعتمد</span><span class="o_stat_text">عرض التقرير</span></div>
       </button>
@@ -142,4 +149,27 @@
   <field name="code">action = env['yt.workshop.finance.settings'].action_open_settings()</field>
  </record>
  <menuitem id="menu_workshop_finance_settings" name="الإعدادات المالية" parent="menu_inspection_config" action="action_workshop_finance_settings" sequence="90" groups="base.group_system"/>
+
+ <record id="view_workshop_advance_payment_wizard_form" model="ir.ui.view">
+  <field name="name">yt.workshop.advance.payment.wizard.form</field>
+  <field name="model">yt.workshop.advance.payment.wizard</field>
+  <field name="arch" type="xml">
+   <form string="تسجيل دفعة مقدمة" create="false">
+    <group>
+     <field name="order_id"/>
+     <field name="company_id" invisible="1"/>
+     <field name="partner_id" readonly="1"/>
+     <field name="currency_id" invisible="1"/>
+     <field name="journal_id" options="{'no_create': True}"/>
+     <field name="amount"/>
+     <field name="payment_date"/>
+     <field name="memo"/>
+    </group>
+    <footer>
+     <button name="action_confirm_advance" type="object" string="تأكيد الدفعة" class="btn-primary"/>
+     <button string="إلغاء" special="cancel" class="btn-secondary"/>
+    </footer>
+   </form>
+  </field>
+ </record>
 </odoo>
