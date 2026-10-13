@@ -9,6 +9,12 @@ class InspectionCategory(models.Model):
     name = fields.Char(required=True, translate=True)
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
+    component_ids = fields.One2many('yt.inspection.component', 'category_id', string='مكونات التصنيف')
+    component_count = fields.Integer(compute='_compute_component_count', string='عدد المكونات')
+
+    def _compute_component_count(self):
+        for category in self:
+            category.component_count = len(category.component_ids)
 
 
 class InspectionComponent(models.Model):
