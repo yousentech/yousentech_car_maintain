@@ -6,7 +6,7 @@
   <field name="arch" type="xml">
    <form string="أمر العمل" class="yt-native-reception yt-workshop-finance-form">
     <header>
-     <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="sale_order_id or state == 'cancelled'"/>
+     <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="sale_order_id or state == 'cancelled' or not workshop_approved"/>
      <button name="action_open_sale_order" type="object" string="عرض أمر البيع" invisible="not sale_order_id"/>
      <button name="action_open_workshop_invoices" type="object" string="عرض الفواتير" invisible="not invoice_count"/>
      <button name="action_approve_workshop" type="object" string="اعتماد أمر العمل" class="btn-secondary" invisible="workshop_approved or state == 'cancelled'"/>

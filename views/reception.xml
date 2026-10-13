@@ -44,7 +44,7 @@
   <field name="name">yt.reception.order.native.form</field>
   <field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <form string="أمر العمل - قبل البدء" class="yt-native-reception">
+   <form string="الاستقبال" create="false" class="yt-native-reception">
     <header>
      <button name="action_open_workshop" type="object" string="الانتقال إلى أمر العمل" class="btn-secondary" invisible="not id"/>
      
@@ -132,7 +132,7 @@
   </field>
  </record>
  <record id="action_reception_native" model="ir.actions.act_window">
-  <field name="name">الاستقبال وأوامر العمل</field>
+  <field name="name">أوامر العمل</field>
   <field name="res_model">yt.reception.order</field>
   <field name="view_mode">tree,form</field>
   <field name="views" eval="[(ref('view_reception_order_tree'),'tree'),(ref('view_reception_order_form'),'form')]"/>
