@@ -1,0 +1,19 @@
+/* Native Odoo 17 reception form. No custom field or many2one renderer. */
+.o_form_view.yt-native-reception .o_form_sheet_bg{overflow:visible}
+.o_form_view.yt-native-reception .o_form_sheet{max-width:none!important;width:calc(100% - 32px);margin:16px auto;padding:18px 22px 30px;background:#f8faff;border:1px solid #e9edfa;border-radius:14px;box-shadow:none;direction:rtl}
+.yt-native-reception .yt-rec-wizard-steps{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;margin:0 0 20px;padding:12px;background:#f0f3ff;border-radius:12px}
+.yt-native-reception .yt-rec-step{flex:1 1 110px;text-align:center;color:#65718c;padding:9px 7px;border-radius:9px;font-weight:600}
+.yt-native-reception .yt-rec-step-active{color:#fff;background:linear-gradient(110deg,#465cff,#6b60e9)}
+.yt-native-reception .yt-rec-native-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;align-items:start}
+.yt-native-reception .yt-rec-native-col{display:flex;flex-direction:column;gap:15px;min-width:0}
+.yt-native-reception .yt-rec-native-card{min-width:0;background:#fff;border:1px solid #e4eaf7;border-radius:12px;box-shadow:0 4px 16px #1d34780a;overflow:visible}
+.yt-native-reception .yt-rec-native-card>h3{margin:0;padding:14px 17px;background:linear-gradient(90deg,#f2f5ff,#eaf0ff);border-bottom:1px solid #e9edfa;color:#25355c;font-size:16px;font-weight:700;border-radius:12px 12px 0 0}
+.yt-native-reception .yt-rec-native-card>.o_group,.yt-native-reception .yt-rec-native-card>.o_field_widget,.yt-native-reception .yt-rec-native-card>.alert{margin:12px 15px}
+.yt-native-reception .yt-rec-native-card .o_group{width:auto}
+.yt-native-reception .yt-rec-native-card .o_field_widget{max-width:100%}
+.yt-native-reception .yt-rec-native-bottom{display:grid;grid-template-columns:minmax(0,1fr);gap:15px;margin-top:15px}
+.yt-native-reception .yt-rec-native-bottom .o_field_x2many{display:block;min-width:0}
+.yt-native-reception .yt-rec-internal-card textarea{min-height:90px;resize:vertical}
+.yt-native-reception .o_field_widget input,.yt-native-reception .o_field_widget textarea{font-size:14px}
+@media(max-width:1100px){.yt-native-reception .yt-rec-native-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.yt-native-reception .yt-rec-native-col:last-child{grid-column:1/-1}}
+@media(max-width:700px){.o_form_view.yt-native-reception .o_form_sheet{width:calc(100% - 12px);padding:10px}.yt-native-reception .yt-rec-native-grid{grid-template-columns:minmax(0,1fr)}.yt-native-reception .yt-rec-native-col:last-child{grid-column:auto}.yt-native-reception .yt-rec-step{flex-basis:90px}.yt-native-reception .yt-rec-native-card>.o_group{margin:8px}}
