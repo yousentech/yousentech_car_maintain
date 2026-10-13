@@ -44,7 +44,7 @@
   <field name="name">yt.reception.order.native.form</field>
   <field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <form string="الاستقبال" create="false" class="yt-native-reception">
+   <form string="الاستقبال" class="yt-native-reception">
     <header>
      <button name="action_open_workshop" type="object" string="الانتقال إلى أمر العمل" class="btn-secondary" invisible="not id"/>
      
@@ -186,7 +186,7 @@
  <record id="view_reception_inspection_form" model="ir.ui.view">
   <field name="name">yt.reception.order.inspection.form</field><field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <form string="فحص السيارة" class="yt-native-reception yt-inspection-form">
+   <form string="فحص السيارة" create="false" class="yt-native-reception yt-inspection-form">
     <field name="company_id" invisible="1"/>
     <header>
      <button name="action_finish_inspection" type="object" string="اعتماد الفحص والمتابعة" class="btn-primary" invisible="inspection_state == 'done' or state != 'draft'"/>

@@ -4,7 +4,7 @@
   <field name="name">yt.reception.order.workshop.form</field>
   <field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <form string="أمر العمل" class="yt-native-reception yt-workshop-finance-form">
+   <form string="أمر العمل" create="false" class="yt-native-reception yt-workshop-finance-form">
     <header>
      <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="sale_order_id or state == 'cancelled' or not workshop_approved"/>
      <button name="action_open_sale_order" type="object" string="عرض أمر البيع" invisible="not sale_order_id"/>
