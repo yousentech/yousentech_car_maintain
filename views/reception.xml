@@ -188,10 +188,9 @@
    <form string="فحص السيارة" class="yt-native-reception yt-inspection-form">
     <field name="company_id" invisible="1"/>
     <header>
+     <button name="action_finish_inspection" type="object" string="اعتماد الفحص والمتابعة" class="btn-primary" invisible="inspection_state == 'done' or state != 'draft'"/>
      <button name="action_print_inspection" type="object" string="طباعة تقرير الفحص" icon="fa-print" class="btn-secondary"/>
      <button name="action_back_to_reception" type="object" string="السابق: الاستقبال" class="btn-secondary" icon="fa-arrow-right"/>
-     <button name="action_load_inspection_components" type="object" string="إضافة المكونات المفعّلة" class="btn-secondary" invisible="inspection_state == 'done' or state != 'draft'"/>
-     <button name="action_finish_inspection" type="object" string="اعتماد الفحص والمتابعة" class="btn-primary" invisible="inspection_state == 'done' or state != 'draft'"/>
      <button name="action_reopen_inspection" type="object" string="إعادة فتح الفحص" groups="base.group_system" invisible="inspection_state != 'done'"/>
      <field name="inspection_state" widget="statusbar" statusbar_visible="draft,done"/>
     </header>
