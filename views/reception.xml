@@ -139,7 +139,22 @@
   <field name="context">{'default_state':'draft'}</field>
  </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
- <menuitem id="menu_workshop_reception" name="أوامر العمل" parent="menu_workshop_root" action="action_reception_native" sequence="10"/>
+ <record id="action_workshop_start_reception" model="ir.actions.server">
+  <field name="name">بدء أمر عمل من الاستقبال</field>
+  <field name="model_id" ref="model_yt_reception_order"/>
+  <field name="state">code</field>
+  <field name="code">action = {
+    'type': 'ir.actions.act_window',
+    'name': 'الاستقبال - أمر عمل جديد',
+    'res_model': 'yt.reception.order',
+    'view_mode': 'form,tree',
+    'views': [(env.ref('yousentech_car_maintain.view_reception_order_form').id, 'form'),
+              (env.ref('yousentech_car_maintain.view_reception_order_tree').id, 'tree')],
+    'target': 'current',
+    'context': {'default_state': 'draft'},
+}</field>
+ </record>
+ <menuitem id="menu_workshop_reception" name="أوامر العمل" parent="menu_workshop_root" action="action_workshop_start_reception" sequence="10"/>
  <record id="view_inspection_category_tree" model="ir.ui.view"><field name="name">yt.inspection.category.tree</field><field name="model">yt.inspection.category</field><field name="arch" type="xml"><tree string="تصنيفات الفحص" default_order="sequence,id"><field name="sequence" widget="handle"/><field name="name" string="التصنيف"/><field name="service_product_id" string="الصنف الخدمي"/><field name="service_price" string="سعر الخدمة"/><field name="component_count" string="عدد المكونات"/><field name="active" string="نشط"/></tree></field></record>
  <record id="view_inspection_category_form" model="ir.ui.view">
   <field name="name">yt.inspection.category.form</field>
