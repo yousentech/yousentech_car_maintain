@@ -117,6 +117,13 @@ class ReceptionOrder(models.Model):
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     partner_id = fields.Many2one('res.partner', required=True)
     vehicle_id = fields.Many2one('yt.reception.vehicle', required=True)
+    # Read-only vehicle summary for the native reception form; no duplicated stored data.
+    vehicle_make_id = fields.Many2one(related='vehicle_id.make_id', readonly=True)
+    vehicle_model_id = fields.Many2one(related='vehicle_id.model_id', readonly=True)
+    vehicle_year = fields.Integer(related='vehicle_id.year', readonly=True)
+    vehicle_vin = fields.Char(related='vehicle_id.vin', readonly=True)
+    vehicle_color = fields.Char(related='vehicle_id.color', readonly=True)
+    vehicle_plate_country = fields.Char(related='vehicle_id.plate_country', readonly=True)
     arrival_at = fields.Datetime(required=True, default=fields.Datetime.now)
     odometer_in = fields.Float(required=True)
     odometer_out = fields.Float()

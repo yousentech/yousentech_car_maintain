@@ -64,16 +64,22 @@
       <div class="yt-rec-native-col yt-rec-col-intake">
        <div class="yt-rec-native-card yt-rec-card-intake">
         <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
-        <group>
-         <field name="arrival_at" string="تاريخ ووقت الدخول"/>
-         <field name="intake_method" string="طريقة الاستلام"/>
-         <field name="odometer_in" string="قراءة العداد عند الدخول"/>
-         <field name="odometer_out" string="قراءة العداد عند الخروج"/>
-         <field name="branch_id" string="الفرع"/>
-         <field name="advisor_id" string="الفني المستلم"/>
-         <field name="work_source" string="مصدر العمل"/>
-         <field name="warranty" string="إضافة ضمان"/>
-         <field name="reception_notes" string="ملاحظات الاستقبال" placeholder="ملاحظات الاستقبال..."/>
+        <group col="2" class="yt-rec-intake-fields">
+         <group>
+          <field name="arrival_at" string="تاريخ ووقت الدخول"/>
+          <field name="intake_method" string="طريقة الاستلام"/>
+          <field name="branch_id" string="الفرع"/>
+          <field name="advisor_id" string="الفني المستلم"/>
+         </group>
+         <group>
+          <field name="odometer_in" string="عداد الدخول"/>
+          <field name="odometer_out" string="عداد الخروج"/>
+          <field name="work_source" string="مصدر العمل"/>
+          <field name="warranty" string="إضافة ضمان"/>
+         </group>
+        </group>
+        <group class="yt-rec-notes-field" col="1">
+         <field name="reception_notes" string="ملاحظات الاستقبال" nolabel="1" placeholder="ملاحظات الاستقبال..."/>
         </group>
        </div>
       </div>
@@ -83,15 +89,30 @@
         <group>
          <field name="vehicle_id" string="السيارة" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/>
         </group>
-        <div class="alert alert-info" role="note">يمكن البحث عن سيارة، أو استخدام «إنشاء وتحرير» لفتح نموذج تسجيل السيارة القياسي.</div>
+        <div class="yt-rec-vehicle-details">
+         <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true"/> بيانات السيارة المختارة</div>
+         <group col="2">
+          <group>
+           <field name="vehicle_make_id" string="الشركة المصنعة" readonly="1"/>
+           <field name="vehicle_year" string="سنة الصنع" readonly="1"/>
+           <field name="vehicle_vin" string="رقم الشاصي" readonly="1"/>
+          </group>
+          <group>
+           <field name="vehicle_model_id" string="الموديل" readonly="1"/>
+           <field name="vehicle_color" string="اللون" readonly="1"/>
+           <field name="vehicle_plate_country" string="دولة اللوحة" readonly="1"/>
+          </group>
+         </group>
+         <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
+        </div>
        </div>
       </div>
       <div class="yt-rec-native-col yt-rec-col-customer">
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
-        <group>
+        <group class="yt-rec-customer-fields">
          <field name="partner_id" string="العميل" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/>
-         <field name="customer_source" string="مصدر العميل"/>
+         <field name="customer_source" string="مصدر العميل" placeholder="كيف تعرف العميل علينا؟"/>
         </group>
        </div>
        <div class="yt-rec-native-card yt-rec-internal-card">
