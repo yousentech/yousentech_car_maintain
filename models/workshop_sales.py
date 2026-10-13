@@ -198,27 +198,43 @@ class WorkshopSale(models.Model):
                         'allowed_company_ids': [self.company_id.id]},
         }
 
+    @api.depends(
+        'amount_total', 'advance_payment_ids',
+        'advance_payment_ids.state', 'advance_payment_ids.amount',
+        'advance_payment_ids.payment_type', 'advance_payment_ids.currency_id',
+        'sale_order_id.invoice_ids', 'sale_order_id.invoice_ids.state',
+        'sale_order_id.invoice_ids.amount_residual',
+    )
+    def _compute_workshop_collection(self):
+        for order in self:
+            remaining = order._workshop_remaining_to_collect()
+            order.workshop_collection_remaining = remaining
+            order.workshop_collection_complete = order.currency_id.is_zero(remaining)
+
     def _workshop_remaining_to_collect(self):
         self.ensure_one()
         self._compute_workshop_amounts()
-        payments = self.advance_payment_ids.filtered(
-            lambda p: p.state == 'posted' and p.company_id == self.company_id
-            and p.partner_id == self.partner_id)
-        received = sum(p.currency_id._convert(
-            p.amount, self.currency_id, self.company_id, p.date)
-            for p in payments.filtered(lambda p: p.payment_type == 'inbound'))
-        refunded = sum(p.currency_id._convert(
-            p.amount, self.currency_id, self.company_id, p.date)
-            for p in payments.filtered(lambda p: p.payment_type == 'outbound'))
         documents = self._workshop_financial_documents().filtered(
-            lambda m: m.state == 'posted')
+            lambda move: move.state == 'posted')
+        payments = self.advance_payment_ids
+        for move in documents:
+            payments |= move._get_reconciled_payments()
+        payments = payments.filtered(
+            lambda payment: payment.state == 'posted'
+            and payment.company_id == self.company_id
+            and payment.partner_id == self.partner_id)
+        received = sum(payment.currency_id._convert(
+            payment.amount, self.currency_id, self.company_id, payment.date)
+            for payment in payments.filtered(
+                lambda payment: payment.payment_type == 'inbound'))
+        refunded = sum(payment.currency_id._convert(
+            payment.amount, self.currency_id, self.company_id, payment.date)
+            for payment in payments.filtered(
+                lambda payment: payment.payment_type == 'outbound'))
         credited = sum(documents.filtered(
-            lambda m: m.move_type == 'out_refund').mapped('amount_total'))
-        ceiling = sum(documents.filtered(
-            lambda m: m.move_type == 'out_invoice').mapped('amount_total'))
-        if not ceiling:
-            ceiling = self.amount_total
-        return max(0.0, ceiling - credited - received + refunded)
+            lambda move: move.move_type == 'out_refund').mapped('amount_total'))
+        ceiling = max(0.0, self.amount_total - credited)
+        return max(0.0, ceiling - received + refunded)
 
     def action_open_workshop_payments(self):
         self.ensure_one()
@@ -274,6 +290,11 @@ class WorkshopSale(models.Model):
     discount_value = fields.Float(string='قيمة الخصم', digits='Product Price')
     service_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     parts_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
+    workshop_collection_remaining = fields.Monetary(
+        string='المتبقي للتحصيل', compute='_compute_workshop_collection',
+        currency_field='currency_id')
+    workshop_collection_complete = fields.Boolean(
+        string='اكتمل التحصيل', compute='_compute_workshop_collection')
     amount_before_discount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     amount_untaxed = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
     discount_amount = fields.Monetary(compute='_compute_workshop_amounts', currency_field='currency_id')
