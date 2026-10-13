@@ -377,9 +377,9 @@ class WorkshopSale(models.Model):
     @api.depends('sale_order_id.invoice_ids')
     def _compute_invoices(self):
         for order in self:
-            invoices = order.sale_order_id.invoice_ids.filtered(lambda m: m.move_type == 'out_invoice')
-            order.invoice_ids = invoices
-            order.invoice_count = len(invoices)
+            documents = order._workshop_financial_documents()
+            order.invoice_ids = documents
+            order.invoice_count = len(documents)
 
     @api.constrains('location_id', 'company_id')
     def _check_stock_location_company(self):
@@ -601,10 +601,10 @@ class WorkshopSale(models.Model):
 
     def action_open_workshop_invoices(self):
         self.ensure_one()
-        return {'type': 'ir.actions.act_window', 'name': _('فواتير أمر العمل'),
+        return {'type': 'ir.actions.act_window', 'name': _('الفواتير والمرتجعات لأمر العمل'),
                 'res_model': 'account.move', 'view_mode': 'tree,form',
                 'domain': [('id', 'in', self.invoice_ids.ids)],
-                'context': {'default_move_type': 'out_invoice'}}
+                'context': {'create': False}}
 
     def action_open_workshop(self):
         self.ensure_one()
