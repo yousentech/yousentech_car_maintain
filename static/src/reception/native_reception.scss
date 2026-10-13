@@ -71,3 +71,25 @@
 .yt-native-reception .yt-rec-vehicle-details{margin:0 18px 18px;padding:14px}
 .yt-native-reception .yt-rec-notes-field textarea,.yt-native-reception .yt-rec-internal-card textarea{min-height:90px}
 @media(max-width:700px){.yt-native-reception .yt-rec-native-card>.o_group{margin:14px 12px}}
+
+/* Native form card field layout, inspired by the booking module: labels and widgets
+   are direct grid children. Odoo language settings own writing direction. */
+.yt-native-reception .yt-rec-form-rows{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:18px}
+.yt-native-reception .yt-rec-field-row{display:grid;grid-template-columns:minmax(90px,38%) minmax(0,1fr);align-items:center;gap:12px;min-width:0}
+.yt-native-reception .yt-rec-field-row>label{font-size:13px;font-weight:650;color:#293c60;line-height:1.5;margin:0}
+.yt-native-reception .yt-rec-field-row>.o_field_widget{min-width:0;width:100%!important;max-width:none!important}
+.yt-native-reception .yt-rec-field-row .o_input{width:100%!important;min-width:0}
+.yt-native-reception .yt-rec-primary-fields{padding-bottom:12px}
+.yt-native-reception .yt-rec-vehicle-details{margin:0 18px 18px}
+.yt-native-reception .yt-rec-vehicle-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-top:10px}
+.yt-native-reception .yt-rec-summary-cell{min-width:0;display:flex;flex-direction:column;gap:4px}
+.yt-native-reception .yt-rec-summary-cell>label{font-size:12px;color:#6e7891}
+.yt-native-reception .yt-rec-summary-cell>.o_field_widget{width:100%;min-width:0}
+.yt-native-reception .yt-rec-textarea-block{padding:0 18px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.yt-native-reception .yt-rec-textarea-block>label{font-size:13px;font-weight:650;color:#293c60}
+.yt-native-reception .yt-rec-textarea-block>.o_field_widget{width:100%;max-width:none!important;min-width:0}
+.yt-native-reception .yt-rec-textarea-block textarea{width:100%!important;min-height:92px}
+.yt-native-reception .yt-rec-internal-card .yt-rec-textarea-block{padding-top:16px}
+.yt-native-reception .yt-rec-native-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+@media(max-width:1250px){.yt-native-reception .yt-rec-native-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.yt-native-reception .yt-rec-col-customer{grid-column:1/-1}}
+@media(max-width:760px){.yt-native-reception .yt-rec-native-grid{grid-template-columns:minmax(0,1fr)}.yt-native-reception .yt-rec-col-customer{grid-column:auto}.yt-native-reception .yt-rec-field-row{grid-template-columns:minmax(0,1fr);gap:5px}.yt-native-reception .yt-rec-form-rows{padding:14px}.yt-native-reception .yt-rec-vehicle-summary{grid-template-columns:minmax(0,1fr)}}
