@@ -53,29 +53,12 @@
      <div class="oe_title"><h1><field name="name" readonly="1" invisible="not name or name == '/'"/><span class="yt-rec-new-title" invisible="name and name != '/'">أمر عمل جديد</span></h1></div>
      <field name="company_id" string="الشركة" invisible="1"/>
      <div class="yt-rec-content-frame">
-     <div class="yt-rec-native-grid">
-      <div class="yt-rec-native-col yt-rec-col-customer">
+     <div class="yt-rec-native-grid yt-rec-two-card-grid">
+      <div class="yt-rec-native-col yt-rec-col-customer-intake">
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
-        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
+        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/></div><div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" placeholder="رقم الجوال" widget="phone"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
        </div>
-       <div class="yt-rec-native-card yt-rec-customer-notes-card">
-        <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
-        <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
-       </div>
-      </div>
-      <div class="yt-rec-native-col yt-rec-col-vehicle">
-       <div class="yt-rec-native-card yt-rec-card-vehicle">
-        <h3><i class="fa fa-car" aria-hidden="true"/> معلومات السيارة</h3>
-        <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/></div></div>
-        <div class="yt-rec-vehicle-details">
-         <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true"/> بيانات السيارة المختارة</div>
-         <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1"/></div></div>
-         <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
-        </div>
-       </div>
-      </div>
-      <div class="yt-rec-native-col yt-rec-col-intake">
        <div class="yt-rec-native-card yt-rec-card-intake">
         <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
         <div class="yt-rec-intake-fields yt-rec-form-rows">
@@ -91,6 +74,23 @@
         </div>
        </div>
       </div>
+      <div class="yt-rec-native-col yt-rec-col-vehicle">
+       <div class="yt-rec-native-card yt-rec-card-vehicle">
+        <h3><i class="fa fa-car" aria-hidden="true"/> معلومات السيارة</h3>
+        <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/></div></div>
+        <div class="yt-rec-vehicle-details">
+         <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true"/> بيانات السيارة المختارة</div>
+         <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1"/></div></div>
+         <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="yt-rec-notes-full">
+       <div class="yt-rec-native-card yt-rec-customer-notes-card">
+        <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
+        <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
+       </div>
      </div>
      <div class="yt-rec-native-bottom">
       <details class="yt-rec-native-card yt-rec-card-complaints"><summary><i class="fa fa-comments-o" aria-hidden="true"/> شكاوى العميل (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
