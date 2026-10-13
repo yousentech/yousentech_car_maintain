@@ -90,16 +90,6 @@
          <div class="yt-rec-field-row yt-rec-warranty-row"><label for="warranty" string="إضافة ضمان"/><field name="warranty" nolabel="1"/></div>
         </div>
        </div>
-       <div class="yt-rec-native-card yt-rec-other-card">
-        <h3><i class="fa fa-sliders" aria-hidden="true"/> بيانات أخرى</h3>
-        <div class="yt-rec-form-rows">
-         <div class="yt-rec-field-pair">
-          <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1"/></div>
-          <div class="yt-rec-field-row"><label for="advisor_id" string="المستخدم"/><field name="advisor_id" nolabel="1"/></div>
-         </div>
-        </div>
-        <div class="yt-rec-textarea-block"><label for="internal_notes" string="ملاحظات داخلية"/><field name="internal_notes" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></div>
-       </div>
       </div>
      </div>
      <div class="yt-rec-native-bottom">
@@ -114,6 +104,17 @@
        </field>
        <group><field name="no_parts_needed" string="أمر العمل لا يحتاج قطع"/></group>
       </details>
+      <div class="yt-rec-native-card yt-rec-other-card">
+        <h3><i class="fa fa-sliders" aria-hidden="true"/> بيانات أخرى</h3>
+        <div class="yt-rec-form-rows">
+         <div class="yt-rec-field-pair">
+          <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1"/></div>
+          <div class="yt-rec-field-row"><label for="advisor_id" string="المستخدم"/><field name="advisor_id" nolabel="1" readonly="1"/></div>
+         </div>
+        </div>
+        <div class="yt-rec-textarea-block"><label for="internal_notes" string="ملاحظات داخلية"/><field name="internal_notes" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></div>
+       </div>
+
      </div>
      </div>
     </sheet>
