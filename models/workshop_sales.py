@@ -635,19 +635,57 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
     payment_date = fields.Date(string='تاريخ الدفعة', default=fields.Date.context_today, required=True)
     memo = fields.Char(string='البيان')
 
+    def _customer_payment_journals(self):
+        self.ensure_one()
+        company = self.company_id
+        journals = self.env['account.journal']
+        if not company:
+            return journals
+        user_rules = self.env.user.journals_ids.filtered(
+            lambda row: row.company_id == company and row.journal_type == 'payment_customer')
+        configured = user_rules.mapped('allowed_journals')
+        if configured:
+            journals = configured
+        elif company.allowed_payment_sale_journals:
+            journals = company.allowed_payment_sale_journals
+        else:
+            journals = journals.search([
+                ('company_id', '=', company.id),
+                ('type', 'in', ('bank', 'cash'))])
+        return journals.filtered(
+            lambda journal: journal.company_id == company and journal.type in ('bank', 'cash'))
+
+    def _customer_default_payment_journal(self):
+        self.ensure_one()
+        company = self.company_id
+        if not company:
+            return self.env['account.journal']
+        rules = self.env.user.journals_ids.filtered(
+            lambda row: row.company_id == company and row.journal_type == 'payment_customer')
+        allowed = self._customer_payment_journals()
+        user_default = rules.mapped('default_journal_id')
+        if user_default:
+            if len(user_default) != 1 or user_default not in allowed:
+                raise ValidationError(_('دفتر تحصيل العملاء الافتراضي للمستخدم غير مسموح في شركة أمر العمل.'))
+            return user_default
+        company_default = company.payment_sale_journal_id
+        if company_default:
+            if company_default not in allowed:
+                raise ValidationError(_('دفتر تحصيل العملاء الافتراضي للشركة غير مسموح.'))
+            return company_default
+        return allowed[:1] if len(allowed) == 1 else self.env['account.journal']
+
     @api.depends('company_id')
     def _compute_allowed_journals(self):
         for wizard in self:
-            wizard.allowed_journal_ids = self.env['account.journal'].search([
-                ('company_id', '=', wizard.company_id.id),
-                ('type', 'in', ('bank', 'cash'))]) if wizard.company_id else False
+            wizard.allowed_journal_ids = wizard._customer_payment_journals()
 
     @api.onchange('order_id')
     def _onchange_order_journal(self):
         for wizard in self:
-            allowed = wizard.allowed_journal_ids
+            allowed = wizard._customer_payment_journals()
             if wizard.journal_id not in allowed:
-                wizard.journal_id = allowed[:1] if len(allowed) == 1 else False
+                wizard.journal_id = wizard._customer_default_payment_journal()
 
     @api.depends('journal_id')
     def _compute_available_payment_methods(self):
@@ -668,8 +706,8 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
             raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
         if self.amount <= 0:
             raise ValidationError(_('مبلغ الدفعة يجب أن يكون أكبر من صفر.'))
-        if self.journal_id not in self.allowed_journal_ids:
-            raise ValidationError(_('الصندوق أو البنك غير مسموح به لشركة أمر العمل.'))
+        if self.journal_id not in self._customer_payment_journals():
+            raise ValidationError(_('الصندوق أو البنك غير مسموح به للمستخدم في شركة أمر العمل.'))
         method = self.payment_method_line_id
         if not method or method not in self.journal_id.inbound_payment_method_line_ids:
             raise ValidationError(_('اختر طريقة دفع واردة صالحة للصندوق أو البنك المحدد.'))
