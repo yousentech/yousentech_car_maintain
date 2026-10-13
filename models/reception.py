@@ -127,7 +127,7 @@ class ReceptionOrder(models.Model):
     arrival_at = fields.Datetime(required=True, default=fields.Datetime.now)
     odometer_in = fields.Float(required=True)
     odometer_out = fields.Float()
-    branch_id = fields.Many2one('res.company', string='الفرع')
+    branch_id = fields.Many2one('res.company', string='الفرع', default=lambda self: self.env.company, readonly=True, required=True)
     advisor_id = fields.Many2one('res.users', default=lambda self: self.env.user)
     reception_notes = fields.Text()
     internal_notes = fields.Text(groups='base.group_user')
