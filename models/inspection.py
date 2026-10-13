@@ -212,7 +212,8 @@ class ReceptionInspection(models.Model):
                 raise ValidationError(_('يجب فحص المكونات الإلزامية: %s') % ', '.join(unchecked.mapped('component_name')))
             order._sync_inspection_services()
             order.inspection_state = 'done'
-        return True
+        self.ensure_one()
+        return self.action_open_workshop()
 
     def _sync_inspection_services(self):
         for order in self:
