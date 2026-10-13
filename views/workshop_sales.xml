@@ -234,7 +234,9 @@
      <field name="company_id" invisible="1"/>
      <field name="partner_id" readonly="1"/>
      <field name="currency_id" invisible="1"/>
+     <field name="available_payment_method_line_ids" invisible="1"/>
      <field name="journal_id" options="{'no_create': True}"/>
+     <field name="payment_method_line_id" options="{'no_create': True, 'no_create_edit': True}"/>
      <field name="amount"/>
      <field name="payment_date"/>
      <field name="memo"/>
