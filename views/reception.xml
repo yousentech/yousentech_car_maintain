@@ -166,7 +166,7 @@
         <h3><i class="fa fa-wrench" aria-hidden="true"/> معلومات الفحص</h3>
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
-          <div class="yt-rec-field-row"><label for="inspector_id" string="فني الفحص"/><field name="inspector_id" nolabel="1" domain="[('is_workshop_technician','=',True)]" options="{'no_create': True, 'no_create_edit': True}" readonly="inspection_state == 'done'"/></div>
+          <div class="yt-rec-field-row"><label for="inspection_employee_id" string="فني الفحص"/><field name="inspection_employee_id" nolabel="1" domain="[('is_workshop_technician','=',True)]" options="{'no_create': True, 'no_create_edit': True}" readonly="inspection_state == 'done'"/></div>
           <div class="yt-rec-field-row"><label for="inspection_at" string="تاريخ ووقت الفحص"/><field name="inspection_at" nolabel="1" readonly="inspection_state == 'done'"/></div>
          </div>
          <div class="yt-rec-field-row"><label for="inspection_location" string="مكان الفحص"/><field name="inspection_location" nolabel="1" readonly="inspection_state == 'done'"/></div>
