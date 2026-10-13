@@ -151,7 +151,7 @@ class WorkshopSale(models.Model):
                 raise UserError(_('إعادة الفتح متاحة لأوامر العمل الملغاة فقط.'))
             order.write({'state': 'draft'})
             order.with_context(workshop_internal_chatter_update=True).message_post(body=_('تمت إعادة فتح أمر العمل مع الاحتفاظ بالمستندات المالية السابقة.'))
-        return True
+        return {'type': 'ir.actions.client', 'tag': 'reload'}
 
     def action_create_workshop_credit_note(self):
         self.ensure_one()
@@ -812,4 +812,4 @@ class WorkshopCancelWizard(models.TransientModel):
         order.write({'state': 'cancelled'})
         order.with_context(workshop_internal_chatter_update=True).message_post(
             body=_('تم إلغاء أمر العمل. السبب: %s') % self.reason)
-        return {'type': 'ir.actions.act_window_close'}
+        return {'type': 'ir.actions.client', 'tag': 'reload'}
