@@ -160,17 +160,29 @@
      <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
      <field name="state" invisible="1"/>
      <div class="yt-rec-content-frame">
-      <div class="yt-rec-native-grid yt-rec-two-card-grid">
+      <div class="yt-rec-native-grid yt-rec-two-card-grid yt-inspection-top">
        <div class="yt-rec-native-card yt-rec-card-intake">
         <h3><i class="fa fa-wrench" aria-hidden="true"/> معلومات الفحص</h3>
-        <group col="2"><field name="inspection_at" string="تاريخ ووقت الفحص" readonly="inspection_state == 'done'"/><field name="inspector_id" string="فني الفحص" readonly="inspection_state == 'done'"/><field name="inspection_location" string="مكان الفحص" readonly="inspection_state == 'done'"/></group>
+        <div class="yt-rec-form-rows">
+         <div class="yt-rec-field-pair">
+          <div class="yt-rec-field-row"><label for="inspector_id" string="فني الفحص"/><field name="inspector_id" nolabel="1" readonly="inspection_state == 'done'"/></div>
+          <div class="yt-rec-field-row"><label for="inspection_at" string="تاريخ ووقت الفحص"/><field name="inspection_at" nolabel="1" readonly="inspection_state == 'done'"/></div>
+         </div>
+         <div class="yt-rec-field-row"><label for="inspection_location" string="مكان الفحص"/><field name="inspection_location" nolabel="1" readonly="inspection_state == 'done'"/></div>
+        </div>
        </div>
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-car" aria-hidden="true"/> السيارة والعميل</h3>
-        <group col="2"><field name="partner_id" string="العميل" readonly="1"/><field name="vehicle_id" string="السيارة" readonly="1"/><field name="odometer_in" string="عداد الدخول" readonly="1"/></group>
+        <div class="yt-rec-form-rows">
+         <div class="yt-rec-field-pair">
+          <div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" readonly="1"/></div>
+          <div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" readonly="1"/></div>
+         </div>
+         <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1" readonly="1"/></div>
+        </div>
        </div>
       </div>
-      <div class="yt-rec-native-card yt-rec-card-vehicle">
+            <div class="yt-rec-native-card yt-rec-card-vehicle">
        <h3><i class="fa fa-check-square-o" aria-hidden="true"/> فحص مكونات السيارة</h3>
        <p class="text-muted">أضف مكونات من الإعدادات أو مباشرة من الجدول. المكونات الإلزامية يجب فحصها قبل الاعتماد.</p>
        <field name="inspection_line_ids" nolabel="1" readonly="inspection_state == 'done' or state != 'draft'">

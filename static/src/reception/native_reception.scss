@@ -283,3 +283,18 @@
 .yt-native-reception .yt-rec-card-vehicle .yt-rec-primary-fields>.yt-rec-field-row>.o_field_many2one:focus-within{
  border-color:#7064e7!important;box-shadow:0 0 0 3px rgba(112,100,231,.1)!important;
 }
+
+/* Inspection top cards reuse reception's paired label-above-field design. */
+.yt-native-reception.yt-inspection-form .yt-inspection-top{margin-bottom:14px;gap:14px}
+.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-form-rows{padding:14px;display:flex;flex-direction:column;gap:12px}
+.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-row{display:flex;flex-direction:column;align-items:stretch;gap:6px;min-width:0}
+.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-row>label{display:block;width:100%;margin:0;min-height:20px;font-size:12px;font-weight:650}
+.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-row>.o_field_widget{display:block;width:100%!important;max-width:none!important;min-width:0;margin:0!important}
+.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-row .o_input{width:100%!important;min-height:38px;border:1px solid #d2def5;border-radius:8px}
+.yt-native-reception.yt-inspection-form .yt-rec-content-frame>.yt-rec-native-card{margin-bottom:14px}
+.yt-native-reception.yt-inspection-form .yt-rec-content-frame>.yt-rec-native-card>.o_field_widget{display:block;width:100%;padding:12px 14px 16px;max-width:none;overflow-x:auto}
+.yt-native-reception.yt-inspection-form .yt-rec-content-frame>.yt-rec-native-grid:last-child{gap:14px}
+.yt-native-reception.yt-inspection-form .yt-rec-content-frame>.yt-rec-native-grid:last-child .o_field_widget{display:block;padding:14px;width:100%;max-width:none}
+.yt-native-reception.yt-inspection-form .yt-rec-content-frame textarea{width:100%!important;min-height:88px;border:1px solid #d2def5;border-radius:8px}
+@media(max-width:550px){.yt-native-reception.yt-inspection-form .yt-inspection-top .yt-rec-field-pair{grid-template-columns:minmax(0,1fr)}}
