@@ -715,6 +715,8 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
             raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
         if self.amount <= 0:
             raise ValidationError(_('مبلغ الدفعة يجب أن يكون أكبر من صفر.'))
+        if self.currency_id.compare_amounts(self.amount, order._workshop_remaining_to_collect()) > 0:
+            raise ValidationError(_('مبلغ الدفعة يتجاوز المتبقي من أمر العمل.'))
         if self.journal_id not in self._customer_payment_journals():
             raise ValidationError(_('الصندوق أو البنك غير مسموح به للمستخدم في شركة أمر العمل.'))
         method = self.payment_method_line_id
