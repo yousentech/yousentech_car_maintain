@@ -230,3 +230,14 @@
 .yt-native-reception .yt-rec-two-card-grid .yt-rec-card-vehicle .yt-rec-primary-fields .o_input{
  width:100%!important;max-width:100%!important;box-sizing:border-box;
 }
+
+/* Primary selectors: remove the residual left inset only; keep the RTL right edge. */
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-customer .yt-rec-customer-fields>.yt-rec-field-row:first-child,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-vehicle .yt-rec-primary-fields>.yt-rec-field-row{
+ margin-inline-start:0!important;margin-inline-end:0!important;
+}
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-customer .yt-rec-customer-fields>.yt-rec-field-row:first-child>.o_field_widget,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-vehicle .yt-rec-primary-fields>.yt-rec-field-row>.o_field_widget{
+ width:calc(100% + 14px)!important;max-width:none!important;
+ margin-inline-end:-14px!important;
+}
