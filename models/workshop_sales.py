@@ -183,16 +183,33 @@ class WorkshopSale(models.Model):
     def action_register_workshop_payment(self):
         self.ensure_one()
         if self.state == 'cancelled':
-            raise UserError(_('لا يمكن تسجيل دفعة لأمر عمل ملغي.'))
+            raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
+        invoices = self._workshop_financial_documents().filtered(
+            lambda m: m.state == 'posted' and m.move_type == 'out_invoice'
+            and m.amount_residual > 0 and m.company_id == self.company_id)
+        if invoices:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _('تسجيل دفعة'),
+                'res_model': 'account.payment.register',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'active_model': 'account.move',
+                    'active_ids': invoices.ids,
+                    'allowed_company_ids': [self.company_id.id],
+                },
+            }
+        if self._workshop_financial_documents().filtered(
+                lambda m: m.state == 'posted' and m.move_type == 'out_invoice'):
+            raise UserError(_('لا توجد فاتورة مرحلة بمبلغ مستحق.'))
         return {
             'type': 'ir.actions.act_window',
             'name': _('تسجيل دفعة مقدمة'),
             'res_model': 'yt.workshop.advance.payment.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'context': {'default_order_id': self.id,
-                        'default_company_id': self.company_id.id,
-                        'default_partner_id': self.partner_id.id},
+            'context': {'default_order_id': self.id},
         }
 
     def action_open_workshop_payments(self):
