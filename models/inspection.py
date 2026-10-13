@@ -82,7 +82,8 @@ class ReceptionInspection(models.Model):
         ('draft', 'مسودة'), ('done', 'مكتمل')
     ], default='draft', required=True, copy=False, tracking=True)
     inspection_at = fields.Datetime(default=fields.Datetime.now, copy=False)
-    inspector_id = fields.Many2one('hr.employee', string='فني الفحص', domain="[('is_workshop_technician', '=', True)]")
+    inspector_id = fields.Many2one('res.users', string='فني الفحص السابق', readonly=True)
+    inspection_employee_id = fields.Many2one('hr.employee', string='فني الفحص', domain="[('is_workshop_technician', '=', True)]")
     inspection_category_ids = fields.Many2many('yt.inspection.category', string='تصنيفات الفحص')
     inspection_location = fields.Selection([
         ('workshop', 'داخل الورشة'), ('outside', 'خارج الورشة')
@@ -134,9 +135,9 @@ class ReceptionInspection(models.Model):
                 raise UserError(_('لا يمكن اعتماد فحص أمر عمل ملغي.'))
             if order.inspection_state == 'done':
                 continue
-            if order.inspector_id and not order.inspector_id.is_workshop_technician:
+            if order.inspection_employee_id and not order.inspection_employee_id.is_workshop_technician:
                 raise ValidationError(_('فني الفحص يجب أن يكون موظفاً مؤشراً كفني ورشة.'))
-            if not order.inspector_id or not order.inspection_at:
+            if not order.inspection_employee_id or not order.inspection_at:
                 raise ValidationError(_('فني الفحص وتاريخ الفحص مطلوبان.'))
             if not order.inspection_category_ids:
                 raise ValidationError(_('اختر تصنيف فحص واحداً على الأقل.'))
