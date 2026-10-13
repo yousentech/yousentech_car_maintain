@@ -115,14 +115,12 @@
         <div class="yt-wo-card-content">
          <div class="yt-wo-field"><label for="location_id" string="موقع قطع الغيار"/><field name="location_id" nolabel="1" options="{'no_create': True}" readonly="sale_order_id"/></div>
          <div class="yt-wo-field"><label for="sale_order_id" string="أمر البيع"/><field name="sale_order_id" nolabel="1" readonly="1"/></div>
-         <div class="yt-wo-field"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1" readonly="1"/></div>
         </div>
        </details>
       </div>
       <details class="yt-rec-native-card yt-rec-other-card yt-wo-extra-bottom">
        <summary><i class="fa fa-sliders"/> بيانات أخرى <i class="fa fa-chevron-down yt-rec-toggle-icon"/></summary>
        <div class="yt-wo-extra-body">
-        <h4>معلومات الاستقبال</h4>
        <div class="yt-rec-native-card yt-rec-card-intake">
         <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
         <div class="yt-rec-intake-fields yt-rec-form-rows">
@@ -157,7 +155,6 @@
       </details>
 
       <div class="yt-rec-native-card yt-rec-other-details">
-        <summary><i class="fa fa-sliders" aria-hidden="true"/> بيانات أخرى<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1"/></div>
@@ -172,6 +169,9 @@
     </sheet>
    </form>
   </field>
+ </record>
+ <record id="action_reception_native_form_view" model="ir.actions.act_window.view">
+  <field name="view_id" ref="view_reception_workshop_form"/>
  </record>
  <record id="action_workshop_orders" model="ir.actions.act_window">
   <field name="name">أوامر العمل</field>
