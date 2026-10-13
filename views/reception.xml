@@ -64,45 +64,26 @@
       <div class="yt-rec-native-col yt-rec-col-intake">
        <div class="yt-rec-native-card yt-rec-card-intake">
         <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
-        <group col="2" class="yt-rec-intake-fields">
-         <group>
-          <field name="arrival_at" string="تاريخ ووقت الدخول"/>
-          <field name="intake_method" string="طريقة الاستلام"/>
-          <field name="branch_id" string="الفرع"/>
-          <field name="advisor_id" string="الفني المستلم"/>
-         </group>
-         <group>
-          <field name="odometer_in" string="عداد الدخول"/>
-          <field name="odometer_out" string="عداد الخروج"/>
-          <field name="work_source" string="مصدر العمل"/>
-          <field name="warranty" string="إضافة ضمان"/>
-         </group>
-        </group>
-        <group class="yt-rec-notes-field" col="1">
-         <field name="reception_notes" string="ملاحظات الاستقبال" nolabel="1" placeholder="ملاحظات الاستقبال..."/>
-        </group>
+        <div class="yt-rec-intake-fields yt-rec-form-rows">
+         <div class="yt-rec-field-row"><label for="arrival_at" string="تاريخ ووقت الدخول"/><field name="arrival_at" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="intake_method" string="طريقة الاستلام"/><field name="intake_method" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="advisor_id" string="الفني المستلم"/><field name="advisor_id" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="odometer_out" string="عداد الخروج"/><field name="odometer_out" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="work_source" string="مصدر العمل"/><field name="work_source" nolabel="1"/></div>
+         <div class="yt-rec-field-row"><label for="warranty" string="إضافة ضمان"/><field name="warranty" nolabel="1"/></div>
+        </div>
+        <div class="yt-rec-notes-field yt-rec-textarea-block"><label for="reception_notes" string="ملاحظات الاستقبال"/><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
        </div>
       </div>
       <div class="yt-rec-native-col yt-rec-col-vehicle">
        <div class="yt-rec-native-card yt-rec-card-vehicle">
         <h3><i class="fa fa-car" aria-hidden="true"/> معلومات السيارة</h3>
-        <group>
-         <field name="vehicle_id" string="السيارة" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/>
-        </group>
+        <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/></div></div>
         <div class="yt-rec-vehicle-details">
          <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true"/> بيانات السيارة المختارة</div>
-         <group col="2">
-          <group>
-           <field name="vehicle_make_id" string="الشركة المصنعة" readonly="1"/>
-           <field name="vehicle_year" string="سنة الصنع" readonly="1"/>
-           <field name="vehicle_vin" string="رقم الشاصي" readonly="1"/>
-          </group>
-          <group>
-           <field name="vehicle_model_id" string="الموديل" readonly="1"/>
-           <field name="vehicle_color" string="اللون" readonly="1"/>
-           <field name="vehicle_plate_country" string="دولة اللوحة" readonly="1"/>
-          </group>
-         </group>
+         <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1"/></div></div>
          <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
         </div>
        </div>
@@ -110,14 +91,11 @@
       <div class="yt-rec-native-col yt-rec-col-customer">
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
-        <group class="yt-rec-customer-fields">
-         <field name="partner_id" string="العميل" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/>
-         <field name="customer_source" string="مصدر العميل" placeholder="كيف تعرف العميل علينا؟"/>
-        </group>
+        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
        </div>
        <div class="yt-rec-native-card yt-rec-internal-card">
         <h3><i class="fa fa-sticky-note-o" aria-hidden="true"/> ملاحظات داخلية</h3>
-        <group><field name="internal_notes" string="ملاحظات داخلية" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></group>
+        <div class="yt-rec-textarea-block"><field name="internal_notes" string="ملاحظات داخلية" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></div>
        </div>
       </div>
      </div>
