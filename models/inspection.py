@@ -89,7 +89,7 @@ class ReceptionInspection(models.Model):
     ], default='draft', required=True, copy=False, tracking=True)
     inspection_at = fields.Datetime(default=fields.Datetime.now, copy=False)
     inspector_id = fields.Many2one('res.users', string='فني الفحص السابق', readonly=True)
-    inspection_employee_id = fields.Many2one('hr.employee', string='فني الفحص', domain="[('is_workshop_technician', '=', True)]")
+    inspection_employee_id = fields.Many2one('hr.employee', string='فني الفحص', domain="[('is_workshop_technician', '=', True), ('company_id', '=', company_id)]")
     inspection_category_ids = fields.Many2many('yt.inspection.category', string='تصنيفات الفحص')
     inspection_location = fields.Selection([
         ('workshop', 'داخل الورشة'), ('outside', 'خارج الورشة')
@@ -97,6 +97,19 @@ class ReceptionInspection(models.Model):
     inspection_general_notes = fields.Text()
     inspection_exterior_notes = fields.Text()
     inspection_line_ids = fields.One2many('yt.inspection.line', 'order_id', string='مكونات الفحص', copy=False)
+
+    @api.onchange('company_id')
+    def _onchange_inspection_company(self):
+        for order in self:
+            if order.inspection_employee_id and order.inspection_employee_id.company_id != order.company_id:
+                order.inspection_employee_id = False
+
+    @api.constrains('inspection_employee_id', 'company_id')
+    def _check_inspection_employee_company(self):
+        for order in self:
+            employee = order.inspection_employee_id
+            if employee and (not employee.is_workshop_technician or employee.company_id != order.company_id):
+                raise ValidationError(_('فني الفحص يجب أن يكون فني ورشة تابعاً لشركة أمر العمل.'))
 
     @api.onchange('inspection_category_ids')
     def _onchange_inspection_categories(self):
@@ -141,8 +154,8 @@ class ReceptionInspection(models.Model):
                 raise UserError(_('لا يمكن اعتماد فحص أمر عمل ملغي.'))
             if order.inspection_state == 'done':
                 continue
-            if order.inspection_employee_id and not order.inspection_employee_id.is_workshop_technician:
-                raise ValidationError(_('فني الفحص يجب أن يكون موظفاً مؤشراً كفني ورشة.'))
+            if order.inspection_employee_id and (not order.inspection_employee_id.is_workshop_technician or order.inspection_employee_id.company_id != order.company_id):
+                raise ValidationError(_('فني الفحص يجب أن يكون فني ورشة تابعاً لشركة أمر العمل.'))
             if not order.inspection_employee_id or not order.inspection_at:
                 raise ValidationError(_('فني الفحص وتاريخ الفحص مطلوبان.'))
             if not order.inspection_category_ids:
