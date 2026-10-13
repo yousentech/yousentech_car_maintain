@@ -450,6 +450,40 @@ class WorkshopSale(models.Model):
             reserved = sum(quants.mapped('reserved_quantity'))
             product.validate_product_quentity(qty, reserved, warehouse.id, location.ids)
 
+    def _workshop_sale_journals(self):
+        """Use the configured sales-journal precedence for the current user/company."""
+        self.ensure_one()
+        company = self.company_id
+        if company not in self.env.companies:
+            raise UserError(_('ليس لديك صلاحية على شركة أمر العمل.'))
+        user = self.env.user
+        config = user.journals_ids.filtered(
+            lambda row: row.company_id == company and row.journal_type == 'sale')
+        configured = config.mapped('allowed_journals').filtered(
+            lambda journal: journal.company_id == company and journal.type == 'sale')
+        if not configured:
+            configured = company.allowed_sale_journals.filtered(
+                lambda journal: journal.company_id == company and journal.type == 'sale')
+        if not configured:
+            configured = self.env['account.journal'].search([
+                ('company_id', '=', company.id), ('type', '=', 'sale')])
+        return configured
+
+    def _workshop_default_sale_journal(self):
+        self.ensure_one()
+        allowed = self._workshop_sale_journals()
+        if not allowed:
+            raise UserError(_('لا توجد يومية مبيعات متاحة لشركة أمر العمل.'))
+        config = self.env.user.journals_ids.filtered(
+            lambda row: row.company_id == self.company_id and row.journal_type == 'sale')
+        for candidate in (config.mapped('default_journal_id'), self.company_id.sale_journal_id):
+            journal = candidate.filtered(lambda j: j in allowed)
+            if journal:
+                return journal[:1]
+        if len(allowed) == 1:
+            return allowed
+        raise UserError(_('توجد عدة يوميات مبيعات مسموحة دون يومية افتراضية صالحة. اضبط الافتراضي للمستخدم أو الشركة أولاً.'))
+
     def action_create_sale_and_invoice(self):
         self.ensure_one()
         self.check_access_rights('write')
@@ -512,9 +546,17 @@ class WorkshopSale(models.Model):
         invoiceable = so.order_line.filtered(lambda l: l.qty_to_invoice > 0)
         if len(invoiceable) != len(so.order_line.filtered(lambda l: not l.display_type)):
             raise UserError(_('لا يمكن إصدار الفاتورة تلقائياً: توجد قطع تتطلب إثبات التسليم أولاً حسب سياسة فوترة الصنف. لم يتم إنشاء أمر بيع أو فاتورة.'))
-        invoices = so._create_invoices()
+        sale_journal = self._workshop_default_sale_journal()
+        invoices = so.with_context(default_journal_id=sale_journal.id)._create_invoices()
         if not invoices:
             raise UserError(_('لم تتوفر بنود قابلة للفوترة.'))
+        for invoice in invoices:
+            if invoice.company_id != self.company_id:
+                raise ValidationError(_('شركة الفاتورة لا تطابق شركة أمر العمل.'))
+            if invoice.journal_id != sale_journal:
+                if invoice.state != 'draft':
+                    raise ValidationError(_('لا يمكن تغيير يومية فاتورة مرحلة.'))
+                invoice.journal_id = sale_journal.id
         return self.action_open_sale_order()
 
     def _get_workshop_warehouse(self):
@@ -574,8 +616,10 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
     order_id = fields.Many2one('yt.reception.order', required=True, readonly=True)
     company_id = fields.Many2one('res.company', related='order_id.company_id', readonly=True)
     partner_id = fields.Many2one('res.partner', related='order_id.partner_id', readonly=True)
+    allowed_journal_ids = fields.Many2many(
+        'account.journal', compute='_compute_allowed_journals')
     journal_id = fields.Many2one('account.journal', string='الصندوق / البنك', required=True,
-        domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
+        domain="[('id', 'in', allowed_journal_ids)]")
     payment_method_line_id = fields.Many2one(
         'account.payment.method.line', string='طريقة الدفع', required=True,
         domain="[('id', 'in', available_payment_method_line_ids)]")
@@ -585,6 +629,20 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
     payment_date = fields.Date(string='تاريخ الدفعة', default=fields.Date.context_today, required=True)
     memo = fields.Char(string='البيان')
+
+    @api.depends('company_id')
+    def _compute_allowed_journals(self):
+        for wizard in self:
+            wizard.allowed_journal_ids = self.env['account.journal'].search([
+                ('company_id', '=', wizard.company_id.id),
+                ('type', 'in', ('bank', 'cash'))]) if wizard.company_id else False
+
+    @api.onchange('order_id')
+    def _onchange_order_journal(self):
+        for wizard in self:
+            allowed = wizard.allowed_journal_ids
+            if wizard.journal_id not in allowed:
+                wizard.journal_id = allowed[:1] if len(allowed) == 1 else False
 
     @api.depends('journal_id')
     def _compute_available_payment_methods(self):
@@ -605,8 +663,8 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
             raise UserError(_('لا يمكن تسجيل دفعة لأمر ملغي.'))
         if self.amount <= 0:
             raise ValidationError(_('مبلغ الدفعة يجب أن يكون أكبر من صفر.'))
-        if self.journal_id.company_id != order.company_id:
-            raise ValidationError(_('يجب اختيار صندوق أو بنك تابع لشركة أمر العمل.'))
+        if self.journal_id not in self.allowed_journal_ids:
+            raise ValidationError(_('الصندوق أو البنك غير مسموح به لشركة أمر العمل.'))
         method = self.payment_method_line_id
         if not method or method not in self.journal_id.inbound_payment_method_line_ids:
             raise ValidationError(_('اختر طريقة دفع واردة صالحة للصندوق أو البنك المحدد.'))
