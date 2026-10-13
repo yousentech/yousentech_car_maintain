@@ -1,1 +1,19 @@
-{'name':'YousenTech Workshop Reception V4','version':'17.0.4.1.0','category':'Services/Automotive','license':'LGPL-3','depends':['base','web','mail'],'data':['security/ir.model.access.csv','security/record_rules.xml','views/reception.xml'],'assets':{'web.assets_backend':['yousentech_car_maintain/static/src/reception/reception.js','yousentech_car_maintain/static/src/reception/reception.xml','yousentech_car_maintain/static/src/reception/reception.scss']},'installable':True,'application':True}
+{
+ 'name': 'YousenTech Workshop Reception V4',
+ 'version': '17.0.4.2.0',
+ 'category': 'Services/Automotive',
+ 'license': 'LGPL-3',
+ 'depends': ['base', 'web', 'mail'],
+ 'data': [
+  'security/ir.model.access.csv',
+  'security/record_rules.xml',
+  'views/reception.xml',
+ ],
+ 'assets': {
+  'web.assets_backend': [
+   'yousentech_car_maintain/static/src/reception/native_reception.scss',
+  ],
+ },
+ 'installable': True,
+ 'application': True,
+}
