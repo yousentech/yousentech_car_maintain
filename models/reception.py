@@ -116,6 +116,7 @@ class ReceptionOrder(models.Model):
     name = fields.Char(default='/', readonly=True, copy=False)
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     partner_id = fields.Many2one('res.partner', required=True)
+    partner_mobile = fields.Char(string='جوال العميل', related='partner_id.mobile', readonly=False)
     vehicle_id = fields.Many2one('yt.reception.vehicle', required=True)
     # Read-only vehicle summary for the native reception form; no duplicated stored data.
     vehicle_make_id = fields.Many2one(related='vehicle_id.make_id', readonly=True)
