@@ -354,3 +354,19 @@
 .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table td{padding:7px 10px!important;vertical-align:middle}
 .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table .o_input{min-height:32px;border:1px solid #d4ddf4;border-radius:6px}
 .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody tr:hover{background:#f7f8ff}
+
+/* Inspection result selector: compact visual choices, native Odoo RTL inherited. */
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .yt-inspection-category-picker{margin:8px 12px!important;padding:10px 12px!important;gap:5px!important}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .yt-inspection-picker-hint{font-size:11px;line-height:1.35}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .yt-inspection-lines-heading{margin-block:6px 8px}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table tbody td{padding:5px 9px!important;height:43px}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table thead th{padding:9px!important}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_selection_badge{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_selection_badge .o_selection_badge{margin:0!important;min-height:30px;padding:5px 9px!important;border-radius:7px!important;border:1px solid #d9e0ef;background:#f8faff;color:#67758d;font-size:12px;line-height:18px;box-shadow:none!important;white-space:nowrap}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_selection_badge .o_selection_badge[data-value="good"]{background:#e9f8ef;color:#17844b;border-color:#bfe8cf}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_selection_badge .o_selection_badge[data-value="follow_up"]{background:#fff5e7;color:#b36b0c;border-color:#f5dab1}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_selection_badge .o_selection_badge[data-value="bad"]{background:#fff0f1;color:#c33749;border-color:#f1c7ce}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_selection_badge .o_selection_badge.active{font-weight:750;outline:2px solid currentColor;outline-offset:-2px}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table th.o_list_record_remove,.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table td.o_list_record_remove{display:none!important}
+.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_one2many .o_field_x2many_list_row_add{display:none!important}
+@media(max-width:1100px){.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_field_one2many{overflow-x:auto}.yt-native-reception.yt-inspection-form .yt-rec-native-card:has(.yt-inspection-category-picker) .o_list_table{min-width:760px}}
