@@ -190,6 +190,9 @@ class ReceptionInspection(models.Model):
 
     def action_finish_inspection(self):
         for order in self:
+            if order._workshop_financial_documents().filtered(
+                    lambda move: move.move_type == 'out_invoice' and move.state != 'cancel'):
+                raise UserError(_('لا يمكن اعتماد فحص جديد بعد إصدار فاتورة. عالج الفاتورة أولاً.'))
             if order.state != 'draft':
                 raise UserError(_('لا يمكن اعتماد فحص أمر عمل ملغي.'))
             if order.inspection_state == 'done':
