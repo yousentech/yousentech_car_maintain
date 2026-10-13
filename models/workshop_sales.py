@@ -51,6 +51,116 @@ class WorkshopSale(models.Model):
 
     workshop_approved = fields.Boolean(string='أمر العمل معتمد', readonly=True, copy=False, tracking=True)
 
+    finance_invoice_ids = fields.Many2many(
+        'account.move', compute='_compute_workshop_finance',
+        string='الفواتير والإشعارات الدائنة')
+    finance_payment_ids = fields.Many2many(
+        'account.payment', compute='_compute_workshop_finance',
+        string='الدفعات')
+    finance_invoiced = fields.Monetary(compute='_compute_workshop_finance', currency_field='currency_id')
+    finance_credited = fields.Monetary(compute='_compute_workshop_finance', currency_field='currency_id')
+    finance_received = fields.Monetary(compute='_compute_workshop_finance', currency_field='currency_id')
+    finance_refunded = fields.Monetary(compute='_compute_workshop_finance', currency_field='currency_id')
+    finance_due = fields.Monetary(compute='_compute_workshop_finance', currency_field='currency_id')
+    finance_to_refund = fields.Monetary(compute='_compute_workshop_finance', currency_field='currency_id')
+    cancel_reason = fields.Text(string='سبب الإلغاء', readonly=True, copy=False)
+
+    def _workshop_financial_documents(self):
+        self.ensure_one()
+        sale = self.sale_order_id
+        invoices = sale.invoice_ids.filtered(
+            lambda move: move.move_type in ('out_invoice', 'out_refund'))
+        # Include credit notes created from the invoice reversal wizard even
+        # when the sale order invoice relation does not expose them.
+        refunds = self.env['account.move'].search([
+            ('reversed_entry_id', 'in', invoices.filtered(
+                lambda move: move.move_type == 'out_invoice').ids),
+            ('move_type', '=', 'out_refund'),
+            ('company_id', '=', self.company_id.id),
+        ]) if invoices else self.env['account.move']
+        return invoices | refunds
+
+    @api.depends('sale_order_id.invoice_ids', 'advance_payment_ids',
+                 'advance_payment_ids.state', 'advance_payment_ids.amount')
+    def _compute_workshop_finance(self):
+        for order in self:
+            moves = order._workshop_financial_documents()
+            posted = moves.filtered(lambda move: move.state == 'posted')
+            payments = order.advance_payment_ids
+            for move in posted:
+                payments |= move._get_reconciled_payments()
+            payments = payments.filtered(
+                lambda p: p.state == 'posted' and p.company_id == order.company_id
+                and p.partner_id == order.partner_id)
+            received = sum(
+                p.currency_id._convert(p.amount, order.currency_id,
+                    order.company_id, p.date)
+                for p in payments.filtered(lambda p: p.payment_type == 'inbound'))
+            refunded = sum(
+                p.currency_id._convert(p.amount, order.currency_id,
+                    order.company_id, p.date)
+                for p in payments.filtered(lambda p: p.payment_type == 'outbound'))
+            invoiced = sum(posted.filtered(
+                lambda move: move.move_type == 'out_invoice').mapped('amount_total'))
+            credited = sum(posted.filtered(
+                lambda move: move.move_type == 'out_refund').mapped('amount_total'))
+            balance = invoiced - credited - received + refunded
+            order.finance_invoice_ids = moves
+            order.finance_payment_ids = payments
+            order.finance_invoiced = invoiced
+            order.finance_credited = credited
+            order.finance_received = received
+            order.finance_refunded = refunded
+            order.finance_due = max(balance, 0)
+            order.finance_to_refund = max(-balance, 0)
+
+    def _check_finance_before_cancel(self):
+        for order in self:
+            moves = order._workshop_financial_documents()
+            if moves.filtered(lambda move: move.state == 'draft'):
+                raise UserError(_('لا يمكن إلغاء أمر العمل مع وجود فاتورة أو إشعار دائن مسودة. عالج المستندات أولاً.'))
+            order._compute_workshop_finance()
+            if not order.currency_id.is_zero(order.finance_invoiced - order.finance_credited):
+                raise UserError(_('لا يمكن الإلغاء قبل معالجة صافي الفواتير بإشعارات دائنة.'))
+            if not order.currency_id.is_zero(order.finance_received - order.finance_refunded):
+                raise UserError(_('لا يمكن الإلغاء قبل رد كامل المبالغ المقبوضة من العميل.'))
+            unsettled = moves.filtered(
+                lambda move: move.state == 'posted'
+                and not order.currency_id.is_zero(move.amount_residual))
+            if unsettled:
+                raise UserError(_('يجب تسوية الفواتير والإشعارات الدائنة المرحلة قبل الإلغاء.'))
+            if order.sale_order_id and order.sale_order_id.picking_ids.filtered(
+                lambda picking: picking.state == 'done'):
+                raise UserError(_('يوجد صرف مخزني منفذ؛ عالج مرتجع المخزون قبل إلغاء أمر العمل.'))
+
+    def action_cancel(self):
+        for order in self:
+            order._check_finance_before_cancel()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('إلغاء أمر العمل'),
+            'res_model': 'yt.workshop.cancel.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_order_id': self.ensure_one().id},
+        }
+
+    def action_create_workshop_credit_note(self):
+        self.ensure_one()
+        invoices = self._workshop_financial_documents().filtered(
+            lambda move: move.move_type == 'out_invoice' and move.state == 'posted')
+        if not invoices:
+            raise UserError(_('لا توجد فاتورة مرحلة لإنشاء إشعار دائن.'))
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('إنشاء إشعار دائن'),
+            'res_model': 'account.move.reversal',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_model': 'account.move', 'active_ids': invoices.ids,
+                        'default_reason': _('تسوية أمر العمل %s') % self.name},
+        }
+
     def action_approve_workshop(self):
         for order in self:
             if order.state == 'cancelled':
@@ -464,4 +574,19 @@ class WorkshopAdvancePaymentWizard(models.TransientModel):
         })
         payment.action_post()
         order.write({'advance_payment_ids': [(4, payment.id)]})
+        return {'type': 'ir.actions.act_window_close'}
+
+class WorkshopCancelWizard(models.TransientModel):
+    _name = 'yt.workshop.cancel.wizard'
+    _description = 'Workshop Cancellation Confirmation'
+
+    order_id = fields.Many2one('yt.reception.order', required=True, readonly=True)
+    reason = fields.Text(string='سبب الإلغاء', required=True)
+
+    def action_confirm_cancel(self):
+        self.ensure_one()
+        order = self.order_id
+        order._check_finance_before_cancel()
+        order.write({'state': 'cancelled', 'cancel_reason': self.reason})
+        order.message_post(body=_('تم إلغاء أمر العمل. السبب: %s') % self.reason)
         return {'type': 'ir.actions.act_window_close'}
