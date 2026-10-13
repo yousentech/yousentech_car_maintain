@@ -156,12 +156,16 @@ class WorkshopSale(models.Model):
     def _available_at_workshop_location(self, product):
         """Same company/location calculation for displayed stock and validation."""
         self.ensure_one()
-        if not self.location_id or not product or product.type != 'product':
+        if not product or product.detailed_type != 'product':
             return 0.0
-        return product.with_company(self.company_id).with_context(
-            location=self.location_id.id,
-            allowed_company_ids=[self.company_id.id],
-        ).free_qty
+        warehouse = self._get_workshop_warehouse()
+        location = self._workshop_source_location(warehouse)
+        quants = self.env['stock.quant'].with_company(self.company_id).search([
+            ('product_id', '=', product.id),
+            ('location_id', '=', location.id),
+            ('warehouse_id', '=', warehouse.id),
+        ])
+        return sum(quants.mapped('quantity')) - sum(quants.mapped('reserved_quantity'))
 
     @api.model
     def _workshop_default_warehouse(self, company):
@@ -175,25 +179,41 @@ class WorkshopSale(models.Model):
             raise UserError(_('المستودع الافتراضي غير مسموح للمستخدم.'))
         return warehouse
 
+    def _workshop_source_location(self, warehouse):
+        self.ensure_one()
+        config = self.env['res.user.inventory.config'].search([
+            ('user_id', '=', self.env.uid),
+            ('company_id', '=', self.company_id.id),
+            ('operation_type', '=', 'outgoing'),
+        ], limit=1)
+        picking_type = config.picking_type_id if config.picking_type_id and config.picking_type_id.warehouse_id == warehouse and config.picking_type_id.code == 'outgoing' else warehouse.out_type_id
+        return picking_type.default_location_src_id or warehouse.lot_stock_id
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('location_id'):
                 company = self.env['res.company'].browse(vals.get('company_id') or self.env.company.id)
-                vals['location_id'] = self._workshop_default_warehouse(company).lot_stock_id.id
+                warehouse = self._workshop_default_warehouse(company)
+                config = self.env['res.user.inventory.config'].search([
+                    ('user_id', '=', self.env.uid), ('company_id', '=', company.id),
+                    ('operation_type', '=', 'outgoing')], limit=1)
+                picking_type = config.picking_type_id if config.picking_type_id and config.picking_type_id.warehouse_id == warehouse and config.picking_type_id.code == 'outgoing' else warehouse.out_type_id
+                vals['location_id'] = (picking_type.default_location_src_id or warehouse.lot_stock_id).id
         return super().create(vals_list)
 
     @api.onchange('company_id')
     def _onchange_workshop_company_location(self):
         for order in self:
             if order.company_id:
-                order.location_id = order._workshop_default_warehouse(order.company_id).lot_stock_id
+                warehouse = order._workshop_default_warehouse(order.company_id)
+                order.location_id = order._workshop_source_location(warehouse)
 
     def _check_part_availability(self):
         self.ensure_one()
         warehouse = self._get_workshop_warehouse()
-        location = self.location_id or warehouse.lot_stock_id
-        if location != warehouse.lot_stock_id:
+        location = self._workshop_source_location(warehouse)
+        if self.location_id and self.location_id != location:
             raise UserError(_('موقع قطع الغيار يجب أن يطابق موقع صرف المستودع المعتمد.'))
         user = self.env.user
         policy = user.has_group('yousentech_inventory_minus_quantity.group_prevent_selling_negative_value')
@@ -228,12 +248,12 @@ class WorkshopSale(models.Model):
             raise UserError(_('ليس لديك صلاحية على شركة أمر العمل.'))
         warehouse = self._get_workshop_warehouse()
         if not self.location_id:
-            self.location_id = warehouse.lot_stock_id
+            self.location_id = self._workshop_source_location(warehouse)
         self._check_part_availability()
         # Sale confirmation sources inventory from the warehouse stock location.
         # Do not display stock from a different location as if it were saleable.
-        if self.sale_line_ids.filtered(lambda l: l.product_id.type == 'product') and self.location_id != warehouse.lot_stock_id:
-            raise UserError(_('موقع قطع الغيار (%s) لا يطابق موقع الصرف الأساسي للمستودع (%s). اختر موقع الصرف الصحيح قبل إنشاء أمر البيع، أو اضبط مسار المخزون للمستودع.') % (self.location_id.display_name, warehouse.lot_stock_id.display_name))
+        if self.sale_line_ids.filtered(lambda l: l.product_id.type == 'product') and self.location_id != self._workshop_source_location(warehouse):
+            raise UserError(_('موقع قطع الغيار (%s) لا يطابق موقع الصرف الأساسي للمستودع (%s). اختر موقع الصرف الصحيح قبل إنشاء أمر البيع، أو اضبط مسار المخزون للمستودع.') % (self.location_id.display_name, self._workshop_source_location(warehouse).display_name))
         lines = []
         untaxed = sum(self.sale_line_ids.mapped('line_subtotal'))
         discount = min(untaxed, untaxed * self.discount_value / 100.0 if self.discount_type == 'percent' else self.discount_value)
@@ -251,14 +271,21 @@ class WorkshopSale(models.Model):
                 'price_unit': line.price_unit * (1 - discount / untaxed) if untaxed else line.price_unit,
                 'tax_id': [(6, 0, taxes.ids)],
             }))
-        so = self.env['sale.order'].with_company(self.company_id).create({
+        so_vals = {
             'partner_id': self.partner_id.id,
             'company_id': self.company_id.id,
             'client_order_ref': self.name,
             'origin': self.name,
             'warehouse_id': warehouse.id,
             'order_line': lines,
-        })
+        }
+        if 'picking_type_id' in self.env['sale.order']._fields:
+            config = self.env['res.user.inventory.config'].search([
+                ('user_id', '=', self.env.uid), ('company_id', '=', self.company_id.id),
+                ('operation_type', '=', 'outgoing')], limit=1)
+            picking_type = config.picking_type_id if config.picking_type_id and config.picking_type_id.warehouse_id == warehouse and config.picking_type_id.code == 'outgoing' else warehouse.out_type_id
+            so_vals['picking_type_id'] = picking_type.id
+        so = self.env['sale.order'].with_company(self.company_id).create(so_vals)
         self.sale_order_id = so.id
         self.sale_line_ids.write({'sale_line_id': False})
         for source, target in zip(self.sale_line_ids, so.order_line.filtered(lambda l: not l.display_type)):
