@@ -18,7 +18,7 @@ export class ReceptionApp extends Component {
  async loadChoices(){
   try {
    const [customers,makes,models,branches,advisors,orders] = await Promise.all([
-    this.orm.searchRead("res.partner",[["name","!=",false]],["name","mobile","phone","email"],{limit:250}),
+    this.orm.searchRead("res.partner",[["name","!=",false]],["name","mobile","phone","email","city","country_id"],{limit:250}),
     this.orm.searchRead("yt.reception.make",[],["name"],{limit:250}),
     this.orm.searchRead("yt.reception.model",[],["name","make_id"],{limit:400}),
     this.orm.searchRead("res.company",[],["name"],{limit:100}),
@@ -111,7 +111,8 @@ export class ReceptionApp extends Component {
  call(){const p=this.phone();if(p)window.location.href="tel:"+p;}
  whatsapp(){const p=this.phone().replace(/\D/g,"");if(p)window.open("https://wa.me/"+p,"_blank","noopener,noreferrer");}
  async createPartner(){
-  await this.action.doAction({type:"ir.actions.act_window",res_model:"res.partner",views:[[false,"form"]],target:"new",context:{default_customer_rank:1}}, {onClose:async()=>{await this.loadChoices();}});
+  const existing=new Set(this.state.customers.map(p=>p.id));
+  await this.action.doAction({type:"ir.actions.act_window",res_model:"res.partner",views:[[false,"form"]],target:"new",context:{default_customer_rank:1}}, {onClose:async()=>{await this.loadChoices();const created=this.state.customers.filter(p=>!existing.has(p.id));if(created.length===1&&!this.state.partner&&!this.state.order){this.state.partner=created[0].id;await this.loadVehicles();}}});
  }
  openPartner(){if(this.state.partner)this.action.doAction({type:"ir.actions.act_window",res_model:"res.partner",res_id:this.state.partner,views:[[false,"form"]],target:"current"});}
  async addManufacturer(){const name=window.prompt("اسم الشركة المصنعة الجديدة");if(!name?.trim())return;try{const ids=await this.orm.create("yt.reception.make",[{name:name.trim()}]);this.state.makes=await this.orm.searchRead("yt.reception.make",[],["name"],{limit:250});this.state.car.make_id=ids[0];this.state.car.model_id=false;this.notification.add("تمت إضافة الشركة المصنعة",{type:"success"});}catch(e){this.fail(e);}}
