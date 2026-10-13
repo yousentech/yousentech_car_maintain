@@ -231,13 +231,29 @@
  width:100%!important;max-width:100%!important;box-sizing:border-box;
 }
 
-/* Primary selectors: remove the residual left inset only; keep the RTL right edge. */
-.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-customer .yt-rec-customer-fields>.yt-rec-field-row:first-child,
-.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-vehicle .yt-rec-primary-fields>.yt-rec-field-row{
- margin-inline-start:0!important;margin-inline-end:0!important;
+
+/* Booking-form pattern: grid owns alignment, native many2one owns interaction.
+   Do not expand controls with negative margins. */
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-customer-fields,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-primary-fields{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));
+ padding:14px!important;column-gap:14px;box-sizing:border-box;
 }
-.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-customer .yt-rec-customer-fields>.yt-rec-field-row:first-child>.o_field_widget,
-.yt-native-reception .yt-rec-two-card-grid .yt-rec-card-vehicle .yt-rec-primary-fields>.yt-rec-field-row>.o_field_widget{
- width:calc(100% + 14px)!important;max-width:none!important;
- margin-inline-end:-14px!important;
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-customer-fields>.yt-rec-field-row:first-child,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-primary-fields>.yt-rec-field-row{
+ grid-column:1/-1;min-width:0;width:100%!important;
+ max-width:none!important;margin:0!important;padding:0!important;
+}
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-customer-fields>.yt-rec-field-row:first-child>.o_field_widget,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-primary-fields>.yt-rec-field-row>.o_field_widget{
+ display:block;width:100%!important;max-width:none!important;min-width:0;
+ margin:0!important;padding:0!important;box-sizing:border-box;
+}
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-customer-fields>.yt-rec-field-row:first-child .o_input,
+.yt-native-reception .yt-rec-two-card-grid .yt-rec-primary-fields>.yt-rec-field-row .o_input{
+ display:block;width:100%!important;max-width:none!important;
+ min-width:0;box-sizing:border-box;
+}
+@media(max-width:500px){
+ .yt-native-reception .yt-rec-two-card-grid .yt-rec-customer-fields{grid-template-columns:minmax(0,1fr)}
 }
