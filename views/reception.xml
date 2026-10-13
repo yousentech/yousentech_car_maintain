@@ -46,6 +46,7 @@
   <field name="arch" type="xml">
    <form string="أمر العمل - قبل البدء" class="yt-native-reception">
     <header>
+     <button name="action_open_workshop" type="object" string="الانتقال إلى أمر العمل" class="btn-secondary" invisible="not id"/>
      <button name="action_open_inspection" type="object" string="التالي: الفحص" class="btn-primary" invisible="state != 'draft' or not id"/>
      <button name="action_cancel" type="object" string="إلغاء أمر العمل" invisible="state != 'draft'" confirm="هل تريد إلغاء أمر العمل؟"/>
      <field name="state" widget="statusbar" statusbar_visible="draft,cancelled"/>

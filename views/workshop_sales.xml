@@ -30,4 +30,68 @@
    </xpath>
   </field>
  </record>
+
+ <record id="view_reception_workshop_form" model="ir.ui.view">
+  <field name="name">yt.reception.order.workshop.form</field>
+  <field name="model">yt.reception.order</field>
+  <field name="arch" type="xml">
+   <form string="أمر العمل" class="yt-native-reception">
+    <header>
+     <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="sale_order_id or state == 'cancelled'"/>
+     <button name="action_open_sale_order" type="object" string="عرض أمر البيع" invisible="not sale_order_id"/>
+     <button name="action_open_workshop_invoices" type="object" string="عرض الفواتير" invisible="not invoice_count"/>
+     <button name="action_open_inspection" type="object" string="العودة إلى الفحص"/>
+     <field name="state" widget="statusbar"/>
+    </header>
+    <sheet>
+     <field name="company_id" invisible="1"/>
+     <field name="invoice_count" invisible="1"/>
+     <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+     <group string="بيانات أمر العمل" col="4">
+      <field name="partner_id" readonly="1"/>
+      <field name="vehicle_id" readonly="1"/>
+      <field name="location_id" options="{'no_create': True}" readonly="sale_order_id"/>
+      <field name="sale_order_id" readonly="1"/>
+     </group>
+     <group string="الخدمات وقطع الغيار">
+      <field name="sale_line_ids" nolabel="1" readonly="sale_order_id">
+       <tree editable="bottom">
+        <field name="sequence" widget="handle"/>
+        <field name="product_id"/>
+        <field name="name"/>
+        <field name="product_uom_qty"/>
+        <field name="available_qty" readonly="1"/>
+        <field name="price_unit"/>
+       </tree>
+      </field>
+     </group>
+    </sheet>
+   </form>
+  </field>
+ </record>
+ <record id="action_workshop_orders" model="ir.actions.act_window">
+  <field name="name">أوامر العمل</field>
+  <field name="res_model">yt.reception.order</field>
+  <field name="view_mode">tree,form</field>
+  <field name="views" eval="[(ref('view_reception_order_tree'),'tree'),(ref('view_reception_workshop_form'),'form')]"/>
+ </record>
+ <menuitem id="menu_workshop_orders" name="أوامر العمل" parent="menu_workshop_root" action="action_workshop_orders" sequence="20"/>
+ <record id="view_workshop_finance_settings_form" model="ir.ui.view">
+  <field name="name">yt.workshop.finance.settings.form</field>
+  <field name="model">yt.workshop.finance.settings</field>
+  <field name="arch" type="xml">
+   <form string="إعدادات الورشة المالية">
+    <sheet><div class="oe_title"><h1>إعدادات الورشة المالية</h1></div>
+     <group><field name="company_id" readonly="1"/><field name="tax_id" options="{'no_create': True}"/></group>
+    </sheet>
+   </form>
+  </field>
+ </record>
+ <record id="action_workshop_finance_settings" model="ir.actions.server">
+  <field name="name">الإعدادات المالية</field>
+  <field name="model_id" ref="model_yt_workshop_finance_settings"/>
+  <field name="state">code</field>
+  <field name="code">action = env['yt.workshop.finance.settings'].action_open_settings()</field>
+ </record>
+ <menuitem id="menu_workshop_finance_settings" name="الإعدادات المالية" parent="menu_workshop_root" action="action_workshop_finance_settings" sequence="90" groups="base.group_system"/>
 </odoo>

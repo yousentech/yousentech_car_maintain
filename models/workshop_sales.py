@@ -101,7 +101,8 @@ class WorkshopSale(models.Model):
             product = line.product_id.with_company(self.company_id)
             if not product.sale_ok:
                 raise UserError(_('الصنف %s غير متاح للبيع.') % product.display_name)
-            taxes = product.taxes_id.filtered(lambda t: t.company_id == self.company_id)
+            settings = self.env['yt.workshop.finance.settings'].search([('company_id', '=', self.company_id.id)], limit=1)
+            taxes = settings.tax_id if settings.tax_id else product.taxes_id.filtered(lambda t: t.company_id == self.company_id)
             lines.append((0, 0, {
                 'product_id': product.id,
                 'name': line.name,
@@ -160,3 +161,33 @@ class WorkshopSale(models.Model):
                 'res_model': 'account.move', 'view_mode': 'tree,form',
                 'domain': [('id', 'in', self.invoice_ids.ids)],
                 'context': {'default_move_type': 'out_invoice'}}
+
+    def action_open_workshop(self):
+        self.ensure_one()
+        return {'type': 'ir.actions.act_window', 'name': _('أمر العمل'),
+                'res_model': 'yt.reception.order', 'view_mode': 'form',
+                'views': [(self.env.ref('yousentech_car_maintain.view_reception_workshop_form').id, 'form')],
+                'res_id': self.id, 'target': 'current'}
+
+
+class WorkshopFinanceSettings(models.Model):
+    _name = 'yt.workshop.finance.settings'
+    _description = 'Workshop financial configuration'
+    _rec_name = 'name'
+
+    name = fields.Char(default='الإعدادات المالية للورشة', required=True, readonly=True)
+    tax_id = fields.Many2one('account.tax', string='ضريبة المبيعات المعتمدة',
+                             domain="[('type_tax_use','=','sale')]")
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company,
+                                 required=True, readonly=True)
+    _sql_constraints = [('one_per_company', 'unique(company_id)', 'يوجد سجل إعدادات مالية لهذه الشركة بالفعل.')]
+
+    @api.model
+    def action_open_settings(self):
+        company = self.env.company
+        record = self.search([('company_id', '=', company.id)], limit=1)
+        if not record:
+            record = self.create({'company_id': company.id})
+        return {'type': 'ir.actions.act_window', 'name': _('إعدادات الورشة المالية'),
+                'res_model': self._name, 'view_mode': 'form',
+                'res_id': record.id, 'target': 'current'}
