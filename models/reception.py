@@ -177,6 +177,11 @@ class ReceptionOrder(models.Model):
         return super().write(vals)
     def action_open_inspection(self):
         self.ensure_one()
+        if self.state == 'cancelled':
+            raise UserError(_('لا يمكن إنشاء فحص لأمر عمل ملغي.'))
+        if self._workshop_financial_documents().filtered(
+                lambda move: move.move_type == 'out_invoice' and move.state != 'cancel'):
+            raise UserError(_('لا يمكن إنشاء فحص بعد إصدار فاتورة. يجب معالجة الفاتورة وإعادة فتح أمر العمل أولاً.'))
         return {'type': 'ir.actions.act_window', 'name': 'فحص السيارة', 'res_model': 'yt.reception.order', 'view_mode': 'form', 'views': [(self.env.ref('yousentech_car_maintain.view_reception_inspection_form').id, 'form')], 'res_id': self.id, 'target': 'current'}
 
     def action_back_to_reception(self):
