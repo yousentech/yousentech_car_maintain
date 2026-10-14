@@ -831,3 +831,29 @@
   .yt-wo-k-footer { padding: 14px 18px; }
   .yt-wo-k-footer strong { display: block; margin-top: 7px; }
 }
+
+
+/* V4 vehicle details: frame only the six read-only values, never their labels
+   or the surrounding vehicle details panel. */
+.yt-native-reception.yt-workshop-finance-form .yt-rec-card-vehicle
+.yt-rec-vehicle-summary .yt-rec-summary-cell > .o_field_widget {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  width: 100%;
+  padding: 5px 9px;
+  border: 1px solid #dce4f1;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: none;
+  box-sizing: border-box;
+  text-align: center;
+}
+.yt-native-reception.yt-workshop-finance-form .yt-rec-card-vehicle
+.yt-rec-vehicle-summary .yt-rec-summary-cell > .o_field_widget .o_input {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
