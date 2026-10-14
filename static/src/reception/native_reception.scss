@@ -895,3 +895,109 @@
   line-height: 1.3 !important;
   opacity: 1 !important;
 }
+
+/* Responsive refinement for reception, inspection and work-order forms.
+   Scoped to form views: existing kanban cards remain unchanged. */
+.yt-native-reception.o_form_view .o_form_sheet,
+.yt-workshop-finance-form.o_form_view .o_form_sheet {
+  max-width: none;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.yt-native-reception .yt-rec-native-card,
+.yt-native-reception .yt-rec-two-card-grid > *,
+.yt-workshop-finance-form .yt-wo-summary > *,
+.yt-workshop-finance-form .yt-wo-top-grid > *,
+.yt-workshop-finance-form .yt-wo-service-grid > *,
+.yt-workshop-finance-form .yt-wo-bottom-cards > *,
+.yt-workshop-finance-form .yt-wo-finance-layout > * {
+  min-width: 0;
+}
+.yt-workshop-finance-form .yt-wo-summary-title {
+  min-width: 0;
+}
+.yt-workshop-finance-form .yt-wo-summary-title > div {
+  min-width: 0;
+}
+.yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number {
+  overflow-wrap: anywhere;
+}
+.yt-workshop-finance-form .yt-wo-kpi {
+  min-width: 0;
+}
+.yt-workshop-finance-form .yt-wo-table-wrap,
+.yt-native-reception.yt-inspection-form .o_field_one2many {
+  max-width: 100%;
+  overflow-x: auto;
+}
+@media (min-width: 1800px) {
+  .yt-workshop-finance-form .yt-wo-summary {
+    grid-template-columns: minmax(255px, 1.2fr) minmax(0, 5fr);
+  }
+  .yt-workshop-finance-form .yt-wo-kpis-six {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1450px) {
+  .yt-workshop-finance-form .yt-wo-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .yt-workshop-finance-form .yt-wo-summary-title {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .yt-workshop-finance-form .yt-wo-kpis-six {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1050px) {
+  .yt-workshop-finance-form .yt-wo-top-grid,
+  .yt-workshop-finance-form .yt-wo-service-grid,
+  .yt-workshop-finance-form .yt-wo-bottom-cards,
+  .yt-workshop-finance-form .yt-wo-finance-layout,
+  .yt-native-reception .yt-rec-two-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .yt-workshop-finance-form .yt-wo-card-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .yt-native-reception .yt-rec-native-grid,
+  .yt-native-reception .yt-rec-customer-fields,
+  .yt-native-reception .yt-rec-vehicle-summary,
+  .yt-native-reception .yt-rec-field-pair,
+  .yt-workshop-finance-form .yt-wo-extra-stock-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .yt-workshop-finance-form .yt-wo-kpis-six {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .yt-workshop-finance-form .yt-wo-summary {
+    padding: 12px;
+    gap: 12px;
+  }
+  .yt-workshop-finance-form .yt-wo-card-content,
+  .yt-workshop-finance-form .yt-wo-vehicle .yt-wo-card-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .yt-native-reception .yt-rec-field-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+  }
+}
+@media (max-width: 480px) {
+  .yt-workshop-finance-form .yt-wo-kpis-six,
+  .yt-workshop-finance-form .yt-wo-finance-kpis,
+  .yt-workshop-finance-form .yt-wo-card-content,
+  .yt-workshop-finance-form .yt-wo-vehicle .yt-wo-card-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .yt-workshop-finance-form .yt-wo-summary-title {
+    gap: 8px;
+  }
+  .yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number,
+  .yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number .o_field_widget {
+    font-size: 22px !important;
+  }
+}
