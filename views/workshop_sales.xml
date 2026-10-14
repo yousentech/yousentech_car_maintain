@@ -10,8 +10,8 @@
      <button name="action_approve_workshop" type="object" string="اعتماد أمر العمل" class="btn-secondary" invisible="state != 'draft'"/>
       <button name="action_start_workshop_execution" type="object" string="بدء التنفيذ" class="btn-primary" invisible="state != 'approved'"/>
       <button name="action_finish_workshop_execution" type="object" string="اكتمال التنفيذ" class="btn-primary" invisible="state != 'in_progress'"/>
-     <button name="action_register_workshop_advance" type="object" string="تسجيل دفعة" invisible="state in ('cancelled', 'done') or not workshop_approved or workshop_collection_complete"/>
-     <button name="action_open_inspection" type="object" string="إنشاء فحص" icon="fa-stethoscope" invisible="inspection_state == 'done' or state == 'cancelled' or invoice_count &gt; 0"/>
+     <button name="action_register_workshop_advance" type="object" string="تسجيل دفعة" invisible="state not in ('approved', 'in_progress') or not workshop_approved or workshop_collection_complete"/>
+     <button name="action_open_inspection" type="object" string="إنشاء فحص" icon="fa-stethoscope" invisible="inspection_state == 'done' or state in ('cancelled', 'done') or invoice_count &gt; 0"/>
      <button name="action_cancel" type="object" string="إلغاء أمر العمل" invisible="state in ('cancelled', 'done')" confirm="هل تريد إلغاء أمر العمل؟"/>
      <button name="action_reopen_workshop" type="object" string="إعادة فتح أمر العمل" class="btn-primary" invisible="state != 'cancelled'" confirm="هل تريد إعادة فتح أمر العمل؟"/>
      <field name="state" widget="statusbar" statusbar_visible="draft,approved,in_progress,done,cancelled"/>
