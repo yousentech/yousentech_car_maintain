@@ -882,3 +882,14 @@
     }
   }
 }
+
+/* Readable work order number in summary header. */
+.yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number,
+.yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number .o_field_widget,
+.yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number .o_field_char {
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  color: #24165f !important;
+  line-height: 1.3 !important;
+  opacity: 1 !important;
+}
