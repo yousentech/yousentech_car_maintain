@@ -6,15 +6,15 @@
   <field name="report_type">qweb-pdf</field>
   <field name="report_name">yousentech_car_maintain.report_vehicle_inspection_document</field>
   <field name="report_file">yousentech_car_maintain.report_vehicle_inspection_document</field>
-  <field name="print_report_name">'فحص السيارة - %s' % (object.name or '')</field>
+  <field name="binding_model_id" ref="model_yt_reception_order"/><field name="binding_type">report</field><field name="print_report_name">'فحص السيارة - %s' % (object.name or '')</field>
  </record>
  <template id="report_vehicle_inspection_document">
   <t t-call="web.html_container">
    <t t-foreach="docs" t-as="o">
     <t t-call="web.external_layout">
-     <div class="page" dir="rtl" style="font-family:DejaVu Sans,sans-serif;color:#22375c;font-size:12px;">
-      <h2 style="text-align:center;color:#4d54b6;border-bottom:2px solid #dce2fb;padding-bottom:12px;">تقرير فحص السيارة</h2>
-      <div style="background:#eef2ff;border:1px solid #dce2fb;padding:12px;margin-bottom:12px;">
+     <div class="page" dir="rtl" style="font-family:inherit;direction:rtl;color:#22375c;font-size:12px;">
+      <h2 style="text-align:center;color:#293d78;border-bottom:2px solid #d5dfee;padding-bottom:12px;">تقرير فحص السيارة</h2>
+      <div style="background:#f1f4fb;border:1px solid #d5dfee;padding:12px;margin-bottom:12px;">
        <table style="width:100%;"><tr>
         <td><strong>أمر العمل:</strong> <span t-esc="o.name"/></td>
         <td><strong>الشركة:</strong> <span t-esc="o.company_id.name"/></td>
@@ -23,20 +23,20 @@
       </div>
       <h4 style="color:#4d54b6;">بيانات العميل والسيارة</h4>
       <table style="width:100%;border-collapse:collapse;margin-bottom:15px;">
-       <tr><td style="padding:8px;border:1px solid #dce2fb;"><strong>العميل:</strong> <span t-esc="o.partner_id.name"/></td><td style="padding:8px;border:1px solid #dce2fb;"><strong>الجوال:</strong> <span t-esc="o.partner_mobile or '-'"/></td></tr>
-       <tr><td style="padding:8px;border:1px solid #dce2fb;"><strong>السيارة:</strong> <span t-esc="o.vehicle_id.plate"/></td><td style="padding:8px;border:1px solid #dce2fb;"><strong>النوع / الموديل:</strong> <span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></td></tr>
-       <tr><td style="padding:8px;border:1px solid #dce2fb;"><strong>فني الفحص:</strong> <span t-esc="o.inspection_employee_id.name or '-'"/></td><td style="padding:8px;border:1px solid #dce2fb;"><strong>تاريخ الفحص:</strong> <span t-field="o.inspection_at"/></td></tr>
+       <tr><td style="padding:8px;border:1px solid #d5dfee;"><strong>العميل:</strong> <span t-esc="o.partner_id.name"/></td><td style="padding:8px;border:1px solid #d5dfee;"><strong>الجوال:</strong> <span t-esc="o.partner_mobile or '-'"/></td></tr>
+       <tr><td style="padding:8px;border:1px solid #d5dfee;"><strong>السيارة:</strong> <span t-esc="o.vehicle_id.plate"/></td><td style="padding:8px;border:1px solid #d5dfee;"><strong>النوع / الموديل:</strong> <span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></td></tr>
+       <tr><td style="padding:8px;border:1px solid #d5dfee;"><strong>فني الفحص:</strong> <span t-esc="o.inspection_employee_id.name or '-'"/></td><td style="padding:8px;border:1px solid #d5dfee;"><strong>تاريخ الفحص:</strong> <span t-field="o.inspection_at"/></td></tr>
       </table>
       <h4 style="color:#4d54b6;">نتائج فحص المكونات</h4>
       <table style="width:100%;border-collapse:collapse;text-align:center;">
-       <thead><tr style="background:#eef1fb;"><th style="border:1px solid #dce2fb;padding:9px;">المكون</th><th style="border:1px solid #dce2fb;padding:9px;">التصنيف</th><th style="border:1px solid #dce2fb;padding:9px;">النتيجة</th><th style="border:1px solid #dce2fb;padding:9px;">الملاحظات</th></tr></thead>
+       <thead><tr style="background:#eaf0fb;"><th style="border:1px solid #d5dfee;padding:9px;">المكون</th><th style="border:1px solid #d5dfee;padding:9px;">التصنيف</th><th style="border:1px solid #d5dfee;padding:9px;">النتيجة</th><th style="border:1px solid #d5dfee;padding:9px;">الملاحظات</th></tr></thead>
        <tbody>
         <t t-foreach="o.inspection_line_ids" t-as="line">
          <tr>
-          <td style="border:1px solid #dce2fb;padding:8px;"><span t-esc="line.component_name or line.component_id.name"/></td>
-          <td style="border:1px solid #dce2fb;padding:8px;"><span t-esc="line.category_id.name"/></td>
-          <td t-att-style="'border:1px solid #dce2fb;padding:8px;font-weight:bold;color:%s;' % ({'good':'#16864a','follow_up':'#c87905','bad':'#c33243','not_checked':'#64748b'}.get(line.condition,'#64748b'))"><span t-esc="dict(line._fields['condition'].selection).get(line.condition, '')"/></td>
-          <td style="border:1px solid #dce2fb;padding:8px;"><span t-esc="line.notes or '-'"/></td>
+          <td style="border:1px solid #d5dfee;padding:8px;"><span t-esc="line.component_name or line.component_id.name"/></td>
+          <td style="border:1px solid #d5dfee;padding:8px;"><span t-esc="line.category_id.name"/></td>
+          <td t-att-style="'border:1px solid #d5dfee;padding:8px;font-weight:bold;color:%s;' % ({'good':'#16864a','follow_up':'#c87905','bad':'#c33243','not_checked':'#64748b'}.get(line.condition,'#64748b'))"><span t-esc="dict(line._fields['condition'].selection).get(line.condition, '')"/></td>
+          <td style="border:1px solid #d5dfee;padding:8px;"><span t-esc="line.notes or '-'"/></td>
          </tr>
         </t>
        </tbody>
@@ -48,9 +48,9 @@
        لم يُفحص: <span t-esc="len(o.inspection_line_ids.filtered(lambda l: l.condition == 'not_checked'))"/>
       </p>
       <h4 style="color:#4d54b6;">ملاحظات الفحص</h4>
-      <p style="border:1px solid #dce2fb;padding:12px;min-height:35px;" t-esc="o.inspection_general_notes or 'لا توجد ملاحظات إضافية'"/>
+      <p style="border:1px solid #d5dfee;padding:12px;min-height:35px;" t-esc="o.inspection_general_notes or 'لا توجد ملاحظات إضافية'"/>
       <h4 style="color:#4d54b6;">حالة الهيكل الخارجي</h4>
-      <p style="border:1px solid #dce2fb;padding:12px;min-height:35px;" t-esc="o.inspection_exterior_notes or 'لا توجد ملاحظات'"/>
+      <p style="border:1px solid #d5dfee;padding:12px;min-height:35px;" t-esc="o.inspection_exterior_notes or 'لا توجد ملاحظات'"/>
       <p style="font-size:10px;color:#64748b;margin-top:16px;">هذا التقرير يوثّق حالة الفحص ولا يُعد فاتورة أو موافقة على أعمال الصيانة.</p>
      </div>
     </t>
