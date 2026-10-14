@@ -857,3 +857,28 @@
   box-shadow: none !important;
   text-align: center !important;
 }
+
+
+/* V4 read-only customer and intake fields: frame the value only.
+   Editable inputs already carry Odoo's border; avoid a second frame. */
+.yt-native-reception.yt-workshop-finance-form {
+  .yt-rec-card-customer,
+  .yt-rec-card-intake {
+    .yt-rec-field-row > .o_field_widget:not(:has(.o_input)):not(:has(input)):not(:has(select)):not(:has(textarea)) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 5px 9px;
+      border: 1px solid #dce4f1;
+      border-radius: 7px;
+      background: #fff;
+      box-shadow: none;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .yt-rec-field-row > .o_field_widget:not(:has(.o_input)):not(:has(input)):not(:has(select)):not(:has(textarea)) .o_field_widget {
+      text-align: center;
+    }
+  }
+}
