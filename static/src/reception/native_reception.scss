@@ -555,7 +555,7 @@
 .yt-workshop-finance-form .yt-wo-summary-title small{color:#7c6cb8;font-weight:700}
 .yt-workshop-finance-form .yt-wo-summary-title h2{font-size:23px;font-weight:800;margin:4px 0;color:#26206f}
 .yt-workshop-finance-form .yt-wo-summary-title h2 .o_field_widget{width:auto}
-.yt-workshop-finance-form .yt-wo-summary-title span{font-size:12px;color:#8578aa}
+.yt-workshop-finance-form .yt-wo-summary-title > div > span{font-size:12px;color:#8578aa}
 .yt-workshop-finance-form .yt-wo-icon{display:grid;place-items:center;width:42px;height:42px;background:#6653ed;color:#fff;border-radius:12px}
 .yt-workshop-finance-form .yt-wo-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
 .yt-workshop-finance-form .yt-wo-kpi{display:flex;flex-direction:column;gap:8px;padding:13px 12px;border-radius:11px;border:1px solid;min-width:0}
@@ -886,7 +886,9 @@
 /* Readable work order number in summary header. */
 .yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number,
 .yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number .o_field_widget,
-.yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number .o_field_char {
+.yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number .o_field_char,
+.yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number span,
+.yt-workshop-finance-form .yt-wo-summary-title .yt-wo-order-number .o_field_widget * {
   font-size: 26px !important;
   font-weight: 800 !important;
   color: #142f69 !important;
