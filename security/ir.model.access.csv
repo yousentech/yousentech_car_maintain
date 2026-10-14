@@ -15,3 +15,5 @@ a_workshop_sale_line,yt.reception.sale.line,model_yt_reception_sale_line,base.gr
 a_workshop_finance_settings,yt.workshop.finance.settings,model_yt_workshop_finance_settings,base.group_system,1,1,1,0
 a_workshop_cancel_wizard,yt.workshop.cancel.wizard,model_yt_workshop_cancel_wizard,base.group_user,1,1,1,0
 a_workshop_advance_payment_wizard,yt.workshop.advance.payment.wizard,model_yt_workshop_advance_payment_wizard,base.group_user,1,1,1,0
+
+a_workshop_category_pricing,yt.workshop.category.pricing,model_yt_workshop_category_pricing,base.group_system,1,1,1,1
