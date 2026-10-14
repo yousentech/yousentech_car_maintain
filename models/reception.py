@@ -141,7 +141,7 @@ class ReceptionOrder(models.Model):
     no_parts_needed = fields.Boolean()
     warranty = fields.Boolean()
     intake_method = fields.Selection([('branch','في الفرع'),('pickup','استلام من العميل')], default='branch')
-    state = fields.Selection([('draft','مسودة'),('approved','معتمد'),('cancelled','ملغي')], default='draft', required=True)
+    state = fields.Selection([('draft','مسودة'),('approved','معتمد'),('in_progress','قيد التنفيذ'),('done','مكتمل'),('cancelled','ملغي')], default='draft', required=True)
     complaint_ids = fields.One2many('yt.reception.complaint','order_id')
     request_ids = fields.One2many('yt.reception.request','order_id')
     photo_ids = fields.One2many('yt.reception.photo','order_id')
