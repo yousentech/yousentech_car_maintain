@@ -20,7 +20,7 @@
      <field name="state" widget="statusbar" statusbar_visible="draft,approved,in_progress,done,cancelled"/>
     </header>
     <sheet>
-     <field name="company_id" invisible="1"/ options="{'no_open': True}">
+     <field name="company_id" invisible="1" options="{'no_open': True}"/>
      <field name="invoice_count" invisible="1"/>
      <field name="refund_count" invisible="1"/>
      <field name="payment_count" invisible="1"/>
@@ -61,7 +61,7 @@
        <div class="yt-rec-native-col yt-rec-col-customer-intake">
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-user" aria-hidden="true" title="العميل"/> معلومات العميل</h3>
-        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا" readonly="state != 'draft'"/ options="{'no_open': True}"></div><div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" placeholder="رقم الجوال" widget="phone" readonly="state != 'draft'"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟" readonly="state != 'draft'"/></div></div>
+        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا" readonly="state != 'draft'" options="{'no_open': True}"/></div><div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" placeholder="رقم الجوال" widget="phone" readonly="state != 'draft'"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟" readonly="state != 'draft'"/></div></div>
        </div>
        <div class="yt-rec-native-card yt-rec-card-intake">
         <h3><i class="fa fa-calendar-check-o" aria-hidden="true" title="الموعد"/> معلومات الاستقبال</h3>
@@ -84,7 +84,7 @@
         <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': True}" readonly="state != 'draft'"/></div></div>
         <div class="yt-rec-vehicle-details">
          <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true" title="الهوية"/> بيانات السيارة المختارة</div>
-         <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1"/ options="{'no_open': True}"></div></div>
+         <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1" options="{'no_open': True}"/></div></div>
          <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true" title="معلومات"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
         </div>
        </div>
@@ -95,9 +95,9 @@
         <h3><i class="fa fa-wrench" title="الخدمات"/> الخدمات</h3>
         <div class="yt-wo-table-wrap">
          <field name="service_line_ids" nolabel="1" readonly="state not in ('draft', 'in_progress')">
-          <tree editable="bottom"><field name="company_id" column_invisible="1"/ options="{'no_open': True}">
+          <tree editable="bottom"><field name="company_id" column_invisible="1" options="{'no_open': True}"/>
            <field name="sequence" widget="handle" readonly="parent.state != 'draft'"/>
-           <field name="product_id" string="الخدمة" domain="[('type','=','service'),('sale_ok','=',True)]" readonly="parent.state != 'draft'"/ options="{'no_open': True}">
+           <field name="product_id" string="الخدمة" domain="[('type','=','service'),('sale_ok','=',True)]" readonly="parent.state != 'draft'" options="{'no_open': True}"/>
            <field name="name" string="الوصف" readonly="parent.state != 'draft'"/><field name="technician_ids" string="الفنيون" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" readonly="parent.state != 'draft'"/>
            <field name="product_uom_qty" string="الكمية" readonly="parent.state != 'draft'"/>
            <field name="price_unit" string="السعر" readonly="parent.state != 'draft'"/><field name="pricing_source" string="مصدر التسعير" readonly="1"/>
@@ -110,9 +110,9 @@
         <h3><i class="fa fa-cogs" title="قطع الغيار"/> قطع الغيار</h3>
         <div class="yt-wo-table-wrap">
          <field name="part_line_ids" nolabel="1" readonly="state not in ('draft', 'in_progress')">
-          <tree editable="bottom"><field name="company_id" column_invisible="1"/ options="{'no_open': True}">
+          <tree editable="bottom"><field name="company_id" column_invisible="1" options="{'no_open': True}"/>
            <field name="sequence" widget="handle" readonly="parent.state != 'draft'"/>
-           <field name="product_id" string="قطعة الغيار" domain="[('type','in',['product','consu']),('sale_ok','=',True)]" readonly="parent.state != 'draft'"/ options="{'no_open': True}">
+           <field name="product_id" string="قطعة الغيار" domain="[('type','in',['product','consu']),('sale_ok','=',True)]" readonly="parent.state != 'draft'" options="{'no_open': True}"/>
            <field name="name" string="الوصف" readonly="parent.state != 'draft'"/>
            <field name="product_uom_qty" string="الكمية" readonly="parent.state != 'draft'"/>
            <field name="available_qty" string="المتاح" readonly="1"/>
@@ -186,13 +186,13 @@
        <div class="yt-wo-extra-body">
         <div class="yt-wo-extra-stock-fields">
          <div class="yt-rec-field-row"><label for="location_id" string="موقع قطع الغيار"/><field name="location_id" nolabel="1" options="{'no_create': True, 'no_open': True}" readonly="sale_order_id"/></div>
-         <div class="yt-rec-field-row"><label for="sale_order_id" string="أمر البيع"/><field name="sale_order_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
+         <div class="yt-rec-field-row"><label for="sale_order_id" string="أمر البيع"/><field name="sale_order_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
         </div>
       <div class="yt-rec-native-card yt-rec-other-details">
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
-          <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
-          <div class="yt-rec-field-row"><label for="advisor_id" string="المستخدم"/><field name="advisor_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
+          <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
+          <div class="yt-rec-field-row"><label for="advisor_id" string="المستخدم"/><field name="advisor_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
          </div>
         </div>
         <div class="yt-rec-textarea-block"><label for="internal_notes" string="ملاحظات داخلية"/><field name="internal_notes" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user" readonly="state != 'draft'"/></div>
@@ -225,14 +225,14 @@
   <field name="arch" type="xml">
    <form string="إعدادات الورشة">
     <sheet><div class="oe_title"><h1>إعدادات الورشة المالية</h1></div>
-     <group><field name="company_id" readonly="1"/ options="{'no_open': True}"><field name="tax_id" options="{'no_create': True, 'no_open': True}"/><field name="require_full_payment_before_invoice"/></group>
+     <group><field name="company_id" readonly="1" options="{'no_open': True}"/><field name="tax_id" options="{'no_create': True, 'no_open': True}"/><field name="require_full_payment_before_invoice"/></group>
     </sheet>
    </form>
   </field>
  </record>
  <record id="action_workshop_finance_settings" model="ir.actions.server">
   <field name="name">الإعدادات</field>
-  <field name="model_id" ref="model_yt_workshop_finance_settings"/ options="{'no_open': True}">
+  <field name="model_id" ref="model_yt_workshop_finance_settings" options="{'no_open': True}"/>
   <field name="state">code</field>
   <field name="code">action = env['yt.workshop.finance.settings'].action_open_settings()</field>
  </record>
@@ -243,7 +243,7 @@
   <field name="model">yt.workshop.advance.payment.wizard</field>
   <field name="arch" type="xml">
    <form string="تسجيل دفعة مقدمة" create="false" class="yt-workshop-advance-wizard">
-    <field name="company_id" invisible="1"/ options="{'no_open': True}">
+    <field name="company_id" invisible="1" options="{'no_open': True}"/>
     <field name="currency_id" invisible="1"/>
     <field name="allowed_journal_ids" invisible="1"/>
     <field name="available_payment_method_line_ids" invisible="1"/>
@@ -257,7 +257,7 @@
     <div class="yt-advance-content">
      <div class="yt-advance-context">
       <div class="yt-advance-context-field"><span>أمر العمل</span><field name="order_id" nolabel="1" readonly="1"/></div>
-      <div class="yt-advance-context-field"><span>العميل</span><field name="partner_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
+      <div class="yt-advance-context-field"><span>العميل</span><field name="partner_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
      </div>
      <div class="yt-advance-section-title"><i class="fa fa-credit-card" title="المدفوعات"/> تفاصيل التحصيل</div>
      <div class="yt-advance-fields">
@@ -296,7 +296,7 @@
   <field name="arch" type="xml">
    <tree string="سياسات تسعير فئات المنتجات">
     <field name="sequence" widget="handle"/>
-    <field name="company_id" groups="base.group_multi_company"/ options="{'no_open': True}">
+    <field name="company_id" groups="base.group_multi_company" options="{'no_open': True}"/>
     <field name="category_id"/>
     <field name="customer_scope"/>
     <field name="partner_ids" widget="many2many_tags"/>
@@ -313,7 +313,7 @@
     <sheet>
      <group>
       <group>
-       <field name="company_id" groups="base.group_multi_company"/ options="{'no_open': True}">
+       <field name="company_id" groups="base.group_multi_company" options="{'no_open': True}"/>
        <field name="category_id"/>
        <field name="markup_percent"/>
        <field name="active"/>
