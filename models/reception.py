@@ -210,8 +210,12 @@ class ReceptionOrder(models.Model):
         for order in self:
             if order.state != 'in_progress':
                 raise UserError(_('إكمال التنفيذ متاح للأوامر قيد التنفيذ فقط.'))
-            if not order.sale_line_ids or order.sale_line_ids.filtered(lambda line: not line.execution_done):
-                raise UserError(_('يجب تأكيد إنجاز جميع بنود الخدمات وقطع الغيار أولاً.'))
+            # Only services assigned to technicians require completion confirmation.
+            # Spare parts and services without assigned technicians do not block finishing.
+            pending_services = order.service_line_ids.filtered(
+                lambda line: line.technician_ids and not line.execution_done)
+            if pending_services:
+                raise UserError(_('يجب تأكيد إنجاز الخدمات المسندة إلى فنيين قبل إكمال التنفيذ.'))
             invoices = order._workshop_financial_documents().filtered(
                 lambda move: move.move_type == 'out_invoice' and move.state == 'posted')
             if not invoices:
