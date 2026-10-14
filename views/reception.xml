@@ -58,11 +58,11 @@
      <div class="yt-rec-native-grid yt-rec-two-card-grid">
       <div class="yt-rec-native-col yt-rec-col-customer-intake">
        <div class="yt-rec-native-card yt-rec-card-customer">
-        <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
+        <h3><i class="fa fa-user" aria-hidden="true" title="العميل"/> معلومات العميل</h3>
         <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/></div><div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" placeholder="رقم الجوال" widget="phone"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
        </div>
        <div class="yt-rec-native-card yt-rec-card-intake">
-        <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
+        <h3><i class="fa fa-calendar-check-o" aria-hidden="true" title="الموعد"/> معلومات الاستقبال</h3>
         <div class="yt-rec-intake-fields yt-rec-form-rows">
          <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="arrival_at" string="تاريخ ووقت الدخول"/><field name="arrival_at" nolabel="1"/></div>
@@ -77,36 +77,36 @@
       </div>
       <div class="yt-rec-native-col yt-rec-col-vehicle">
        <div class="yt-rec-native-card yt-rec-card-vehicle">
-        <h3><i class="fa fa-car" aria-hidden="true"/> معلومات السيارة</h3>
+        <h3><i class="fa fa-car" aria-hidden="true" title="السيارة"/> معلومات السيارة</h3>
         <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}"/></div></div>
         <div class="yt-rec-vehicle-details">
-         <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true"/> بيانات السيارة المختارة</div>
+         <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true" title="الهوية"/> بيانات السيارة المختارة</div>
          <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1"/></div></div>
-         <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
+         <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true" title="معلومات"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
         </div>
        </div>
       </div>
      </div>
      <div class="yt-rec-notes-full">
        <div class="yt-rec-native-card yt-rec-customer-notes-card">
-        <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
+        <h3><i class="fa fa-comment-o" aria-hidden="true" title="ملاحظات"/> ملاحظات الاستقبال</h3>
         <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..."/></div>
        </div>
      </div>
      <div class="yt-rec-native-bottom">
-      <details class="yt-rec-native-card yt-rec-card-complaints"><summary><i class="fa fa-comments-o" aria-hidden="true"/> شكاوى العميل (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
+      <details class="yt-rec-native-card yt-rec-card-complaints"><summary><i class="fa fa-comments-o" aria-hidden="true" title="تعليقات"/> شكاوى العميل (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
        <field name="complaint_ids" nolabel="1">
         <tree editable="bottom"><field name="name" string="الشكوى" required="1"/></tree>
        </field>
       </details>
-      <details class="yt-rec-native-card yt-rec-card-services"><summary><i class="fa fa-list-ul" aria-hidden="true"/> خدمات إضافية مطلوبة (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
+      <details class="yt-rec-native-card yt-rec-card-services"><summary><i class="fa fa-list-ul" aria-hidden="true" title="القائمة"/> خدمات إضافية مطلوبة (اختياري)<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
        <field name="request_ids" nolabel="1">
         <tree editable="bottom"><field name="name" string="الخدمة" required="1"/></tree>
        </field>
        <group><field name="no_parts_needed" string="أمر العمل لا يحتاج قطع"/></group>
       </details>
       <details class="yt-rec-native-card yt-rec-other-card">
-        <summary><i class="fa fa-sliders" aria-hidden="true"/> بيانات أخرى<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
+        <summary><i class="fa fa-sliders" aria-hidden="true" title="الإعدادات"/> بيانات أخرى<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1"/></div>
@@ -164,17 +164,17 @@
        <div class="yt-wo-k-content">
         <div class="yt-wo-k-people-row">
         <div class="yt-wo-k-detail">
-         <span class="yt-wo-k-icon yt-wo-k-icon-customer"><i class="fa fa-user"/></span>
+         <span class="yt-wo-k-icon yt-wo-k-icon-customer"><i class="fa fa-user" title="العميل"/></span>
          <div class="yt-wo-k-detail-text"><small>العميل</small><strong><field name="partner_id"/></strong></div>
         </div>
         <div class="yt-wo-k-detail">
-         <span class="yt-wo-k-icon yt-wo-k-icon-car"><i class="fa fa-car"/></span>
+         <span class="yt-wo-k-icon yt-wo-k-icon-car"><i class="fa fa-car" title="السيارة"/></span>
          <div class="yt-wo-k-detail-text"><small>السيارة</small><strong><field name="vehicle_id"/></strong></div>
         </div>
         </div>
         <div class="yt-wo-k-subdetail">
-         <span><i class="fa fa-phone"/> <field name="partner_mobile"/></span>
-         <span><i class="fa fa-calendar"/> <field name="arrival_at" widget="datetime"/></span>
+         <span><i class="fa fa-phone" title="رقم الهاتف"/> <field name="partner_mobile"/></span>
+         <span><i class="fa fa-calendar" title="التاريخ"/> <field name="arrival_at" widget="datetime"/></span>
         </div>
        </div>
        <div class="yt-wo-k-totals">
@@ -297,7 +297,7 @@
      <div class="yt-rec-content-frame">
       <div class="yt-rec-native-grid yt-rec-two-card-grid yt-inspection-top">
        <div class="yt-rec-native-card yt-rec-card-intake">
-        <h3><i class="fa fa-wrench" aria-hidden="true"/> معلومات الفحص</h3>
+        <h3><i class="fa fa-wrench" aria-hidden="true" title="الخدمات"/> معلومات الفحص</h3>
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="inspection_employee_id" string="فني الفحص"/><field name="inspection_employee_id" nolabel="1" domain="[('is_workshop_technician','=',True),('company_id','=',company_id)]" options="{'no_create': True, 'no_create_edit': True}" readonly="inspection_state == 'done'"/></div>
@@ -307,7 +307,7 @@
         </div>
        </div>
        <div class="yt-rec-native-card yt-rec-card-customer">
-        <h3><i class="fa fa-car" aria-hidden="true"/> السيارة والعميل</h3>
+        <h3><i class="fa fa-car" aria-hidden="true" title="السيارة"/> السيارة والعميل</h3>
         <div class="yt-rec-form-rows yt-inspection-customer-grid">
           <div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" readonly="1"/></div>
           <div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" readonly="1"/></div>
@@ -319,7 +319,7 @@
        </div>
       </div>
             <div class="yt-rec-native-card yt-rec-card-vehicle">
-       <h3><i class="fa fa-check-square-o" aria-hidden="true"/> فحص مكونات السيارة</h3>
+       <h3><i class="fa fa-check-square-o" aria-hidden="true" title="الفحص"/> فحص مكونات السيارة</h3>
        <div class="yt-inspection-category-picker">
         <div class="yt-inspection-picker-row">
          <div class="yt-inspection-picker-heading"><i class="fa fa-tags" title="تصنيفات الفحص"/> <span>تصنيفات الفحص</span></div>
@@ -339,11 +339,11 @@
       </div>
       <div class="yt-rec-native-grid yt-rec-two-card-grid">
        <div class="yt-rec-native-card yt-rec-card-vehicle">
-        <h3><i class="fa fa-car" aria-hidden="true"/> حالة الهيكل الخارجي</h3>
+        <h3><i class="fa fa-car" aria-hidden="true" title="السيارة"/> حالة الهيكل الخارجي</h3>
         <field name="inspection_exterior_notes" nolabel="1" placeholder="سجّل مواضع الخدوش والصدمات وحالة الهيكل..." readonly="inspection_state == 'done'"/>
        </div>
        <div class="yt-rec-native-card yt-rec-card-intake">
-        <h3><i class="fa fa-file-text-o" aria-hidden="true"/> ملاحظات الفحص</h3>
+        <h3><i class="fa fa-file-text-o" aria-hidden="true" title="المستند"/> ملاحظات الفحص</h3>
         <field name="inspection_general_notes" nolabel="1" placeholder="ملاحظات فنية إضافية..." readonly="inspection_state == 'done'"/>
        </div>
       </div>
