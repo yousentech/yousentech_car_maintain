@@ -30,31 +30,31 @@
        .yt-print-workshop .wo-status {display:inline-block;background:#e2f3e9;color:#207349;font-weight:bold;padding:3px 12px;border-radius:10px;}
        .yt-print-workshop .wo-section-title {font-size:14px;font-weight:bold;color:#174b89;background:#eaf3fc;border:1px solid #d0e0f1;padding:6px 10px;}
        .yt-print-workshop .wo-info-table {border:1px solid #d0e0f1;margin:0 0 9px;}
-       .yt-print-workshop .wo-info-table td {padding:7px 10px;border-bottom:1px solid #e4edf6;}
+       .yt-print-workshop .wo-info-table td {padding:5px 10px;border-bottom:1px solid #e4edf6;}
        .yt-print-workshop .wo-info-label {color:#657d9a;font-size:10px;margin-left:6px;}
        .yt-print-workshop .wo-info-value {font-weight:600;color:#213e66;}
        .yt-print-workshop .wo-metrics {background:#f0f6fd;border:1px solid #d0e0f1;margin:0 0 10px;}
-       .yt-print-workshop .wo-metrics td {padding:9px 8px;text-align:center;border-left:1px solid #d0e0f1;}
+       .yt-print-workshop .wo-metrics td {padding:6px 8px;text-align:center;border-left:1px solid #d0e0f1;}
        .yt-print-workshop .wo-metrics td:last-child {border-left:0;}
        .yt-print-workshop .wo-metrics .wo-info-label {display:block;margin:0 0 3px;}
        .yt-print-workshop .wo-lines {table-layout:fixed;border:1px solid #cfdded;margin:0 0 10px;page-break-inside:auto;}
        .yt-print-workshop .wo-lines thead {display:table-header-group;}
        .yt-print-workshop .wo-lines tbody {display:table-row-group;}
        .yt-print-workshop .wo-lines tr {page-break-inside:avoid;page-break-after:auto;}
-       .yt-print-workshop .wo-lines th {font-size:11px;color:#fff !important;-webkit-text-fill-color:#fff !important;background-color:#175899 !important;border:1px solid #3e78ae;padding:6px 5px;text-align:center;}
+       .yt-print-workshop .wo-lines th {font-size:11px;color:#fff !important;-webkit-text-fill-color:#fff !important;background-color:#175899 !important;border:1px solid #3e78ae;padding:5px 5px;text-align:center;}
        .yt-print-workshop .wo-parts th {background-color:#703b9c !important;border-color:#8256a7;}
-       .yt-print-workshop .wo-lines td {font-size:11px;line-height:1.5;padding:7px 7px;border:1px solid #e0e9f4;}
+       .yt-print-workshop .wo-lines td {font-size:11px;line-height:1.35;padding:4px 7px;border:1px solid #e0e9f4;}
        .yt-print-workshop .wo-lines tbody tr:nth-child(even) {background:#f3f7fc;}
        .yt-print-workshop .wo-parts tbody tr:nth-child(even) {background:#f7f2fc;}
        .yt-print-workshop .wo-line-name {font-weight:600;color:#183d6b;}
-       .yt-print-workshop .wo-line-note {font-size:9.5px;color:#667b96;}
-       .yt-print-workshop .wo-lines-title {font-size:14px;font-weight:bold;color:#fff;background:#175899;padding:6px 10px;margin:8px 0 0;}
+       .yt-print-workshop .wo-line-note {font-size:9.5px;line-height:1.3;color:#667b96;}
+       .yt-print-workshop .wo-lines-title {font-size:14px;font-weight:bold;color:#fff;background:#175899;padding:5px 10px;margin:6px 0 0;}
        .yt-print-workshop .wo-parts-title {background:#703b9c;}
        .yt-print-workshop .wo-bottom {margin-top:10px;page-break-inside:avoid;}
        .yt-print-workshop .wo-bottom > tbody > tr > td {vertical-align:top;}
-       .yt-print-workshop .wo-notes {border:1px solid #d0e0f1;background:#f8fbff;padding:9px;min-height:80px;white-space:pre-wrap;}
+       .yt-print-workshop .wo-notes {border:1px solid #d0e0f1;background:#f8fbff;padding:7px;min-height:48px;white-space:pre-wrap;}
        .yt-print-workshop .wo-totals {border:1px solid #d0e0f1;}
-       .yt-print-workshop .wo-totals td {padding:5px 9px;border-bottom:1px solid #e4edf6;}
+       .yt-print-workshop .wo-totals td {padding:4px 9px;border-bottom:1px solid #e4edf6;}
        .yt-print-workshop .wo-totals tr:nth-child(even) {background:#f3f7fc;}
        .yt-print-workshop .wo-totals .wo-final td {background:#11549a;color:#fff !important;font-weight:bold;font-size:13px;padding:9px;}
        .yt-print-workshop .wo-totals .wo-final span {color:#fff !important;}
