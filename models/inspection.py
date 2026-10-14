@@ -227,11 +227,14 @@ class ReceptionInspection(models.Model):
                     category.action_create_service_product()
                 product = category.service_product_id
                 existing = order.sale_line_ids.filtered(lambda line: line.inspection_category_id == category)
+                price, policy = self.env['yt.workshop.category.pricing'].price_for_product(
+                    product, order.partner_id, order.company_id)
                 values = {
                     'product_id': product.id,
                     'name': product.display_name,
                     'product_uom_qty': 1.0,
-                    'price_unit': category.service_price,
+                    'price_unit': price if policy else category.service_price,
+                    'pricing_policy_id': policy.id if policy else False,
                 }
                 if existing:
                     existing[:1].write(values)
