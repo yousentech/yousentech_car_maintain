@@ -62,7 +62,9 @@ class WorkshopCategoryPricing(models.Model):
         chosen = specific[:1] or general[:1]
         if chosen:
             cost = product.with_company(company).standard_price
-            return company.currency_id.round(cost * (1.0 + chosen.markup_percent / 100.0)), chosen
+            if cost > 0:
+                return company.currency_id.round(cost * (1.0 + chosen.markup_percent / 100.0)), chosen
+            # Avoid silently replacing a valid list price with zero when cost is missing.
         return product.lst_price, self.browse()
 
 
