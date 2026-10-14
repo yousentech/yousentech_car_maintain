@@ -150,8 +150,8 @@ class WorkshopSale(models.Model):
             if order.state != 'cancelled':
                 raise UserError(_('إعادة الفتح متاحة لأوامر العمل الملغاة فقط.'))
             order._check_finance_before_cancel()
-            order.write({'state': 'draft'})
-            order.message_post(body=_('تمت إعادة فتح أمر العمل مع الاحتفاظ بالمستندات المالية السابقة.'))
+            order.write({'state': 'draft', 'workshop_approved': False})
+            order.message_post(body=_('تمت إعادة فتح أمر العمل كمسودة مع الاحتفاظ بالمستندات المالية السابقة.'))
         return True
 
     def action_create_workshop_credit_note(self):
@@ -172,11 +172,11 @@ class WorkshopSale(models.Model):
 
     def action_approve_workshop(self):
         for order in self:
-            if order.state == 'cancelled':
-                raise UserError(_('لا يمكن اعتماد أمر عمل ملغي.'))
+            if order.state != 'draft':
+                raise UserError(_('اعتماد أمر العمل متاح في حالة المسودة فقط.'))
             if not order.sale_line_ids:
                 raise UserError(_('أضف خدمة أو قطعة غيار قبل الاعتماد.'))
-            order.workshop_approved = True
+            order.write({'workshop_approved': True, 'state': 'approved'})
         return True
 
     advance_payment_ids = fields.Many2many(
