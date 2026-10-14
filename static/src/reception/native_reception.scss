@@ -751,8 +751,7 @@
 @media(max-width:600px){.yt-workshop-advance-wizard .yt-advance-context,.yt-workshop-advance-wizard .yt-advance-fields{grid-template-columns:1fr}.yt-workshop-advance-wizard .yt-advance-content{padding:14px}.yt-workshop-advance-wizard .yt-advance-header{padding:14px}}
 
 
-/* Workshop V4: framed, centered values in customer / intake / vehicle panels.
-   Scoped to the workshop form; do not affect native reception or line tables. */
+/* Workshop V4: single field border. Odoo's input is the only framed layer. */
 .yt-native-reception.yt-workshop-finance-form {
   .yt-rec-card-customer,
   .yt-rec-card-intake,
@@ -761,25 +760,19 @@
     .yt-rec-summary-cell > .o_field_widget {
       min-width: 0;
       width: 100%;
-      min-height: 35px;
-      border: 1px solid #dce4f1;
-      border-radius: 8px;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5px 9px;
-      box-sizing: border-box;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      display: block;
       text-align: center;
-      overflow-wrap: anywhere;
     }
-
     .yt-rec-field-row > .o_field_widget:focus-within,
     .yt-rec-summary-cell > .o_field_widget:focus-within {
-      border-color: #8496e6;
-      box-shadow: 0 0 0 2px rgba(107, 123, 224, .10);
+      border: 0;
+      box-shadow: none;
     }
-
     .yt-rec-field-row .o_field_widget .o_input,
     .yt-rec-summary-cell .o_field_widget .o_input,
     .yt-rec-field-row .o_field_widget input,
@@ -789,25 +782,14 @@
       text-align: center !important;
       min-width: 0;
     }
-
     .yt-rec-field-row .o_field_widget .o_field_many2one_selection,
     .yt-rec-field-row .o_field_widget .o_field_many2one,
     .yt-rec-summary-cell .o_field_widget .o_field_many2one {
       width: 100%;
       min-width: 0;
     }
-
-    .yt-rec-field-row .o_field_widget .o_field_widget,
-    .yt-rec-summary-cell .o_field_widget .o_field_widget {
-      text-align: center;
-    }
-
-    .yt-rec-summary-cell > .o_field_widget {
-      min-height: 32px;
-    }
   }
 }
-
 
 /* Work-order Kanban readability: larger state/date and consistent breathing room. */
 .yt-wo-kanban {
