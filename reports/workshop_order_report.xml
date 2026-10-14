@@ -40,8 +40,8 @@
        .yt-print-workshop .wo-lines thead {display:table-header-group;}
        .yt-print-workshop .wo-lines tbody {display:table-row-group;}
        .yt-print-workshop .wo-lines tr {page-break-inside:avoid;page-break-after:auto;}
-       .yt-print-workshop .wo-lines th {font-size:11px;color:#fff !important;-webkit-text-fill-color:#fff !important;background:#24568d !important;border:1px solid #24568d;padding:7px 5px;text-align:center;font-weight:700;}
-       .yt-print-workshop .wo-parts th {background:#4d54a2 !important;border-color:#4d54a2;}
+       .yt-print-workshop .wo-lines th {font-size:11px;color:#111827 !important;-webkit-text-fill-color:#111827 !important;background:#eaf5fd !important;border:1px solid #d4e2f4;padding:7px 5px;text-align:center;font-weight:700;}
+       .yt-print-workshop .wo-parts th {background:#f0e9f9 !important;border-color:#ded4ee;}
        .yt-print-workshop .wo-lines td {font-size:11px;line-height:1.35;padding:5px 7px;border:1px solid #dce5f0;}
        .yt-print-workshop .wo-lines tbody tr:nth-child(even) {background:#f2f7fd;}
        .yt-print-workshop .wo-parts tbody tr:nth-child(even) {background:#f5f5fd;}
@@ -53,47 +53,66 @@
        .yt-print-workshop .wo-totals {border:1px solid #d4e2f4;}
        .yt-print-workshop .wo-totals td {padding:5px 9px;border-bottom:1px solid #e4edf6;}
        .yt-print-workshop .wo-totals tr:nth-child(even) {background:#f2f7fd;}
-       .yt-print-workshop .wo-totals .wo-final td {background:#24568d;color:#fff !important;font-weight:bold;font-size:13px;padding:9px;}
-       .yt-print-workshop .wo-totals .wo-final span {color:#fff !important;}
+       .yt-print-workshop .wo-totals .wo-final td {background:#dceeff;color:#111827 !important;font-weight:bold;font-size:13px;padding:9px;}
+       .yt-print-workshop .wo-totals .wo-final span {color:#111827 !important;}
        .yt-print-workshop .wo-icon {font-family:FontAwesome;display:inline-block;margin-left:7px;font-size:13px;vertical-align:middle;}
        .yt-print-workshop .wo-panel {border:1px solid #d4e2f4;background:#fff;}
+       .yt-print-workshop .wo-company {font-size:15px;font-weight:bold;color:#173b65;}
+       .yt-print-workshop .wo-contact {font-size:10px;color:#425e7e;}
+       .yt-print-workshop .wo-order-box {background:#eaf5fd;border:1px solid #d4e2f4;text-align:center;padding:5px;margin-top:6px;}
+       .yt-print-workshop .wo-status-strip {margin-bottom:12px;border:1px solid #d4e2f4;}
+       .yt-print-workshop .wo-status-strip td {width:33%;text-align:center;background:#f5f9fd;padding:6px;border-left:1px solid #d4e2f4;}
+       .yt-print-workshop .wo-cards {margin-bottom:12px;}
+       .yt-print-workshop .wo-cards .wo-info-table {margin:0;}
+       .yt-print-workshop .wo-cards .wo-info-table td {padding:6px 8px;}
+       .yt-print-workshop .wo-card-label {width:40%;font-size:10.5px;color:#345d88;}
+       .yt-print-workshop .wo-card-value {font-size:11px;color:#111827;font-weight:600;}
+       .yt-print-workshop .wo-client-title {background:#fff5e9;}
+       .yt-print-workshop .wo-vehicle-title {background:#eaf5fd;}
+       .yt-print-workshop .wo-signatures {margin-top:12px;page-break-inside:avoid;}
+       .yt-print-workshop .wo-signature {border:1px solid #d4e2f4;min-height:48px;padding:7px 10px;font-weight:bold;color:#173b65;}
+       .yt-print-workshop .wo-sign-line {text-align:center;margin-top:13px;color:#667b96;font-weight:normal;}
        .yt-print-workshop .wo-disclaimer {border-top:1px solid #d4e2f4;color:#7185a0;font-size:9px;margin-top:12px;padding-top:7px;}
       </style>
 
       <table class="wo-heading"><tr>
-       <td style="width:57%;text-align:right;">
-        <h2><span class="wo-icon">&#xf013;</span>أمر عمل صيانة</h2><div class="wo-subtitle">تقرير الخدمات وقطع الغيار</div>
+       <td style="width:52%;text-align:right;vertical-align:top;">
+        <h2><span class="wo-icon">&#xf0ad;</span>أمر عمل صيانة</h2>
+        <div class="wo-subtitle">WORK ORDER</div>
+        <div class="wo-order-box"><span class="wo-info-label">رقم أمر العمل</span><div class="wo-number" t-esc="o.name"/></div>
        </td>
-       <td style="width:43%;text-align:left;">
-        <div class="wo-number" t-esc="o.name"/>
-        <div style="margin-top:4px;"><span class="wo-status" t-esc="dict(o._fields['state'].selection).get(o.state, '')"/></div>
+       <td style="width:48%;text-align:left;vertical-align:top;">
+        <div class="wo-company" t-esc="o.company_id.name or ''"/>
+        <div class="wo-subtitle">خدمات صيانة السيارات</div>
+        <div class="wo-contact" t-if="o.company_id.phone" t-esc="o.company_id.phone"/>
+        <div class="wo-contact" t-if="o.company_id.email" t-esc="o.company_id.email"/>
        </td>
       </tr></table>
-
-      <table style="margin:0 0 10px;"><tr>
+      <table class="wo-status-strip"><tr>
+       <td><span class="wo-info-label">الحالة</span><div class="wo-status" t-esc="dict(o._fields['state'].selection).get(o.state, '')"/></td>
+       <td><span class="wo-info-label">تاريخ الدخول</span><div><strong t-field="o.arrival_at" t-options="{'widget':'date'}"/></div></td>
+       <td><span class="wo-info-label">وقت الدخول</span><div><strong t-field="o.arrival_at" t-options="{'widget':'time'}"/></div></td>
+      </tr></table>
+      <table class="wo-cards"><tr>
        <td style="width:50%;padding-left:5px;vertical-align:top;">
-        <div class="wo-section-title"><span class="wo-icon">&#xf007;</span>بيانات العميل</div>
+        <div class="wo-section-title wo-client-title"><span class="wo-icon">&#xf007;</span>بيانات العميل</div>
         <table class="wo-info-table">
-         <tr><td><span class="wo-info-label">العميل</span><span class="wo-info-value" t-esc="o.partner_id.name or '-'"/></td></tr>
-         <tr><td><span class="wo-info-label">الجوال</span><span class="wo-info-value" t-esc="o.partner_mobile or '-'"/></td></tr>
-         <tr><td><span class="wo-info-label">المستشار</span><span class="wo-info-value" t-esc="o.advisor_id.name or '-'"/></td></tr>
+         <tr><td class="wo-card-label">اسم العميل</td><td class="wo-card-value" t-esc="o.partner_id.name or '-'"/></tr>
+         <tr><td class="wo-card-label">رقم الجوال</td><td class="wo-card-value" t-esc="o.partner_mobile or '-'"/></tr>
+         <tr><td class="wo-card-label">المستشار</td><td class="wo-card-value" t-esc="o.advisor_id.name or '-'"/></tr>
         </table>
        </td>
        <td style="width:50%;padding-right:5px;vertical-align:top;">
-        <div class="wo-section-title"><span class="wo-icon">&#xf1b9;</span>بيانات السيارة</div>
+        <div class="wo-section-title wo-vehicle-title"><span class="wo-icon">&#xf1b9;</span>بيانات السيارة</div>
         <table class="wo-info-table">
-         <tr><td><span class="wo-info-label">اللوحة</span><span class="wo-info-value" t-esc="o.vehicle_id.plate or '-'"/></td></tr>
-         <tr><td><span class="wo-info-label">النوع / الموديل</span><span class="wo-info-value"><span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></span></td></tr>
-         <tr><td><span class="wo-info-label">سنة الصنع</span><span class="wo-info-value" t-esc="o.vehicle_year or '-'"/></td></tr>
-         <tr><td><span class="wo-info-label">رقم الهيكل</span><span class="wo-info-value" t-esc="o.vehicle_vin or '-'"/></td></tr>
+         <tr><td class="wo-card-label">النوع / الموديل</td><td class="wo-card-value"><span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></td></tr>
+         <tr><td class="wo-card-label">اللوحة</td><td class="wo-card-value" t-esc="o.vehicle_id.plate or '-'"/></tr>
+         <tr><td class="wo-card-label">سنة الصنع</td><td class="wo-card-value" t-esc="o.vehicle_year or '-'"/></tr>
+         <tr><td class="wo-card-label">رقم الهيكل</td><td class="wo-card-value" t-esc="o.vehicle_vin or '-'"/></tr>
+         <tr><td class="wo-card-label">عداد الدخول</td><td class="wo-card-value" t-esc="o.odometer_in or 0"/></tr>
+         <tr><td class="wo-card-label">عداد الخروج</td><td class="wo-card-value" t-esc="o.odometer_out or 0"/></tr>
         </table>
        </td>
-      </tr></table>
-
-      <table class="wo-metrics"><tr>
-       <td style="width:42%;"><span class="wo-info-label"><span class="wo-icon">&#xf073;</span>تاريخ الاستقبال</span><strong t-field="o.arrival_at"/></td>
-       <td style="width:29%;"><span class="wo-info-label">عداد الدخول</span><strong t-esc="o.odometer_in"/></td>
-       <td style="width:29%;"><span class="wo-info-label">عداد الخروج</span><strong t-esc="o.odometer_out"/></td>
       </tr></table>
 
       <div class="wo-lines-title"><span class="wo-icon">&#xf0ad;</span>الخدمات</div>
@@ -154,6 +173,7 @@
         </table>
        </td>
       </tr></table>
+      <table class="wo-signatures"><tr><td style="width:50%;padding-left:5px;"><div class="wo-signature">توقيع العميل<div class="wo-sign-line">.......................................</div></div></td><td style="width:50%;padding-right:5px;"><div class="wo-signature">توقيع المستلم<div class="wo-sign-line">.......................................</div></div></td></tr></table>
       <div class="wo-disclaimer">هذا التقرير يوضح بيانات أمر العمل، ولا يُعد فاتورة ضريبية أو إيصال دفع.</div>
      </div>
     </t>
