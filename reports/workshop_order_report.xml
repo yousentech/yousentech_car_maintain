@@ -91,7 +91,7 @@
       <table class="wo-status-strip"><tr>
        <td><span class="wo-info-label">الحالة</span><div class="wo-status" t-esc="dict(o._fields['state'].selection).get(o.state, '')"/></td>
        <td><span class="wo-info-label">تاريخ الدخول</span><div><strong t-field="o.arrival_at" t-options="{'widget':'date'}"/></div></td>
-       <td><span class="wo-info-label">وقت الدخول</span><div><strong t-field="o.arrival_at" t-options="{'widget':'time'}"/></div></td>
+       <td><span class="wo-info-label">وقت الدخول</span><div><strong t-esc="context_timestamp(o.arrival_at).strftime('%H:%M') if o.arrival_at else '-'"/></div></td>
       </tr></table>
       <table class="wo-cards"><tr>
        <td style="width:50%;padding-left:5px;vertical-align:top;">
