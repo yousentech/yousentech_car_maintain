@@ -210,6 +210,10 @@ class WorkshopSale(models.Model):
             return False
         if not self.sale_order_id:
             return True
+        # A fully credited and reconciled invoice does not cancel its sale order.
+        # Never create a second commercial cycle while the linked SO is active.
+        if self.sale_order_id.state != 'cancel':
+            return False
         current = self._workshop_current_documents()
         if not current or current.filtered(lambda m: m.state == 'draft'):
             return False
@@ -445,7 +449,9 @@ class WorkshopSale(models.Model):
     can_create_workshop_invoice = fields.Boolean(compute='_compute_can_create_workshop_invoice')
 
     @api.depends('state', 'workshop_approved', 'sale_order_id',
-                 'sale_order_id.invoice_ids', 'previous_sale_order_ids')
+                 'sale_order_id.state', 'sale_order_id.invoice_ids',
+                 'sale_order_id.invoice_ids.state', 'sale_order_id.invoice_ids.amount_residual',
+                 'previous_sale_order_ids')
     def _compute_can_create_workshop_invoice(self):
         for order in self:
             order.can_create_workshop_invoice = order._workshop_can_start_new_billing_cycle()
@@ -681,13 +687,14 @@ class WorkshopSale(models.Model):
         self.ensure_one()
         self.check_access_rights('write')
         self.check_access_rule('write')
-        if self.state == 'cancelled':
-            raise UserError(_('لا يمكن فوترة أمر عمل ملغي.'))
+        if self.state not in ('approved', 'in_progress') or not self.workshop_approved:
+            raise UserError(_('يجب اعتماد أمر العمل وأن يكون في حالة معتمد أو قيد التنفيذ قبل الفوترة.'))
         if not self.sale_line_ids:
             raise UserError(_('أضف الخدمات أو قطع الغيار أولاً.'))
+        if not self._workshop_can_start_new_billing_cycle():
+            raise UserError(_('لا يمكن إنشاء فاتورة جديدة: أمر البيع المرتبط ما زال نشطاً، أو لم تكتمل تسوية الفواتير والمرتجعات والمدفوعات والمخزون. راجع أمر البيع والمستندات المرتبطة أولاً.'))
         if self.sale_order_id:
-            if not self._workshop_can_start_new_billing_cycle():
-                return self.action_open_sale_order()
+            # Only a cancelled SO with fully settled documents may be archived.
             previous = self.sale_order_id
             self.write({'previous_sale_order_ids': [(4, previous.id)],
                         'sale_order_id': False})
