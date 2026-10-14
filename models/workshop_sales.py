@@ -119,6 +119,26 @@ class WorkshopSaleLine(models.Model):
                 line.name = line.product_id.display_name
                 line._apply_category_price()
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('product_id') and 'price_unit' not in vals:
+                order = self.env['yt.reception.order'].browse(vals.get('order_id'))
+                product = self.env['product.product'].browse(vals['product_id'])
+                company = order.company_id or self.env.company
+                price, policy = self.env['yt.workshop.category.pricing'].price_for_product(
+                    product, order.partner_id, company)
+                vals['price_unit'] = price
+                vals['pricing_policy_id'] = policy.id if policy else False
+        return super().create(vals_list)
+
+    @api.constrains('technician_ids', 'company_id')
+    def _check_technicians(self):
+        for line in self:
+            if any(not tech.is_workshop_technician or tech.company_id != line.company_id
+                   for tech in line.technician_ids):
+                raise ValidationError(_('اختر فنيين معتمدين من نفس شركة أمر العمل.'))
+
     @api.depends('product_id', 'order_id.location_id', 'order_id.company_id')
     def _compute_available_qty(self):
         for line in self:
@@ -135,6 +155,13 @@ class WorkshopSaleLine(models.Model):
 
 class WorkshopSale(models.Model):
     _inherit = 'yt.reception.order'
+
+    @api.onchange('partner_id')
+    def _onchange_workshop_partner_pricing(self):
+        for order in self:
+            for line in order.sale_line_ids:
+                if line.product_id:
+                    line._apply_category_price()
 
     workshop_approved = fields.Boolean(string='أمر العمل معتمد', readonly=True, copy=False, tracking=True)
 
