@@ -67,11 +67,9 @@ class WorkshopSale(models.Model):
 
     def _workshop_financial_documents(self):
         self.ensure_one()
-        sale = self.sale_order_id
-        invoices = sale.invoice_ids.filtered(
+        sales = self.sale_order_id | self.previous_sale_order_ids
+        invoices = sales.mapped('invoice_ids').filtered(
             lambda move: move.move_type in ('out_invoice', 'out_refund'))
-        # Include credit notes created from the invoice reversal wizard even
-        # when the sale order invoice relation does not expose them.
         refunds = self.env['account.move'].search([
             ('reversed_entry_id', 'in', invoices.filtered(
                 lambda move: move.move_type == 'out_invoice').ids),
@@ -79,6 +77,38 @@ class WorkshopSale(models.Model):
             ('company_id', '=', self.company_id.id),
         ]) if invoices else self.env['account.move']
         return invoices | refunds
+
+    def _workshop_current_documents(self):
+        self.ensure_one()
+        invoices = self.sale_order_id.invoice_ids.filtered(
+            lambda move: move.move_type in ('out_invoice', 'out_refund'))
+        refunds = self._workshop_financial_documents().filtered(
+            lambda move: move.move_type == 'out_refund'
+            and move.reversed_entry_id in invoices)
+        return invoices | refunds
+
+    def _workshop_can_start_new_billing_cycle(self):
+        self.ensure_one()
+        if self.state != 'approved' or not self.workshop_approved:
+            return False
+        if not self.sale_order_id:
+            return True
+        current = self._workshop_current_documents()
+        if not current or current.filtered(lambda m: m.state == 'draft'):
+            return False
+        posted = current.filtered(lambda m: m.state == 'posted')
+        invoiced = sum(posted.filtered(lambda m: m.move_type == 'out_invoice').mapped('amount_total'))
+        credited = sum(posted.filtered(lambda m: m.move_type == 'out_refund').mapped('amount_total'))
+        if self.currency_id.is_zero(invoiced) or not self.currency_id.is_zero(invoiced - credited):
+            return False
+        if posted.filtered(lambda m: not self.currency_id.is_zero(m.amount_residual)):
+            return False
+        self._compute_workshop_finance()
+        if not self.currency_id.is_zero(self.finance_received - self.finance_refunded):
+            return False
+        if self.sale_order_id.picking_ids.filtered(lambda p: p.state == 'done'):
+            return False
+        return True
 
     @api.depends('sale_order_id.invoice_ids', 'advance_payment_ids',
                  'advance_payment_ids.state', 'advance_payment_ids.amount')
@@ -242,9 +272,7 @@ class WorkshopSale(models.Model):
             payment.amount, self.currency_id, self.company_id, payment.date)
             for payment in payments.filtered(
                 lambda payment: payment.payment_type == 'outbound'))
-        credited = sum(documents.filtered(
-            lambda move: move.move_type == 'out_refund').mapped('amount_total'))
-        ceiling = max(0.0, self.amount_total - credited)
+        ceiling = max(0.0, self.amount_total)
         return max(0.0, ceiling - received + refunded)
 
     def action_open_workshop_payments(self):
@@ -294,6 +322,17 @@ class WorkshopSale(models.Model):
     part_line_ids = fields.One2many('yt.reception.sale.line', 'order_id', string='قطع الغيار',
                                     domain=[('product_id.type', 'in', ['product', 'consu'])])
     sale_order_id = fields.Many2one('sale.order', string='أمر البيع', readonly=True, copy=False)
+    previous_sale_order_ids = fields.Many2many(
+        'sale.order', 'yt_workshop_previous_sale_rel', 'order_id', 'sale_id',
+        string='أوامر البيع السابقة', readonly=True, copy=False)
+    can_create_workshop_invoice = fields.Boolean(compute='_compute_can_create_workshop_invoice')
+
+    @api.depends('state', 'workshop_approved', 'sale_order_id',
+                 'sale_order_id.invoice_ids', 'previous_sale_order_ids')
+    def _compute_can_create_workshop_invoice(self):
+        for order in self:
+            order.can_create_workshop_invoice = order._workshop_can_start_new_billing_cycle()
+
     invoice_ids = fields.Many2many('account.move', string='الفواتير', compute='_compute_invoices')
     invoice_count = fields.Integer(compute='_compute_invoices')
     refund_ids = fields.Many2many('account.move', string='المرتجعات', compute='_compute_invoices')
@@ -530,8 +569,12 @@ class WorkshopSale(models.Model):
         if not self.sale_line_ids:
             raise UserError(_('أضف الخدمات أو قطع الغيار أولاً.'))
         if self.sale_order_id:
-            self._reconcile_workshop_advances()
-            return self.action_open_sale_order()
+            if not self._workshop_can_start_new_billing_cycle():
+                return self.action_open_sale_order()
+            previous = self.sale_order_id
+            self.write({'previous_sale_order_ids': [(4, previous.id)],
+                        'sale_order_id': False})
+            self.sale_line_ids.write({'sale_line_id': False})
         if not self.workshop_approved:
             raise UserError(_('يجب اعتماد أمر العمل قبل إنشاء أمر البيع والفاتورة.'))
         if self.company_id not in self.env.companies:
