@@ -10,6 +10,7 @@
   'views/reception.xml',
   'views/workshop_sales.xml',
   'reports/inspection_report.xml',
+  'reports/workshop_order_report.xml',
  ],
  'assets': {
   'web.assets_backend': [
