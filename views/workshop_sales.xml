@@ -6,7 +6,7 @@
   <field name="arch" type="xml">
    <form string="أمر العمل" class="yt-native-reception yt-workshop-finance-form">
     <header>
-     <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="not can_create_workshop_invoice"/>
+     <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="state == 'done' or not can_create_workshop_invoice"/>
      <button name="action_approve_workshop" type="object" string="اعتماد أمر العمل" class="btn-secondary" invisible="state != 'draft'"/>
       <button name="action_start_workshop_execution" type="object" string="بدء التنفيذ" class="btn-primary" invisible="state != 'approved'"/>
       <button name="action_finish_workshop_execution" type="object" string="اكتمال التنفيذ" class="btn-primary" invisible="state != 'in_progress'"/>
@@ -211,6 +211,8 @@
   <field name="res_model">yt.reception.order</field>
   <field name="view_mode">tree,form</field>
   <field name="views" eval="[(ref('view_reception_order_tree'),'tree'),(ref('view_reception_workshop_form'),'form')]"/>
+   <field name="search_view_id" ref="view_workshop_order_search"/>
+   <field name="context">{'search_default_active_workshop_orders':1}</field>
  </record>
  
  <record id="view_workshop_finance_settings_form" model="ir.ui.view">
