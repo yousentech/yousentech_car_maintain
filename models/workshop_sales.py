@@ -3,6 +3,69 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 
+class WorkshopCategoryPricing(models.Model):
+    _name = 'yt.workshop.category.pricing'
+    _description = 'Workshop category cost-plus pricing policy'
+    _order = 'company_id, category_id, sequence, id'
+
+    sequence = fields.Integer(default=10)
+    active = fields.Boolean(default=True)
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+    category_id = fields.Many2one('product.category', string='فئة المنتج', required=True, ondelete='restrict')
+    customer_scope = fields.Selection([('all', 'كل العملاء'), ('selected', 'عملاء محددون')],
+                                      default='all', required=True, string='نطاق العملاء')
+    partner_ids = fields.Many2many('res.partner', string='العملاء المشمولون')
+    markup_percent = fields.Float(string='الزيادة على التكلفة (%)', required=True, default=0.0)
+    name = fields.Char(compute='_compute_name')
+
+    @api.depends('category_id', 'customer_scope', 'markup_percent')
+    def _compute_name(self):
+        for rec in self:
+            rec.name = '%s - %s%% - %s' % (
+                rec.category_id.display_name or '', rec.markup_percent,
+                dict(self._fields['customer_scope'].selection).get(rec.customer_scope, ''))
+
+    @api.constrains('markup_percent', 'customer_scope', 'partner_ids', 'category_id', 'company_id', 'active')
+    def _check_policy(self):
+        for rec in self:
+            if rec.markup_percent < 0:
+                raise ValidationError(_('نسبة الزيادة لا يمكن أن تكون سالبة.'))
+            if rec.customer_scope == 'selected' and not rec.partner_ids:
+                raise ValidationError(_('حدد العملاء المشمولين في سياسة التسعير.'))
+            if not rec.active:
+                continue
+            others = self.search([
+                ('id', '!=', rec.id), ('active', '=', True),
+                ('company_id', '=', rec.company_id.id),
+                ('category_id', '=', rec.category_id.id),
+                ('customer_scope', '=', rec.customer_scope),
+            ])
+            if rec.customer_scope == 'all' and others:
+                raise ValidationError(_('يوجد بالفعل تسعير عام نشط لهذه الفئة والشركة.'))
+            if rec.customer_scope == 'selected' and any(
+                rec.partner_ids & other.partner_ids for other in others):
+                raise ValidationError(_('العميل مكرر في أكثر من سياسة مخصصة لنفس الفئة والشركة.'))
+
+    @api.model
+    def price_for_product(self, product, partner, company):
+        if not product or not company:
+            return 0.0, self.browse()
+        commercial = partner.commercial_partner_id if partner else self.env['res.partner']
+        policies = self.search([
+            ('active', '=', True), ('company_id', '=', company.id),
+            ('category_id', '=', product.categ_id.id),
+        ])
+        specific = policies.filtered(
+            lambda p: p.customer_scope == 'selected'
+            and commercial and any(x.commercial_partner_id == commercial for x in p.partner_ids))
+        general = policies.filtered(lambda p: p.customer_scope == 'all')
+        chosen = specific[:1] or general[:1]
+        if chosen:
+            cost = product.with_company(company).standard_price
+            return company.currency_id.round(cost * (1.0 + chosen.markup_percent / 100.0)), chosen
+        return product.lst_price, self.browse()
+
+
 class WorkshopSaleLine(models.Model):
     _name = 'yt.reception.sale.line'
     _description = 'Workshop billable service or spare part'
@@ -16,6 +79,30 @@ class WorkshopSaleLine(models.Model):
     name = fields.Char(required=True)
     product_uom_qty = fields.Float(string='الكمية', default=1, required=True, digits='Product Unit of Measure')
     price_unit = fields.Float(string='سعر الوحدة', digits='Product Price')
+    technician_ids = fields.Many2many(
+        'hr.employee', 'yt_workshop_sale_line_technician_rel', 'line_id', 'employee_id',
+        string='الفنيون', domain="[('is_workshop_technician', '=', True), ('company_id', '=', company_id)]")
+    pricing_policy_id = fields.Many2one('yt.workshop.category.pricing', string='سياسة التسعير', readonly=True, copy=False)
+    pricing_source = fields.Char(string='مصدر السعر', compute='_compute_pricing_source')
+
+    @api.depends('pricing_policy_id')
+    def _compute_pricing_source(self):
+        for line in self:
+            line.pricing_source = (
+                _('التكلفة + %s%% حسب سياسة الفئة') % line.pricing_policy_id.markup_percent
+                if line.pricing_policy_id else _('السعر الافتراضي للمنتج'))
+
+    def _apply_category_price(self):
+        for line in self:
+            if not line.product_id:
+                continue
+            company = line.order_id.company_id or self.env.company
+            partner = line.order_id.partner_id
+            price, policy = self.env['yt.workshop.category.pricing'].price_for_product(
+                line.product_id, partner, company)
+            line.price_unit = price
+            line.pricing_policy_id = policy.id if policy else False
+
     available_qty = fields.Float(string='المتاح بالموقع', compute='_compute_available_qty', digits='Product Unit of Measure')
     sale_line_id = fields.Many2one('sale.order.line', readonly=True, copy=False)
     line_subtotal = fields.Float(string='الإجمالي', compute='_compute_line_subtotal', digits='Product Price')
@@ -30,7 +117,7 @@ class WorkshopSaleLine(models.Model):
         for line in self:
             if line.product_id:
                 line.name = line.product_id.display_name
-                line.price_unit = line.product_id.lst_price
+                line._apply_category_price()
 
     @api.depends('product_id', 'order_id.location_id', 'order_id.company_id')
     def _compute_available_qty(self):
