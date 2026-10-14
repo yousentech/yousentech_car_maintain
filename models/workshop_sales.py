@@ -294,7 +294,17 @@ class WorkshopSale(models.Model):
                 lambda picking: picking.state == 'done'):
                 raise UserError(_('يوجد صرف مخزني منفذ؛ عالج مرتجع المخزون قبل إلغاء أمر العمل.'))
 
+    def _check_completed_cancel_permission(self):
+        if not self.env.user.has_group('yousentech_car_maintain.group_workshop_cancel_completed'):
+            raise UserError(_('ليس لديك صلاحية إلغاء أمر عمل مكتمل.'))
+        for order in self:
+            if order.state != 'done':
+                raise UserError(_('إلغاء أمر العمل متاح بعد الاكتمال فقط.'))
+
     def action_cancel(self):
+        self.check_access_rights('write')
+        self.check_access_rule('write')
+        self._check_completed_cancel_permission()
         for order in self:
             order._check_finance_before_cancel()
         return {
@@ -330,6 +340,22 @@ class WorkshopSale(models.Model):
             'context': {'active_model': 'account.move', 'active_ids': invoices.ids,
                         'default_reason': _('تسوية أمر العمل %s') % self.name},
         }
+
+    def action_revoke_workshop_approval(self):
+        self.check_access_rights('write')
+        self.check_access_rule('write')
+        if not self.env.user.has_group('yousentech_car_maintain.group_workshop_revoke_approval'):
+            raise UserError(_('ليس لديك صلاحية إلغاء اعتماد أمر العمل.'))
+        for order in self:
+            if order.state != 'approved' or not order.workshop_approved:
+                raise UserError(_('إلغاء الاعتماد متاح للأمر المعتمد الذي لم يبدأ تنفيذه فقط.'))
+            if order.sale_order_id or order.previous_sale_order_ids:
+                raise UserError(_('لا يمكن إلغاء الاعتماد مع وجود أمر بيع مرتبط أو سابق.'))
+            if order._workshop_financial_documents() or order.advance_payment_ids:
+                raise UserError(_('لا يمكن إلغاء الاعتماد مع وجود فواتير أو دفعات مرتبطة.'))
+            order.write({'state': 'draft', 'workshop_approved': False})
+            order.message_post(body=_('تم إلغاء اعتماد أمر العمل وإعادته إلى مسودة.'))
+        return True
 
     def action_approve_workshop(self):
         for order in self:
@@ -1000,8 +1026,9 @@ class WorkshopCancelWizard(models.TransientModel):
     def action_confirm_cancel(self):
         self.ensure_one()
         order = self.order_id
-        if order.state == 'cancelled':
-            raise UserError(_('أمر العمل ملغي بالفعل.'))
+        order.check_access_rights('write')
+        order.check_access_rule('write')
+        order._check_completed_cancel_permission()
         order._check_finance_before_cancel()
         order.write({'cancel_reason': self.reason, 'state': 'cancelled'})
         order.message_post(body=_('تم إلغاء أمر العمل. السبب: %s') % self.reason)
