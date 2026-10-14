@@ -8,9 +8,9 @@
   'security/ir.model.access.csv',
   'security/record_rules.xml',
   'views/reception.xml',
-  'views/workshop_sales.xml',
   'reports/inspection_report.xml',
   'reports/workshop_order_report.xml',
+  'views/workshop_sales.xml',
  ],
  'assets': {
   'web.assets_backend': [
