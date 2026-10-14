@@ -229,6 +229,13 @@
   <field name="act_window_id" ref="action_reception_native"/>
  </record>
 
+ <!-- Define the form binding against an already loaded view; workshop_sales.xml upgrades it to the final workshop form. -->
+ <record id="action_reception_native_form_view" model="ir.actions.act_window.view">
+  <field name="sequence" eval="3"/>
+  <field name="view_mode">form</field>
+  <field name="view_id" ref="view_reception_order_form"/>
+  <field name="act_window_id" ref="action_reception_native"/>
+ </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
  <menuitem id="menu_workshop_reception" name="أوامر العمل" parent="menu_workshop_root" action="action_reception_native" sequence="10"/>
  <record id="view_inspection_category_tree" model="ir.ui.view"><field name="name">yt.inspection.category.tree</field><field name="model">yt.inspection.category</field><field name="arch" type="xml"><tree string="تصنيفات الفحص" default_order="sequence,id"><field name="sequence" widget="handle"/><field name="name" string="التصنيف"/><field name="service_product_id" string="الصنف الخدمي"/><field name="service_price" string="سعر الخدمة"/><field name="component_count" string="عدد المكونات"/><field name="active" string="نشط"/></tree></field></record>
