@@ -317,26 +317,6 @@ class WorkshopSale(models.Model):
                         'default_reason': _('تسوية أمر العمل %s') % self.name},
         }
 
-    def action_start_workshop_execution(self):
-        for order in self:
-            if order.state != 'approved' or not order.workshop_approved:
-                raise UserError(_('يجب اعتماد أمر العمل قبل بدء التنفيذ.'))
-            order.write({'state': 'in_progress'})
-        return True
-
-    def action_finish_workshop_execution(self):
-        for order in self:
-            if order.state != 'in_progress':
-                raise UserError(_('إكمال التنفيذ متاح للأوامر قيد التنفيذ فقط.'))
-            if not order.sale_line_ids or order.sale_line_ids.filtered(lambda line: not line.execution_done):
-                raise UserError(_('يجب تأكيد إنجاز جميع بنود الخدمات وقطع الغيار أولاً.'))
-            invoices = order._workshop_financial_documents().filtered(
-                lambda move: move.move_type == 'out_invoice' and move.state == 'posted')
-            if not invoices:
-                raise UserError(_('لا يمكن إكمال أمر العمل قبل ترحيل فاتورة العميل.'))
-            order.write({'state': 'done'})
-        return True
-
     def action_approve_workshop(self):
         for order in self:
             if order.state != 'draft':
