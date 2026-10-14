@@ -14,98 +14,148 @@
   <t t-call="web.html_container">
    <t t-foreach="docs" t-as="o">
     <t t-call="web.external_layout">
-     <div class="page yt-print-workshop" dir="rtl" style="font-family:inherit;color:#24344d;font-size:12px;direction:rtl;">
-
+     <div class="page yt-print-workshop" dir="rtl" style="font-family:inherit;direction:rtl;color:#17385f;">
       <style>
-       .yt-print-workshop {font-size:13px !important;line-height:1.65;color:#26364c;}
-       .yt-print-workshop h2 {font-size:23px !important;font-weight:700;line-height:1.35;}
-       .yt-print-workshop h4 {font-size:16px !important;font-weight:700;line-height:1.4;border-right:3px solid #5868ad;padding-right:10px;}
-       .yt-print-workshop table {table-layout:fixed;}
-       .yt-print-workshop td,.yt-print-workshop th {vertical-align:middle;line-height:1.6;overflow-wrap:break-word;}
-       .yt-print-workshop strong {font-weight:700;}
-       .yt-print-workshop thead {display:table-header-group;}
-       .yt-print-workshop tr {page-break-inside:avoid;}
-       .yt-print-workshop .yt-report-summary {border:1px solid #dce4f1;border-radius:6px;background:#f7f9fd;}
-       .yt-print-workshop .yt-report-summary > div {margin-bottom:6px;}
-       .yt-print-workshop .yt-report-total {font-size:15px;font-weight:700;}
+       /* Compact, scalable A4 layout. Uses Odoo's own font and wkhtmltopdf-safe tables. */
+       .yt-print-workshop {font-family:inherit !important;font-size:11px;line-height:1.45;color:#183a65;}
+       .yt-print-workshop table {width:100%;table-layout:fixed;border-collapse:collapse;}
+       .yt-print-workshop td,.yt-print-workshop th {vertical-align:middle;word-wrap:break-word;overflow-wrap:break-word;}
+       .yt-print-workshop .wo-heading {margin:2px 0 10px;border-bottom:2px solid #1c5795;padding:5px 0 10px;}
+       .yt-print-workshop .wo-heading h2 {font-size:22px;color:#104b8f;margin:0;font-weight:bold;line-height:1.25;}
+       .yt-print-workshop .wo-subtitle {font-size:12px;color:#68809c;margin-top:3px;}
+       .yt-print-workshop .wo-identity {border:1px solid #c8dbf0;background:#f0f6fd;}
+       .yt-print-workshop .wo-identity td {padding:7px 10px;border-left:1px solid #c8dbf0;}
+       .yt-print-workshop .wo-identity td:last-child {border-left:0;}
+       .yt-print-workshop .wo-number {font-size:15px;font-weight:bold;color:#104b8f;}
+       .yt-print-workshop .wo-status {display:inline-block;background:#e2f3e9;color:#207349;font-weight:bold;padding:3px 12px;border-radius:10px;}
+       .yt-print-workshop .wo-section-title {font-size:13px;font-weight:bold;color:#174b89;background:#eaf3fc;border:1px solid #d0e0f1;padding:6px 10px;}
+       .yt-print-workshop .wo-info-table {border:1px solid #d0e0f1;margin:0 0 9px;}
+       .yt-print-workshop .wo-info-table td {padding:5px 9px;border-bottom:1px solid #e4edf6;}
+       .yt-print-workshop .wo-info-label {color:#657d9a;font-size:10px;margin-left:6px;}
+       .yt-print-workshop .wo-info-value {font-weight:600;color:#213e66;}
+       .yt-print-workshop .wo-metrics {background:#f0f6fd;border:1px solid #d0e0f1;margin:0 0 10px;}
+       .yt-print-workshop .wo-metrics td {padding:6px 8px;text-align:center;border-left:1px solid #d0e0f1;}
+       .yt-print-workshop .wo-metrics td:last-child {border-left:0;}
+       .yt-print-workshop .wo-metrics .wo-info-label {display:block;margin:0 0 3px;}
+       .yt-print-workshop .wo-lines {table-layout:fixed;border:1px solid #cfdded;margin:0 0 10px;page-break-inside:auto;}
+       .yt-print-workshop .wo-lines thead {display:table-header-group;}
+       .yt-print-workshop .wo-lines tbody {display:table-row-group;}
+       .yt-print-workshop .wo-lines tr {page-break-inside:avoid;page-break-after:auto;}
+       .yt-print-workshop .wo-lines th {font-size:10.5px;color:#fff !important;-webkit-text-fill-color:#fff !important;background-color:#175899 !important;border:1px solid #3e78ae;padding:6px 5px;text-align:center;}
+       .yt-print-workshop .wo-parts th {background-color:#703b9c !important;border-color:#8256a7;}
+       .yt-print-workshop .wo-lines td {font-size:10.5px;line-height:1.4;padding:5px 6px;border:1px solid #e0e9f4;}
+       .yt-print-workshop .wo-lines tbody tr:nth-child(even) {background:#f3f7fc;}
+       .yt-print-workshop .wo-parts tbody tr:nth-child(even) {background:#f7f2fc;}
+       .yt-print-workshop .wo-line-name {font-weight:600;color:#183d6b;}
+       .yt-print-workshop .wo-line-note {font-size:9.5px;color:#667b96;}
+       .yt-print-workshop .wo-lines-title {font-size:13px;font-weight:bold;color:#fff;background:#175899;padding:6px 10px;margin:8px 0 0;}
+       .yt-print-workshop .wo-parts-title {background:#703b9c;}
+       .yt-print-workshop .wo-bottom {margin-top:10px;page-break-inside:avoid;}
+       .yt-print-workshop .wo-bottom > tbody > tr > td {vertical-align:top;}
+       .yt-print-workshop .wo-notes {border:1px solid #d0e0f1;background:#f8fbff;padding:9px;min-height:80px;white-space:pre-wrap;}
+       .yt-print-workshop .wo-totals {border:1px solid #d0e0f1;}
+       .yt-print-workshop .wo-totals td {padding:5px 9px;border-bottom:1px solid #e4edf6;}
+       .yt-print-workshop .wo-totals tr:nth-child(even) {background:#f3f7fc;}
+       .yt-print-workshop .wo-totals .wo-final td {background:#11549a;color:#fff !important;font-weight:bold;font-size:13px;padding:9px;}
+       .yt-print-workshop .wo-totals .wo-final span {color:#fff !important;}
+       .yt-print-workshop .wo-disclaimer {border-top:1px solid #c7d8ec;color:#7185a0;font-size:9px;margin-top:13px;padding-top:7px;}
       </style>
-      
-      <div style="border-bottom:3px solid #5261a6;padding:0 0 12px;margin-bottom:16px;">
-       <table style="width:100%;"><tr>
-        <td style="text-align:right;"><h2 style="color:#293d78;margin:0;">أمر عمل صيانة</h2><div style="color:#74839b;margin-top:5px;">تقرير الخدمات وقطع الغيار</div></td>
-        <td style="text-align:left;"><strong t-esc="o.name"/><div style="margin-top:5px;" t-esc="dict(o._fields['state'].selection).get(o.state, '')"/></td>
-       </tr></table>
-      </div>
-      <table style="width:100%;border-collapse:separate;border-spacing:10px;margin-bottom:20px;">
-       <tr>
-        <td style="width:50%;background:#f1f4fb;padding:16px;vertical-align:top;">
-         <div style="color:#5261a6;font-weight:bold;margin-bottom:12px;font-size:15px;">بيانات العميل</div>
-         <div><strong>العميل: </strong><span t-esc="o.partner_id.name"/></div>
-         <div><strong>الجوال: </strong><span t-esc="o.partner_mobile or '-'"/></div>
-         <div><strong>المستشار: </strong><span t-esc="o.advisor_id.name or '-'"/></div>
-        </td>
-        <td style="width:50%;background:#f1f4fb;padding:12px;vertical-align:top;">
-         <div style="color:#5261a6;font-weight:bold;margin-bottom:8px;">بيانات السيارة</div>
-         <div><strong>اللوحة: </strong><span t-esc="o.vehicle_id.plate or '-'"/></div>
-         <div><strong>الماركة والموديل: </strong><span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></div>
-         <div><strong>سنة الصنع: </strong><span t-esc="o.vehicle_year or '-'"/></div>
-         <div><strong>رقم الهيكل: </strong><span t-esc="o.vehicle_vin or '-'"/></div>
-        </td>
-       </tr>
+
+      <table class="wo-heading"><tr>
+       <td style="width:57%;text-align:right;">
+        <h2>أمر عمل صيانة</h2><div class="wo-subtitle">تقرير الخدمات وقطع الغيار</div>
+       </td>
+       <td style="width:43%;text-align:left;">
+        <div class="wo-number" t-esc="o.name"/>
+        <div style="margin-top:4px;"><span class="wo-status" t-esc="dict(o._fields['state'].selection).get(o.state, '')"/></div>
+       </td>
+      </tr></table>
+
+      <table style="margin:0 0 10px;"><tr>
+       <td style="width:50%;padding-left:5px;vertical-align:top;">
+        <div class="wo-section-title">بيانات العميل</div>
+        <table class="wo-info-table">
+         <tr><td><span class="wo-info-label">العميل</span><span class="wo-info-value" t-esc="o.partner_id.name or '-'"/></td></tr>
+         <tr><td><span class="wo-info-label">الجوال</span><span class="wo-info-value" t-esc="o.partner_mobile or '-'"/></td></tr>
+         <tr><td><span class="wo-info-label">المستشار</span><span class="wo-info-value" t-esc="o.advisor_id.name or '-'"/></td></tr>
+        </table>
+       </td>
+       <td style="width:50%;padding-right:5px;vertical-align:top;">
+        <div class="wo-section-title">بيانات السيارة</div>
+        <table class="wo-info-table">
+         <tr><td><span class="wo-info-label">اللوحة</span><span class="wo-info-value" t-esc="o.vehicle_id.plate or '-'"/></td></tr>
+         <tr><td><span class="wo-info-label">النوع / الموديل</span><span class="wo-info-value"><span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></span></td></tr>
+         <tr><td><span class="wo-info-label">سنة الصنع</span><span class="wo-info-value" t-esc="o.vehicle_year or '-'"/></td></tr>
+         <tr><td><span class="wo-info-label">رقم الهيكل</span><span class="wo-info-value" t-esc="o.vehicle_vin or '-'"/></td></tr>
+        </table>
+       </td>
+      </tr></table>
+
+      <table class="wo-metrics"><tr>
+       <td style="width:42%;"><span class="wo-info-label">تاريخ الاستقبال</span><strong t-field="o.arrival_at"/></td>
+       <td style="width:29%;"><span class="wo-info-label">عداد الدخول</span><strong t-esc="o.odometer_in"/></td>
+       <td style="width:29%;"><span class="wo-info-label">عداد الخروج</span><strong t-esc="o.odometer_out"/></td>
+      </tr></table>
+
+      <div class="wo-lines-title">الخدمات</div>
+      <table class="wo-lines wo-services">
+       <thead><tr>
+        <th style="width:6%;">#</th><th style="width:41%;">الصنف / الوصف</th><th style="width:21%;">الفنيون</th>
+        <th style="width:9%;">الكمية</th><th style="width:11%;">السعر</th><th style="width:12%;">الإجمالي</th>
+       </tr></thead>
+       <tbody>
+        <t t-foreach="o.service_line_ids" t-as="line">
+         <tr>
+          <td style="text-align:center;" t-esc="line_index + 1"/>
+          <td><div class="wo-line-name" t-esc="line.product_id.display_name"/><div class="wo-line-note" t-if="line.name and line.name != line.product_id.display_name" t-esc="line.name"/></td>
+          <td t-esc="', '.join(line.technician_ids.mapped('name')) or '-'"/>
+          <td style="text-align:center;" t-esc="'%g' % line.product_uom_qty"/>
+          <td style="text-align:center;" t-esc="'%.2f' % line.price_unit"/>
+          <td style="text-align:center;font-weight:bold;" t-esc="'%.2f' % line.line_subtotal"/>
+         </tr>
+        </t>
+        <tr t-if="not o.service_line_ids"><td colspan="6" style="text-align:center;color:#7b8ca5;padding:9px;">لا توجد خدمات</td></tr>
+       </tbody>
       </table>
-      <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
-       <tr style="background:#f6f8fc;">
-        <td style="padding:12px;border:1px solid #dce4f1;"><strong>تاريخ الاستقبال</strong><div t-field="o.arrival_at"/></td>
-        <td style="padding:12px;border:1px solid #dce4f1;"><strong>عداد الدخول</strong><div t-esc="o.odometer_in"/></td>
-        <td style="padding:12px;border:1px solid #dce4f1;"><strong>عداد الخروج</strong><div t-esc="o.odometer_out"/></td>
-       </tr>
+
+      <div class="wo-lines-title wo-parts-title">قطع الغيار</div>
+      <table class="wo-lines wo-parts">
+       <thead><tr>
+        <th style="width:6%;">#</th><th style="width:51%;">الصنف / الوصف</th>
+        <th style="width:13%;">الكمية</th><th style="width:14%;">السعر</th><th style="width:16%;">الإجمالي</th>
+       </tr></thead>
+       <tbody>
+        <t t-foreach="o.part_line_ids" t-as="line">
+         <tr>
+          <td style="text-align:center;" t-esc="line_index + 1"/>
+          <td><div class="wo-line-name" t-esc="line.product_id.display_name"/><div class="wo-line-note" t-if="line.name and line.name != line.product_id.display_name" t-esc="line.name"/></td>
+          <td style="text-align:center;" t-esc="'%g' % line.product_uom_qty"/>
+          <td style="text-align:center;" t-esc="'%.2f' % line.price_unit"/>
+          <td style="text-align:center;font-weight:bold;" t-esc="'%.2f' % line.line_subtotal"/>
+         </tr>
+        </t>
+        <tr t-if="not o.part_line_ids"><td colspan="5" style="text-align:center;color:#7b8ca5;padding:9px;">لا توجد قطع غيار</td></tr>
+       </tbody>
       </table>
-      <t t-foreach="[('الخدمات',o.service_line_ids),('قطع الغيار',o.part_line_ids)]" t-as="section">
-       <h4 style="color:#293d78;margin:16px 0 8px;" t-esc="section[0]"/>
-       <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
-        <thead><tr style="background:#eaf0fb;color:#243b72;">
-         <th style="padding:11px;border-bottom:1px solid #d5dfee;text-align:right;width:34%;">الصنف / الوصف</th>
-         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:right;width:24%;">الفنيون</th>
-         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:center;width:10%;">الكمية</th>
-         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:center;width:16%;">السعر</th>
-         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:center;width:16%;">الإجمالي</th>
-        </tr></thead>
-        <tbody>
-         <t t-foreach="section[1]" t-as="line">
-          <tr>
-           <td style="padding:9px;border-bottom:1px solid #e7ebf2;word-wrap:break-word;"><strong t-esc="line.product_id.display_name"/><div style="color:#77849b;" t-if="line.name != line.product_id.display_name" t-esc="line.name"/></td>
-           <td style="padding:9px;border-bottom:1px solid #e7ebf2;" t-esc="', '.join(line.technician_ids.mapped('name')) or '-'"/>
-           <td style="padding:9px;border-bottom:1px solid #e7ebf2;text-align:center;" t-esc="line.product_uom_qty"/>
-           <td style="padding:9px;border-bottom:1px solid #e7ebf2;text-align:center;" t-esc="'%.2f' % line.price_unit"/>
-           <td style="padding:9px;border-bottom:1px solid #e7ebf2;text-align:center;font-weight:bold;" t-esc="'%.2f' % line.line_subtotal"/>
-          </tr>
-         </t>
-         <tr t-if="not section[1]"><td colspan="5" style="text-align:center;padding:12px;color:#8290a6;">لا توجد بنود</td></tr>
-        </tbody>
-       </table>
-      </t>
-      <div style="page-break-inside:avoid;margin-top:18px;">
-       <table style="width:100%;border-collapse:collapse;">
-        <tr>
-         <td style="width:52%;vertical-align:top;padding:16px;background:#f6f8fc;">
-          <strong>ملاحظات الاستقبال</strong><p t-esc="o.reception_notes or 'لا توجد ملاحظات'"/>
-         </td>
-         <td style="width:48%;vertical-align:top;padding-right:14px;">
-          <table style="width:100%;border-collapse:collapse;">
-           <tr><td style="padding:6px;">قيمة الخدمات</td><td style="text-align:left;"><span t-field="o.service_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
-           <tr><td style="padding:6px;">قيمة قطع الغيار</td><td style="text-align:left;"><span t-field="o.parts_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
-           <tr><td style="padding:6px;">الإجمالي قبل الخصم</td><td style="text-align:left;"><span t-field="o.amount_before_discount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
-           <tr><td style="padding:6px;">الخصم</td><td style="text-align:left;"><span t-field="o.discount_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
-           <tr><td style="padding:6px;">الضريبة</td><td style="text-align:left;"><span t-field="o.amount_tax" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
-           <tr class="yt-report-total" style="background:#eaf0fb;color:#243b72;font-weight:bold;"><td style="padding:12px;">الإجمالي النهائي</td><td style="padding:12px;text-align:left;"><span t-field="o.amount_total" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
-          </table>
-         </td>
-        </tr>
-       </table>
-      </div>
-      <div style="margin-top:22px;border-top:1px solid #e1e6ef;padding-top:9px;color:#718096;font-size:10px;">
-       هذا التقرير يوضح بيانات أمر العمل، ولا يُعد فاتورة ضريبية أو إيصال دفع.
-      </div>
+
+      <table class="wo-bottom"><tr>
+       <td style="width:48%;padding-left:5px;">
+        <div class="wo-section-title">ملاحظات الاستقبال</div>
+        <div class="wo-notes" t-esc="o.reception_notes or 'لا توجد ملاحظات'"/>
+       </td>
+       <td style="width:52%;padding-right:5px;">
+        <div class="wo-section-title">ملخص الإجماليات</div>
+        <table class="wo-totals">
+         <tr><td>قيمة الخدمات</td><td style="text-align:left;"><span t-field="o.service_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+         <tr><td>قيمة قطع الغيار</td><td style="text-align:left;"><span t-field="o.parts_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+         <tr><td>الإجمالي قبل الخصم</td><td style="text-align:left;"><span t-field="o.amount_before_discount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+         <tr><td>الخصم</td><td style="text-align:left;"><span t-field="o.discount_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+         <tr><td>الضريبة</td><td style="text-align:left;"><span t-field="o.amount_tax" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+         <tr class="wo-final"><td>الإجمالي النهائي</td><td style="text-align:left;"><span t-field="o.amount_total" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+        </table>
+       </td>
+      </tr></table>
+      <div class="wo-disclaimer">هذا التقرير يوضح بيانات أمر العمل، ولا يُعد فاتورة ضريبية أو إيصال دفع.</div>
      </div>
     </t>
    </t>
