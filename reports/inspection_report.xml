@@ -16,7 +16,7 @@
 
       <style>
        /* Print-safe RTL layout. Table rows flow across pages; headers repeat. */
-       .yt-print-inspection {font-size:12px !important;line-height:1.55;color:#223b60;}
+       .yt-print-inspection {font-family:inherit !important;font-size:12px !important;line-height:1.6;color:#223b60;}
        .yt-print-inspection h2 {font-size:22px !important;color:#153b72;font-weight:bold;margin:6px 0 16px;text-align:center;}
        .yt-print-inspection h4 {font-size:15px !important;color:#184a88;font-weight:bold;margin:16px 0 8px;padding:8px 11px;background:#edf4fc;border:1px solid #d4e2f4;}
        .yt-print-inspection table {width:100%;border-collapse:collapse;table-layout:fixed;}
@@ -26,18 +26,21 @@
        .yt-print-inspection table tr {page-break-inside:avoid;}
        .yt-print-inspection .yt-inspection-results {page-break-inside:auto;}
        .yt-print-inspection .yt-inspection-results tbody tr {page-break-inside:avoid;}
-       .yt-print-inspection .yt-inspection-results th {background:#355e91 !important;color:#fff;padding:10px 7px !important;border:1px solid #b9cde6;}
+       .yt-print-inspection .yt-inspection-results thead tr th {background-color:#24568d !important;color:#ffffff !important;-webkit-text-fill-color:#ffffff !important;font-weight:700;padding:11px 8px !important;border:1px solid #24568d;}
        .yt-print-inspection .yt-inspection-results td {padding:9px 7px !important;border:1px solid #dce5f0;}
-       .yt-print-inspection .yt-inspection-results tbody tr:nth-child(even) {background:#f5f8fc;}
+       .yt-print-inspection .yt-inspection-results tbody tr:nth-child(even) {background:#f2f7fd;}
+       .yt-print-inspection .yt-inspection-results tbody tr:nth-child(odd) {background:#ffffff;}
+       .yt-print-inspection .yt-inspection-results td {font-size:12px;color:#274466;}
+       .yt-print-inspection .yt-inspection-results tbody tr {page-break-inside:avoid;}
        .yt-print-inspection .yt-inspection-result-summary {background:#eef4fc;border:1px solid #d4e2f4;padding:12px 14px;line-height:1.8;page-break-inside:avoid;}
-       .yt-print-inspection .yt-inspection-meta {background:#f0f5fc;border:1px solid #d4e2f4;padding:13px;margin-bottom:14px;}
+       .yt-print-inspection .yt-inspection-meta {background:#eaf2fd;border:1px solid #c7dbf3;padding:13px;margin-bottom:14px;}
        .yt-print-inspection .yt-inspection-meta td {padding:6px 8px;text-align:center;}
        .yt-print-inspection .yt-inspection-info td {padding:10px !important;border:1px solid #d4e2f4 !important;}
        .yt-print-inspection .yt-inspection-info strong {color:#284e7c;}
        .yt-print-inspection .yt-inspection-note {border:1px solid #d4e2f4;padding:13px;min-height:32px;white-space:pre-wrap;word-wrap:break-word;}
       </style>
       
-      <h2 style="text-align:center;color:#293d78;border-bottom:2px solid #d5dfee;padding-bottom:12px;">تقرير فحص السيارة</h2>
+      <h2 style="text-align:center;color:#153b72;border-bottom:2px solid #a9c7e8;padding-bottom:13px;">تقرير فحص السيارة</h2>
       <div class="yt-inspection-meta">
        <table style="width:100%;"><tr>
         <td><strong>أمر العمل:</strong> <span t-esc="o.name"/></td>
@@ -45,7 +48,7 @@
         <td><strong>حالة الفحص:</strong> <span t-esc="dict(o._fields['inspection_state'].selection).get(o.inspection_state, '')"/></td>
        </tr></table>
       </div>
-      <h4 style="color:#4d54b6;">بيانات العميل والسيارة</h4>
+      <h4 style="color:#184a88;">بيانات العميل والسيارة</h4>
       <table class="yt-inspection-info" style="width:100%;border-collapse:collapse;margin-bottom:15px;">
        <tr><td style="padding:12px;border:1px solid #d5dfee;"><strong>العميل:</strong> <span t-esc="o.partner_id.name"/></td><td style="padding:10px;border:1px solid #d5dfee;"><strong>الجوال:</strong> <span t-esc="o.partner_mobile or '-'"/></td></tr>
        <tr><td style="padding:8px;border:1px solid #d5dfee;"><strong>السيارة:</strong> <span t-esc="o.vehicle_id.plate"/></td><td style="padding:8px;border:1px solid #d5dfee;"><strong>النوع / الموديل:</strong> <span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></td></tr>
@@ -53,7 +56,7 @@
       </table>
       <h4 style="color:#4d54b6;">نتائج فحص المكونات</h4>
       <table class="yt-inspection-results" style="width:100%;border-collapse:collapse;text-align:center;">
-       <thead><tr style="background:#eaf0fb;"><th style="border:1px solid #d5dfee;padding:12px;">المكون</th><th style="border:1px solid #d5dfee;padding:9px;">التصنيف</th><th style="border:1px solid #d5dfee;padding:9px;">النتيجة</th><th style="border:1px solid #d5dfee;padding:9px;">الملاحظات</th></tr></thead>
+       <thead><tr style="background-color:#24568d;"><th style="width:28%;background-color:#24568d;color:#ffffff !important;border:1px solid #24568d;padding:11px 8px;">المكون</th><th style="width:20%;background-color:#24568d;color:#ffffff !important;border:1px solid #24568d;padding:11px 8px;">التصنيف</th><th style="width:18%;background-color:#24568d;color:#ffffff !important;border:1px solid #24568d;padding:11px 8px;">النتيجة</th><th style="width:34%;background-color:#24568d;color:#ffffff !important;border:1px solid #24568d;padding:11px 8px;">الملاحظات</th></tr></thead>
        <tbody>
         <t t-foreach="o.inspection_line_ids" t-as="line">
          <tr>
