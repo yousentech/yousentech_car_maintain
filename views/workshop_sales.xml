@@ -47,7 +47,7 @@
      </div>
      <div class="yt-wo-dashboard" dir="rtl">
       <div class="yt-wo-summary">
-       <div class="yt-wo-summary-title"><span class="yt-wo-icon"><i class="fa fa-wrench" title="الخدمات"/></span><div><small>ملخص أمر العمل</small><h2 style="font-size:21px;font-weight:750;line-height:1.35;letter-spacing:.2px;margin:5px 0 3px;color:#27246b;white-space:nowrap;"><field name="name" readonly="1" nolabel="1"/></h2><span>صيانة وخدمات السيارة</span></div></div>
+       <div class="yt-wo-summary-title"><span class="yt-wo-icon"><i class="fa fa-wrench" title="الخدمات"/></span><div><small>ملخص أمر العمل</small><h2 class="yt-wo-order-number"><field name="name" readonly="1" nolabel="1"/></h2><span>صيانة وخدمات السيارة</span></div></div>
        <div class="yt-wo-kpis yt-wo-kpis-six">
         <div class="yt-wo-kpi yt-wo-blue"><small>قيمة الخدمات</small><field name="service_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
         <div class="yt-wo-kpi yt-wo-teal"><small>قيمة قطع الغيار</small><field name="parts_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
