@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ <record id="action_report_workshop_order" model="ir.actions.report">
+  <field name="name">تقرير أمر العمل</field>
+  <field name="model">yt.reception.order</field>
+  <field name="report_type">qweb-pdf</field>
+  <field name="report_name">yousentech_car_maintain.report_workshop_order_document</field>
+  <field name="report_file">yousentech_car_maintain.report_workshop_order_document</field>
+  <field name="print_report_name">'أمر العمل - %s' % (object.name or '')</field>
+  <field name="binding_model_id" ref="model_yt_reception_order"/>
+  <field name="binding_type">report</field>
+ </record>
+ <template id="report_workshop_order_document">
+  <t t-call="web.html_container">
+   <t t-foreach="docs" t-as="o">
+    <t t-call="web.external_layout">
+     <div class="page" dir="rtl" style="font-family:inherit;color:#24344d;font-size:12px;direction:rtl;">
+      <div style="border-bottom:3px solid #5261a6;padding:0 0 12px;margin-bottom:16px;">
+       <table style="width:100%;"><tr>
+        <td style="text-align:right;"><h2 style="color:#293d78;margin:0;">أمر عمل صيانة</h2><div style="color:#74839b;margin-top:5px;">تقرير الخدمات وقطع الغيار</div></td>
+        <td style="text-align:left;"><strong t-esc="o.name"/><div style="margin-top:5px;" t-esc="dict(o._fields['state'].selection).get(o.state, '')"/></td>
+       </tr></table>
+      </div>
+      <table style="width:100%;border-collapse:separate;border-spacing:6px;margin-bottom:16px;">
+       <tr>
+        <td style="width:50%;background:#f1f4fb;padding:12px;vertical-align:top;">
+         <div style="color:#5261a6;font-weight:bold;margin-bottom:8px;">بيانات العميل</div>
+         <div><strong>العميل: </strong><span t-esc="o.partner_id.name"/></div>
+         <div><strong>الجوال: </strong><span t-esc="o.partner_mobile or '-'"/></div>
+         <div><strong>المستشار: </strong><span t-esc="o.advisor_id.name or '-'"/></div>
+        </td>
+        <td style="width:50%;background:#f1f4fb;padding:12px;vertical-align:top;">
+         <div style="color:#5261a6;font-weight:bold;margin-bottom:8px;">بيانات السيارة</div>
+         <div><strong>اللوحة: </strong><span t-esc="o.vehicle_id.plate or '-'"/></div>
+         <div><strong>الماركة والموديل: </strong><span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></div>
+         <div><strong>سنة الصنع: </strong><span t-esc="o.vehicle_year or '-'"/></div>
+         <div><strong>رقم الهيكل: </strong><span t-esc="o.vehicle_vin or '-'"/></div>
+        </td>
+       </tr>
+      </table>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
+       <tr style="background:#f6f8fc;">
+        <td style="padding:8px;"><strong>تاريخ الاستقبال</strong><div t-field="o.arrival_at"/></td>
+        <td style="padding:8px;"><strong>عداد الدخول</strong><div t-esc="o.odometer_in"/></td>
+        <td style="padding:8px;"><strong>عداد الخروج</strong><div t-esc="o.odometer_out"/></td>
+       </tr>
+      </table>
+      <t t-foreach="[('الخدمات',o.service_line_ids),('قطع الغيار',o.part_line_ids)]" t-as="section">
+       <h4 style="color:#293d78;margin:16px 0 8px;" t-esc="section[0]"/>
+       <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+        <thead><tr style="background:#eaf0fb;color:#243b72;">
+         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:right;width:34%;">الصنف / الوصف</th>
+         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:right;width:24%;">الفنيون</th>
+         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:center;width:10%;">الكمية</th>
+         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:center;width:16%;">السعر</th>
+         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:center;width:16%;">الإجمالي</th>
+        </tr></thead>
+        <tbody>
+         <t t-foreach="section[1]" t-as="line">
+          <tr>
+           <td style="padding:9px;border-bottom:1px solid #e7ebf2;word-wrap:break-word;"><strong t-esc="line.product_id.display_name"/><div style="color:#77849b;" t-if="line.name != line.product_id.display_name" t-esc="line.name"/></td>
+           <td style="padding:9px;border-bottom:1px solid #e7ebf2;" t-esc="', '.join(line.technician_ids.mapped('name')) or '-'"/>
+           <td style="padding:9px;border-bottom:1px solid #e7ebf2;text-align:center;" t-esc="line.product_uom_qty"/>
+           <td style="padding:9px;border-bottom:1px solid #e7ebf2;text-align:center;" t-esc="'%.2f' % line.price_unit"/>
+           <td style="padding:9px;border-bottom:1px solid #e7ebf2;text-align:center;font-weight:bold;" t-esc="'%.2f' % line.line_subtotal"/>
+          </tr>
+         </t>
+         <tr t-if="not section[1]"><td colspan="5" style="text-align:center;padding:12px;color:#8290a6;">لا توجد بنود</td></tr>
+        </tbody>
+       </table>
+      </t>
+      <div style="page-break-inside:avoid;margin-top:18px;">
+       <table style="width:100%;border-collapse:collapse;">
+        <tr>
+         <td style="width:52%;vertical-align:top;padding:10px;background:#f6f8fc;">
+          <strong>ملاحظات الاستقبال</strong><p t-esc="o.reception_notes or 'لا توجد ملاحظات'"/>
+         </td>
+         <td style="width:48%;vertical-align:top;padding-right:14px;">
+          <table style="width:100%;border-collapse:collapse;">
+           <tr><td style="padding:6px;">قيمة الخدمات</td><td style="text-align:left;"><span t-field="o.service_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+           <tr><td style="padding:6px;">قيمة قطع الغيار</td><td style="text-align:left;"><span t-field="o.parts_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+           <tr><td style="padding:6px;">الإجمالي قبل الخصم</td><td style="text-align:left;"><span t-field="o.amount_before_discount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+           <tr><td style="padding:6px;">الخصم</td><td style="text-align:left;"><span t-field="o.discount_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+           <tr><td style="padding:6px;">الضريبة</td><td style="text-align:left;"><span t-field="o.amount_tax" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+           <tr style="background:#eaf0fb;color:#243b72;font-weight:bold;"><td style="padding:12px;">الإجمالي النهائي</td><td style="padding:12px;text-align:left;"><span t-field="o.amount_total" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+          </table>
+         </td>
+        </tr>
+       </table>
+      </div>
+      <div style="margin-top:22px;border-top:1px solid #e1e6ef;padding-top:9px;color:#718096;font-size:10px;">
+       هذا التقرير يوضح بيانات أمر العمل، ولا يُعد فاتورة ضريبية أو إيصال دفع.
+      </div>
+     </div>
+    </t>
+   </t>
+  </t>
+ </template>
+</odoo>
