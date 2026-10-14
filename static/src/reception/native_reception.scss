@@ -807,3 +807,45 @@
     }
   }
 }
+
+
+/* Work-order Kanban readability: larger state/date and consistent breathing room. */
+.yt-wo-kanban {
+  .yt-wo-k-card { height: 100%; }
+  .yt-wo-k-top { padding: 18px 18px 16px; gap: 14px; min-height: 78px; }
+  .yt-wo-k-heading { gap: 6px; }
+  .yt-wo-k-eyebrow { font-size: 12px; }
+  .yt-wo-k-number { font-size: 17px; line-height: 1.4; }
+  .yt-wo-k-status {
+    font-size: 14px;
+    line-height: 1.4;
+    padding: 7px 14px;
+    min-width: 68px;
+    text-align: center;
+  }
+  .yt-wo-k-content { padding: 18px 18px 15px; gap: 17px; }
+  .yt-wo-k-people-row { gap: 15px; }
+  .yt-wo-k-detail { gap: 12px; }
+  .yt-wo-k-detail-text { gap: 6px; }
+  .yt-wo-k-detail-text small,
+  .yt-wo-k-totals small,
+  .yt-wo-k-footer small { font-size: 12px; line-height: 1.45; }
+  .yt-wo-k-detail-text strong { font-size: 13px; line-height: 1.5; }
+  .yt-wo-k-subdetail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px 0 3px;
+    border-top: 1px solid #edf1f8;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .yt-wo-k-subdetail > span { display: flex; align-items: center; gap: 7px; min-width: 0; overflow-wrap: anywhere; }
+  .yt-wo-k-subdetail i { font-size: 14px; margin: 0; flex: 0 0 16px; text-align: center; }
+  .yt-wo-k-subdetail .o_field_widget { font-size: 13px; font-weight: 600; min-width: 0; white-space: normal; }
+  .yt-wo-k-totals { gap: 12px; padding: 0 18px 17px; }
+  .yt-wo-k-totals > div { padding: 12px; }
+  .yt-wo-k-totals strong { margin-top: 8px; display: block; }
+  .yt-wo-k-footer { padding: 14px 18px; }
+  .yt-wo-k-footer strong { display: block; margin-top: 7px; }
+}
