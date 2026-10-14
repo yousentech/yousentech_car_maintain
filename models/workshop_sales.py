@@ -780,7 +780,17 @@ class WorkshopSale(models.Model):
                 if invoice.state != 'draft':
                     raise ValidationError(_('لا يمكن تغيير يومية فاتورة مرحلة.'))
                 invoice.journal_id = sale_journal.id
-        return self.action_open_sale_order()
+        # Open the newly created invoice directly; keep the sale order linked
+        # for access through the work order's existing sale-order action.
+        invoice = invoices[:1]
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('فاتورة أمر العمل'),
+            'res_model': 'account.move',
+            'view_mode': 'form',
+            'res_id': invoice.id,
+            'target': 'current',
+        }
 
     def _get_workshop_warehouse(self):
         self.ensure_one()
