@@ -14,17 +14,32 @@
   <t t-call="web.html_container">
    <t t-foreach="docs" t-as="o">
     <t t-call="web.external_layout">
-     <div class="page" dir="rtl" style="font-family:inherit;color:#24344d;font-size:12px;direction:rtl;">
+     <div class="page yt-print-workshop" dir="rtl" style="font-family:inherit;color:#24344d;font-size:12px;direction:rtl;">
+
+      <style>
+       .yt-print-workshop {font-size:13px !important;line-height:1.65;color:#26364c;}
+       .yt-print-workshop h2 {font-size:23px !important;font-weight:700;line-height:1.35;}
+       .yt-print-workshop h4 {font-size:16px !important;font-weight:700;line-height:1.4;border-right:3px solid #5868ad;padding-right:10px;}
+       .yt-print-workshop table {table-layout:fixed;}
+       .yt-print-workshop td,.yt-print-workshop th {vertical-align:middle;line-height:1.6;overflow-wrap:break-word;}
+       .yt-print-workshop strong {font-weight:700;}
+       .yt-print-workshop thead {display:table-header-group;}
+       .yt-print-workshop tr {page-break-inside:avoid;}
+       .yt-print-workshop .yt-report-summary {border:1px solid #dce4f1;border-radius:6px;background:#f7f9fd;}
+       .yt-print-workshop .yt-report-summary > div {margin-bottom:6px;}
+       .yt-print-workshop .yt-report-total {font-size:15px;font-weight:700;}
+      </style>
+      
       <div style="border-bottom:3px solid #5261a6;padding:0 0 12px;margin-bottom:16px;">
        <table style="width:100%;"><tr>
         <td style="text-align:right;"><h2 style="color:#293d78;margin:0;">أمر عمل صيانة</h2><div style="color:#74839b;margin-top:5px;">تقرير الخدمات وقطع الغيار</div></td>
         <td style="text-align:left;"><strong t-esc="o.name"/><div style="margin-top:5px;" t-esc="dict(o._fields['state'].selection).get(o.state, '')"/></td>
        </tr></table>
       </div>
-      <table style="width:100%;border-collapse:separate;border-spacing:6px;margin-bottom:16px;">
+      <table style="width:100%;border-collapse:separate;border-spacing:10px;margin-bottom:20px;">
        <tr>
-        <td style="width:50%;background:#f1f4fb;padding:12px;vertical-align:top;">
-         <div style="color:#5261a6;font-weight:bold;margin-bottom:8px;">بيانات العميل</div>
+        <td style="width:50%;background:#f1f4fb;padding:16px;vertical-align:top;">
+         <div style="color:#5261a6;font-weight:bold;margin-bottom:12px;font-size:15px;">بيانات العميل</div>
          <div><strong>العميل: </strong><span t-esc="o.partner_id.name"/></div>
          <div><strong>الجوال: </strong><span t-esc="o.partner_mobile or '-'"/></div>
          <div><strong>المستشار: </strong><span t-esc="o.advisor_id.name or '-'"/></div>
@@ -40,16 +55,16 @@
       </table>
       <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
        <tr style="background:#f6f8fc;">
-        <td style="padding:8px;"><strong>تاريخ الاستقبال</strong><div t-field="o.arrival_at"/></td>
-        <td style="padding:8px;"><strong>عداد الدخول</strong><div t-esc="o.odometer_in"/></td>
-        <td style="padding:8px;"><strong>عداد الخروج</strong><div t-esc="o.odometer_out"/></td>
+        <td style="padding:12px;border:1px solid #dce4f1;"><strong>تاريخ الاستقبال</strong><div t-field="o.arrival_at"/></td>
+        <td style="padding:12px;border:1px solid #dce4f1;"><strong>عداد الدخول</strong><div t-esc="o.odometer_in"/></td>
+        <td style="padding:12px;border:1px solid #dce4f1;"><strong>عداد الخروج</strong><div t-esc="o.odometer_out"/></td>
        </tr>
       </table>
       <t t-foreach="[('الخدمات',o.service_line_ids),('قطع الغيار',o.part_line_ids)]" t-as="section">
        <h4 style="color:#293d78;margin:16px 0 8px;" t-esc="section[0]"/>
        <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
         <thead><tr style="background:#eaf0fb;color:#243b72;">
-         <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:right;width:34%;">الصنف / الوصف</th>
+         <th style="padding:11px;border-bottom:1px solid #d5dfee;text-align:right;width:34%;">الصنف / الوصف</th>
          <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:right;width:24%;">الفنيون</th>
          <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:center;width:10%;">الكمية</th>
          <th style="padding:9px;border-bottom:1px solid #d5dfee;text-align:center;width:16%;">السعر</th>
@@ -72,7 +87,7 @@
       <div style="page-break-inside:avoid;margin-top:18px;">
        <table style="width:100%;border-collapse:collapse;">
         <tr>
-         <td style="width:52%;vertical-align:top;padding:10px;background:#f6f8fc;">
+         <td style="width:52%;vertical-align:top;padding:16px;background:#f6f8fc;">
           <strong>ملاحظات الاستقبال</strong><p t-esc="o.reception_notes or 'لا توجد ملاحظات'"/>
          </td>
          <td style="width:48%;vertical-align:top;padding-right:14px;">
@@ -82,7 +97,7 @@
            <tr><td style="padding:6px;">الإجمالي قبل الخصم</td><td style="text-align:left;"><span t-field="o.amount_before_discount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
            <tr><td style="padding:6px;">الخصم</td><td style="text-align:left;"><span t-field="o.discount_amount" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
            <tr><td style="padding:6px;">الضريبة</td><td style="text-align:left;"><span t-field="o.amount_tax" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
-           <tr style="background:#eaf0fb;color:#243b72;font-weight:bold;"><td style="padding:12px;">الإجمالي النهائي</td><td style="padding:12px;text-align:left;"><span t-field="o.amount_total" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
+           <tr class="yt-report-total" style="background:#eaf0fb;color:#243b72;font-weight:bold;"><td style="padding:12px;">الإجمالي النهائي</td><td style="padding:12px;text-align:left;"><span t-field="o.amount_total" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td></tr>
           </table>
          </td>
         </tr>
