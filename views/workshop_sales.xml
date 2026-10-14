@@ -49,7 +49,7 @@
      </div>
      <div class="yt-wo-dashboard" dir="rtl">
       <div class="yt-wo-summary">
-       <div class="yt-wo-summary-title"><span class="yt-wo-icon"><i class="fa fa-wrench"/></span><div><small>ملخص أمر العمل</small><h2><field name="name" readonly="1" nolabel="1"/></h2><span>صيانة وخدمات السيارة</span></div></div>
+       <div class="yt-wo-summary-title"><span class="yt-wo-icon"><i class="fa fa-wrench" title="الخدمات"/></span><div><small>ملخص أمر العمل</small><h2><field name="name" readonly="1" nolabel="1"/></h2><span>صيانة وخدمات السيارة</span></div></div>
        <div class="yt-wo-kpis yt-wo-kpis-six">
         <div class="yt-wo-kpi yt-wo-blue"><small>قيمة الخدمات</small><field name="service_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
         <div class="yt-wo-kpi yt-wo-teal"><small>قيمة قطع الغيار</small><field name="parts_amount" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
@@ -62,11 +62,11 @@
       <div class="yt-rec-native-grid yt-rec-two-card-grid">
        <div class="yt-rec-native-col yt-rec-col-customer-intake">
        <div class="yt-rec-native-card yt-rec-card-customer">
-        <h3><i class="fa fa-user" aria-hidden="true"/> معلومات العميل</h3>
+        <h3><i class="fa fa-user" aria-hidden="true" title="العميل"/> معلومات العميل</h3>
         <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا" readonly="state != 'draft'"/></div><div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" placeholder="رقم الجوال" widget="phone" readonly="state != 'draft'"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟" readonly="state != 'draft'"/></div></div>
        </div>
        <div class="yt-rec-native-card yt-rec-card-intake">
-        <h3><i class="fa fa-calendar-check-o" aria-hidden="true"/> معلومات الاستقبال</h3>
+        <h3><i class="fa fa-calendar-check-o" aria-hidden="true" title="الموعد"/> معلومات الاستقبال</h3>
         <div class="yt-rec-intake-fields yt-rec-form-rows">
          <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="arrival_at" string="تاريخ ووقت الدخول"/><field name="arrival_at" nolabel="1" readonly="state != 'draft'"/></div>
@@ -82,19 +82,19 @@
        </div>
        <div class="yt-rec-native-col yt-rec-col-vehicle">
        <div class="yt-rec-native-card yt-rec-card-vehicle">
-        <h3><i class="fa fa-car" aria-hidden="true"/> معلومات السيارة</h3>
+        <h3><i class="fa fa-car" aria-hidden="true" title="السيارة"/> معلومات السيارة</h3>
         <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': False}" readonly="state != 'draft'"/></div></div>
         <div class="yt-rec-vehicle-details">
-         <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true"/> بيانات السيارة المختارة</div>
+         <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true" title="الهوية"/> بيانات السيارة المختارة</div>
          <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1"/></div></div>
-         <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
+         <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true" title="معلومات"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
         </div>
        </div>
        </div>
       </div>
       <div class="yt-wo-service-grid">
        <section class="yt-wo-card yt-wo-lines yt-wo-services">
-        <h3><i class="fa fa-wrench"/> الخدمات</h3>
+        <h3><i class="fa fa-wrench" title="الخدمات"/> الخدمات</h3>
         <div class="yt-wo-table-wrap">
          <field name="service_line_ids" nolabel="1" readonly="state not in ('draft', 'in_progress')">
           <tree editable="bottom"><field name="company_id" column_invisible="1"/>
@@ -109,7 +109,7 @@
         </div>
        </section>
        <section class="yt-wo-card yt-wo-lines yt-wo-parts">
-        <h3><i class="fa fa-cogs"/> قطع الغيار</h3>
+        <h3><i class="fa fa-cogs" title="قطع الغيار"/> قطع الغيار</h3>
         <div class="yt-wo-table-wrap">
          <field name="part_line_ids" nolabel="1" readonly="state not in ('draft', 'in_progress')">
           <tree editable="bottom"><field name="company_id" column_invisible="1"/>
@@ -127,11 +127,11 @@
       </div>
       <div class="yt-wo-bottom-cards">
        <div class="yt-rec-native-card yt-rec-customer-notes-card yt-wo-notes-bottom-card">
-        <h3><i class="fa fa-comment-o" aria-hidden="true"/> ملاحظات الاستقبال</h3>
+        <h3><i class="fa fa-comment-o" aria-hidden="true" title="ملاحظات"/> ملاحظات الاستقبال</h3>
         <div class="yt-rec-textarea-block"><field name="reception_notes" nolabel="1" placeholder="ملاحظات الاستقبال..." readonly="state != 'draft'"/></div>
        </div>
        <details class="yt-wo-card yt-wo-fold yt-wo-discount" open="open">
-        <summary><i class="fa fa-percent"/> الخصم <i class="fa fa-chevron-down yt-wo-chevron"/></summary>
+        <summary><i class="fa fa-percent" title="الخصم"/> الخصم <i class="fa fa-chevron-down yt-wo-chevron" title="توسيع أو طي القسم"/></summary>
         <div class="yt-wo-finance-body">
          <group col="2">
           <field name="discount_type" string="نوع الخصم" readonly="sale_order_id"/>
@@ -142,7 +142,7 @@
        </details>
       </div>
       <details class="yt-wo-card yt-wo-finance-tab yt-wo-finance-collapsible">
-       <summary class="yt-wo-finance-heading"><i class="fa fa-credit-card"/> الأمور المالية <i class="fa fa-chevron-down yt-wo-finance-main-chevron"/></summary>
+       <summary class="yt-wo-finance-heading"><i class="fa fa-credit-card" title="المدفوعات"/> الأمور المالية <i class="fa fa-chevron-down yt-wo-finance-main-chevron" title="توسيع أو طي القسم"/></summary>
        <div class="yt-wo-finance-body">
         <div class="yt-wo-finance-kpis">
          <div class="yt-wo-finance-kpi yt-wo-finance-billed"><small>إجمالي الفواتير</small><field name="finance_invoiced" nolabel="1" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
@@ -153,7 +153,7 @@
          <div class="yt-wo-finance-kpi yt-wo-finance-return"><small>المتبقي للرد</small><field name="finance_to_refund" nolabel="1" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
         </div>
         <details class="yt-wo-finance-section yt-wo-finance-fold">
-         <summary><i class="fa fa-file-text-o"/> الفواتير والإشعارات الدائنة <i class="fa fa-chevron-down yt-wo-finance-chevron"/></summary>
+         <summary><i class="fa fa-file-text-o" title="المستند"/> الفواتير والإشعارات الدائنة <i class="fa fa-chevron-down yt-wo-finance-chevron" title="توسيع أو طي القسم"/></summary>
          <field name="finance_invoice_ids" nolabel="1" readonly="1">
           <tree create="false" delete="false" edit="false">
            <field name="name" string="رقم المستند"/>
@@ -166,7 +166,7 @@
          </field>
         </details>
         <div class="yt-wo-finance-section">
-         <h4><i class="fa fa-money"/> الدفعات</h4>
+         <h4><i class="fa fa-money" title="المبلغ"/> الدفعات</h4>
          <field name="finance_payment_ids" nolabel="1" readonly="1">
           <tree create="false" delete="false" edit="false">
            <field name="name" string="رقم الدفعة"/>
@@ -184,7 +184,7 @@
        </div>
       </details>
       <details class="yt-rec-native-card yt-rec-other-card yt-wo-extra-bottom">
-       <summary><i class="fa fa-sliders"/> بيانات أخرى <i class="fa fa-chevron-down yt-rec-toggle-icon"/></summary>
+       <summary><i class="fa fa-sliders" title="الإعدادات"/> بيانات أخرى <i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم"/></summary>
        <div class="yt-wo-extra-body">
         <div class="yt-wo-extra-stock-fields">
          <div class="yt-rec-field-row"><label for="location_id" string="موقع قطع الغيار"/><field name="location_id" nolabel="1" options="{'no_create': True}" readonly="sale_order_id"/></div>
@@ -247,7 +247,7 @@
     <field name="allowed_journal_ids" invisible="1"/>
     <field name="available_payment_method_line_ids" invisible="1"/>
     <div class="yt-advance-header">
-     <div class="yt-advance-header-icon"><i class="fa fa-money"/></div>
+     <div class="yt-advance-header-icon"><i class="fa fa-money" title="المبلغ"/></div>
      <div>
       <h2>تسجيل دفعة مقدمة</h2>
       <p>تحصيل مبلغ من العميل قبل إصدار الفاتورة وربطه بأمر العمل</p>
@@ -258,7 +258,7 @@
       <div class="yt-advance-context-field"><span>أمر العمل</span><field name="order_id" nolabel="1" readonly="1"/></div>
       <div class="yt-advance-context-field"><span>العميل</span><field name="partner_id" nolabel="1" readonly="1"/></div>
      </div>
-     <div class="yt-advance-section-title"><i class="fa fa-credit-card"/> تفاصيل التحصيل</div>
+     <div class="yt-advance-section-title"><i class="fa fa-credit-card" title="المدفوعات"/> تفاصيل التحصيل</div>
      <div class="yt-advance-fields">
       <div class="yt-advance-field"><label for="journal_id" string="الصندوق / البنك"/><field name="journal_id" nolabel="1" options="{'no_create': True}"/></div>
       <div class="yt-advance-field"><label for="payment_method_line_id" string="طريقة الدفع"/><field name="payment_method_line_id" nolabel="1" options="{'no_create': True, 'no_create_edit': True}"/></div>
@@ -266,7 +266,7 @@
       <div class="yt-advance-field"><label for="payment_date" string="تاريخ الدفعة"/><field name="payment_date" nolabel="1"/></div>
       <div class="yt-advance-field yt-advance-field-wide"><label for="memo" string="البيان"/><field name="memo" nolabel="1" placeholder="مثال: دفعة مقدمة لصيانة السيارة"/></div>
      </div>
-     <div class="yt-advance-hint"><i class="fa fa-info-circle"/> تُسجّل الدفعة على حساب العميل ويمكن تسويتها مع الفاتورة لاحقًا.</div>
+     <div class="yt-advance-hint"><i class="fa fa-info-circle" title="معلومات"/> تُسجّل الدفعة على حساب العميل ويمكن تسويتها مع الفاتورة لاحقًا.</div>
     </div>
     <footer>
      <button name="action_confirm_advance" type="object" string="تأكيد الدفعة" class="btn-primary"/>
