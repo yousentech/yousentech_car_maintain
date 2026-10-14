@@ -121,6 +121,9 @@ class ReceptionInspection(models.Model):
     _inherit = 'yt.reception.order'
 
     def action_print_inspection(self):
+        self.ensure_one()
+        if not self.inspection_line_ids:
+            raise UserError(_('لا يمكن طباعة تقرير الفحص قبل إضافة مكونات فحص فعلية لأمر العمل.'))
         return self.env.ref('yousentech_car_maintain.action_report_vehicle_inspection').report_action(self)
 
 
