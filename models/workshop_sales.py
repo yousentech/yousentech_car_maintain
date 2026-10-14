@@ -84,6 +84,7 @@ class WorkshopSaleLine(models.Model):
     technician_ids = fields.Many2many(
         'hr.employee', 'yt_workshop_sale_line_technician_rel', 'line_id', 'employee_id',
         string='الفنيون', domain="[('is_workshop_technician', '=', True), ('company_id', '=', company_id)]")
+    execution_done = fields.Boolean(string='أنجز الفنيون العمل', default=False, copy=False)
     pricing_policy_id = fields.Many2one('yt.workshop.category.pricing', string='سياسة التسعير', readonly=True, copy=False)
     pricing_source = fields.Char(string='مصدر السعر', compute='_compute_pricing_source')
 
@@ -205,7 +206,7 @@ class WorkshopSale(models.Model):
 
     def _workshop_can_start_new_billing_cycle(self):
         self.ensure_one()
-        if self.state != 'approved' or not self.workshop_approved:
+        if self.state not in ('approved', 'in_progress') or not self.workshop_approved:
             return False
         if not self.sale_order_id:
             return True
@@ -315,6 +316,26 @@ class WorkshopSale(models.Model):
             'context': {'active_model': 'account.move', 'active_ids': invoices.ids,
                         'default_reason': _('تسوية أمر العمل %s') % self.name},
         }
+
+    def action_start_workshop_execution(self):
+        for order in self:
+            if order.state != 'approved' or not order.workshop_approved:
+                raise UserError(_('يجب اعتماد أمر العمل قبل بدء التنفيذ.'))
+            order.write({'state': 'in_progress'})
+        return True
+
+    def action_finish_workshop_execution(self):
+        for order in self:
+            if order.state != 'in_progress':
+                raise UserError(_('إكمال التنفيذ متاح للأوامر قيد التنفيذ فقط.'))
+            if not order.sale_line_ids or order.sale_line_ids.filtered(lambda line: not line.execution_done):
+                raise UserError(_('يجب تأكيد إنجاز جميع بنود الخدمات وقطع الغيار أولاً.'))
+            invoices = order._workshop_financial_documents().filtered(
+                lambda move: move.move_type == 'out_invoice' and move.state == 'posted')
+            if not invoices:
+                raise UserError(_('لا يمكن إكمال أمر العمل قبل ترحيل فاتورة العميل.'))
+            order.write({'state': 'done'})
+        return True
 
     def action_approve_workshop(self):
         for order in self:
