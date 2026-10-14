@@ -204,9 +204,19 @@ class WorkshopSale(models.Model):
             and move.reversed_entry_id in invoices)
         return invoices | refunds
 
+    def _workshop_invoice_requires_full_payment(self):
+        self.ensure_one()
+        settings = self.env['yt.workshop.finance.settings'].search(
+            [('company_id', '=', self.company_id.id)], limit=1)
+        # Existing companies without a settings record use the safe default.
+        return settings.require_full_payment_before_invoice if settings else True
+
     def _workshop_can_start_new_billing_cycle(self):
         self.ensure_one()
-        if self.state not in ('approved', 'in_progress') or not self.workshop_approved:
+        if self.state not in ('approved', 'in_progress', 'done') or not self.workshop_approved:
+            return False
+        if (self._workshop_invoice_requires_full_payment()
+                and not self.currency_id.is_zero(self._workshop_remaining_to_collect())):
             return False
         if not self.sale_order_id:
             return True
@@ -687,8 +697,11 @@ class WorkshopSale(models.Model):
         self.ensure_one()
         self.check_access_rights('write')
         self.check_access_rule('write')
-        if self.state not in ('approved', 'in_progress') or not self.workshop_approved:
-            raise UserError(_('يجب اعتماد أمر العمل وأن يكون في حالة معتمد أو قيد التنفيذ قبل الفوترة.'))
+        if self.state not in ('approved', 'in_progress', 'done') or not self.workshop_approved:
+            raise UserError(_('يجب اعتماد أمر العمل قبل إنشاء أمر البيع والفاتورة.'))
+        if (self._workshop_invoice_requires_full_payment()
+                and not self.currency_id.is_zero(self._workshop_remaining_to_collect())):
+            raise UserError(_('إعدادات الورشة تشترط اكتمال تحصيل قيمة أمر العمل قبل إنشاء الفاتورة. سجّل المبلغ المتبقي أولاً.'))
         if not self.sale_line_ids:
             raise UserError(_('أضف الخدمات أو قطع الغيار أولاً.'))
         if not self._workshop_can_start_new_billing_cycle():
@@ -815,6 +828,10 @@ class WorkshopFinanceSettings(models.Model):
     name = fields.Char(default='الإعدادات المالية للورشة', required=True, readonly=True)
     tax_id = fields.Many2one('account.tax', string='ضريبة المبيعات المعتمدة',
                              domain="[('type_tax_use','=','sale')]")
+    require_full_payment_before_invoice = fields.Boolean(
+        string='لا يتم إنشاء الفاتورة إلا بعد اكتمال الدفع',
+        default=True,
+        help='عند التفعيل، يجب تحصيل كامل قيمة أمر العمل وتسجيل الدفعات قبل إنشاء أمر البيع والفاتورة.')
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company,
                                  required=True, readonly=True)
     _sql_constraints = [('one_per_company', 'unique(company_id)', 'يوجد سجل إعدادات مالية لهذه الشركة بالفعل.')]
