@@ -9,7 +9,7 @@
  </record>
  <record id="view_reception_model_form" model="ir.ui.view">
   <field name="name">yt.reception.model.form</field><field name="model">yt.reception.model</field>
-  <field name="arch" type="xml"><form string="موديل السيارة"><sheet><group><field name="name"/><field name="make_id" string="الشركة المصنعة" placeholder="ابحث عن الشركة المصنعة أو أنشئ شركة"/ options="{'no_open': True}"><field name="active"/></group></sheet></form></field>
+  <field name="arch" type="xml"><form string="موديل السيارة"><sheet><group><field name="name"/><field name="make_id" string="الشركة المصنعة" placeholder="ابحث عن الشركة المصنعة أو أنشئ شركة" options="{'no_open': True}"/><field name="active"/></group></sheet></form></field>
  </record>
  <record id="view_reception_vehicle_form" model="ir.ui.view">
   <field name="name">yt.reception.vehicle.form</field><field name="model">yt.reception.vehicle</field>
@@ -18,16 +18,16 @@
     <sheet>
      <group>
       <group string="العميل واللوحة">
-       <field name="company_id" string="الشركة" groups="base.group_multi_company"/ options="{'no_open': True}">
-       <field name="partner_id" string="العميل"/ options="{'no_open': True}">
+       <field name="company_id" string="الشركة" groups="base.group_multi_company" options="{'no_open': True}"/>
+       <field name="partner_id" string="العميل" options="{'no_open': True}"/>
        <field name="plate" string="رقم اللوحة"/>
        <field name="plate_country" string="دولة اللوحة"/>
        <field name="plate_type" string="نوع اللوحة"/>
        <field name="plate_condition" string="حالة اللوحة"/>
       </group>
       <group string="بيانات السيارة">
-       <field name="make_id" string="الشركة المصنعة"/ options="{'no_open': True}">
-       <field name="model_id" string="الموديل" placeholder="اختر الموديل أو أنشئ موديلًا" domain="[('make_id','=',make_id)]" context="{'default_make_id': make_id}"/ options="{'no_open': True}">
+       <field name="make_id" string="الشركة المصنعة" options="{'no_open': True}"/>
+       <field name="model_id" string="الموديل" placeholder="اختر الموديل أو أنشئ موديلًا" domain="[('make_id','=',make_id)]" context="{'default_make_id': make_id}" options="{'no_open': True}"/>
        <field name="year" string="سنة الصنع"/>
        <field name="gear" string="ناقل الحركة"/>
        <field name="vin" string="رقم الشاصي (VIN)"/>
@@ -53,13 +53,13 @@
     </header>
     <sheet>
      <div class="oe_title"><h1><field name="name" readonly="1" invisible="not name or name == '/'"/><span class="yt-rec-new-title" invisible="name and name != '/'">أمر عمل جديد</span></h1></div>
-     <field name="company_id" string="الشركة" invisible="1"/ options="{'no_open': True}">
+     <field name="company_id" string="الشركة" invisible="1" options="{'no_open': True}"/>
      <div class="yt-rec-content-frame">
      <div class="yt-rec-native-grid yt-rec-two-card-grid">
       <div class="yt-rec-native-col yt-rec-col-customer-intake">
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-user" aria-hidden="true" title="العميل"/> معلومات العميل</h3>
-        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا"/ options="{'no_open': True}"></div><div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" placeholder="رقم الجوال" widget="phone"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
+        <div class="yt-rec-form-rows yt-rec-customer-fields"><div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" placeholder="ابحث عن عميل أو أنشئ عميلاً جديدًا" options="{'no_open': True}"/></div><div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" placeholder="رقم الجوال" widget="phone"/></div><div class="yt-rec-field-row"><label for="customer_source" string="مصدر العميل"/><field name="customer_source" nolabel="1" placeholder="كيف تعرف العميل علينا؟"/></div></div>
        </div>
        <div class="yt-rec-native-card yt-rec-card-intake">
         <h3><i class="fa fa-calendar-check-o" aria-hidden="true" title="الموعد"/> معلومات الاستقبال</h3>
@@ -81,7 +81,7 @@
         <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': True}"/></div></div>
         <div class="yt-rec-vehicle-details">
          <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true" title="الهوية"/> بيانات السيارة المختارة</div>
-         <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1"/ options="{'no_open': True}"></div></div>
+         <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1" options="{'no_open': True}"/></div></div>
          <div class="yt-rec-vehicle-hint"><i class="fa fa-info-circle" aria-hidden="true" title="معلومات"/> لإضافة سيارة استخدم «إنشاء وتحرير» من حقل السيارة.</div>
         </div>
        </div>
@@ -109,8 +109,8 @@
         <summary><i class="fa fa-sliders" aria-hidden="true" title="الإعدادات"/> بيانات أخرى<i class="fa fa-chevron-down yt-rec-toggle-icon" title="توسيع أو طي القسم" aria-hidden="true"/></summary>
         <div class="yt-rec-form-rows">
          <div class="yt-rec-field-pair">
-          <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
-          <div class="yt-rec-field-row"><label for="advisor_id" string="المستخدم"/><field name="advisor_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
+          <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
+          <div class="yt-rec-field-row"><label for="advisor_id" string="المستخدم"/><field name="advisor_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
          </div>
         </div>
         <div class="yt-rec-textarea-block"><label for="internal_notes" string="ملاحظات داخلية"/><field name="internal_notes" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></div>
@@ -127,7 +127,7 @@
   <field name="name">yt.reception.order.tree</field><field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
    <tree string="أوامر العمل" default_order="id desc">
-    <field name="name"/><field name="arrival_at" string="تاريخ ووقت الدخول"/><field name="partner_id" string="العميل"/ options="{'no_open': True}"><field name="vehicle_id" string="السيارة"/ options="{'no_open': True}"><field name="state"/>
+    <field name="name"/><field name="arrival_at" string="تاريخ ووقت الدخول"/><field name="partner_id" string="العميل" options="{'no_open': True}"/><field name="vehicle_id" string="السيارة" options="{'no_open': True}"/><field name="state"/>
    </tree>
   </field>
  </record>
@@ -137,18 +137,18 @@
   <field name="arch" type="xml">
    <kanban default_order="id desc" class="yt-wo-kanban" sample="0">
     <field name="name"/>
-    <field name="partner_id"/ options="{'no_open': True}">
+    <field name="partner_id" options="{'no_open': True}"/>
     <field name="partner_mobile"/>
-    <field name="vehicle_id"/ options="{'no_open': True}">
-    <field name="vehicle_make_id"/ options="{'no_open': True}">
-    <field name="vehicle_model_id"/ options="{'no_open': True}">
+    <field name="vehicle_id" options="{'no_open': True}"/>
+    <field name="vehicle_make_id" options="{'no_open': True}"/>
+    <field name="vehicle_model_id" options="{'no_open': True}"/>
     <field name="arrival_at"/>
     <field name="state"/>
     <field name="amount_total"/>
     <field name="service_amount"/>
     <field name="parts_amount"/>
     <field name="currency_id"/>
-    <field name="sale_order_id"/ options="{'no_open': True}">
+    <field name="sale_order_id" options="{'no_open': True}"/>
     <field name="invoice_count"/>
     <templates>
      <t t-name="kanban-box">
@@ -165,11 +165,11 @@
         <div class="yt-wo-k-people-row">
         <div class="yt-wo-k-detail">
          <span class="yt-wo-k-icon yt-wo-k-icon-customer"><i class="fa fa-user" title="العميل"/></span>
-         <div class="yt-wo-k-detail-text"><small>العميل</small><strong><field name="partner_id"/ options="{'no_open': True}"></strong></div>
+         <div class="yt-wo-k-detail-text"><small>العميل</small><strong><field name="partner_id" options="{'no_open': True}"/></strong></div>
         </div>
         <div class="yt-wo-k-detail">
          <span class="yt-wo-k-icon yt-wo-k-icon-car"><i class="fa fa-car" title="السيارة"/></span>
-         <div class="yt-wo-k-detail-text"><small>السيارة</small><strong><field name="vehicle_id"/ options="{'no_open': True}"></strong></div>
+         <div class="yt-wo-k-detail-text"><small>السيارة</small><strong><field name="vehicle_id" options="{'no_open': True}"/></strong></div>
         </div>
         </div>
         <div class="yt-wo-k-subdetail">
@@ -196,8 +196,8 @@
   <field name="arch" type="xml">
    <search string="البحث في أوامر العمل">
     <field name="name"/>
-    <field name="partner_id"/ options="{'no_open': True}">
-    <field name="vehicle_id"/ options="{'no_open': True}">
+    <field name="partner_id" options="{'no_open': True}"/>
+    <field name="vehicle_id" options="{'no_open': True}"/>
     <filter name="active_workshop_orders" string="الأوامر غير المكتملة" domain="[('state','in',['draft','approved','in_progress'])]"/>
     <separator/>
     <filter name="completed_workshop_orders" string="الأوامر المكتملة" domain="[('state','=','done')]"/>
@@ -238,7 +238,7 @@
  </record>
  <menuitem id="menu_workshop_root" name="ورشة السيارات" sequence="30"/>
  <menuitem id="menu_workshop_reception" name="أوامر العمل" parent="menu_workshop_root" action="action_reception_native" sequence="10"/>
- <record id="view_inspection_category_tree" model="ir.ui.view"><field name="name">yt.inspection.category.tree</field><field name="model">yt.inspection.category</field><field name="arch" type="xml"><tree string="تصنيفات الفحص" default_order="sequence,id"><field name="sequence" widget="handle"/><field name="name" string="التصنيف"/><field name="service_product_id" string="الصنف الخدمي"/ options="{'no_open': True}"><field name="service_price" string="سعر الخدمة"/><field name="component_count" string="عدد المكونات"/><field name="active" string="نشط"/></tree></field></record>
+ <record id="view_inspection_category_tree" model="ir.ui.view"><field name="name">yt.inspection.category.tree</field><field name="model">yt.inspection.category</field><field name="arch" type="xml"><tree string="تصنيفات الفحص" default_order="sequence,id"><field name="sequence" widget="handle"/><field name="name" string="التصنيف"/><field name="service_product_id" string="الصنف الخدمي" options="{'no_open': True}"/><field name="service_price" string="سعر الخدمة"/><field name="component_count" string="عدد المكونات"/><field name="active" string="نشط"/></tree></field></record>
  <record id="view_inspection_category_form" model="ir.ui.view">
   <field name="name">yt.inspection.category.form</field>
   <field name="model">yt.inspection.category</field>
@@ -285,7 +285,7 @@
   <field name="name">yt.reception.order.inspection.form</field><field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
    <form string="فحص السيارة" create="false" class="yt-native-reception yt-inspection-form">
-    <field name="company_id" invisible="1"/ options="{'no_open': True}">
+    <field name="company_id" invisible="1" options="{'no_open': True}"/>
     <header>
      <button name="action_finish_inspection" type="object" string="اعتماد الفحص والمتابعة" class="btn-primary" invisible="inspection_state == 'done' or state != 'draft'"/>
      <button name="action_print_inspection" type="object" string="طباعة تقرير الفحص" icon="fa-print" class="btn-secondary"/>
@@ -311,11 +311,11 @@
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-car" aria-hidden="true" title="السيارة"/> السيارة والعميل</h3>
         <div class="yt-rec-form-rows yt-inspection-customer-grid">
-          <div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
+          <div class="yt-rec-field-row"><label for="partner_id" string="العميل"/><field name="partner_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
           <div class="yt-rec-field-row"><label for="partner_mobile" string="جوال العميل"/><field name="partner_mobile" nolabel="1" readonly="1"/></div>
-          <div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
-          <div class="yt-rec-field-row"><label for="vehicle_make_id" string="نوع السيارة"/><field name="vehicle_make_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
-          <div class="yt-rec-field-row"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1"/ options="{'no_open': True}"></div>
+          <div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
+          <div class="yt-rec-field-row"><label for="vehicle_make_id" string="نوع السيارة"/><field name="vehicle_make_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
+          <div class="yt-rec-field-row"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
           <div class="yt-rec-field-row"><label for="odometer_in" string="عداد الدخول"/><field name="odometer_in" nolabel="1" readonly="1"/></div>
         </div>
        </div>
