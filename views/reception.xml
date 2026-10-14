@@ -135,7 +135,7 @@
   <field name="name">yt.reception.order.kanban</field>
   <field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <kanban default_order="state asc, id desc" class="yt-wo-kanban" sample="0">
+   <kanban default_order="id desc" class="yt-wo-kanban" sample="0">
     <field name="name"/>
     <field name="partner_id"/>
     <field name="partner_mobile"/>
@@ -152,14 +152,14 @@
     <field name="invoice_count"/>
     <templates>
      <t t-name="kanban-box">
-      <div t-attf-class="yt-wo-k-card #{record.state.raw_value == 'cancelled' ? 'yt-wo-k-cancelled' : 'yt-wo-k-active'}" dir="rtl">
+      <div t-attf-class="oe_kanban_global_click yt-wo-k-card #{record.state.raw_value == 'cancelled' ? 'yt-wo-k-cancelled' : 'yt-wo-k-active'}" dir="rtl">
        <div class="yt-wo-k-top">
         <div class="yt-wo-k-heading">
          <span class="yt-wo-k-eyebrow">أمر عمل</span>
          <strong class="yt-wo-k-number"><field name="name"/></strong>
         </div>
         <span t-if="record.state.raw_value == 'cancelled'" class="yt-wo-k-status yt-wo-k-status-cancelled">ملغي</span>
-        <span t-else="" class="yt-wo-k-status yt-wo-k-status-active">جديد</span>
+        <span t-else="" class="yt-wo-k-status yt-wo-k-status-active"><field name="state"/></span>
        </div>
        <div class="yt-wo-k-content">
         <div class="yt-wo-k-people-row">
@@ -183,8 +183,6 @@
        </div>
        <div class="yt-wo-k-footer">
         <div><small>الإجمالي</small><strong><field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/></strong></div>
-        <button t-if="record.state.raw_value == 'cancelled'" type="object" name="action_reopen_workshop" class="yt-wo-k-open btn btn-link">إعادة فتح أمر العمل <i class="fa fa-refresh"/></button>
-        <button t-else="" type="object" name="action_open_workshop" class="yt-wo-k-open btn btn-link">فتح الأمر <i class="fa fa-arrow-left"/></button>
        </div>
       </div>
      </t>
@@ -192,12 +190,31 @@
    </kanban>
   </field>
  </record>
+ <record id="view_workshop_order_search" model="ir.ui.view">
+  <field name="name">yt.reception.order.search</field>
+  <field name="model">yt.reception.order</field>
+  <field name="arch" type="xml">
+   <search string="البحث في أوامر العمل">
+    <field name="name"/>
+    <field name="partner_id"/>
+    <field name="vehicle_id"/>
+    <filter name="active_workshop_orders" string="الأوامر غير المكتملة" domain="[('state','in',['draft','approved','in_progress'])]"/>
+    <separator/>
+    <filter name="completed_workshop_orders" string="الأوامر المكتملة" domain="[('state','=','done')]"/>
+    <filter name="cancelled_workshop_orders" string="الأوامر الملغاة" domain="[('state','=','cancelled')]"/>
+    <group expand="0" string="تجميع حسب">
+     <filter string="الحالة" name="group_state" context="{'group_by':'state'}"/>
+    </group>
+   </search>
+  </field>
+ </record>
  <record id="action_reception_native" model="ir.actions.act_window">
   <field name="name">أوامر العمل</field>
   <field name="res_model">yt.reception.order</field>
   <field name="view_mode">kanban,tree,form</field>
   <field name="view_id" ref="view_reception_order_kanban"/>
-  <field name="context">{'default_state':'draft'}</field>
+  <field name="search_view_id" ref="view_workshop_order_search"/>
+  <field name="context">{'default_state':'draft', 'search_default_active_workshop_orders':1}</field>
  </record>
  <record id="action_reception_native_kanban_view" model="ir.actions.act_window.view">
   <field name="sequence" eval="1"/>
