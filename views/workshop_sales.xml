@@ -207,7 +207,10 @@
   </field>
  </record>
  <record id="action_reception_native_form_view" model="ir.actions.act_window.view">
+  <field name="sequence" eval="3"/>
+  <field name="view_mode">form</field>
   <field name="view_id" ref="view_reception_workshop_form"/>
+  <field name="act_window_id" ref="action_reception_native"/>
  </record>
  <record id="action_workshop_orders" model="ir.actions.act_window">
   <field name="name">أوامر العمل</field>
