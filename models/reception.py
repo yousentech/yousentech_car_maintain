@@ -172,16 +172,6 @@ class ReceptionOrder(models.Model):
                         or not 7 <= len(digits) <= 15):
                     raise ValidationError(_('رقم جوال العميل غير صحيح؛ أدخل من 7 إلى 15 رقماً مع رمز الدولة عند الحاجة.'))
     def write(self, vals):
-        cancelled = self.filtered(lambda order: order.state == 'cancelled')
-        if cancelled:
-            # Mail/thread bookkeeping must remain writable after cancellation.
-            mail_fields = {'message_main_attachment_id', 'message_follower_ids',
-                           'message_ids', 'activity_ids'}
-            if not self.env.context.get('workshop_internal_chatter_update'):
-                if any(key not in mail_fields and key != 'state' for key in vals):
-                    raise AccessError(_('لا يمكن تعديل استقبال ملغي. أعد فتح أمر العمل أولاً.'))
-                if 'state' in vals and vals['state'] != 'draft':
-                    raise AccessError(_('لا يمكن تغيير حالة استقبال ملغي إلا بإعادة فتحه.'))
         return super().write(vals)
     def action_open_inspection(self):
         self.ensure_one()
