@@ -92,12 +92,12 @@
         <h3><i class="fa fa-wrench"/> الخدمات</h3>
         <div class="yt-wo-table-wrap">
          <field name="service_line_ids" nolabel="1" readonly="state != 'draft' or sale_order_id">
-          <tree editable="bottom">
+          <tree editable="bottom"><field name="company_id" column_invisible="1"/>
            <field name="sequence" widget="handle"/>
            <field name="product_id" string="الخدمة" domain="[('type','=','service'),('sale_ok','=',True)]"/>
-           <field name="name" string="الوصف"/>
+           <field name="name" string="الوصف"/><field name="technician_ids" string="الفنيون" widget="many2many_tags" options="{'no_create': True}"/>
            <field name="product_uom_qty" string="الكمية"/>
-           <field name="price_unit" string="السعر"/>
+           <field name="price_unit" string="السعر"/><field name="pricing_source" string="مصدر التسعير" readonly="1"/>
            <field name="line_subtotal" string="الإجمالي" readonly="1"/>
           </tree>
          </field>
@@ -107,13 +107,13 @@
         <h3><i class="fa fa-cogs"/> قطع الغيار</h3>
         <div class="yt-wo-table-wrap">
          <field name="part_line_ids" nolabel="1" readonly="state != 'draft' or sale_order_id">
-          <tree editable="bottom">
+          <tree editable="bottom"><field name="company_id" column_invisible="1"/>
            <field name="sequence" widget="handle"/>
            <field name="product_id" string="قطعة الغيار" domain="[('type','in',['product','consu']),('sale_ok','=',True)]"/>
-           <field name="name" string="الوصف"/>
+           <field name="name" string="الوصف"/><field name="technician_ids" string="الفنيون" widget="many2many_tags" options="{'no_create': True}"/>
            <field name="product_uom_qty" string="الكمية"/>
            <field name="available_qty" string="المتاح" readonly="1"/>
-           <field name="price_unit" string="السعر"/>
+           <field name="price_unit" string="السعر"/><field name="pricing_source" string="مصدر التسعير" readonly="1"/>
            <field name="line_subtotal" string="الإجمالي" readonly="1"/>
           </tree>
          </field>
@@ -281,4 +281,54 @@
    </form>
   </field>
  </record>
+
+ <record id="view_workshop_category_pricing_tree" model="ir.ui.view">
+  <field name="name">yt.workshop.category.pricing.tree</field>
+  <field name="model">yt.workshop.category.pricing</field>
+  <field name="arch" type="xml">
+   <tree string="سياسات تسعير فئات المنتجات">
+    <field name="sequence" widget="handle"/>
+    <field name="company_id" groups="base.group_multi_company"/>
+    <field name="category_id"/>
+    <field name="customer_scope"/>
+    <field name="partner_ids" widget="many2many_tags"/>
+    <field name="markup_percent"/>
+    <field name="active"/>
+   </tree>
+  </field>
+ </record>
+ <record id="view_workshop_category_pricing_form" model="ir.ui.view">
+  <field name="name">yt.workshop.category.pricing.form</field>
+  <field name="model">yt.workshop.category.pricing</field>
+  <field name="arch" type="xml">
+   <form string="سياسة تسعير فئة">
+    <sheet>
+     <group>
+      <group>
+       <field name="company_id" groups="base.group_multi_company"/>
+       <field name="category_id"/>
+       <field name="markup_percent"/>
+       <field name="active"/>
+      </group>
+      <group>
+       <field name="customer_scope"/>
+       <field name="partner_ids" widget="many2many_tags" invisible="customer_scope != 'selected'" required="customer_scope == 'selected'"/>
+      </group>
+     </group>
+     <div class="alert alert-info" role="alert">
+      السعر = تكلفة المنتج في الشركة × (1 + نسبة الزيادة ÷ 100).
+      السياسة المخصصة للعميل لها الأولوية على العامة، وبدون سياسة يُستخدم سعر البيع الافتراضي.
+     </div>
+    </sheet>
+   </form>
+  </field>
+ </record>
+ <record id="action_workshop_category_pricing" model="ir.actions.act_window">
+  <field name="name">سياسات تسعير فئات المنتجات</field>
+  <field name="res_model">yt.workshop.category.pricing</field>
+  <field name="view_mode">tree,form</field>
+ </record>
+ <menuitem id="menu_workshop_category_pricing" name="تسعير فئات المنتجات"
+           parent="menu_inspection_config" action="action_workshop_category_pricing"
+           sequence="91" groups="base.group_system"/>
 </odoo>
