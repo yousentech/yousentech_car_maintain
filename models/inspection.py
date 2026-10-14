@@ -153,29 +153,34 @@ class ReceptionInspection(models.Model):
 
     @api.onchange('inspection_category_ids')
     def _onchange_inspection_categories(self):
-        """Synchronize components with chosen categories while retaining entered results."""
+        """Keep existing inspection rows/results; add only newly selected components.
+
+        Rebuilding the entire one2many with Command.clear() discards the
+        virtual row identities and can lose results on form save.
+        """
+        Component = self.env['yt.inspection.component']
+        Line = self.env['yt.inspection.line']
         for order in self:
-            if order.inspection_state == 'done':
+            if order.inspection_state == 'done' or order.state != 'draft':
                 continue
-            components = self.env['yt.inspection.component'].search([
+            components = Component.search([
                 ('active', '=', True),
                 ('category_id', 'in', order.inspection_category_ids.ids),
             ], order='category_id,sequence,id')
-            previous = {
-                line.component_id.id: (line.condition, line.notes)
-                for line in order.inspection_line_ids if line.component_id
-            }
-            order.inspection_line_ids = [
-                Command.clear(),
-                *[
-                    Command.create({
+            selected_ids = set(components.ids)
+            # Reuse existing (including unsaved) rows to retain user edits.
+            lines = order.inspection_line_ids.filtered(
+                lambda line: line.component_id.id in selected_ids)
+            existing_ids = set(lines.mapped('component_id').ids)
+            for component in components:
+                if component.id not in existing_ids:
+                    lines |= Line.new({
                         'component_id': component.id,
-                        'condition': previous.get(component.id, ('not_checked', False))[0],
-                        'notes': previous.get(component.id, ('not_checked', False))[1],
+                        'component_name': component.name,
+                        'required_at_inspection': component.required,
+                        'condition': 'not_checked',
                     })
-                    for component in components
-                ],
-            ]
+            order.inspection_line_ids = lines
 
     def action_load_inspection_components(self):
         for order in self:
