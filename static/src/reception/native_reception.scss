@@ -1282,13 +1282,13 @@
   }
   .yt-wo-section-nav label i { color:#6576b8; width:19px; font-size:15px; text-align:center; }
   .yt-wo-section-nav label:hover { background:#e9edff; color:#263c80; }
-  .yt-wo-section-nav input:checked + label { color:#2f3996; background:#e8e7ff; border-color:#c9c7ff; box-shadow:inset -3px 0 #6755e9; }
-  .yt-wo-section-nav input:focus-visible + label { outline:2px solid #6755e9; outline-offset:2px; }
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="customer"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-customer),
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="lines"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-lines),
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="extra"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-extra):not(.yt-wo-section-extra-more),
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="finance"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-finance),
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="inspection"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-inspection) { display:none !important; }
+  .yt-wo-section-nav label:has(input:checked) { color:#2f3996; background:#e8e7ff; border-color:#c9c7ff; box-shadow:inset -3px 0 #6755e9; }
+  .yt-wo-section-nav label:has(input:focus-visible) { outline:2px solid #6755e9; outline-offset:2px; }
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="customer"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-customer),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="lines"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-lines),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="extra"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-extra):not(.yt-wo-section-extra-more),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="finance"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-finance),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="inspection"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-inspection) { display:none !important; }
   .yt-wo-section-content > .yt-wo-section-extra-more { margin-top:14px; }
 }
 @media(max-width:1050px) {
