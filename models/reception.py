@@ -170,7 +170,7 @@ class ReceptionOrder(models.Model):
     def create(self, vals_list):
         partners = self.env['res.partner']
         for vals in vals_list:
-            vals['name'] = self.env['ir.sequence'].next_by_code('yt.reception.order') or '/'
+            vals['name'] = '/'  # Reserve the sequence only on workshop approval.
             partner = partners.browse(vals['partner_id']).commercial_partner_id if vals.get('partner_id') else partners
             vals['customer_type_snapshot'] = 'company' if partner.is_company else 'individual'
         return super().create(vals_list)
