@@ -21,7 +21,7 @@
       <section class="yt-config-card">
        <h3><i class="fa fa-id-card-o" title="اللوحة"/> بيانات اللوحة والمالك</h3>
        <group>
-        <field name="company_id" string="الشركة" groups="base.group_multi_company" options="{'no_open': True}"/>
+        <field name="company_id" invisible="1"/>
         <field name="partner_id" string="العميل" options="{'no_open': True}"/>
         <field name="plate" string="رقم اللوحة" placeholder="مثال: ABC1234" class="yt-vehicle-plate"/>
         <field name="plate_country" string="دولة اللوحة"/>
@@ -90,7 +90,7 @@
       <div class="yt-rec-native-col yt-rec-col-vehicle">
        <div class="yt-rec-native-card yt-rec-card-vehicle">
         <h3><i class="fa fa-car" aria-hidden="true" title="السيارة"/> معلومات السيارة</h3>
-        <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': True}"/></div></div>
+        <div class="yt-rec-form-rows yt-rec-primary-fields"><div class="yt-rec-field-row"><label for="vehicle_id" string="السيارة"/><field name="vehicle_id" nolabel="1" placeholder="اختر سيارة أو أنشئ سيارة جديدة" domain="[('partner_id','=',partner_id),('company_id','=',company_id)]" context="{'default_partner_id':partner_id,'default_company_id':company_id}" options="{'no_open': True, 'no_quick_create': True}"/></div></div>
         <div class="yt-rec-vehicle-details">
          <div class="yt-rec-detail-heading"><i class="fa fa-id-card-o" aria-hidden="true" title="الهوية"/> بيانات السيارة المختارة</div>
          <div class="yt-rec-vehicle-summary"><div class="yt-rec-summary-cell"><label for="vehicle_make_id" string="الشركة المصنعة"/><field name="vehicle_make_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div><div class="yt-rec-summary-cell"><label for="vehicle_model_id" string="الموديل"/><field name="vehicle_model_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div><div class="yt-rec-summary-cell"><label for="vehicle_year" string="سنة الصنع"/><field name="vehicle_year" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_color" string="اللون"/><field name="vehicle_color" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_vin" string="رقم الشاصي"/><field name="vehicle_vin" nolabel="1" readonly="1"/></div><div class="yt-rec-summary-cell"><label for="vehicle_plate_country" string="دولة اللوحة"/><field name="vehicle_plate_country" nolabel="1" readonly="1" options="{'no_open': True}"/></div></div>
