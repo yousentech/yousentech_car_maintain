@@ -263,13 +263,35 @@
      </div>
      <div class="yt-inspection-settings-card yt-inspection-settings-category">
       <div class="yt-inspection-settings-title"><i class="fa fa-folder-open" title="التصنيف"/> بيانات التصنيف</div>
-      <group col="4">
-       <field name="name" string="اسم التصنيف" placeholder="مثال: المحرك" colspan="2"/>
-       <field name="sequence" string="الترتيب"/>
-       <field name="active" string="نشط"/>
-       <field name="service_price" string="سعر خدمة الفحص"/><field name="service_product_id" string="الصنف الخدمي" domain="[('detailed_type','=','service')]" options="{'no_create': True, 'no_open': True}"/>
-       <button name="action_create_service_product" type="object" string="إنشاء صنف خدمي" icon="fa-plus" class="btn-secondary" invisible="service_product_id"/>
-      </group>
+      <div class="yt-inspection-category-fields" dir="rtl">
+       <div class="yt-inspection-category-row">
+        <div class="yt-inspection-category-field yt-inspection-category-name">
+         <label for="name"/>
+         <field name="name" placeholder="مثال: المحرك" nolabel="1"/>
+        </div>
+        <div class="yt-inspection-category-field">
+         <label for="sequence"/>
+         <field name="sequence" nolabel="1"/>
+        </div>
+        <div class="yt-inspection-category-field yt-inspection-category-active">
+         <label for="active"/>
+         <field name="active" nolabel="1"/>
+        </div>
+       </div>
+       <div class="yt-inspection-category-row yt-inspection-category-service-row">
+        <div class="yt-inspection-category-field">
+         <label for="service_price"/>
+         <field name="service_price" nolabel="1"/>
+        </div>
+        <div class="yt-inspection-category-field yt-inspection-category-product">
+         <label for="service_product_id"/>
+         <field name="service_product_id" nolabel="1" domain="[('detailed_type','=','service')]" options="{'no_create': True, 'no_open': True}"/>
+        </div>
+        <div class="yt-inspection-category-create">
+         <button name="action_create_service_product" type="object" string="إنشاء صنف خدمي" icon="fa-plus" class="btn-secondary" invisible="service_product_id"/>
+        </div>
+       </div>
+      </div>
      </div>
      <div class="yt-inspection-settings-card yt-inspection-settings-components">
       <div class="yt-inspection-settings-title"><i class="fa fa-check-square-o" title="المكونات"/> مكونات التصنيف</div>
