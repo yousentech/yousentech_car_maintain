@@ -309,35 +309,56 @@
   <field name="name">yt.workshop.category.pricing.form</field>
   <field name="model">yt.workshop.category.pricing</field>
   <field name="arch" type="xml">
-   <form string="سياسة تسعير قطع الغيار">
+   <form string="سياسة تسعير قطع الغيار" class="yt-pricing-policy-form">
     <sheet>
-     <group>
-      <group>
-       <field name="company_id" groups="base.group_multi_company"/>
-       <field name="category_scope"/>
-       <field name="category_ids" widget="many2many_tags" invisible="category_scope != 'selected'" required="category_scope == 'selected'"/>
-       <field name="active"/>
-      </group>
-      <group>
-       <field name="customer_scope"/>
-       <field name="partner_ids" widget="many2many_tags" invisible="customer_scope != 'selected'" required="customer_scope == 'selected'"/>
-       <field name="sequence"/>
-      </group>
-     </group>
-     <group string="شرائح التكلفة ونسب الزيادة">
-      <field name="tier_ids" nolabel="1">
-       <tree editable="bottom">
-        <field name="min_cost"/>
-        <field name="max_cost"/>
-        <field name="individual_percent"/>
-        <field name="company_percent"/>
-       </tree>
-      </field>
-     </group>
-     <div class="alert alert-info" role="alert">
-      سعر البيع = تكلفة المنتج × (1 + نسبة الشريحة ÷ 100).
-      إذا كانت التكلفة صفرًا أو لم تنطبق سياسة، يُستخدم سعر البيع الافتراضي للمنتج.
-      الحد الأعلى صفر يعني أن الشريحة بلا حد أعلى. السياسة المخصصة للعميل تتقدم على العامة.
+     <div class="yt-pricing-head" dir="rtl">
+      <div class="yt-pricing-head-icon"><i class="fa fa-line-chart" title="سياسة التسعير"/></div>
+      <div>
+       <h2>سياسة تسعير قطع الغيار</h2>
+       <p>حدد نطاق تطبيق السياسة ثم اضبط نسب الزيادة حسب تكلفة الصنف ونوع العميل.</p>
+      </div>
+     </div>
+     <div class="yt-pricing-settings" dir="rtl">
+      <section class="yt-pricing-panel">
+       <h3><i class="fa fa-cubes" title="المنتجات"/> نطاق المنتجات</h3>
+       <group col="2">
+        <field name="company_id" string="الشركة" groups="base.group_multi_company" options="{'no_open': True}"/>
+        <field name="category_scope" string="تطبيق على الفئات"/>
+        <field name="category_ids" string="الفئات المحددة" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" invisible="category_scope != 'selected'" required="category_scope == 'selected'"/>
+       </group>
+      </section>
+      <section class="yt-pricing-panel">
+       <h3><i class="fa fa-users" title="العملاء"/> نطاق العملاء</h3>
+       <group col="2">
+        <field name="customer_scope" string="تطبيق على العملاء"/>
+        <field name="partner_ids" string="العملاء المحددون" widget="many2many_tags" options="{'no_open': True}" invisible="customer_scope != 'selected'" required="customer_scope == 'selected'"/>
+        <field name="sequence" string="الأولوية"/>
+        <field name="active" string="سياسة نشطة"/>
+       </group>
+      </section>
+     </div>
+     <section class="yt-pricing-tiers" dir="rtl">
+      <div class="yt-pricing-section-heading">
+       <h3><i class="fa fa-percent" title="النسب"/> شرائح التكلفة ونسب الزيادة</h3>
+       <p>أدخل تكلفة البداية والنهاية لكل شريحة، ثم نسبة الأفراد والشركات بشكل مستقل. القيمة صفر في نهاية الشريحة تعني بلا حد أعلى.</p>
+      </div>
+      <div class="yt-pricing-table">
+       <field name="tier_ids" nolabel="1">
+        <tree editable="bottom" create="1" delete="1">
+         <field name="min_cost" string="التكلفة من"/>
+         <field name="max_cost" string="التكلفة إلى (0 = بلا حد)"/>
+         <field name="individual_percent" string="نسبة الأفراد (%)"/>
+         <field name="company_percent" string="نسبة الشركات (%)"/>
+        </tree>
+       </field>
+      </div>
+     </section>
+     <div class="yt-pricing-guide" dir="rtl">
+      <i class="fa fa-info-circle" title="معلومات التسعير"/>
+      <div>
+       <strong>كيف يُحسب سعر البيع؟</strong>
+       <p>سعر البيع = تكلفة المنتج × (1 + نسبة الزيادة ÷ 100). إذا كانت التكلفة صفرًا أو لم تنطبق سياسة، يُستخدم سعر البيع الافتراضي للمنتج. السياسة المخصصة للعميل لها الأولوية على السياسة العامة.</p>
+      </div>
      </div>
     </sheet>
    </form>
