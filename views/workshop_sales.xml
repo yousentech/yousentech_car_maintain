@@ -59,12 +59,12 @@
         <div class="yt-wo-kpi yt-wo-purple"><small>الإجمالي النهائي</small><field name="amount_total" readonly="1" widget="monetary" options="{'currency_field':'currency_id'}"/></div>
        </div>
       </div>
-      <div class="yt-wo-section-layout" dir="rtl"><nav class="yt-wo-section-nav" aria-label="أقسام أمر العمل" invisible="not workshop_section_nav_enabled"><div class="yt-wo-nav-caption"><i class="fa fa-th-large" title="الأقسام"/> أقسام أمر العمل</div><label class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="customer"/><i class="fa fa-user" title="العميل والسيارة"/> <span>العميل والسيارة</span></label>
-<label class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="lines" checked="checked"/><i class="fa fa-wrench" title="الخدمات وقطع الغيار"/> <span>الخدمات وقطع الغيار</span></label>
-<label class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="extra"/><i class="fa fa-sliders" title="التفاصيل الإضافية"/> <span>التفاصيل الإضافية</span></label>
-<label class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="finance"/><i class="fa fa-credit-card" title="الأمور المالية"/> <span>الأمور المالية</span></label>
-<div groups="yousentech_car_maintain.group_workshop_inspection"><label class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="inspection"/><i class="fa fa-stethoscope" title="الفحص والمتابعة"/> <span>الفحص والمتابعة</span></label></div>
-<label class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="all"/><i class="fa fa-th" title="عرض الكل"/> <span>عرض الكل</span></label></nav><div class="yt-wo-section-content"><div class="yt-wo-section-customer"><div class="yt-rec-native-grid yt-rec-two-card-grid">
+      <div class="yt-wo-section-layout" dir="rtl"><nav class="yt-wo-section-nav" aria-label="أقسام أمر العمل" invisible="not workshop_section_nav_enabled"><div class="yt-wo-nav-caption"><i class="fa fa-th-large" title="الأقسام"/> أقسام أمر العمل</div><div class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="customer"/><i class="fa fa-user" title="العميل والسيارة"/> <span>العميل والسيارة</span></div>
+<div class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="lines" checked="checked"/><i class="fa fa-wrench" title="الخدمات وقطع الغيار"/> <span>الخدمات وقطع الغيار</span></div>
+<div class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="extra"/><i class="fa fa-sliders" title="التفاصيل الإضافية"/> <span>التفاصيل الإضافية</span></div>
+<div class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="finance"/><i class="fa fa-credit-card" title="الأمور المالية"/> <span>الأمور المالية</span></div>
+<div groups="yousentech_car_maintain.group_workshop_inspection"><div class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="inspection"/><i class="fa fa-stethoscope" title="الفحص والمتابعة"/> <span>الفحص والمتابعة</span></div></div>
+<div class="yt-wo-nav-option"><input type="radio" name="yt_wo_nav" value="all"/><i class="fa fa-th" title="عرض الكل"/> <span>عرض الكل</span></div></nav><div class="yt-wo-section-content"><div class="yt-wo-section-customer"><div class="yt-rec-native-grid yt-rec-two-card-grid">
        <div class="yt-rec-native-col yt-rec-col-customer-intake">
        <div class="yt-rec-native-card yt-rec-card-customer">
         <h3><i class="fa fa-user" aria-hidden="true" title="العميل"/> معلومات العميل</h3>
