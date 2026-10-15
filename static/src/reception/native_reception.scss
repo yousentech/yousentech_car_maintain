@@ -1156,3 +1156,16 @@
     .yt-config-hero h2 { font-size: 17px; }
   }
 }
+
+
+/* Financial settings: align Odoo native fields without affecting other forms. */
+.yt-finance-settings-form {
+  .o_form_sheet { margin-left: auto !important; margin-right: auto !important; }
+  .yt-config-description { color: #708098; font-size: 12px; line-height: 1.7; margin: -4px 0 16px; text-align: right; }
+  .yt-config-card .o_inner_group { width: 100%; }
+  .yt-config-card .o_cell { min-width: 0; }
+  .yt-config-card .o_field_widget { max-width: 100%; }
+  .yt-config-card .o_field_boolean { display: inline-flex; align-items: center; }
+  .yt-config-note { display: flex; align-items: flex-start; gap: 10px; }
+  .yt-config-note > i { color: #347e9e; font-size: 18px; margin-top: 3px; }
+}
