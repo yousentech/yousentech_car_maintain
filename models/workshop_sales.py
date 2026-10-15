@@ -272,6 +272,9 @@ class WorkshopSale(models.Model):
         self.ensure_one()
         settings = self.env['yt.workshop.finance.settings'].search(
             [('company_id', '=', self.company_id.id)], limit=1)
+        # Credit sales are permitted only for commercial company customers when enabled.
+        if settings and settings.allow_company_credit_invoice and self.partner_id.commercial_partner_id.is_company:
+            return False
         # Existing companies without a settings record use the safe default.
         return settings.require_full_payment_before_invoice if settings else True
 
@@ -561,7 +564,7 @@ class WorkshopSale(models.Model):
         string='أوامر البيع السابقة', readonly=True, copy=False)
     can_create_workshop_invoice = fields.Boolean(compute='_compute_can_create_workshop_invoice')
 
-    @api.depends('state', 'workshop_approved', 'sale_order_id',
+    @api.depends('state', 'workshop_approved', 'partner_id', 'partner_id.commercial_partner_id', 'sale_order_id',
                  'sale_order_id.state', 'sale_order_id.invoice_ids',
                  'sale_order_id.invoice_ids.state', 'sale_order_id.invoice_ids.amount_residual',
                  'previous_sale_order_ids')
@@ -946,6 +949,11 @@ class WorkshopFinanceSettings(models.Model):
         string='لا يتم إنشاء الفاتورة إلا بعد اكتمال الدفع',
         default=True,
         help='عند التفعيل، يجب تحصيل كامل قيمة أمر العمل وتسجيل الدفعات قبل إنشاء أمر البيع والفاتورة.')
+    allow_company_credit_invoice = fields.Boolean(
+        string='السماح بفوترة الشركات قبل اكتمال الدفع (بيع آجل)',
+        default=True,
+        help='عند التفعيل، يمكن إنشاء أمر بيع وفاتورة لعميل شركة قبل اكتمال التحصيل. '
+             'يظل شرط الدفع المسبق مطبقًا على الأفراد، ولا يتجاوز هذا الاستثناء شروط الاعتماد والفوترة الأخرى.')
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company,
                                  required=True, readonly=True)
     _sql_constraints = [('one_per_company', 'unique(company_id)', 'يوجد سجل إعدادات مالية لهذه الشركة بالفعل.')]
