@@ -453,6 +453,9 @@ class WorkshopSale(models.Model):
             order.write(values)
         return True
 
+    workshop_section_nav_enabled = fields.Boolean(
+        related='company_id.workshop_section_nav_enabled', readonly=True)
+
     can_delete_workshop = fields.Boolean(
         string='يمكن حذف أمر العمل', compute='_compute_can_delete_workshop')
 
@@ -1015,12 +1018,22 @@ class WorkshopSale(models.Model):
                 'res_id': self.id, 'target': 'current'}
 
 
+class WorkshopCompanyNavigation(models.Model):
+    _inherit = 'res.company'
+
+    workshop_section_nav_enabled = fields.Boolean(
+        string='تفعيل القائمة الجانبية لأقسام أمر العمل', default=False)
+
+
 class WorkshopFinanceSettings(models.Model):
     _name = 'yt.workshop.finance.settings'
     _description = 'Workshop financial configuration'
     _rec_name = 'name'
 
     name = fields.Char(default='الإعدادات المالية للورشة', required=True, readonly=True)
+    workshop_section_nav_enabled = fields.Boolean(
+        related='company_id.workshop_section_nav_enabled',
+        readonly=False, string='تفعيل القائمة الجانبية لأقسام أمر العمل')
     tax_id = fields.Many2one('account.tax', string='ضريبة المبيعات المعتمدة',
                              domain="[('type_tax_use','=','sale')]")
     require_full_payment_before_invoice = fields.Boolean(
