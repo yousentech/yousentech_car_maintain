@@ -6,7 +6,7 @@
  <record id="view_reception_make_form" model="ir.ui.view">
   <field name="name">yt.reception.make.form</field><field name="model">yt.reception.make</field>
   <field name="arch" type="xml"><form string="الشركة المصنعة"><sheet>
-      <field name="can_delete_workshop" invisible="1"/><group><field name="name"/><field name="active"/></group></sheet></form></field>
+      <group><field name="name"/><field name="active"/></group></sheet></form></field>
  </record>
  <record id="view_reception_model_form" model="ir.ui.view">
   <field name="name">yt.reception.model.form</field><field name="model">yt.reception.model</field>
@@ -70,6 +70,7 @@
      <field name="state" widget="statusbar" statusbar_visible="draft,cancelled"/>
     </header>
     <sheet>
+     <field name="can_delete_workshop" invisible="1"/>
      <div class="oe_title"><h1><field name="name" readonly="1" invisible="not name or name == '/'"/><span class="yt-rec-new-title" invisible="name and name != '/'">أمر عمل جديد</span></h1></div>
      <field name="company_id" string="الشركة" invisible="1" options="{'no_open': True}"/>
      <div class="yt-rec-content-frame">
