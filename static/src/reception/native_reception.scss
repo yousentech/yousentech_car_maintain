@@ -1257,7 +1257,7 @@
 .yt-workshop-finance-form {
   .yt-wo-section-layout { display:block; min-width:0; margin-top:14px; }
   .yt-wo-section-nav { display:none; }
-  .yt-wo-section-content { min-width:0; width:100%; }
+  .yt-wo-section-content { min-width:0; width:100%; grid-column:1; grid-row:1; }
   .yt-wo-section-content > div { min-width:0; width:100%; }
   .yt-wo-section-inspection { display:none; }
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) .yt-wo-section-inspection { display:block; }
@@ -1268,10 +1268,10 @@
   .yt-wo-inspection-body p { flex:1 1 250px; margin:0; color:#65738d; }
   .yt-wo-navigation-setting { margin-top:15px; }
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) {
-    display:grid; grid-template-columns:204px minmax(0,1fr); gap:16px; align-items:start;
+    display:grid; grid-template-columns:minmax(0,1fr) 204px; gap:16px; align-items:start;
   }
   .yt-wo-section-layout > .yt-wo-section-nav:not(.d-none) {
-    display:flex; flex-direction:column; gap:6px; padding:13px 10px;
+    grid-column:2; grid-row:1; display:flex; flex-direction:column; gap:6px; padding:13px 10px;
     border:1px solid #dedcfb; border-radius:14px; background:linear-gradient(165deg,#f9f8ff,#eef3ff);
     position:sticky; top:72px; box-shadow:0 3px 14px #2b39800d;
   }
@@ -1295,17 +1295,17 @@
   .yt-wo-section-content > .yt-wo-section-extra-more { margin-top:14px; }
 }
 @media(max-width:1050px) {
-  .yt-workshop-finance-form .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) { grid-template-columns:170px minmax(0,1fr); gap:10px; }
+  .yt-workshop-finance-form .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) { grid-template-columns:minmax(0,1fr) 170px; gap:10px; }
 }
 @media(max-width:720px) {
   .yt-workshop-finance-form {
     .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) { display:flex; flex-direction:column; }
     .yt-wo-section-layout > .yt-wo-section-nav:not(.d-none) {
-      position:static; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; width:100%;
+      grid-column:auto; grid-row:auto; position:static; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; width:100%;
       padding:8px; gap:5px; scrollbar-width:thin;
     }
     .yt-wo-section-nav .yt-wo-nav-caption { display:none; }
     .yt-wo-section-nav .yt-wo-nav-option { white-space:nowrap; padding:9px; font-size:11px; }
-    .yt-wo-section-content { width:100%; }
+    .yt-wo-section-content { width:100%; grid-column:auto; grid-row:auto; }
   }
 }
