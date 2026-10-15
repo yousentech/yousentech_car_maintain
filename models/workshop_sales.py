@@ -487,11 +487,18 @@ class WorkshopSale(models.Model):
         self.check_access_rule('unlink')
         self._check_workshop_delete_allowed()
         self.unlink()
-        return {'type': 'ir.actions.act_window',
-                'name': _('أوامر العمل'),
-                'res_model': 'yt.reception.order',
-                'view_mode': 'tree,form',
-                'target': 'current'}
+        # Return to the work-order kanban instead of the generic list view.
+        action = self.env.ref(
+            'yousentech_car_maintain.action_reception_native').read()[0]
+        action['views'] = [
+            (self.env.ref('yousentech_car_maintain.view_reception_order_kanban').id, 'kanban'),
+            (self.env.ref('yousentech_car_maintain.view_reception_order_tree').id, 'tree'),
+            (self.env.ref('yousentech_car_maintain.view_reception_workshop_form').id, 'form'),
+        ]
+        action['view_mode'] = 'kanban,tree,form'
+        action['target'] = 'current'
+        action.pop('res_id', None)
+        return action
 
     def unlink(self):
         self._check_workshop_delete_allowed()
