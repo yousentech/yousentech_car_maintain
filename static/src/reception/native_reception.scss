@@ -1292,6 +1292,13 @@
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) .yt-wo-nav-option:has(input[value="extra"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-extra):not(.yt-wo-section-extra-more),
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) .yt-wo-nav-option:has(input[value="finance"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-finance),
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) .yt-wo-nav-option:has(input[value="inspection"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-inspection) { display:none !important; }
+
+  /* Explicit sibling selectors: the selected radio lives inside the navigation. */
+  .yt-wo-section-nav:not(.d-none):has(input[value="customer"]:checked) ~ .yt-wo-section-content > :not(.yt-wo-section-customer),
+  .yt-wo-section-nav:not(.d-none):has(input[value="lines"]:checked) ~ .yt-wo-section-content > :not(.yt-wo-section-lines),
+  .yt-wo-section-nav:not(.d-none):has(input[value="extra"]:checked) ~ .yt-wo-section-content > :not(.yt-wo-section-extra):not(.yt-wo-section-extra-more),
+  .yt-wo-section-nav:not(.d-none):has(input[value="finance"]:checked) ~ .yt-wo-section-content > :not(.yt-wo-section-finance),
+  .yt-wo-section-nav:not(.d-none):has(input[value="inspection"]:checked) ~ .yt-wo-section-content > :not(.yt-wo-section-inspection) { display:none !important; }
   .yt-wo-section-content > .yt-wo-section-extra-more { margin-top:14px; }
 }
 @media(max-width:1050px) {
