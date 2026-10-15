@@ -251,6 +251,13 @@
        </group>
       </div>
      </div>
+     <div class="yt-config-card yt-wo-navigation-setting" dir="rtl">
+      <h3><i class="fa fa-columns" title="طريقة العرض"/> طريقة عرض أمر العمل</h3>
+      <p class="yt-config-description">قائمة جانبية للتنقل بين أقسام أمر العمل دون تغيير البطاقات أو العمليات الحالية. عند الإيقاف تظهر الشاشة الكاملة كما كانت.</p>
+      <group col="2">
+       <field name="workshop_section_nav_enabled" string="تفعيل القائمة الجانبية لأقسام أمر العمل"/>
+      </group>
+     </div>
      <div class="yt-finance-collection-note" dir="rtl">
       <div class="yt-finance-collection-note-title"><i class="fa fa-info-circle" title="توضيح سياسة التحصيل"/> توضيح سياسة التحصيل والفوترة</div>
       <p>تُقرأ طبيعة التعامل من بطاقة العميل. العميل النقدي يخضع لشرط اكتمال الدفع عند تفعيله، أما العميل الآجل فيمكن إنشاء فاتورته قبل اكتمال التحصيل، سواء كان فردًا أو شركة.</p>
