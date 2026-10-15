@@ -1006,7 +1006,7 @@
 /* Workshop pricing policy: dedicated RTL form, independent of work-order styles. */
 .yt-pricing-policy-form {
   .o_form_sheet {
-    width: min(100%, 1380px) !important;
+    width: 100% !important;
     max-width: 1380px !important;
     min-width: 0;
     padding: 26px 30px !important;
