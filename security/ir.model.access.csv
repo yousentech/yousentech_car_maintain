@@ -18,3 +18,5 @@ a_workshop_advance_payment_wizard,yt.workshop.advance.payment.wizard,model_yt_wo
 
 a_workshop_category_pricing,yt.workshop.category.pricing,model_yt_workshop_category_pricing,base.group_system,1,1,1,1
 a_workshop_category_pricing_user,yt.workshop.category.pricing user,model_yt_workshop_category_pricing,base.group_user,1,0,0,0
+a_workshop_pricing_tier,yt.workshop.pricing.tier,model_yt_workshop_pricing_tier,base.group_system,1,1,1,1
+a_workshop_pricing_tier_user,yt.workshop.pricing.tier user,model_yt_workshop_pricing_tier,base.group_user,1,0,0,0
