@@ -22,7 +22,7 @@
        <h3><i class="fa fa-id-card-o" title="اللوحة"/> بيانات اللوحة والمالك</h3>
        <group>
         <field name="company_id" invisible="1"/>
-        <field name="partner_id" string="العميل" options="{'no_open': True}"/>
+        <field name="partner_id" invisible="1"/>
         <field name="plate" string="رقم اللوحة" placeholder="مثال: ABC1234" class="yt-vehicle-plate"/>
         <field name="plate_country" string="دولة اللوحة"/>
         <field name="plate_type" string="نوع اللوحة"/>
