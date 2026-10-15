@@ -1257,8 +1257,10 @@
 .yt-workshop-finance-form {
   .yt-wo-section-layout { display:block; min-width:0; margin-top:14px; }
   .yt-wo-section-nav { display:none; }
-  .yt-wo-section-content { min-width:0; }
-  .yt-wo-section-content > div { min-width:0; }
+  .yt-wo-section-content { min-width:0; width:100%; }
+  .yt-wo-section-content > div { min-width:0; width:100%; }
+  .yt-wo-section-inspection { display:none; }
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) .yt-wo-section-inspection { display:block; }
   .yt-wo-section-extra-more { margin-top:14px; }
   .yt-wo-inspection-card { overflow:hidden; }
   .yt-wo-inspection-card > h3 { padding:13px 17px; margin:0; background:#eff2ff; color:#263f80; font-size:15px; }
@@ -1266,7 +1268,7 @@
   .yt-wo-inspection-body p { flex:1 1 250px; margin:0; color:#65738d; }
   .yt-wo-navigation-setting { margin-top:15px; }
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) {
-    display:grid; grid-template-columns:minmax(0,1fr) 204px; gap:16px; align-items:start;
+    display:grid; grid-template-columns:204px minmax(0,1fr); gap:16px; align-items:start;
   }
   .yt-wo-section-layout > .yt-wo-section-nav:not(.d-none) {
     display:flex; flex-direction:column; gap:6px; padding:13px 10px;
@@ -1285,15 +1287,15 @@
   .yt-wo-section-nav .yt-wo-nav-option:hover { background:#e9edff; color:#263c80; }
   .yt-wo-section-nav .yt-wo-nav-option:has(input:checked) { color:#2f3996; background:#e8e7ff; border-color:#c9c7ff; box-shadow:inset -3px 0 #6755e9; }
   .yt-wo-section-nav .yt-wo-nav-option:has(input:focus-visible) { outline:2px solid #6755e9; outline-offset:2px; }
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="customer"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-customer),
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="lines"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-lines),
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="extra"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-extra):not(.yt-wo-section-extra-more),
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="finance"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-finance),
-  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="inspection"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-inspection) { display:none !important; }
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) .yt-wo-nav-option:has(input[value="customer"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-customer),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) .yt-wo-nav-option:has(input[value="lines"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-lines),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) .yt-wo-nav-option:has(input[value="extra"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-extra):not(.yt-wo-section-extra-more),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) .yt-wo-nav-option:has(input[value="finance"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-finance),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) .yt-wo-nav-option:has(input[value="inspection"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-inspection) { display:none !important; }
   .yt-wo-section-content > .yt-wo-section-extra-more { margin-top:14px; }
 }
 @media(max-width:1050px) {
-  .yt-workshop-finance-form .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) { grid-template-columns:minmax(0,1fr) 170px; gap:10px; }
+  .yt-workshop-finance-form .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) { grid-template-columns:170px minmax(0,1fr); gap:10px; }
 }
 @media(max-width:720px) {
   .yt-workshop-finance-form {
