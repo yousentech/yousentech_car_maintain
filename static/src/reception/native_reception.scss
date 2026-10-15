@@ -1251,3 +1251,58 @@
     .yt-inspection-category-create .btn { width: 100%; }
   }
 }
+
+
+/* V4: optional, no-JS work order section navigation. Existing cards remain intact. */
+.yt-workshop-finance-form {
+  .yt-wo-section-layout { display:block; min-width:0; margin-top:14px; }
+  .yt-wo-section-nav { display:none; }
+  .yt-wo-section-content { min-width:0; }
+  .yt-wo-section-content > div { min-width:0; }
+  .yt-wo-section-extra-more { margin-top:14px; }
+  .yt-wo-inspection-card { overflow:hidden; }
+  .yt-wo-inspection-card > h3 { padding:13px 17px; margin:0; background:#eff2ff; color:#263f80; font-size:15px; }
+  .yt-wo-inspection-body { display:flex; align-items:center; flex-wrap:wrap; gap:14px; padding:20px; }
+  .yt-wo-inspection-body p { flex:1 1 250px; margin:0; color:#65738d; }
+  .yt-wo-navigation-setting { margin-top:15px; }
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) {
+    display:grid; grid-template-columns:minmax(0,1fr) 204px; gap:16px; align-items:start;
+  }
+  .yt-wo-section-layout > .yt-wo-section-nav:not(.d-none) {
+    display:flex; flex-direction:column; gap:6px; padding:13px 10px;
+    border:1px solid #dedcfb; border-radius:14px; background:linear-gradient(165deg,#f9f8ff,#eef3ff);
+    position:sticky; top:72px; box-shadow:0 3px 14px #2b39800d;
+  }
+  .yt-wo-section-nav .yt-wo-nav-caption { color:#223b73; font-weight:800; font-size:13px; padding:7px 10px 12px; border-bottom:1px solid #e0e4f7; margin-bottom:5px; }
+  .yt-wo-section-nav input[type="radio"] { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+  .yt-wo-section-nav label {
+    display:flex; align-items:center; gap:10px; padding:12px 11px; margin:0;
+    border:1px solid transparent; border-radius:9px; color:#4b5b80;
+    font-weight:700; font-size:12px; cursor:pointer; transition:background .15s,border-color .15s;
+  }
+  .yt-wo-section-nav label i { color:#6576b8; width:19px; font-size:15px; text-align:center; }
+  .yt-wo-section-nav label:hover { background:#e9edff; color:#263c80; }
+  .yt-wo-section-nav input:checked + label { color:#2f3996; background:#e8e7ff; border-color:#c9c7ff; box-shadow:inset -3px 0 #6755e9; }
+  .yt-wo-section-nav input:focus-visible + label { outline:2px solid #6755e9; outline-offset:2px; }
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="customer"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-customer),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="lines"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-lines),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="extra"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-extra):not(.yt-wo-section-extra-more),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="finance"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-finance),
+  .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) input[value="inspection"]:checked) .yt-wo-section-content > div:not(.yt-wo-section-inspection) { display:none !important; }
+  .yt-wo-section-content > .yt-wo-section-extra-more { margin-top:14px; }
+}
+@media(max-width:1050px) {
+  .yt-workshop-finance-form .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) { grid-template-columns:minmax(0,1fr) 170px; gap:10px; }
+}
+@media(max-width:720px) {
+  .yt-workshop-finance-form {
+    .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none)) { display:flex; flex-direction:column; }
+    .yt-wo-section-layout > .yt-wo-section-nav:not(.d-none) {
+      position:static; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; width:100%;
+      padding:8px; gap:5px; scrollbar-width:thin;
+    }
+    .yt-wo-section-nav .yt-wo-nav-caption { display:none; }
+    .yt-wo-section-nav label { white-space:nowrap; padding:9px; font-size:11px; }
+    .yt-wo-section-content { width:100%; }
+  }
+}
