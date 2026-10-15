@@ -444,8 +444,58 @@ class WorkshopSale(models.Model):
             if not order.sale_line_ids:
                 raise UserError(_('أضف خدمة أو قطعة غيار قبل الاعتماد.'))
             order._check_zero_price_permissions()
-            order.write({'workshop_approved': True, 'state': 'approved'})
+            values = {'workshop_approved': True, 'state': 'approved'}
+            if not order.name or order.name == '/':
+                sequence = self.env['ir.sequence'].next_by_code('yt.reception.order')
+                if not sequence:
+                    raise UserError(_('تعذر توليد رقم أمر العمل؛ تحقق من إعدادات التسلسل.'))
+                values['name'] = sequence
+            order.write(values)
         return True
+
+    can_delete_workshop = fields.Boolean(
+        string='يمكن حذف أمر العمل', compute='_compute_can_delete_workshop')
+
+    @api.depends('name', 'state', 'workshop_approved', 'sale_order_id',
+                 'previous_sale_order_ids', 'advance_payment_ids')
+    def _compute_can_delete_workshop(self):
+        allowed = self.env.user.has_group(
+            'yousentech_car_maintain.group_workshop_delete_draft')
+        for order in self:
+            order.can_delete_workshop = bool(
+                allowed and order.state == 'draft' and not order.workshop_approved
+                and (not order.name or order.name == '/')
+                and not order.sale_order_id and not order.previous_sale_order_ids
+                and not order.advance_payment_ids)
+
+    def _check_workshop_delete_allowed(self):
+        if not self.env.user.has_group(
+                'yousentech_car_maintain.group_workshop_delete_draft'):
+            raise UserError(_('ليس لديك صلاحية حذف أوامر العمل غير المعتمدة.'))
+        for order in self:
+            if (order.state != 'draft' or order.workshop_approved
+                    or (order.name and order.name != '/')):
+                raise UserError(_('لا يمكن حذف أمر عمل معتمد أو سبق إصدار رقم تسلسلي له.'))
+            if (order.sale_order_id or order.previous_sale_order_ids
+                    or order.advance_payment_ids
+                    or order._workshop_financial_documents()):
+                raise UserError(_('لا يمكن حذف أمر عمل مرتبط بأمر بيع أو دفعات أو مستندات مالية.'))
+
+    def action_delete_unapproved_workshop(self):
+        self.ensure_one()
+        self.check_access_rights('unlink')
+        self.check_access_rule('unlink')
+        self._check_workshop_delete_allowed()
+        self.unlink()
+        return {'type': 'ir.actions.act_window',
+                'name': _('أوامر العمل'),
+                'res_model': 'yt.reception.order',
+                'view_mode': 'tree,form',
+                'target': 'current'}
+
+    def unlink(self):
+        self._check_workshop_delete_allowed()
+        return super().unlink()
 
     advance_payment_ids = fields.Many2many(
         'account.payment', 'yt_workshop_advance_payment_rel',
