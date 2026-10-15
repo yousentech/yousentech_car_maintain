@@ -294,13 +294,13 @@
   <field name="name">yt.workshop.category.pricing.tree</field>
   <field name="model">yt.workshop.category.pricing</field>
   <field name="arch" type="xml">
-   <tree string="سياسات تسعير فئات المنتجات">
+   <tree string="سياسات تسعير قطع الغيار">
     <field name="sequence" widget="handle"/>
-    <field name="company_id" groups="base.group_multi_company" options="{'no_open': True}"/>
-    <field name="category_id"/>
+    <field name="company_id" groups="base.group_multi_company"/>
+    <field name="category_scope"/>
+    <field name="category_ids" widget="many2many_tags"/>
     <field name="customer_scope"/>
     <field name="partner_ids" widget="many2many_tags"/>
-    <field name="markup_percent"/>
     <field name="active"/>
    </tree>
   </field>
@@ -309,34 +309,46 @@
   <field name="name">yt.workshop.category.pricing.form</field>
   <field name="model">yt.workshop.category.pricing</field>
   <field name="arch" type="xml">
-   <form string="سياسة تسعير فئة">
+   <form string="سياسة تسعير قطع الغيار">
     <sheet>
      <group>
       <group>
-       <field name="company_id" groups="base.group_multi_company" options="{'no_open': True}"/>
-       <field name="category_id"/>
-       <field name="markup_percent"/>
+       <field name="company_id" groups="base.group_multi_company"/>
+       <field name="category_scope"/>
+       <field name="category_ids" widget="many2many_tags" invisible="category_scope != 'selected'" required="category_scope == 'selected'"/>
        <field name="active"/>
       </group>
       <group>
        <field name="customer_scope"/>
        <field name="partner_ids" widget="many2many_tags" invisible="customer_scope != 'selected'" required="customer_scope == 'selected'"/>
+       <field name="sequence"/>
       </group>
      </group>
+     <group string="شرائح التكلفة ونسب الزيادة">
+      <field name="tier_ids" nolabel="1">
+       <tree editable="bottom">
+        <field name="min_cost"/>
+        <field name="max_cost"/>
+        <field name="individual_percent"/>
+        <field name="company_percent"/>
+       </tree>
+      </field>
+     </group>
      <div class="alert alert-info" role="alert">
-      السعر = تكلفة المنتج في الشركة × (1 + نسبة الزيادة ÷ 100).
-      السياسة المخصصة للعميل لها الأولوية على العامة، وبدون سياسة يُستخدم سعر البيع الافتراضي.
+      سعر البيع = تكلفة المنتج × (1 + نسبة الشريحة ÷ 100).
+      إذا كانت التكلفة صفرًا أو لم تنطبق سياسة، يُستخدم سعر البيع الافتراضي للمنتج.
+      الحد الأعلى صفر يعني أن الشريحة بلا حد أعلى. السياسة المخصصة للعميل تتقدم على العامة.
      </div>
     </sheet>
    </form>
   </field>
  </record>
  <record id="action_workshop_category_pricing" model="ir.actions.act_window">
-  <field name="name">سياسات تسعير فئات المنتجات</field>
+  <field name="name">سياسات تسعير قطع الغيار</field>
   <field name="res_model">yt.workshop.category.pricing</field>
   <field name="view_mode">tree,form</field>
  </record>
- <menuitem id="menu_workshop_category_pricing" name="تسعير فئات المنتجات"
+ <menuitem id="menu_workshop_category_pricing" name="سياسات تسعير قطع الغيار"
            parent="menu_inspection_config" action="action_workshop_category_pricing"
            sequence="91" groups="base.group_system"/>
 </odoo>
