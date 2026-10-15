@@ -1123,3 +1123,36 @@
     .yt-pricing-table .o_list_table { min-width: 560px; }
   }
 }
+
+
+/* Finance settings and vehicle popup: scoped RTL layouts. */
+.yt-finance-settings-form, .yt-vehicle-create-form {
+  .o_form_sheet { width: 100% !important; max-width: 1120px !important; min-width: 0; padding: 24px !important; box-sizing: border-box; }
+  .yt-config-hero { display: flex; align-items: center; gap: 14px; padding: 17px 20px; margin-bottom: 18px; border: 1px solid #d9e5f6; border-radius: 13px; background: #f3f7fe; text-align: right; }
+  .yt-config-hero-icon { display: flex; align-items: center; justify-content: center; flex: 0 0 44px; height: 44px; border-radius: 11px; background: #dfeafb; color: #315b91; font-size: 21px; }
+  .yt-config-hero h2 { font-size: 19px; font-weight: 800; color: #243d62; margin: 0 0 5px; }
+  .yt-config-hero p { color: #62738b; font-size: 12px; line-height: 1.7; margin: 0; }
+  .yt-config-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+  .yt-config-card { min-width: 0; padding: 18px; border: 1px solid #e0e8f3; border-radius: 12px; background: #fff; box-shadow: 0 2px 8px rgba(35,59,91,.035); text-align: right; }
+  .yt-config-card h3 { font-size: 15px; font-weight: 800; color: #284469; padding-bottom: 11px; margin: 0 0 13px; border-bottom: 1px solid #e9edf4; }
+  .yt-config-card h3 i { margin-left: 7px; color: #4a79b1; }
+  .yt-config-card .o_group { width: 100%; margin-bottom: 0; }
+  .yt-config-card .o_field_widget { min-width: 0; }
+  .yt-config-wide { margin-top: 16px; }
+  .yt-config-note { padding: 15px 18px; margin-top: 16px; border: 1px solid #cfe3ec; border-radius: 11px; background: #f0f8fb; color: #365b70; font-size: 13px; line-height: 1.8; text-align: right; }
+  .yt-vehicle-plate input { text-transform: uppercase; font-weight: 800; letter-spacing: .6px; direction: ltr; text-align: right; }
+}
+@media (max-width: 850px) {
+  .yt-finance-settings-form, .yt-vehicle-create-form {
+    .o_form_sheet { padding: 14px !important; }
+    .yt-config-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+}
+@media (max-width: 520px) {
+  .yt-finance-settings-form, .yt-vehicle-create-form {
+    .o_form_sheet { padding: 9px !important; }
+    .yt-config-hero { padding: 12px; }
+    .yt-config-card { padding: 12px; }
+    .yt-config-hero h2 { font-size: 17px; }
+  }
+}
