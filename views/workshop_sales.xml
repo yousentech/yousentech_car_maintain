@@ -4,8 +4,13 @@
   <field name="name">yt.reception.order.workshop.form</field>
   <field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <form string="أمر العمل" class="yt-native-reception yt-workshop-finance-form">
+   <form string="أمر العمل" class="yt-native-reception yt-workshop-finance-form" delete="false">
     <header>
+      <button name="action_delete_unapproved_workshop" type="object"
+       string="حذف المسودة" icon="fa-trash" class="btn-secondary"
+       groups="yousentech_car_maintain.group_workshop_delete_draft"
+       invisible="not can_delete_workshop"
+       confirm="هل تريد حذف مسودة أمر العمل نهائيًا؟ لا يمكن التراجع عن الحذف."/>
      <button name="action_create_sale_and_invoice" type="object" string="إنشاء أمر بيع وفاتورة" class="btn-primary" invisible="not can_create_workshop_invoice"/>
      <button name="action_approve_workshop" type="object" string="اعتماد أمر العمل" class="btn-secondary" invisible="state != 'draft'"/>
      <button groups="yousentech_car_maintain.group_workshop_revoke_approval" name="action_revoke_workshop_approval" type="object" string="إلغاء الاعتماد" class="btn-secondary" invisible="state != 'approved'" confirm="هل تريد إلغاء اعتماد أمر العمل وإعادته إلى مسودة؟"/>
@@ -20,6 +25,7 @@
      <field name="state" widget="statusbar" statusbar_visible="draft,approved,in_progress,done,cancelled"/>
     </header>
     <sheet>
+      <field name="can_delete_workshop" invisible="1"/>
      <field name="company_id" invisible="1" options="{'no_open': True}"/>
      <field name="invoice_count" invisible="1"/>
      <field name="refund_count" invisible="1"/>
