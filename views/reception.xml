@@ -14,28 +14,40 @@
  <record id="view_reception_vehicle_form" model="ir.ui.view">
   <field name="name">yt.reception.vehicle.form</field><field name="model">yt.reception.vehicle</field>
   <field name="arch" type="xml">
-   <form string="تسجيل سيارة">
+   <form string="تسجيل سيارة" class="yt-vehicle-create-form">
     <sheet>
-     <group>
-      <group string="العميل واللوحة">
-       <field name="company_id" string="الشركة" groups="base.group_multi_company" options="{'no_open': True}"/>
-       <field name="partner_id" string="العميل" options="{'no_open': True}"/>
-       <field name="plate" string="رقم اللوحة"/>
-       <field name="plate_country" string="دولة اللوحة"/>
-       <field name="plate_type" string="نوع اللوحة"/>
-       <field name="plate_condition" string="حالة اللوحة"/>
-      </group>
-      <group string="بيانات السيارة">
-       <field name="make_id" string="الشركة المصنعة" options="{'no_open': True}"/>
-       <field name="model_id" string="الموديل" placeholder="اختر الموديل أو أنشئ موديلًا" domain="[('make_id','=',make_id)]" context="{'default_make_id': make_id}" options="{'no_open': True}"/>
-       <field name="year" string="سنة الصنع"/>
-       <field name="gear" string="ناقل الحركة"/>
+     <div class="yt-config-hero" dir="rtl"><span class="yt-config-hero-icon"><i class="fa fa-car" title="السيارة"/></span><div><h2>تسجيل سيارة جديدة</h2><p>أدخل رقم اللوحة ثم أكمل بيانات المالك والسيارة. تُحوّل الأحرف الإنجليزية إلى كبيرة تلقائيًا.</p></div></div>
+     <div class="yt-config-grid" dir="rtl">
+      <section class="yt-config-card">
+       <h3><i class="fa fa-id-card-o" title="اللوحة"/> بيانات اللوحة والمالك</h3>
+       <group>
+        <field name="company_id" string="الشركة" groups="base.group_multi_company" options="{'no_open': True}"/>
+        <field name="partner_id" string="العميل" options="{'no_open': True}"/>
+        <field name="plate" string="رقم اللوحة" placeholder="مثال: ABC1234" class="yt-vehicle-plate"/>
+        <field name="plate_country" string="دولة اللوحة"/>
+        <field name="plate_type" string="نوع اللوحة"/>
+        <field name="plate_condition" string="حالة اللوحة"/>
+       </group>
+      </section>
+      <section class="yt-config-card">
+       <h3><i class="fa fa-car" title="المواصفات"/> مواصفات السيارة</h3>
+       <group>
+        <field name="make_id" string="الشركة المصنعة" options="{'no_open': True}"/>
+        <field name="model_id" string="الموديل" placeholder="اختر الموديل أو أنشئ موديلًا" domain="[('make_id','=',make_id)]" context="{'default_make_id': make_id}" options="{'no_open': True}"/>
+        <field name="year" string="سنة الصنع"/>
+        <field name="gear" string="ناقل الحركة"/>
+        <field name="color" string="اللون"/>
+       </group>
+      </section>
+     </div>
+     <section class="yt-config-card yt-config-wide" dir="rtl">
+      <h3><i class="fa fa-tachometer" title="التفاصيل"/> بيانات التعريف والعداد</h3>
+      <group col="4">
        <field name="vin" string="رقم الشاصي (VIN)"/>
        <field name="engine_number" string="رقم المحرك"/>
-       <field name="color" string="اللون"/>
        <field name="odometer" string="قراءة العداد"/>
       </group>
-     </group>
+     </section>
     </sheet>
    </form>
   </field>
