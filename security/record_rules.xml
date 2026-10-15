@@ -19,6 +19,10 @@
   <field name="name">إلغاء اعتماد أمر العمل</field>
   <field name="category_id" ref="module_category_workshop_permissions"/>
  </record>
+ <record id="group_workshop_delete_draft" model="res.groups">
+  <field name="name">حذف أوامر العمل غير المعتمدة</field>
+  <field name="category_id" ref="module_category_workshop_permissions"/>
+ </record>
  <record id="group_workshop_zero_service" model="res.groups">
   <field name="name">السماح ببيع الخدمات بسعر صفر</field>
   <field name="category_id" ref="module_category_workshop_permissions"/>
