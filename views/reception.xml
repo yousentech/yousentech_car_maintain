@@ -123,6 +123,7 @@
          <div class="yt-rec-field-pair">
           <div class="yt-rec-field-row"><label for="branch_id" string="الفرع"/><field name="branch_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
           <div class="yt-rec-field-row"><label for="advisor_id" string="المستخدم"/><field name="advisor_id" nolabel="1" readonly="1" options="{'no_open': True}"/></div>
+           <div class="yt-rec-field-row"><label for="customer_type_snapshot" string="نوع العميل عند إنشاء الأمر"/><field name="customer_type_snapshot" nolabel="1" readonly="1"/></div>
          </div>
         </div>
         <div class="yt-rec-textarea-block"><label for="internal_notes" string="ملاحظات داخلية"/><field name="internal_notes" nolabel="1" placeholder="ملاحظات داخلية خاصة بالموظفين..." groups="base.group_user"/></div>
