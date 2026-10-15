@@ -223,13 +223,39 @@
   <field name="name">yt.workshop.finance.settings.form</field>
   <field name="model">yt.workshop.finance.settings</field>
   <field name="arch" type="xml">
-   <form string="إعدادات الورشة">
-    <sheet><div class="yt-config-hero" dir="rtl"><span class="yt-config-hero-icon"><i class="fa fa-money" title="الإعدادات المالية"/></span><div><h2>الإعدادات المالية للورشة</h2><p>إدارة الضريبة والتحصيل والبيع الآجل للشركات</p></div></div>
-     <div class="yt-config-grid" dir="rtl"><section class="yt-config-card"><h3>الشركة والضريبة</h3><group><field name="company_id" string="الشركة" readonly="1" options="{'no_open': True}"/><field name="tax_id" string="ضريبة المبيعات" options="{'no_create': True, 'no_open': True}"/></group></section><section class="yt-config-card"><h3>سياسة التحصيل والفوترة</h3><group><field name="require_full_payment_before_invoice" string="اشتراط اكتمال الدفع قبل الفوترة"/></group></section></div><div class="yt-config-note" dir="rtl">طبيعة التعامل تُحدد من بطاقة العميل: النقدي يخضع لشرط التحصيل، والآجل يمكن فوترته قبل اكتمال الدفع سواء كان فردًا أو شركة.</div>
+   <form string="إعدادات الورشة المالية" class="yt-finance-settings-form">
+    <sheet>
+     <div class="yt-config-hero" dir="rtl">
+      <span class="yt-config-hero-icon"><i class="fa fa-sliders" title="الإعدادات المالية"/></span>
+      <div>
+       <h2>إعدادات الورشة المالية</h2>
+       <p>إعداد الضريبة وضوابط تحصيل المدفوعات وإنشاء فواتير أوامر العمل.</p>
+      </div>
+     </div>
+     <div class="yt-config-grid" dir="rtl">
+      <div class="yt-config-card">
+       <h3><i class="fa fa-building-o" title="الشركة"/> الشركة والضرائب</h3>
+       <p class="yt-config-description">تحديد الشركة والضريبة التي تُطبّق على مبيعات الورشة.</p>
+       <group col="2">
+        <field name="company_id" string="الشركة" readonly="1" options="{'no_open': True}"/>
+        <field name="tax_id" string="ضريبة المبيعات المعتمدة" options="{'no_create': True, 'no_open': True}"/>
+       </group>
+      </div>
+      <div class="yt-config-card">
+       <h3><i class="fa fa-credit-card" title="التحصيل"/> سياسة التحصيل والفوترة</h3>
+       <p class="yt-config-description">تحديد متى يمكن إصدار فاتورة للعميل النقدي.</p>
+       <group col="2">
+        <field name="require_full_payment_before_invoice" string="اشتراط اكتمال الدفع قبل إنشاء الفاتورة"/>
+       </group>
+      </div>
+     </div>
+     <div class="yt-config-note" dir="rtl">
+      <i class="fa fa-info-circle" title="معلومة"/>
+      <span><strong>كيف تعمل السياسة؟</strong> تُقرأ طبيعة التعامل من بطاقة العميل: العميل النقدي يخضع لشرط اكتمال الدفع أعلاه، أما العميل الآجل فيمكن إنشاء فاتورته قبل اكتمال التحصيل، سواء كان فردًا أو شركة.</span>
+     </div>
     </sheet>
    </form>
-  </field>
- </record>
+  </field> </record>
  <record id="action_workshop_finance_settings" model="ir.actions.server">
   <field name="name">الإعدادات</field>
   <field name="model_id" ref="model_yt_workshop_finance_settings"/>
