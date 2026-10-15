@@ -35,6 +35,23 @@ class WorkshopVehicle(models.Model):
     engine_number = fields.Char()
     odometer = fields.Float()
     color = fields.Char()
+    @api.model
+    def default_get(self, fields_list):
+        values = super().default_get(fields_list)
+        # Odoo Many2one passes the search text as default_name on Create and Edit.
+        # This vehicle uses plate as its display name, not a field named 'name'.
+        if 'plate' in fields_list and not values.get('plate'):
+            typed = self.env.context.get('default_plate') or self.env.context.get('default_name')
+            if isinstance(typed, str) and typed.strip():
+                values['plate'] = re.sub(r'[\\s\\-]+', '', typed).upper()
+        return values
+
+    @api.onchange('plate')
+    def _onchange_plate_uppercase(self):
+        for vehicle in self:
+            if vehicle.plate:
+                vehicle.plate = re.sub(r'[\\s\\-]+', '', vehicle.plate).upper()
+
     @api.onchange('make_id')
     def _onchange_make_id(self):
         for vehicle in self:
