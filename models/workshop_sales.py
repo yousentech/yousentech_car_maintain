@@ -5,67 +5,119 @@ from odoo.tools.float_utils import float_compare
 
 class WorkshopCategoryPricing(models.Model):
     _name = 'yt.workshop.category.pricing'
-    _description = 'Workshop category cost-plus pricing policy'
-    _order = 'company_id, category_id, sequence, id'
+    _description = 'Workshop cost-plus pricing policy'
+    _order = 'company_id, sequence, id'
 
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
-    category_id = fields.Many2one('product.category', string='فئة المنتج', required=True, ondelete='restrict')
-    customer_scope = fields.Selection([('all', 'كل العملاء'), ('selected', 'عملاء محددون')],
+    category_id = fields.Many2one('product.category', string='فئة المنتج القديمة', ondelete='restrict')
+    category_scope = fields.Selection([('all', 'كل الفئات'), ('selected', 'فئات محددة')],
+                                      default='all', required=True, string='نطاق الفئات')
+    category_ids = fields.Many2many('product.category', string='فئات المنتجات')
+    customer_scope = fields.Selection([('all', 'جميع العملاء'), ('selected', 'عملاء محددون')],
                                       default='all', required=True, string='نطاق العملاء')
     partner_ids = fields.Many2many('res.partner', string='العملاء المشمولون')
-    markup_percent = fields.Float(string='الزيادة على التكلفة (%)', required=True, default=0.0)
+    markup_percent = fields.Float(string='نسبة السياسة القديمة (%)', default=0.0)
+    tier_ids = fields.One2many('yt.workshop.pricing.tier', 'policy_id', string='شرائح التكلفة',
+                              default=lambda self: [
+                                  (0, 0, {'min_cost': 1, 'max_cost': 999, 'individual_percent': 20, 'company_percent': 20}),
+                                  (0, 0, {'min_cost': 1000, 'max_cost': 9999, 'individual_percent': 15, 'company_percent': 15}),
+                                  (0, 0, {'min_cost': 10000, 'max_cost': 0, 'individual_percent': 10, 'company_percent': 10}),
+                              ])
     name = fields.Char(compute='_compute_name')
 
-    @api.depends('category_id', 'customer_scope', 'markup_percent')
+    @api.depends('category_scope', 'category_ids', 'customer_scope')
     def _compute_name(self):
         for rec in self:
-            rec.name = '%s - %s%% - %s' % (
-                rec.category_id.display_name or '', rec.markup_percent,
+            rec.name = _('سياسة تسعير - %s - %s') % (
+                dict(self._fields['category_scope'].selection).get(rec.category_scope, ''),
                 dict(self._fields['customer_scope'].selection).get(rec.customer_scope, ''))
 
-    @api.constrains('markup_percent', 'customer_scope', 'partner_ids', 'category_id', 'company_id', 'active')
+    def _effective_categories(self):
+        self.ensure_one()
+        if self.category_scope == 'selected':
+            return self.category_ids | self.category_id
+        # Existing policies with a category remain restricted to that category.
+        return self.category_id if self.category_id and not self.category_ids else self.env['product.category']
+
+    @api.constrains('category_scope', 'category_ids', 'category_id', 'customer_scope',
+                    'partner_ids', 'company_id', 'active', 'tier_ids')
     def _check_policy(self):
         for rec in self:
-            if rec.markup_percent < 0:
-                raise ValidationError(_('نسبة الزيادة لا يمكن أن تكون سالبة.'))
+            if rec.category_scope == 'selected' and not rec._effective_categories():
+                raise ValidationError(_('حدد فئة منتج واحدة على الأقل.'))
             if rec.customer_scope == 'selected' and not rec.partner_ids:
                 raise ValidationError(_('حدد العملاء المشمولين في سياسة التسعير.'))
             if not rec.active:
                 continue
-            others = self.search([
-                ('id', '!=', rec.id), ('active', '=', True),
-                ('company_id', '=', rec.company_id.id),
-                ('category_id', '=', rec.category_id.id),
-                ('customer_scope', '=', rec.customer_scope),
-            ])
-            if rec.customer_scope == 'all' and others:
-                raise ValidationError(_('يوجد بالفعل تسعير عام نشط لهذه الفئة والشركة.'))
-            if rec.customer_scope == 'selected' and any(
-                rec.partner_ids & other.partner_ids for other in others):
-                raise ValidationError(_('العميل مكرر في أكثر من سياسة مخصصة لنفس الفئة والشركة.'))
+            others = self.search([('id', '!=', rec.id), ('active', '=', True),
+                                  ('company_id', '=', rec.company_id.id),
+                                  ('customer_scope', '=', rec.customer_scope)])
+            for other in others:
+                cats_a, cats_b = rec._effective_categories(), other._effective_categories()
+                if cats_a and cats_b and not (cats_a & cats_b):
+                    continue
+                if rec.customer_scope == 'selected':
+                    a = set(rec.partner_ids.mapped('commercial_partner_id').ids)
+                    b = set(other.partner_ids.mapped('commercial_partner_id').ids)
+                    if not a.intersection(b):
+                        continue
+                raise ValidationError(_('توجد سياسة نشطة متعارضة لنفس نطاق العملاء والفئات والشركة: %s') % other.display_name)
 
     @api.model
     def price_for_product(self, product, partner, company):
         if not product or not company:
             return 0.0, self.browse()
+        cost = product.with_company(company).standard_price
+        if cost <= 0:
+            return product.with_company(company).lst_price, self.browse()
         commercial = partner.commercial_partner_id if partner else self.env['res.partner']
-        policies = self.search([
-            ('active', '=', True), ('company_id', '=', company.id),
-            ('category_id', '=', product.categ_id.id),
-        ])
-        specific = policies.filtered(
-            lambda p: p.customer_scope == 'selected'
-            and commercial and any(x.commercial_partner_id == commercial for x in p.partner_ids))
-        general = policies.filtered(lambda p: p.customer_scope == 'all')
-        chosen = specific[:1] or general[:1]
-        if chosen:
-            cost = product.with_company(company).standard_price
-            if cost > 0:
-                return company.currency_id.round(cost * (1.0 + chosen.markup_percent / 100.0)), chosen
-            # Avoid silently replacing a valid list price with zero when cost is missing.
-        return product.lst_price, self.browse()
+        policies = self.search([('active', '=', True), ('company_id', '=', company.id)])
+        applicable = policies.filtered(lambda p:
+            (not p._effective_categories() or product.categ_id in p._effective_categories())
+            and (p.customer_scope == 'all' or (
+                commercial and any(x.commercial_partner_id == commercial for x in p.partner_ids))))
+        applicable = applicable.sorted(key=lambda p: (
+            p.customer_scope != 'selected', not bool(p._effective_categories()), p.sequence, p.id))
+        for policy in applicable:
+            rate = policy._rate_for_cost(cost, bool(commercial.is_company) if commercial else False)
+            if rate is not None:
+                return company.currency_id.round(cost * (1.0 + rate / 100.0)), policy
+        return product.with_company(company).lst_price, self.browse()
+
+    def _rate_for_cost(self, cost, is_company):
+        self.ensure_one()
+        if not self.tier_ids:
+            return self.markup_percent  # Preserve policies created before the upgrade.
+        tiers = self.tier_ids.filtered(lambda t: cost >= t.min_cost and (not t.max_cost or cost <= t.max_cost))
+        if not tiers:
+            return None
+        tier = tiers.sorted(key=lambda t: (t.min_cost, t.id))[0]
+        return tier.company_percent if is_company else tier.individual_percent
+
+
+class WorkshopPricingTier(models.Model):
+    _name = 'yt.workshop.pricing.tier'
+    _description = 'Workshop cost pricing tier'
+    _order = 'min_cost, id'
+
+    policy_id = fields.Many2one('yt.workshop.category.pricing', required=True, ondelete='cascade')
+    min_cost = fields.Float(string='من تكلفة', required=True)
+    max_cost = fields.Float(string='إلى تكلفة (صفر = بلا حد)', default=0)
+    individual_percent = fields.Float(string='نسبة الأفراد %', required=True)
+    company_percent = fields.Float(string='نسبة الشركات %', required=True)
+
+    @api.constrains('min_cost', 'max_cost', 'individual_percent', 'company_percent', 'policy_id')
+    def _check_tiers(self):
+        for tier in self:
+            if tier.min_cost < 0 or tier.max_cost < 0 or (tier.max_cost and tier.max_cost < tier.min_cost):
+                raise ValidationError(_('حدود شريحة التكلفة غير صحيحة.'))
+            if tier.individual_percent < 0 or tier.company_percent < 0:
+                raise ValidationError(_('نسبة الزيادة لا يمكن أن تكون سالبة.'))
+            for other in tier.policy_id.tier_ids - tier:
+                if tier.min_cost <= (other.max_cost or float('inf')) and other.min_cost <= (tier.max_cost or float('inf')):
+                    raise ValidationError(_('لا يمكن تداخل شرائح التكلفة في السياسة نفسها.'))
 
 
 class WorkshopSaleLine(models.Model):
@@ -87,12 +139,14 @@ class WorkshopSaleLine(models.Model):
     execution_done = fields.Boolean(string='أنجز الفنيون العمل', default=False, copy=False)
     pricing_policy_id = fields.Many2one('yt.workshop.category.pricing', string='سياسة التسعير', readonly=True, copy=False)
     pricing_source = fields.Char(string='مصدر السعر', compute='_compute_pricing_source')
+    applied_cost = fields.Float(string='التكلفة عند التسعير', readonly=True, copy=False)
+    applied_markup = fields.Float(string='النسبة عند التسعير %', readonly=True, copy=False)
 
-    @api.depends('pricing_policy_id')
+    @api.depends('pricing_policy_id', 'applied_markup')
     def _compute_pricing_source(self):
         for line in self:
             line.pricing_source = (
-                _('التكلفة + %s%% حسب سياسة الفئة') % line.pricing_policy_id.markup_percent
+                _('التكلفة + %s%% حسب سياسة الفئة') % line.applied_markup
                 if line.pricing_policy_id else _('السعر الافتراضي للمنتج'))
 
     def _apply_category_price(self):
@@ -105,6 +159,9 @@ class WorkshopSaleLine(models.Model):
                 line.product_id, partner, company)
             line.price_unit = price
             line.pricing_policy_id = policy.id if policy else False
+            cost = line.product_id.with_company(company).standard_price
+            line.applied_cost = cost if policy else 0.0
+            line.applied_markup = policy._rate_for_cost(cost, bool(partner.commercial_partner_id.is_company)) if policy else 0.0
 
     available_qty = fields.Float(string='المتاح بالموقع', compute='_compute_available_qty', digits='Product Unit of Measure')
     sale_line_id = fields.Many2one('sale.order.line', readonly=True, copy=False)
@@ -120,7 +177,11 @@ class WorkshopSaleLine(models.Model):
         for line in self:
             if line.product_id:
                 line.name = line.product_id.display_name
-                line._apply_category_price()
+                if line.product_id.type != 'service':
+                    line._apply_category_price()
+                else:
+                    line.price_unit = line.product_id.lst_price
+                    line.pricing_policy_id = False
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -129,10 +190,13 @@ class WorkshopSaleLine(models.Model):
                 order = self.env['yt.reception.order'].browse(vals.get('order_id'))
                 product = self.env['product.product'].browse(vals['product_id'])
                 company = order.company_id or self.env.company
-                price, policy = self.env['yt.workshop.category.pricing'].price_for_product(
+                price, policy = (product.lst_price, self.env['yt.workshop.category.pricing']) if product.type == 'service' else self.env['yt.workshop.category.pricing'].price_for_product(
                     product, order.partner_id, company)
                 vals['price_unit'] = price
                 vals['pricing_policy_id'] = policy.id if policy else False
+                cost = product.with_company(company).standard_price
+                vals['applied_cost'] = cost if policy else 0.0
+                vals['applied_markup'] = policy._rate_for_cost(cost, bool(order.partner_id.commercial_partner_id.is_company)) if policy else 0.0
         return super().create(vals_list)
 
     @api.constrains('technician_ids', 'company_id')
@@ -163,7 +227,7 @@ class WorkshopSale(models.Model):
     def _onchange_workshop_partner_pricing(self):
         for order in self:
             for line in order.sale_line_ids:
-                if line.product_id:
+                if line.product_id and line.product_id.type != 'service':
                     line._apply_category_price()
 
     workshop_approved = fields.Boolean(string='أمر العمل معتمد', readonly=True, copy=False, tracking=True)
@@ -357,12 +421,25 @@ class WorkshopSale(models.Model):
             order.message_post(body=_('تم إلغاء اعتماد أمر العمل وإعادته إلى مسودة.'))
         return True
 
+    def _check_zero_price_permissions(self):
+        for order in self:
+            for line in order.sale_line_ids:
+                if not line.product_id or not order.currency_id.is_zero(line.price_unit):
+                    continue
+                service = line.product_id.type == 'service'
+                group = ('yousentech_car_maintain.group_workshop_zero_service'
+                         if service else 'yousentech_car_maintain.group_workshop_zero_part')
+                if not self.env.user.has_group(group):
+                    raise UserError(_('لا تملك صلاحية بيع %s بسعر صفر: %s. يرجى تعديل السعر أو طلب الصلاحية.') %
+                                    (_('الخدمة') if service else _('قطعة الغيار'), line.product_id.display_name))
+
     def action_approve_workshop(self):
         for order in self:
             if order.state != 'draft':
                 raise UserError(_('اعتماد أمر العمل متاح في حالة المسودة فقط.'))
             if not order.sale_line_ids:
                 raise UserError(_('أضف خدمة أو قطعة غيار قبل الاعتماد.'))
+            order._check_zero_price_permissions()
             order.write({'workshop_approved': True, 'state': 'approved'})
         return True
 
@@ -730,6 +807,7 @@ class WorkshopSale(models.Model):
             raise UserError(_('إعدادات الورشة تشترط اكتمال تحصيل قيمة أمر العمل قبل إنشاء الفاتورة. سجّل المبلغ المتبقي أولاً.'))
         if not self.sale_line_ids:
             raise UserError(_('أضف الخدمات أو قطع الغيار أولاً.'))
+        self._check_zero_price_permissions()
         if not self._workshop_can_start_new_billing_cycle():
             raise UserError(_('لا يمكن إنشاء فاتورة جديدة: أمر البيع المرتبط ما زال نشطاً، أو لم تكتمل تسوية الفواتير والمرتجعات والمدفوعات والمخزون. راجع أمر البيع والمستندات المرتبطة أولاً.'))
         if self.sale_order_id:
