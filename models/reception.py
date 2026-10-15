@@ -137,6 +137,10 @@ class ReceptionOrder(models.Model):
     name = fields.Char(default='/', readonly=True, copy=False)
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     partner_id = fields.Many2one('res.partner', required=True)
+    customer_type_snapshot = fields.Selection(
+        [('individual', 'فرد'), ('company', 'شركة')],
+        string='نوع العميل عند إنشاء أمر العمل', readonly=True, copy=False,
+        help='قيمة محفوظة وقت إنشاء أمر العمل، ولا تتغير عند تعديل نوع العميل لاحقًا في بطاقة العميل.')
     partner_mobile = fields.Char(string='جوال العميل', related='partner_id.mobile', readonly=False)
     vehicle_id = fields.Many2one('yt.reception.vehicle', required=True)
     # Read-only vehicle summary for the native reception form; no duplicated stored data.
@@ -164,8 +168,11 @@ class ReceptionOrder(models.Model):
     photo_ids = fields.One2many('yt.reception.photo','order_id')
     @api.model_create_multi
     def create(self, vals_list):
+        partners = self.env['res.partner']
         for vals in vals_list:
             vals['name'] = self.env['ir.sequence'].next_by_code('yt.reception.order') or '/'
+            partner = partners.browse(vals['partner_id']).commercial_partner_id if vals.get('partner_id') else partners
+            vals['customer_type_snapshot'] = 'company' if partner.is_company else 'individual'
         return super().create(vals_list)
     @api.onchange('partner_id', 'company_id')
     def _onchange_partner_company(self):
@@ -189,6 +196,8 @@ class ReceptionOrder(models.Model):
                         or not 7 <= len(digits) <= 15):
                     raise ValidationError(_('رقم جوال العميل غير صحيح؛ أدخل من 7 إلى 15 رقماً مع رمز الدولة عند الحاجة.'))
     def write(self, vals):
+        if 'customer_type_snapshot' in vals:
+            raise UserError(_('نوع العميل المحفوظ عند إنشاء أمر العمل غير قابل للتعديل.'))
         return super().write(vals)
     def action_open_inspection(self):
         self.ensure_one()
