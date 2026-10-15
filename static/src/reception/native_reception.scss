@@ -1169,3 +1169,39 @@
   .yt-config-note { display: flex; align-items: flex-start; gap: 10px; }
   .yt-config-note > i { color: #347e9e; font-size: 18px; margin-top: 3px; }
 }
+
+
+/* Wider finance form and contextual collection-policy explanation. */
+.yt-finance-settings-form {
+  .o_form_sheet {
+    max-width: 1320px !important;
+    width: 96% !important;
+  }
+  .yt-finance-collection-note {
+    margin-top: 14px;
+    padding: 16px 20px;
+    border: 1px solid #d4e5f1;
+    border-right: 3px solid #4789b5;
+    border-radius: 11px;
+    background: #f4f9fd;
+    text-align: right;
+  }
+  .yt-finance-collection-note-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #264f75;
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 7px;
+  }
+  .yt-finance-collection-note p {
+    color: #4b6780;
+    font-size: 13px;
+    line-height: 1.9;
+    margin: 0;
+  }
+}
+@media (max-width: 850px) {
+  .yt-finance-settings-form .o_form_sheet { width: 100% !important; }
+}
