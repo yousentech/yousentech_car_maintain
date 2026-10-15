@@ -1135,3 +1135,21 @@ class WorkshopCancelWizard(models.TransientModel):
         order.write({'cancel_reason': self.reason, 'state': 'cancelled'})
         order.message_post(body=_('تم إلغاء أمر العمل. السبب: %s') % self.reason)
         return {'type': 'ir.actions.act_window_close'}
+
+
+class WorkshopInvoiceAdvanceReconciliation(models.Model):
+    _inherit = 'account.move'
+
+    def action_post(self):
+        result = super().action_post()
+        # Reconcile only after the invoice is genuinely posted. The partners
+        # module may return a payment wizard instead of posting cash invoices.
+        posted = self.filtered(lambda m: m.state == 'posted' and m.move_type == 'out_invoice')
+        if posted:
+            orders = self.env['yt.reception.order'].search([
+                ('sale_order_id.invoice_ids', 'in', posted.ids),
+                ('advance_payment_ids', '!=', False),
+            ])
+            for order in orders:
+                order._reconcile_workshop_advances()
+        return result
