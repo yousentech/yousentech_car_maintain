@@ -1275,15 +1275,15 @@
   }
   .yt-wo-section-nav .yt-wo-nav-caption { color:#223b73; font-weight:800; font-size:13px; padding:7px 10px 12px; border-bottom:1px solid #e0e4f7; margin-bottom:5px; }
   .yt-wo-section-nav input[type="radio"] { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
-  .yt-wo-section-nav label {
+  .yt-wo-section-nav .yt-wo-nav-option {
     display:flex; align-items:center; gap:10px; padding:12px 11px; margin:0;
     border:1px solid transparent; border-radius:9px; color:#4b5b80;
     font-weight:700; font-size:12px; cursor:pointer; transition:background .15s,border-color .15s;
   }
-  .yt-wo-section-nav label i { color:#6576b8; width:19px; font-size:15px; text-align:center; }
-  .yt-wo-section-nav label:hover { background:#e9edff; color:#263c80; }
-  .yt-wo-section-nav label:has(input:checked) { color:#2f3996; background:#e8e7ff; border-color:#c9c7ff; box-shadow:inset -3px 0 #6755e9; }
-  .yt-wo-section-nav label:has(input:focus-visible) { outline:2px solid #6755e9; outline-offset:2px; }
+  .yt-wo-section-nav .yt-wo-nav-option i { color:#6576b8; width:19px; font-size:15px; text-align:center; }
+  .yt-wo-section-nav .yt-wo-nav-option:hover { background:#e9edff; color:#263c80; }
+  .yt-wo-section-nav .yt-wo-nav-option:has(input:checked) { color:#2f3996; background:#e8e7ff; border-color:#c9c7ff; box-shadow:inset -3px 0 #6755e9; }
+  .yt-wo-section-nav .yt-wo-nav-option:has(input:focus-visible) { outline:2px solid #6755e9; outline-offset:2px; }
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="customer"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-customer),
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="lines"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-lines),
   .yt-wo-section-layout:has(> .yt-wo-section-nav:not(.d-none) label:has(input[value="extra"]:checked)) .yt-wo-section-content > div:not(.yt-wo-section-extra):not(.yt-wo-section-extra-more),
@@ -1302,7 +1302,7 @@
       padding:8px; gap:5px; scrollbar-width:thin;
     }
     .yt-wo-section-nav .yt-wo-nav-caption { display:none; }
-    .yt-wo-section-nav label { white-space:nowrap; padding:9px; font-size:11px; }
+    .yt-wo-section-nav .yt-wo-nav-option { white-space:nowrap; padding:9px; font-size:11px; }
     .yt-wo-section-content { width:100%; }
   }
 }
