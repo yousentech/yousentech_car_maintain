@@ -5,7 +5,8 @@
  </record>
  <record id="view_reception_make_form" model="ir.ui.view">
   <field name="name">yt.reception.make.form</field><field name="model">yt.reception.make</field>
-  <field name="arch" type="xml"><form string="الشركة المصنعة"><sheet><group><field name="name"/><field name="active"/></group></sheet></form></field>
+  <field name="arch" type="xml"><form string="الشركة المصنعة"><sheet>
+      <field name="can_delete_workshop" invisible="1"/><group><field name="name"/><field name="active"/></group></sheet></form></field>
  </record>
  <record id="view_reception_model_form" model="ir.ui.view">
   <field name="name">yt.reception.model.form</field><field name="model">yt.reception.model</field>
@@ -56,8 +57,13 @@
   <field name="name">yt.reception.order.native.form</field>
   <field name="model">yt.reception.order</field>
   <field name="arch" type="xml">
-   <form string="الاستقبال" class="yt-native-reception">
+   <form string="الاستقبال" class="yt-native-reception" delete="false">
     <header>
+      <button name="action_delete_unapproved_workshop" type="object"
+       string="حذف المسودة" icon="fa-trash" class="btn-secondary"
+       groups="yousentech_car_maintain.group_workshop_delete_draft"
+       invisible="not can_delete_workshop"
+       confirm="هل تريد حذف مسودة أمر العمل نهائيًا؟ لا يمكن التراجع عن الحذف."/>
      <button name="action_open_workshop" type="object" string="الانتقال إلى أمر العمل" class="btn-secondary" invisible="not id"/>
      
      <button name="action_cancel" type="object" string="إلغاء أمر العمل" invisible="state != 'draft'" confirm="هل تريد إلغاء أمر العمل؟"/>
