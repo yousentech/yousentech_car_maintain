@@ -225,7 +225,7 @@
   <field name="arch" type="xml">
    <form string="إعدادات الورشة">
     <sheet><div class="oe_title"><h1>إعدادات الورشة المالية</h1></div>
-     <group><field name="company_id" readonly="1" options="{'no_open': True}"/><field name="tax_id" options="{'no_create': True, 'no_open': True}"/><field name="require_full_payment_before_invoice"/></group>
+     <group><field name="company_id" readonly="1" options="{'no_open': True}"/><field name="tax_id" options="{'no_create': True, 'no_open': True}"/><field name="require_full_payment_before_invoice"/><field name="allow_company_credit_invoice"/></group>
     </sheet>
    </form>
   </field>
