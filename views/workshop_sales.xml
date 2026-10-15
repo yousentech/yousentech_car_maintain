@@ -249,9 +249,9 @@
        </group>
       </div>
      </div>
-     <div class="yt-config-note" dir="rtl">
-      <i class="fa fa-info-circle" title="معلومة"/>
-      <span><strong>كيف تعمل السياسة؟</strong> تُقرأ طبيعة التعامل من بطاقة العميل: العميل النقدي يخضع لشرط اكتمال الدفع أعلاه، أما العميل الآجل فيمكن إنشاء فاتورته قبل اكتمال التحصيل، سواء كان فردًا أو شركة.</span>
+     <div class="yt-finance-collection-note" dir="rtl">
+      <div class="yt-finance-collection-note-title"><i class="fa fa-info-circle" title="توضيح سياسة التحصيل"/> توضيح سياسة التحصيل والفوترة</div>
+      <p>تُقرأ طبيعة التعامل من بطاقة العميل. العميل النقدي يخضع لشرط اكتمال الدفع عند تفعيله، أما العميل الآجل فيمكن إنشاء فاتورته قبل اكتمال التحصيل، سواء كان فردًا أو شركة.</p>
      </div>
     </sheet>
    </form>
