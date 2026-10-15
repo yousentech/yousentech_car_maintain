@@ -888,6 +888,26 @@ class WorkshopSale(models.Model):
                 if invoice.state != 'draft':
                     raise ValidationError(_('لا يمكن تغيير يومية فاتورة مرحلة.'))
                 invoice.journal_id = sale_journal.id
+        # Make existing workshop advances visible to the partner cash-invoice
+        # posting policy. Its payment wizard uses customer_cash_move_id to link
+        # account.payment to the invoice; reuse the posted advances, never
+        # create a second payment for the same collection.
+        if self.partner_id.pay_type == 'cash':
+            if 'customer_cash_move_id' not in self.env['account.payment']._fields:
+                raise UserError(_('تعذر ربط دفعات الورشة بالفاتورة: حقل ربط الدفعات في موديول المحاسبة غير متوفر.'))
+            advances = self.advance_payment_ids.filtered(
+                lambda p: p.state == 'posted' and p.payment_type == 'inbound'
+                and p.partner_id == self.partner_id and p.company_id == self.company_id)
+            if len(invoices) != 1 and advances:
+                raise UserError(_('لا يمكن توزيع دفعات الورشة تلقائيًا على أكثر من فاتورة.'))
+            if advances:
+                invoice = invoices[:1]
+                for payment in advances:
+                    existing_invoice = payment.customer_cash_move_id
+                    if existing_invoice and existing_invoice != invoice:
+                        raise UserError(_('الدفعة %s مرتبطة مسبقًا بفاتورة أخرى؛ لا يمكن ربطها مرتين.') % payment.display_name)
+                    if not existing_invoice:
+                        payment.write({'customer_cash_move_id': invoice.id})
         # Open the newly created invoice directly; keep the sale order linked
         # for access through the work order's existing sale-order action.
         invoice = invoices[:1]
