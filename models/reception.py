@@ -24,6 +24,17 @@ class WorkshopVehicle(models.Model):
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
     partner_id = fields.Many2one('res.partner', required=True, ondelete='restrict')
     plate = fields.Char(required=True)
+    plate_spaced = fields.Char(string='اللوحة بتباعد الحروف', compute='_compute_plate_spaced')
+
+    @api.depends('plate')
+    def _compute_plate_spaced(self):
+        for vehicle in self:
+            raw = vehicle.plate or ''
+            # Keep digits in their original order; separate adjacent Arabic/Latin letters.
+            vehicle.plate_spaced = re.sub(
+                r'(?<=[A-Za-z\u0621-\u064A])(?=[A-Za-z\u0621-\u064A])',
+                ' ', raw)
+
     plate_country = fields.Char(default='SA', required=True)
     plate_type = fields.Selection([('private','خصوصي'),('commercial','تجاري'),('other','أخرى')], default='private', required=True)
     plate_condition = fields.Selection([('good','جيدة'),('damaged','متضررة')], default='good')
