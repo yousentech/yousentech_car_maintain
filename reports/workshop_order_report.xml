@@ -106,7 +106,7 @@
         <div class="wo-section-title wo-vehicle-title"><span class="wo-icon">&#xf1b9;</span>بيانات السيارة</div>
         <table class="wo-info-table wo-vehicle-table">
          <tr><td class="wo-card-label">النوع / الموديل</td><td class="wo-card-value"><span t-esc="o.vehicle_make_id.name or '-'"/> / <span t-esc="o.vehicle_model_id.name or '-'"/></td></tr>
-         <tr><td class="wo-card-label">اللوحة</td><td class="wo-card-value" t-esc="o.vehicle_id.plate or '-'"/></tr>
+         <tr><td class="wo-card-label">اللوحة</td><td class="wo-card-value" t-esc="o.vehicle_id.plate_spaced or '-'"/></tr>
          <tr><td class="wo-card-label">سنة الصنع</td><td class="wo-card-value" t-esc="o.vehicle_year or '-'"/></tr>
          <tr><td class="wo-card-label">رقم الهيكل</td><td class="wo-card-value" t-esc="o.vehicle_vin or '-'"/></tr>
          <tr><td class="wo-card-label">عداد الدخول</td><td class="wo-card-value" t-esc="o.odometer_in or 0"/></tr>
