@@ -270,7 +270,7 @@ class WorkshopSale(models.Model):
 
     def _workshop_invoice_requires_full_payment(self):
         self.ensure_one()
-        settings = self.env['yt.workshop.finance.settings'].search(
+        settings = self.env['yt.workshop.finance.settings'].sudo().search(
             [('company_id', '=', self.company_id.id)], limit=1)
         # Partner payment nature comes from yousentech_invoicing_partners.
         # Credit is an explicit customer-level exception to the prepayment policy.
@@ -676,7 +676,7 @@ class WorkshopSale(models.Model):
             # from sale_line_ids only when they are not already represented.
             lines = order.service_line_ids | order.part_line_ids
             lines |= order.sale_line_ids.filtered(lambda line: line not in lines)
-            settings = self.env['yt.workshop.finance.settings'].search(
+            settings = self.env['yt.workshop.finance.settings'].sudo().search(
                 [('company_id', '=', order.company_id.id)], limit=1)
             entries = []
             services = parts = gross_excluded = 0.0
@@ -896,7 +896,7 @@ class WorkshopSale(models.Model):
             raise UserError(_('موقع قطع الغيار (%s) لا يطابق موقع الصرف الأساسي للمستودع (%s). اختر موقع الصرف الصحيح قبل إنشاء أمر البيع، أو اضبط مسار المخزون للمستودع.') % (self.location_id.display_name, self._workshop_source_location(warehouse).display_name))
         lines = []
         self._compute_workshop_amounts()
-        settings = self.env['yt.workshop.finance.settings'].search(
+        settings = self.env['yt.workshop.finance.settings'].sudo().search(
             [('company_id', '=', self.company_id.id)], limit=1)
         gross_excluded = self.amount_untaxed + self.discount_amount
         factor = self.amount_untaxed / gross_excluded if gross_excluded else 1.0
