@@ -263,6 +263,7 @@ class WorkshopSale(models.Model):
             'name': _('تصحيح بيانات السيارة'),
             'res_model': 'yt.reception.vehicle',
             'view_mode': 'form',
+            'views': [(self.env.ref('yousentech_car_maintain.view_workshop_customer_vehicle_form').id, 'form')],
             'res_id': self.vehicle_id.id,
             'target': 'new',
             'context': dict(self.env.context, form_view_initial_mode='edit'),
