@@ -1316,3 +1316,16 @@
     .yt-wo-section-content { width:100%; grid-column:auto; grid-row:auto; }
   }
 }
+
+/* Keep the vehicle correction action alongside its selector, without changing other rows. */
+.yt-native-reception .yt-rec-card-vehicle .yt-rec-primary-fields .yt-rec-field-row:has(>.yt-wo-vehicle-edit-action){
+  grid-template-columns:minmax(90px,38%) minmax(0,1fr) auto;
+}
+.yt-native-reception .yt-wo-vehicle-edit-action{min-width:0;white-space:nowrap}
+.yt-native-reception .yt-wo-vehicle-edit-action .btn{margin:0}
+@media(max-width:760px){
+ .yt-native-reception .yt-rec-card-vehicle .yt-rec-primary-fields .yt-rec-field-row:has(>.yt-wo-vehicle-edit-action){
+  grid-template-columns:minmax(0,1fr) auto;
+ }
+ .yt-native-reception .yt-rec-card-vehicle .yt-rec-primary-fields .yt-rec-field-row:has(>.yt-wo-vehicle-edit-action)>label{grid-column:1/-1}
+}
