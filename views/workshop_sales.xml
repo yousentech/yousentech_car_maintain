@@ -27,6 +27,7 @@
      <field name="refund_count" invisible="1"/>
      <field name="payment_count" invisible="1"/>
      <field name="workshop_approved" invisible="1"/>
+     <field name="previous_sale_order_ids" invisible="1"/>
      <field name="can_create_workshop_invoice" invisible="1"/>
      <field name="inspection_state" invisible="1"/>
      <field name="inspection_line_ids" invisible="1"/>
