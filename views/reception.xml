@@ -315,7 +315,7 @@
  <record id="view_inspection_component_tree" model="ir.ui.view"><field name="name">yt.inspection.component.tree</field><field name="model">yt.inspection.component</field><field name="arch" type="xml"><tree editable="bottom"><field name="sequence" widget="handle"/><field name="name"/><field name="category_id"/><field name="required"/><field name="active"/></tree></field></record>
  <record id="action_inspection_categories" model="ir.actions.act_window"><field name="name">تصنيفات ومكونات الفحص</field><field name="res_model">yt.inspection.category</field><field name="view_mode">tree,form</field><field name="views" eval="[(ref('view_inspection_category_tree'),'tree'),(ref('view_inspection_category_form'),'form')]"/></record>
  <record id="action_inspection_components" model="ir.actions.act_window"><field name="name">مكونات الفحص</field><field name="res_model">yt.inspection.component</field><field name="view_mode">tree,form</field></record>
- <menuitem id="menu_inspection_config" name="التهيئة" parent="menu_workshop_root" sequence="90" groups="base.group_system"/>
+ <menuitem id="menu_inspection_config" name="التهيئة" parent="menu_workshop_root" sequence="90" groups="base.group_system,yousentech_car_maintain.group_workshop_edit_vehicle"/>
  <record id="view_workshop_customer_vehicle_tree" model="ir.ui.view">
   <field name="name">yt.reception.vehicle.customer.tree</field>
   <field name="model">yt.reception.vehicle</field>
@@ -334,6 +334,7 @@
      <group><field name="company_id" readonly="1" options="{'no_open': True}"/><field name="partner_id" readonly="1" options="{'no_open': True}"/><field name="plate" required="1"/><field name="plate_country"/><field name="plate_type"/><field name="plate_condition"/></group>
      <group><field name="make_id" options="{'no_open': True}"/><field name="model_id" options="{'no_open': True}"/><field name="year"/><field name="color"/><field name="vin"/><field name="engine_number"/><field name="gear"/><field name="odometer"/></group>
     </group></sheet>
+    <div class="oe_chatter"><field name="message_ids" widget="mail_thread"/></div>
    </form>
   </field>
  </record>
