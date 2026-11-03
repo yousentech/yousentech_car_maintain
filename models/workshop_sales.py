@@ -230,6 +230,31 @@ class WorkshopSale(models.Model):
                 if line.product_id and line.product_id.type != 'service':
                     line._apply_category_price()
 
+    workshop_tax_id = fields.Many2one(
+        'account.tax', string='ضريبة المبيعات لأمر العمل',
+        domain="[('type_tax_use','=','sale'),('company_id','=',company_id)]",
+        help='اتركه فارغاً لاستخدام الضريبة الافتراضية الحالية للورشة.')
+
+    def action_edit_workshop_vehicle(self):
+        self.ensure_one()
+        self.check_access_rights('read')
+        self.check_access_rule('read')
+        if not self.env.user.has_group('yousentech_car_maintain.group_workshop_edit_vehicle'):
+            raise UserError(_('ليس لديك صلاحية تعديل بيانات السيارة من أمر العمل.'))
+        if not self.vehicle_id:
+            raise UserError(_('اختر سيارة أولاً.'))
+        self.vehicle_id.check_access_rights('write')
+        self.vehicle_id.check_access_rule('write')
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('تصحيح بيانات السيارة'),
+            'res_model': 'yt.reception.vehicle',
+            'view_mode': 'form',
+            'res_id': self.vehicle_id.id,
+            'target': 'new',
+            'context': dict(self.env.context, form_view_initial_mode='edit'),
+        }
+
     workshop_approved = fields.Boolean(string='أمر العمل معتمد', readonly=True, copy=False, tracking=True)
 
     finance_invoice_ids = fields.Many2many(
@@ -666,7 +691,7 @@ class WorkshopSale(models.Model):
         'service_line_ids.price_unit', 'service_line_ids.product_id',
         'part_line_ids', 'part_line_ids.product_uom_qty',
         'part_line_ids.price_unit', 'part_line_ids.product_id',
-        'discount_type', 'discount_value', 'company_id', 'partner_id',
+        'discount_type', 'discount_value', 'company_id', 'partner_id', 'workshop_tax_id',
     )
     def _compute_workshop_amounts(self):
         for order in self:
@@ -683,8 +708,8 @@ class WorkshopSale(models.Model):
             for line in lines:
                 if not line.product_id or not line.product_uom_qty:
                     continue
-                taxes = settings.tax_id if settings.tax_id else line.product_id.taxes_id.filtered(
-                    lambda tax: tax.company_id == order.company_id)
+                taxes = order.workshop_tax_id if order.workshop_tax_id else (settings.tax_id if settings.tax_id else line.product_id.taxes_id.filtered(
+                    lambda tax: tax.company_id == order.company_id))
                 original = taxes.compute_all(
                     line.price_unit, currency=order.currency_id,
                     quantity=line.product_uom_qty, product=line.product_id,
@@ -904,7 +929,7 @@ class WorkshopSale(models.Model):
             product = line.product_id.with_company(self.company_id)
             if not product.sale_ok:
                 raise UserError(_('الصنف %s غير متاح للبيع.') % product.display_name)
-            taxes = settings.tax_id if settings.tax_id else product.taxes_id.filtered(lambda t: t.company_id == self.company_id)
+            taxes = self.workshop_tax_id if self.workshop_tax_id else (settings.tax_id if settings.tax_id else product.taxes_id.filtered(lambda t: t.company_id == self.company_id))
             lines.append((0, 0, {
                 'product_id': product.id,
                 'name': line.name,
