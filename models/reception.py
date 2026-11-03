@@ -19,11 +19,12 @@ class WorkshopModel(models.Model):
 
 class WorkshopVehicle(models.Model):
     _name = 'yt.reception.vehicle'
+    _inherit = ['mail.thread']
     _description = 'Customer Vehicle'
     _rec_name = 'plate'
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
     partner_id = fields.Many2one('res.partner', required=True, ondelete='restrict')
-    plate = fields.Char(required=True)
+    plate = fields.Char(required=True, tracking=True)
     plate_spaced = fields.Char(string='اللوحة بتباعد الحروف', compute='_compute_plate_spaced')
 
     @api.depends('plate')
