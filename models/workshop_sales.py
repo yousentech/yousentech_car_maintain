@@ -264,6 +264,8 @@ class WorkshopSale(models.Model):
             for order in self:
                 if order.sale_order_id or order.previous_sale_order_ids or order._workshop_financial_documents():
                     raise UserError(_('لا يمكن تغيير الضريبة بعد إنشاء مستندات البيع أو الفواتير.'))
+                if not vals['workshop_tax_id'] and order._workshop_default_sale_tax(order.company_id):
+                    raise ValidationError(_('ضريبة المبيعات مطلوبة حسب إعدادات الورشة، اختر ضريبة بديلة بدلاً من إفراغ الحقل.'))
                 if vals['workshop_tax_id']:
                     tax = self.env['account.tax'].browse(vals['workshop_tax_id']).exists()
                     if not tax or tax.type_tax_use != 'sale' or tax.company_id != order.company_id:
