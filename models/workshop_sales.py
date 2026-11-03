@@ -235,6 +235,14 @@ class WorkshopSale(models.Model):
         domain="[('type_tax_use','=','sale'),('company_id','=',company_id)]",
         help='اتركه فارغاً لاستخدام الضريبة الافتراضية الحالية للورشة.')
 
+    @api.constrains('workshop_tax_id', 'company_id')
+    def _check_workshop_tax_company(self):
+        for order in self:
+            if order.workshop_tax_id and (
+                    order.workshop_tax_id.company_id != order.company_id
+                    or order.workshop_tax_id.type_tax_use != 'sale'):
+                raise ValidationError(_('ضريبة أمر العمل يجب أن تكون ضريبة مبيعات تابعة لنفس الشركة.'))
+
     def write(self, vals):
         if 'workshop_tax_id' in vals:
             if not self.env.user.has_group('yousentech_car_maintain.group_workshop_change_sale_tax'):
