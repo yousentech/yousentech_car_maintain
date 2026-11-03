@@ -235,6 +235,19 @@ class WorkshopSale(models.Model):
         domain="[('type_tax_use','=','sale'),('company_id','=',company_id)]",
         help='اتركه فارغاً لاستخدام الضريبة الافتراضية الحالية للورشة.')
 
+    def write(self, vals):
+        if 'workshop_tax_id' in vals:
+            if not self.env.user.has_group('yousentech_car_maintain.group_workshop_change_sale_tax'):
+                raise UserError(_('ليس لديك صلاحية تغيير ضريبة أمر العمل.'))
+            for order in self:
+                if order.sale_order_id or order.previous_sale_order_ids or order._workshop_financial_documents():
+                    raise UserError(_('لا يمكن تغيير الضريبة بعد إنشاء مستندات البيع أو الفواتير.'))
+                if vals['workshop_tax_id']:
+                    tax = self.env['account.tax'].browse(vals['workshop_tax_id']).exists()
+                    if not tax or tax.type_tax_use != 'sale' or tax.company_id != order.company_id:
+                        raise ValidationError(_('اختر ضريبة مبيعات تابعة لنفس شركة أمر العمل.'))
+        return super().write(vals)
+
     def action_edit_workshop_vehicle(self):
         self.ensure_one()
         self.check_access_rights('read')
