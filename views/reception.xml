@@ -316,6 +316,34 @@
  <record id="action_inspection_categories" model="ir.actions.act_window"><field name="name">تصنيفات ومكونات الفحص</field><field name="res_model">yt.inspection.category</field><field name="view_mode">tree,form</field><field name="views" eval="[(ref('view_inspection_category_tree'),'tree'),(ref('view_inspection_category_form'),'form')]"/></record>
  <record id="action_inspection_components" model="ir.actions.act_window"><field name="name">مكونات الفحص</field><field name="res_model">yt.inspection.component</field><field name="view_mode">tree,form</field></record>
  <menuitem id="menu_inspection_config" name="التهيئة" parent="menu_workshop_root" sequence="90" groups="base.group_system"/>
+ <record id="view_workshop_customer_vehicle_tree" model="ir.ui.view">
+  <field name="name">yt.reception.vehicle.customer.tree</field>
+  <field name="model">yt.reception.vehicle</field>
+  <field name="arch" type="xml">
+   <tree string="سيارات العملاء" create="false">
+    <field name="partner_id"/><field name="plate"/><field name="make_id"/><field name="model_id"/><field name="year"/><field name="color"/><field name="company_id" groups="base.group_multi_company"/>
+   </tree>
+  </field>
+ </record>
+ <record id="view_workshop_customer_vehicle_form" model="ir.ui.view">
+  <field name="name">yt.reception.vehicle.customer.form</field>
+  <field name="model">yt.reception.vehicle</field>
+  <field name="arch" type="xml">
+   <form string="بيانات سيارة العميل" create="false">
+    <sheet><group>
+     <group><field name="company_id" readonly="1" options="{'no_open': True}"/><field name="partner_id" readonly="1" options="{'no_open': True}"/><field name="plate" required="1"/><field name="plate_country"/><field name="plate_type"/><field name="plate_condition"/></group>
+     <group><field name="make_id" options="{'no_open': True}"/><field name="model_id" options="{'no_open': True}"/><field name="year"/><field name="color"/><field name="vin"/><field name="engine_number"/><field name="gear"/><field name="odometer"/></group>
+    </group></sheet>
+   </form>
+  </field>
+ </record>
+ <record id="action_workshop_customer_vehicles" model="ir.actions.act_window">
+  <field name="name">سيارات العملاء</field>
+  <field name="res_model">yt.reception.vehicle</field>
+  <field name="view_mode">tree,form</field>
+  <field name="views" eval="[(ref('view_workshop_customer_vehicle_tree'),'tree'),(ref('view_workshop_customer_vehicle_form'),'form')]"/>
+ </record>
+ <menuitem id="menu_workshop_customer_vehicles" name="سيارات العملاء" parent="menu_inspection_config" action="action_workshop_customer_vehicles" sequence="12" groups="base.group_system,yousentech_car_maintain.group_workshop_edit_vehicle"/>
  <menuitem id="menu_inspection_categories" name="تهيئة التصنيفات" parent="menu_inspection_config" action="action_inspection_categories" sequence="10"/>
 
  <record id="view_reception_inspection_form" model="ir.ui.view">
