@@ -230,10 +230,24 @@ class WorkshopSale(models.Model):
                 if line.product_id and line.product_id.type != 'service':
                     line._apply_category_price()
 
+    @api.model
+    def _workshop_default_sale_tax(self, company):
+        settings = self.env['yt.workshop.finance.settings'].sudo().search(
+            [('company_id', '=', company.id)], limit=1)
+        return settings.tax_id if settings.tax_id and settings.tax_id.company_id == company else self.env['account.tax']
+
     workshop_tax_id = fields.Many2one(
         'account.tax', string='ضريبة المبيعات لأمر العمل',
         domain="[('type_tax_use','=','sale'),('company_id','=',company_id)]",
-        help='اتركه فارغاً لاستخدام الضريبة الافتراضية الحالية للورشة.')
+        default=lambda self: self._workshop_default_sale_tax(self.env.company),
+        help='تُختار تلقائياً من التهيئة المالية للورشة، ويمكن تغييرها بالصلاحية قبل الفوترة.')
+
+    @api.onchange('company_id')
+    def _onchange_workshop_sale_tax_company(self):
+        for order in self:
+            if order.company_id and not order.sale_order_id:
+                order.workshop_tax_id = order._workshop_default_sale_tax(order.company_id)
+
 
     @api.constrains('workshop_tax_id', 'company_id')
     def _check_workshop_tax_company(self):
@@ -827,6 +841,11 @@ class WorkshopSale(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if not vals.get('workshop_tax_id'):
+                company = self.env['res.company'].browse(vals.get('company_id') or self.env.company.id)
+                default_tax = self._workshop_default_sale_tax(company)
+                if default_tax:
+                    vals['workshop_tax_id'] = default_tax.id
             if not vals.get('location_id'):
                 company = self.env['res.company'].browse(vals.get('company_id') or self.env.company.id)
                 warehouse = self._workshop_default_warehouse(company)
