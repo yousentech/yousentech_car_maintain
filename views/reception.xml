@@ -315,7 +315,7 @@
  <record id="view_inspection_component_tree" model="ir.ui.view"><field name="name">yt.inspection.component.tree</field><field name="model">yt.inspection.component</field><field name="arch" type="xml"><tree editable="bottom"><field name="sequence" widget="handle"/><field name="name"/><field name="category_id"/><field name="required"/><field name="active"/></tree></field></record>
  <record id="action_inspection_categories" model="ir.actions.act_window"><field name="name">تصنيفات ومكونات الفحص</field><field name="res_model">yt.inspection.category</field><field name="view_mode">tree,form</field><field name="views" eval="[(ref('view_inspection_category_tree'),'tree'),(ref('view_inspection_category_form'),'form')]"/></record>
  <record id="action_inspection_components" model="ir.actions.act_window"><field name="name">مكونات الفحص</field><field name="res_model">yt.inspection.component</field><field name="view_mode">tree,form</field></record>
- <menuitem id="menu_inspection_config" name="التهيئة" parent="menu_workshop_root" sequence="90" groups="base.group_system,yousentech_car_maintain.group_workshop_edit_vehicle"/>
+ <menuitem id="menu_inspection_config" name="التهيئة" parent="menu_workshop_root" sequence="90" groups="yousentech_car_maintain.group_workshop_configuration_access"/>
  <record id="view_workshop_customer_vehicle_tree" model="ir.ui.view">
   <field name="name">yt.reception.vehicle.customer.tree</field>
   <field name="model">yt.reception.vehicle</field>
@@ -344,7 +344,7 @@
   <field name="view_mode">tree,form</field>
   <field name="views" eval="[(ref('view_workshop_customer_vehicle_tree'),'tree'),(ref('view_workshop_customer_vehicle_form'),'form')]"/>
  </record>
- <menuitem id="menu_workshop_customer_vehicles" name="سيارات العملاء" parent="menu_inspection_config" action="action_workshop_customer_vehicles" sequence="12" groups="base.group_system,yousentech_car_maintain.group_workshop_edit_vehicle"/>
+ <menuitem id="menu_workshop_customer_vehicles" name="سيارات العملاء" parent="menu_inspection_config" action="action_workshop_customer_vehicles" sequence="12" groups="yousentech_car_maintain.group_workshop_configuration_access"/>
  <menuitem id="menu_inspection_categories" name="تهيئة التصنيفات" parent="menu_inspection_config" action="action_inspection_categories" sequence="10"/>
 
  <record id="view_reception_inspection_form" model="ir.ui.view">
