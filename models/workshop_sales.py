@@ -185,6 +185,11 @@ class WorkshopSaleLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        order_ids = {vals.get('order_id') for vals in vals_list if vals.get('order_id')}
+        orders = self.env['yt.reception.order'].browse(list(order_ids))
+        for order in orders:
+            if order.state != 'draft':
+                raise UserError(_('لا يمكن إضافة خدمات أو قطع غيار إلا في حالة المسودة.'))
         for vals in vals_list:
             if vals.get('product_id') and 'price_unit' not in vals:
                 order = self.env['yt.reception.order'].browse(vals.get('order_id'))
@@ -198,6 +203,23 @@ class WorkshopSaleLine(models.Model):
                 vals['applied_cost'] = cost if policy else 0.0
                 vals['applied_markup'] = policy._rate_for_cost(cost, bool(order.partner_id.commercial_partner_id.is_company)) if policy else 0.0
         return super().create(vals_list)
+
+    def write(self, vals):
+        protected_fields = {
+            'order_id', 'product_id', 'name', 'product_uom_qty',
+            'price_unit', 'technician_ids', 'sequence',
+        }
+        if protected_fields.intersection(vals):
+            for line in self:
+                if line.order_id.state != 'draft':
+                    raise UserError(_('لا يمكن تعديل بيانات الخدمات أو قطع الغيار بعد اعتماد أمر العمل.'))
+        return super().write(vals)
+
+    def unlink(self):
+        for line in self:
+            if line.order_id.state != 'draft':
+                raise UserError(_('لا يمكن حذف الخدمات أو قطع الغيار بعد اعتماد أمر العمل.'))
+        return super().unlink()
 
     @api.constrains('technician_ids', 'company_id')
     def _check_technicians(self):
