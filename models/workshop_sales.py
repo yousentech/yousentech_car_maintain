@@ -1038,6 +1038,8 @@ class WorkshopSale(models.Model):
                 if invoice.state != 'draft':
                     raise ValidationError(_('لا يمكن تغيير يومية فاتورة مرحلة.'))
                 invoice.journal_id = sale_journal.id
+        # Store the source workshop order ID on invoices created from this action.
+        invoices.write({'workshop_order_ref_id': self.id})
         # Make existing workshop advances visible to the partner cash-invoice
         # posting policy. Its payment wizard uses customer_cash_move_id to link
         # account.payment to the invoice; reuse the posted advances, never
@@ -1106,6 +1108,45 @@ class WorkshopSale(models.Model):
                 'res_model': 'yt.reception.order', 'view_mode': 'form',
                 'views': [(self.env.ref('yousentech_car_maintain.view_reception_workshop_form').id, 'form')],
                 'res_id': self.id, 'target': 'current'}
+
+
+class WorkshopInvoiceReference(models.Model):
+    _inherit = 'account.move'
+
+    workshop_order_ref_id = fields.Integer(string='ID مرجع أمر العمل', copy=False, index=True,
+        help='الرقم الداخلي لسجل أمر العمل لعرض بياناته في هذا التبويب.')
+    workshop_order_id = fields.Many2one('yt.reception.order', string='أمر العمل المرتبط',
+        compute='_compute_workshop_order_reference', compute_sudo=True)
+
+    @api.depends('workshop_order_ref_id')
+    def _compute_workshop_order_reference(self):
+        Order = self.env['yt.reception.order'].sudo()
+        for move in self:
+            move.workshop_order_id = (Order.browse(move.workshop_order_ref_id).exists()
+                if move.workshop_order_ref_id and move.workshop_order_ref_id > 0 else Order.browse())
+
+    workshop_order_name = fields.Char(related='workshop_order_id.name', string='رقم أمر العمل', readonly=True)
+    workshop_order_partner_id = fields.Many2one(related='workshop_order_id.partner_id', string='العميل', readonly=True)
+    workshop_order_vehicle_id = fields.Many2one(related='workshop_order_id.vehicle_id', string='السيارة', readonly=True)
+    workshop_vehicle_plate = fields.Char(related='workshop_order_id.vehicle_id.plate', string='رقم اللوحة', readonly=True)
+    workshop_vehicle_make_id = fields.Many2one(related='workshop_order_id.vehicle_id.make_id', string='الشركة المصنعة', readonly=True)
+    workshop_vehicle_model_id = fields.Many2one(related='workshop_order_id.vehicle_id.model_id', string='الموديل', readonly=True)
+    workshop_vehicle_year = fields.Integer(related='workshop_order_id.vehicle_id.year', string='سنة الصنع', readonly=True)
+    workshop_vehicle_vin = fields.Char(related='workshop_order_id.vehicle_id.vin', string='رقم الشاصي', readonly=True)
+    workshop_vehicle_color = fields.Char(related='workshop_order_id.vehicle_id.color', string='اللون', readonly=True)
+    workshop_order_arrival_at = fields.Datetime(related='workshop_order_id.arrival_at', string='تاريخ الاستقبال', readonly=True)
+    workshop_order_odometer_in = fields.Float(related='workshop_order_id.odometer_in', string='عداد الدخول', readonly=True)
+    workshop_order_odometer_out = fields.Float(related='workshop_order_id.odometer_out', string='عداد الخروج', readonly=True)
+    workshop_order_branch_id = fields.Many2one(related='workshop_order_id.branch_id', string='الفرع', readonly=True)
+    workshop_order_advisor_id = fields.Many2one(related='workshop_order_id.advisor_id', string='مستشار الخدمة', readonly=True)
+    workshop_order_state = fields.Selection(related='workshop_order_id.state', string='حالة أمر العمل', readonly=True)
+    workshop_order_reception_notes = fields.Text(related='workshop_order_id.reception_notes', string='ملاحظات الاستقبال', readonly=True)
+
+    @api.constrains('workshop_order_ref_id')
+    def _check_workshop_order_ref_id(self):
+        for move in self:
+            if move.workshop_order_ref_id and move.workshop_order_ref_id <= 0:
+                raise ValidationError(_('ID مرجع أمر العمل يجب أن يكون رقمًا موجبًا.'))
 
 
 class WorkshopCompanyNavigation(models.Model):
