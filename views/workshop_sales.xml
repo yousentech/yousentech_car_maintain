@@ -417,4 +417,40 @@
  <menuitem id="menu_workshop_category_pricing" name="سياسات تسعير قطع الغيار"
            parent="menu_inspection_config" action="action_workshop_category_pricing"
            sequence="91" groups="base.group_system"/>
+ <record id="view_move_form_workshop_order_reference" model="ir.ui.view">
+  <field name="name">account.move.form.workshop.order.reference</field>
+  <field name="model">account.move</field>
+  <field name="inherit_id" ref="account.view_move_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="//notebook" position="inside">
+    <page string="بيانات أمر العمل" name="workshop_order_data" invisible="move_type not in ('out_invoice', 'out_refund')">
+     <group>
+      <group string="مرجع أمر العمل">
+       <field name="workshop_order_ref_id" string="ID مرجع أمر العمل"/>
+       <field name="workshop_order_name" string="رقم أمر العمل" readonly="1"/>
+       <field name="workshop_order_state" string="حالة أمر العمل" readonly="1"/>
+       <field name="workshop_order_arrival_at" string="تاريخ الاستقبال" readonly="1"/>
+       <field name="workshop_order_branch_id" string="الفرع" readonly="1" options="{'no_open': True}"/>
+       <field name="workshop_order_advisor_id" string="مستشار الخدمة" readonly="1" options="{'no_open': True}"/>
+      </group>
+      <group string="بيانات العميل والسيارة">
+       <field name="workshop_order_partner_id" string="العميل" readonly="1" options="{'no_open': True}"/>
+       <field name="workshop_order_vehicle_id" string="السيارة" readonly="1" options="{'no_open': True}"/>
+       <field name="workshop_vehicle_plate" string="رقم اللوحة" readonly="1"/>
+       <field name="workshop_vehicle_make_id" string="الشركة المصنعة" readonly="1" options="{'no_open': True}"/>
+       <field name="workshop_vehicle_model_id" string="الموديل" readonly="1" options="{'no_open': True}"/>
+       <field name="workshop_vehicle_year" string="سنة الصنع" readonly="1"/>
+       <field name="workshop_vehicle_vin" string="رقم الشاصي" readonly="1"/>
+       <field name="workshop_vehicle_color" string="اللون" readonly="1"/>
+      </group>
+     </group>
+     <group string="بيانات إضافية لأمر العمل">
+      <field name="workshop_order_odometer_in" string="عداد الدخول" readonly="1"/>
+      <field name="workshop_order_odometer_out" string="عداد الخروج" readonly="1"/>
+      <field name="workshop_order_reception_notes" string="ملاحظات الاستقبال" readonly="1"/>
+     </group>
+    </page>
+   </xpath>
+  </field>
+ </record>
 </odoo>
