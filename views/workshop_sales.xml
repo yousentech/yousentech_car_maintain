@@ -426,7 +426,7 @@
     <page string="بيانات أمر العمل" name="workshop_order_data" invisible="move_type not in ('out_invoice', 'out_refund')">
      <group>
       <group string="مرجع أمر العمل">
-       <field name="workshop_order_ref_id" string="ID مرجع أمر العمل"/>
+       <field name="workshop_order_ref_id" string="ID مرجع أمر العمل" readonly="1" options="{'no_create': True, 'no_open': True}"/>
        <field name="workshop_order_name" string="رقم أمر العمل" readonly="1"/>
        <field name="workshop_order_state" string="حالة أمر العمل" readonly="1"/>
        <field name="workshop_order_arrival_at" string="تاريخ الاستقبال" readonly="1"/>
