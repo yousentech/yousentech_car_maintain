@@ -21,3 +21,10 @@ a_workshop_category_pricing,yt.workshop.category.pricing,model_yt_workshop_categ
 a_workshop_category_pricing_user,yt.workshop.category.pricing user,model_yt_workshop_category_pricing,base.group_user,1,0,0,0
 a_workshop_pricing_tier,yt.workshop.pricing.tier,model_yt_workshop_pricing_tier,base.group_system,1,1,1,1
 a_workshop_pricing_tier_user,yt.workshop.pricing.tier user,model_yt_workshop_pricing_tier,base.group_user,1,0,0,0
+a_oil_type_user,yt.oil.type user,model_yt_oil_type,base.group_user,1,0,0,0
+a_oil_type_config,yt.oil.type config,model_yt_oil_type,yousentech_car_maintain.group_workshop_configuration_access,1,1,1,0
+a_service_event_user,yt.vehicle.service.event user,model_yt_vehicle_service_event,base.group_user,1,0,0,0
+a_service_event_system,yt.vehicle.service.event system,model_yt_vehicle_service_event,base.group_system,1,1,1,0
+a_followup_user,yt.vehicle.followup user,model_yt_vehicle_followup,base.group_user,1,0,0,0
+a_followup_writer,yt.vehicle.followup writer,model_yt_vehicle_followup,yousentech_car_maintain.group_workshop_followup,1,1,1,0
+a_followup_system,yt.vehicle.followup system,model_yt_vehicle_followup,base.group_system,1,1,1,1

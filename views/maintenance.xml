@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ <!-- Product card: periodic maintenance interval (services) and oil follow-up fields. -->
+ <record id="view_product_template_form_yt_maintenance" model="ir.ui.view">
+  <field name="name">product.template.form.yt.maintenance</field>
+  <field name="model">product.template</field>
+  <field name="inherit_id" ref="product.product_template_form_view"/>
+  <field name="arch" type="xml">
+   <xpath expr="//notebook" position="inside">
+    <page string="الصيانة" name="yt_maintenance">
+     <group>
+      <group string="الصيانة الدورية (لصنف الخدمة)">
+       <field name="yt_periodic_interval_km"/>
+       <field name="yt_periodic_interval_days"/>
+       <div colspan="2" class="text-muted">فارغ = تُطبق فترة الشركة. عند تعدد الخدمات في أمر واحد تُطبق الفترة الأقصر.</div>
+      </group>
+      <group string="متابعة الزيت">
+       <field name="yt_is_oil"/>
+       <field name="yt_oil_type_id" invisible="not yt_is_oil" required="yt_is_oil" options="{'no_create': True}"/>
+       <field name="yt_oil_interval_km" invisible="not yt_is_oil"/>
+       <field name="yt_oil_interval_days" invisible="not yt_is_oil"/>
+      </group>
+     </group>
+    </page>
+   </xpath>
+  </field>
+ </record>
+
+ <!-- Company settings: periodic maintenance defaults and due-soon thresholds. -->
+ <record id="view_workshop_finance_settings_form_yt_maintenance" model="ir.ui.view">
+  <field name="name">yt.workshop.finance.settings.form.yt.maintenance</field>
+  <field name="model">yt.workshop.finance.settings</field>
+  <field name="inherit_id" ref="yousentech_car_maintain.view_workshop_finance_settings_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="//div[hasclass('yt-wo-navigation-setting')]" position="before">
+    <div class="yt-config-card" dir="rtl">
+     <h3><i class="fa fa-car" title="الصيانة الدورية"/> الصيانة الدورية</h3>
+     <p class="yt-config-description">الاستحقاق القادم بالتاريخ أو الكيلو أيهما أقرب. تعديل القيم لا يغيّر الاستحقاقات المحفوظة في الأحداث السابقة.</p>
+     <group col="4">
+      <field name="periodic_interval_km"/>
+      <field name="periodic_interval_days"/>
+      <field name="due_soon_days"/>
+      <field name="due_soon_km"/>
+     </group>
+    </div>
+   </xpath>
+  </field>
+ </record>
+
+ <!-- Work order: periodic maintenance option (permission-restricted, locked after completion). -->
+ <record id="view_reception_workshop_form_yt_maintenance" model="ir.ui.view">
+  <field name="name">yt.reception.order.workshop.form.yt.maintenance</field>
+  <field name="model">yt.reception.order</field>
+  <field name="inherit_id" ref="yousentech_car_maintain.view_reception_workshop_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="//div[hasclass('yt-wo-section-inspection')]" position="after">
+    <div class="yt-wo-section-periodic" groups="yousentech_car_maintain.group_workshop_periodic">
+     <div class="yt-wo-card">
+      <h3><i class="fa fa-calendar-check-o" title="الصيانة الدورية"/> الصيانة الدورية</h3>
+      <div class="yt-rec-form-rows">
+       <div class="yt-rec-field-row"><label for="yt_is_periodic" string="احتساب هذا الأمر كصيانة دورية"/><field name="yt_is_periodic" nolabel="1" readonly="state in ('done', 'cancelled')"/></div>
+       <div class="yt-rec-field-row" invisible="not done_at"><label for="done_at" string="تاريخ الاكتمال"/><field name="done_at" nolabel="1" readonly="1"/></div>
+      </div>
+      <p class="text-muted">خيار داخلي لا يضيف بنداً أو مبلغاً للفاتورة. يُسجَّل الحدث عند «اكتمال التنفيذ».</p>
+     </div>
+    </div>
+   </xpath>
+  </field>
+ </record>
+
+ <!-- Oil types. -->
+ <record id="view_yt_oil_type_tree" model="ir.ui.view">
+  <field name="name">yt.oil.type.tree</field>
+  <field name="model">yt.oil.type</field>
+  <field name="arch" type="xml">
+   <tree string="أنواع الزيوت" editable="bottom">
+    <field name="sequence" widget="handle"/>
+    <field name="name"/>
+    <field name="product_count"/>
+    <field name="active" column_invisible="True"/>
+   </tree>
+  </field>
+ </record>
+ <record id="action_yt_oil_types" model="ir.actions.act_window">
+  <field name="name">أنواع الزيوت</field>
+  <field name="res_model">yt.oil.type</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <menuitem id="menu_yt_oil_types" name="أنواع الزيوت" parent="menu_inspection_config" action="action_yt_oil_types" sequence="20" groups="yousentech_car_maintain.group_workshop_configuration_access"/>
+
+ <!-- Maintenance events (system-generated, read-only). -->
+ <record id="view_yt_service_event_tree" model="ir.ui.view">
+  <field name="name">yt.vehicle.service.event.tree</field>
+  <field name="model">yt.vehicle.service.event</field>
+  <field name="arch" type="xml">
+   <tree string="أحداث الصيانة" create="false" edit="false" delete="false" decoration-muted="state == 'cancelled'">
+    <field name="done_date"/>
+    <field name="vehicle_id"/>
+    <field name="partner_id"/>
+    <field name="display_track"/>
+    <field name="order_id"/>
+    <field name="done_odometer"/>
+    <field name="interval_km"/>
+    <field name="interval_days"/>
+    <field name="interval_source"/>
+    <field name="next_due_date"/>
+    <field name="next_due_km"/>
+    <field name="state"/>
+    <field name="company_id" groups="base.group_multi_company"/>
+   </tree>
+  </field>
+ </record>
+ <record id="view_yt_service_event_search" model="ir.ui.view">
+  <field name="name">yt.vehicle.service.event.search</field>
+  <field name="model">yt.vehicle.service.event</field>
+  <field name="arch" type="xml">
+   <search>
+    <field name="vehicle_id"/>
+    <field name="partner_id"/>
+    <field name="order_id"/>
+    <filter name="active_events" string="الفعالة" domain="[('state', '=', 'active')]"/>
+    <filter name="periodic" string="صيانة دورية" domain="[('track_type', '=', 'periodic')]"/>
+    <filter name="oil" string="تغيير زيت" domain="[('track_type', '=', 'oil')]"/>
+    <group expand="0" string="تجميع">
+     <filter name="by_vehicle" string="السيارة" context="{'group_by': 'vehicle_id'}"/>
+     <filter name="by_track" string="نوع الحدث" context="{'group_by': 'track_type'}"/>
+    </group>
+   </search>
+  </field>
+ </record>
+ <record id="action_yt_service_events" model="ir.actions.act_window">
+  <field name="name">سجل أحداث الصيانة</field>
+  <field name="res_model">yt.vehicle.service.event</field>
+  <field name="view_mode">tree</field>
+  <field name="context">{'search_default_active_events': 1}</field>
+ </record>
+ <menuitem id="menu_yt_service_events" name="سجل أحداث الصيانة" parent="menu_inspection_config" action="action_yt_service_events" sequence="30" groups="yousentech_car_maintain.group_workshop_configuration_access"/>
+
+ <!-- Customer follow-ups. -->
+ <record id="view_yt_followup_tree" model="ir.ui.view">
+  <field name="name">yt.vehicle.followup.tree</field>
+  <field name="model">yt.vehicle.followup</field>
+  <field name="arch" type="xml">
+   <tree string="متابعات العملاء">
+    <field name="date"/>
+    <field name="partner_id"/>
+    <field name="vehicle_id"/>
+    <field name="track_type"/>
+    <field name="oil_type_id"/>
+    <field name="result"/>
+    <field name="next_date"/>
+    <field name="user_id"/>
+   </tree>
+  </field>
+ </record>
+ <record id="view_yt_followup_form" model="ir.ui.view">
+  <field name="name">yt.vehicle.followup.form</field>
+  <field name="model">yt.vehicle.followup</field>
+  <field name="arch" type="xml">
+   <form string="متابعة العميل">
+    <sheet>
+     <group>
+      <group>
+       <field name="vehicle_id" options="{'no_create': True}"/>
+       <field name="partner_id" options="{'no_create': True}"/>
+       <field name="company_id" invisible="1"/>
+       <field name="track_type"/>
+       <field name="oil_type_id" invisible="track_type != 'oil'" required="track_type == 'oil'" options="{'no_create': True}"/>
+      </group>
+      <group>
+       <field name="result" widget="radio"/>
+       <field name="next_date"/>
+       <field name="date"/>
+       <field name="user_id" readonly="1"/>
+      </group>
+     </group>
+     <div class="alert alert-warning" role="alert" invisible="result != 'sold'">«باع السيارة» يوقف تنبيهات هذه السيارة لهذا العميل.</div>
+     <field name="note" placeholder="ملاحظة..."/>
+    </sheet>
+   </form>
+  </field>
+ </record>
+ <record id="action_yt_followups" model="ir.actions.act_window">
+  <field name="name">متابعات العملاء</field>
+  <field name="res_model">yt.vehicle.followup</field>
+  <field name="view_mode">tree,form</field>
+ </record>
+ <menuitem id="menu_yt_followups" name="متابعات العملاء" parent="menu_workshop_root" action="action_yt_followups" sequence="40"/>
+</odoo>
