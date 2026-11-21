@@ -530,16 +530,19 @@ class WorkshopSale(models.Model):
                  'sale_order_id.invoice_ids', 'sale_order_id.invoice_ids.move_type',
                  'sale_order_id.invoice_ids.state')
     def _compute_can_return_to_draft(self):
+        allowed = self.env.user.has_group('yousentech_car_maintain.group_workshop_return_to_draft')
         for order in self:
             invoices = order._workshop_financial_documents().filtered(
                 lambda move: move.move_type == 'out_invoice')
             order.can_return_to_draft = bool(
-                order.state == 'in_progress' and order.workshop_approved
+                allowed and order.state == 'in_progress' and order.workshop_approved
                 and not invoices and not order.sale_order_id)
 
     def action_return_to_draft_before_invoice(self):
         self.check_access_rights('write')
         self.check_access_rule('write')
+        if not self.env.user.has_group('yousentech_car_maintain.group_workshop_return_to_draft'):
+            raise UserError(_('ليس لديك صلاحية إرجاع أمر العمل للمسودة.'))
         for order in self:
             if order.state != 'in_progress' or not order.workshop_approved:
                 raise UserError(_('إرجاع أمر العمل للمسودة متاح بعد بدء التنفيذ فقط.'))
