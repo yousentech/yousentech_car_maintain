@@ -522,6 +522,37 @@ class WorkshopSale(models.Model):
                     raise UserError(_('لا تملك صلاحية بيع %s بسعر صفر: %s. يرجى تعديل السعر أو طلب الصلاحية.') %
                                     (_('الخدمة') if service else _('قطعة الغيار'), line.product_id.display_name))
 
+    can_return_to_draft = fields.Boolean(
+        string='يمكن إرجاع أمر العمل للمسودة',
+        compute='_compute_can_return_to_draft')
+
+    @api.depends('state', 'workshop_approved', 'sale_order_id',
+                 'sale_order_id.invoice_ids', 'sale_order_id.invoice_ids.move_type',
+                 'sale_order_id.invoice_ids.state')
+    def _compute_can_return_to_draft(self):
+        for order in self:
+            invoices = order._workshop_financial_documents().filtered(
+                lambda move: move.move_type == 'out_invoice')
+            order.can_return_to_draft = bool(
+                order.state == 'in_progress' and order.workshop_approved
+                and not invoices and not order.sale_order_id)
+
+    def action_return_to_draft_before_invoice(self):
+        self.check_access_rights('write')
+        self.check_access_rule('write')
+        for order in self:
+            if order.state != 'in_progress' or not order.workshop_approved:
+                raise UserError(_('إرجاع أمر العمل للمسودة متاح بعد بدء التنفيذ فقط.'))
+            invoices = order._workshop_financial_documents().filtered(
+                lambda move: move.move_type == 'out_invoice')
+            if invoices:
+                raise UserError(_('لا يمكن إرجاع أمر العمل للمسودة بعد إنشاء فاتورة مرتبطة به.'))
+            if order.sale_order_id:
+                raise UserError(_('يوجد أمر بيع مرتبط بأمر العمل؛ عالج أمر البيع أولاً قبل إرجاعه للمسودة.'))
+            order.write({'state': 'draft', 'workshop_approved': False})
+            order.message_post(body=_('تم إرجاع أمر العمل إلى المسودة للتعديل قبل إنشاء الفاتورة.'))
+        return True
+
     def action_approve_workshop(self):
         for order in self:
             if order.state != 'draft':
