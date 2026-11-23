@@ -201,3 +201,16 @@ class TestMaintenanceReports(MaintenanceCase):
         self.assertEqual(set(order.service_event_ids.mapped('interval_source')), {'history'})
         self.env['yt.oil.history.wizard'].create({'company_id': self.company.id}).action_run()
         self.assertEqual(len(order.service_event_ids), 2)
+
+    def test_odometer_rule_blocks_only_when_enabled(self):
+        zero = self._order(self.engine_oil, odometer_in=0)
+        zero._yt_check_maintenance_odometer()  # disabled by default: no block
+        self.settings.enforce_maintenance_odometer = True
+        with self.assertRaises(UserError):
+            zero._yt_check_maintenance_odometer()
+        self._complete(self._order(self.service, odometer_in=50000))
+        with self.assertRaises(UserError):
+            self._order(self.engine_oil, odometer_in=40000)._yt_check_maintenance_odometer()
+        self._order(self.engine_oil, odometer_in=50500)._yt_check_maintenance_odometer()
+        # Orders without oil or periodic maintenance are never blocked.
+        self._order(self.service, odometer_in=0)._yt_check_maintenance_odometer()

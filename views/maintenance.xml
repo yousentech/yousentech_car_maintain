@@ -41,6 +41,7 @@
       <field name="periodic_interval_days"/>
       <field name="due_soon_days"/>
       <field name="due_soon_km"/>
+      <field name="enforce_maintenance_odometer" colspan="4"/>
      </group>
     </div>
    </xpath>

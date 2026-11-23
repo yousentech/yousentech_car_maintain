@@ -66,6 +66,10 @@ class WorkshopMaintenanceSettings(models.Model):
     periodic_interval_days = fields.Integer(string='فترة الصيانة الدورية (يوم)')
     due_soon_days = fields.Integer(string='تنبيه قريب الاستحقاق قبل (يوم)', default=15)
     due_soon_km = fields.Float(string='تنبيه قريب الاستحقاق قبل (كم)', default=500)
+    enforce_maintenance_odometer = fields.Boolean(
+        string='منع إكمال أوامر الصيانة والزيوت بدون عداد صحيح',
+        help='عند التفعيل: لا يكتمل أمر العمل الذي يحتوي صنف زيت أو مفعَّل كصيانة دورية إذا كان العداد صفراً '
+             'أو أقل من آخر قراءة مسجلة للسيارة. باقي أوامر العمل لا تتأثر.')
 
     @api.constrains('periodic_interval_km', 'periodic_interval_days', 'due_soon_days', 'due_soon_km')
     def _check_yt_periodic_settings(self):

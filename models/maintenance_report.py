@@ -659,7 +659,29 @@ class WorkshopOrderDueBanner(models.Model):
         periodic = next((t for t in tracks if t['key'] == 'periodic'), None)
         return periodic if periodic and periodic['status'] in ('due', 'soon') else False
 
+    def _yt_check_maintenance_odometer(self):
+        """Optional company rule: orders that create maintenance events need a valid odometer."""
+        for order in self:
+            settings = self.env['yt.workshop.finance.settings'].sudo().search(
+                [('company_id', '=', order.company_id.id)], limit=1)
+            if not settings.enforce_maintenance_odometer:
+                continue
+            has_oil = order.sale_line_ids.filtered(lambda l: l.product_id.product_tmpl_id.yt_is_oil)
+            if not (order.sudo().yt_is_periodic or has_oil):
+                continue
+            odometer = order._yt_done_odometer()
+            if not odometer:
+                raise UserError(_('أدخل عداد الدخول أو الخروج قبل إكمال الأمر؛ متابعة الصيانة والزيوت تحتاج قراءة عداد صحيحة.'))
+            previous = self.search([('vehicle_id', '=', order.vehicle_id.id), ('state', '=', 'done'),
+                                    ('id', '!=', order.id)])
+            readings = [max(o.odometer_out or 0, o.odometer_in or 0) for o in previous]
+            last = max(readings, default=0)
+            if last and odometer < last:
+                raise UserError(_('عداد هذا الأمر (%(current)s كم) أقل من آخر قراءة مسجلة للسيارة (%(last)s كم). صحّح العداد قبل الإكمال.') % {
+                    'current': '{:,}'.format(int(odometer)), 'last': '{:,}'.format(int(last))})
+
     def action_finish_workshop_execution(self):
+        self._yt_check_maintenance_odometer()
         if len(self) == 1:
             periodic = self._yt_needs_periodic_reminder()
             if periodic:
