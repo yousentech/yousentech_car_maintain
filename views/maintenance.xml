@@ -53,8 +53,9 @@
   <field name="model">yt.reception.order</field>
   <field name="inherit_id" ref="yousentech_car_maintain.view_reception_workshop_form"/>
   <field name="arch" type="xml">
-   <xpath expr="//div[hasclass('yt-wo-section-inspection')]" position="after">
-    <div class="yt-wo-section-periodic" groups="yousentech_car_maintain.group_workshop_periodic">
+   <!-- Inside the «العميل والسيارة» section so the side navigation shows it (not only in «عرض الكل»). -->
+   <xpath expr="//div[hasclass('yt-wo-section-customer')]" position="inside">
+    <div class="yt-wo-section-periodic" groups="yousentech_car_maintain.group_workshop_periodic" style="margin-top: 14px;">
      <div class="yt-wo-card">
       <h3><i class="fa fa-calendar-check-o" title="الصيانة الدورية"/> الصيانة الدورية</h3>
       <div class="yt-rec-form-rows">
