@@ -1,0 +1,142 @@
+// Customer follow-up & periodic maintenance reports (REPORTS_DESIGN.md §11).
+// Identity: purple #5b45e0 for actions only; system tints on section icons;
+// green / amber / red / grey reserved for statuses, always with text.
+$yt-mr-primary: #5b45e0;
+$yt-mr-primary-dark: #3a2bb0;
+$yt-mr-ink: #1f2547;
+$yt-mr-muted: #5e6584;
+$yt-mr-ground: #f7f6fc;
+$yt-mr-line: #f1eff8;
+$yt-mr-shadow: 0 1px 2px rgba(31, 37, 71, 0.04), 0 8px 24px rgba(42, 31, 122, 0.04);
+
+@mixin yt-mr-status {
+    &.b-ok { background: #e3f5ec; color: #16653f; }
+    &.b-soon { background: #fff1cc; color: #7a4b00; }
+    &.b-due { background: #fde6e4; color: #a1231b; }
+    &.b-na { background: #eceef4; color: #4f5672; }
+    &.b-old { background: #f1eeff; color: $yt-mr-primary-dark; }
+}
+
+.o_yt_mr {
+    background: $yt-mr-ground;
+    color: $yt-mr-ink;
+    min-height: 100%;
+    overflow: auto;
+    padding: 32px 32px 56px;
+    font-size: 14px;
+
+    a { color: #4a34c9; }
+    a:hover { color: $yt-mr-primary-dark; }
+    h1 { margin: 0; font-size: 26px; font-weight: 700; color: $yt-mr-ink; }
+    h2 { margin: 0; font-size: 17px; font-weight: 700; color: $yt-mr-ink; }
+
+    .o_yt_mr_wrap { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+    .o_yt_mr_empty { background: #fff; border-radius: 18px; padding: 40px; text-align: center; color: $yt-mr-muted; box-shadow: $yt-mr-shadow; }
+    .o_yt_mr_head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+    .o_yt_mr_titles { display: flex; flex-direction: column; gap: 8px; }
+    .o_yt_mr_crumb, .o_yt_mr_sub, .o_yt_mr_muted { color: $yt-mr-muted; }
+    .o_yt_mr_crumb { font-size: 13px; }
+    .o_yt_mr_actions, .o_yt_mr_inline { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .o_yt_mr_stack { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .o_yt_mr_note, .o_yt_mr_hint { font-size: 12px; color: $yt-mr-muted; }
+    .o_yt_mr_pad { padding: 18px 24px; }
+
+    .o_yt_mr_card { background: #fff; border-radius: 20px; box-shadow: $yt-mr-shadow; min-width: 0; }
+    .o_yt_mr_section { display: flex; flex-direction: column; gap: 14px; }
+    .o_yt_mr_section_head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; }
+
+    .o_yt_mr_btn {
+        min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #e3def9;
+        background: #fff; color: $yt-mr-primary-dark; font-weight: 600; cursor: pointer;
+        &:hover { background: #f6f4ff; }
+    }
+    .o_yt_mr_btn_primary { background: $yt-mr-primary; border-color: $yt-mr-primary; color: #fff; &:hover { background: $yt-mr-primary-dark; } }
+    .o_yt_mr_btn_soft { background: $yt-mr-ground; border-color: transparent; width: 100%; margin-top: auto; }
+    .o_yt_mr_link { min-height: 44px; padding: 0 12px; border: 0; background: transparent; color: #4a34c9; font-weight: 600; cursor: pointer; }
+    .o_yt_mr_icon {
+        width: 44px; height: 44px; border-radius: 12px; border: 1px solid #e3def9; background: #fff;
+        display: inline-grid; place-items: center; color: $yt-mr-primary-dark; text-decoration: none;
+    }
+    .o_yt_mr_icon_wa { border-color: #c9ead8; background: #f0faf4; color: #16653f; }
+
+    .o_yt_mr_badge {
+        display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 999px;
+        font-size: 12px; font-weight: 600; white-space: nowrap;
+        i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: inline-block; }
+        @include yt-mr-status;
+    }
+    .o_yt_mr_dot { width: 10px; height: 10px; border-radius: 50%; flex: none; @include yt-mr-status; &.b-due { background: #c4352b; } &.b-soon { background: #d49a00; } }
+    .o_yt_mr_pill { background: #eef3ff; color: #2c4fa8; border-radius: 999px; padding: 2px 10px; font-size: 12px; font-weight: 600; }
+    .o_yt_mr_pill_lg { font-size: 14px; padding: 6px 14px; background: #f1eeff; color: $yt-mr-primary-dark; }
+    .o_yt_mr_plate { border: 1.5px solid $yt-mr-ink; border-radius: 8px; padding: 3px 9px; font-weight: 700; letter-spacing: 1.5px; white-space: nowrap; background: #fff; }
+    .o_yt_mr_plate_lg { font-size: 17px; padding: 6px 14px; border-width: 2px; }
+
+    .o_yt_mr_customer { display: flex; flex-wrap: wrap; align-items: center; gap: 28px; padding: 26px; }
+    .o_yt_mr_customer_id { display: flex; align-items: center; gap: 16px; flex: 1 1 300px; }
+    .o_yt_mr_avatar { width: 56px; height: 56px; border-radius: 16px; background: #eef3ff; color: #3b65ce; display: grid; place-items: center; font-size: 20px; font-weight: 700; flex: none; }
+    .o_yt_mr_name { font-size: 20px; font-weight: 700; }
+    .o_yt_mr_stats {
+        display: flex; gap: 32px;
+        div { display: flex; flex-direction: column; gap: 2px; }
+        b { font-size: 24px; font-weight: 700; }
+        span { font-size: 13px; color: $yt-mr-muted; }
+    }
+
+    .o_yt_mr_list { overflow: hidden; }
+    .o_yt_mr_item {
+        display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 16px 24px;
+        & + .o_yt_mr_item { border-top: 1px solid $yt-mr-line; }
+    }
+    .o_yt_mr_item_col { flex-direction: column; align-items: stretch; gap: 4px; }
+    .o_yt_mr_item_line { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+    .o_yt_mr_item_date { width: 96px; color: $yt-mr-muted; }
+    .o_yt_mr_item_body { display: flex; flex-direction: column; gap: 3px; flex: 1 1 280px; min-width: 0; }
+
+    .o_yt_mr_grid2, .o_yt_mr_grid3, .o_yt_mr_grid4 { display: grid; gap: 22px; }
+    .o_yt_mr_grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .o_yt_mr_grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .o_yt_mr_grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .o_yt_mr_vehicle { padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+    .o_yt_mr_vehicle_head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .o_yt_mr_car_icon { width: 44px; height: 44px; border-radius: 12px; background: #f4f0ff; color: #7b64d9; display: grid; place-items: center; font-size: 18px; flex: none; }
+    .o_yt_mr_rows { display: flex; flex-direction: column; gap: 12px; }
+    .o_yt_mr_row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; span:first-child { color: $yt-mr-muted; } b { font-weight: 600; text-align: left; } }
+
+    .o_yt_mr_track { padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .o_yt_mr_track_head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+    .o_yt_mr_log { border-top: 1px solid $yt-mr-line; padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .o_yt_mr_log_title { font-size: 13px; font-weight: 600; color: $yt-mr-muted; }
+    .o_yt_mr_log_row { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 8px; }
+
+    .o_yt_mr_tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 12px; border-bottom: 1px solid $yt-mr-line; }
+    .o_yt_mr_tab { min-height: 44px; padding: 0 18px; border-radius: 12px; border: 0; background: transparent; color: #3d3f66; font-weight: 600; cursor: pointer; &.active { background: $yt-mr-primary; color: #fff; } }
+
+    .o_yt_mr_kpi { padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; b { font-size: 22px; font-weight: 700; } }
+    .o_yt_mr_table_wrap { overflow-x: auto; }
+    .o_yt_mr_table {
+        width: 100%; min-width: 720px; border-collapse: collapse;
+        th { background: #f6f4ff; color: $yt-mr-primary-dark; font-weight: 600; padding: 12px 16px; text-align: right; }
+        td { padding: 12px 16px; border-top: 1px solid $yt-mr-line; }
+    }
+
+    @media (max-width: 992px) {
+        padding: 20px 14px 40px;
+        .o_yt_mr_grid3, .o_yt_mr_grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .o_yt_mr_grid2 { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 640px) {
+        .o_yt_mr_grid3, .o_yt_mr_grid4 { grid-template-columns: minmax(0, 1fr); }
+        .o_yt_mr_stats { gap: 20px; }
+    }
+}
+
+// Work order banner (computed Html field).
+.yt-due-banner-field { display: block; width: 100%; margin-bottom: 12px; }
+.yt-due-banner {
+    background: #fff8e6; border: 1px solid #f3dc9c; border-radius: 14px; padding: 12px 16px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; direction: rtl;
+    strong { color: #5c3a00; }
+    .yt-due-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .yt-due-chip { border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600; @include yt-mr-status; }
+}

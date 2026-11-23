@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ <!-- Work order: due banner (read-only, shown only when the vehicle has due/soon tracks). -->
+ <record id="view_reception_workshop_form_yt_due_banner" model="ir.ui.view">
+  <field name="name">yt.reception.order.workshop.form.yt.due.banner</field>
+  <field name="model">yt.reception.order</field>
+  <field name="inherit_id" ref="yousentech_car_maintain.view_reception_workshop_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="//div[@name='button_box']" position="after">
+    <field name="yt_due_banner" nolabel="1" readonly="1" invisible="not yt_due_banner" class="yt-due-banner-field"/>
+   </xpath>
+  </field>
+ </record>
+
+ <!-- Reminder before completion. -->
+ <record id="view_yt_periodic_reminder_wizard_form" model="ir.ui.view">
+  <field name="name">yt.periodic.reminder.wizard.form</field>
+  <field name="model">yt.periodic.reminder.wizard</field>
+  <field name="arch" type="xml">
+   <form string="السيارة مستحقة صيانة دورية">
+    <field name="order_id" invisible="1"/>
+    <field name="message" nolabel="1" readonly="1"/>
+    <p class="text-muted">التذكير لا يمنع الإكمال، ويظهر فقط لمن يملك صلاحية الصيانة الدورية.</p>
+    <footer>
+     <button name="action_count_and_finish" type="object" string="نعم، احتسبه وأكمل" class="btn-primary"/>
+     <button name="action_finish_only" type="object" string="أكمل بدون احتساب" class="btn-secondary"/>
+     <button special="cancel" string="رجوع" class="btn-link"/>
+    </footer>
+   </form>
+  </field>
+ </record>
+
+ <!-- Report filter window. -->
+ <record id="view_yt_maintenance_report_wizard_form" model="ir.ui.view">
+  <field name="name">yt.maintenance.report.wizard.form</field>
+  <field name="model">yt.maintenance.report.wizard</field>
+  <field name="arch" type="xml">
+   <form string="فلاتر التقرير">
+    <field name="report_type" invisible="1"/>
+    <group>
+     <group>
+      <field name="partner_id" invisible="report_type not in ('customer', 'statement')" required="report_type in ('customer', 'statement')" options="{'no_create': True}"/>
+      <field name="vehicle_id" invisible="report_type != 'customer'" options="{'no_create': True}"/>
+      <field name="branch_ids" widget="many2many_tags" options="{'no_create': True}" placeholder="جميع الفروع المسموحة"/>
+      <field name="track" invisible="report_type not in ('upcoming', 'overdue')"/>
+      <field name="lapsed_days" invisible="report_type != 'lapsed'"/>
+     </group>
+     <group invisible="report_type not in ('customer', 'statement')">
+      <field name="date_from"/>
+      <field name="date_to"/>
+     </group>
+    </group>
+    <div class="alert alert-info" role="status" invisible="report_type != 'customer'">الفترة تحدد السجل التاريخي فقط. الاستحقاقات تُحسب دائماً على تاريخ اليوم.</div>
+    <div class="alert alert-info" role="status" invisible="report_type != 'statement'">الفواتير والتحصيل والمرتجعات حركات الفترة، والرصيد المستحق رصيد قائم حتى اليوم.</div>
+    <footer>
+     <button name="action_open_report" type="object" string="عرض التقرير" class="btn-primary"/>
+     <button special="cancel" string="إلغاء" class="btn-secondary"/>
+    </footer>
+   </form>
+  </field>
+ </record>
+
+ <record id="action_yt_report_customer" model="ir.actions.act_window">
+  <field name="name">سجل صيانة سيارات العميل</field>
+  <field name="res_model">yt.maintenance.report.wizard</field>
+  <field name="view_mode">form</field>
+  <field name="target">new</field>
+  <field name="context">{'default_report_type': 'customer'}</field>
+ </record>
+ <record id="action_yt_report_upcoming" model="ir.actions.act_window">
+  <field name="name">الاستحقاقات القادمة</field>
+  <field name="res_model">yt.maintenance.report.wizard</field>
+  <field name="view_mode">form</field>
+  <field name="target">new</field>
+  <field name="context">{'default_report_type': 'upcoming'}</field>
+ </record>
+ <record id="action_yt_report_overdue" model="ir.actions.act_window">
+  <field name="name">الاستحقاقات الفائتة والمتأخرة</field>
+  <field name="res_model">yt.maintenance.report.wizard</field>
+  <field name="view_mode">form</field>
+  <field name="target">new</field>
+  <field name="context">{'default_report_type': 'overdue'}</field>
+ </record>
+ <record id="action_yt_report_lapsed" model="ir.actions.act_window">
+  <field name="name">العملاء المنقطعون</field>
+  <field name="res_model">yt.maintenance.report.wizard</field>
+  <field name="view_mode">form</field>
+  <field name="target">new</field>
+  <field name="context">{'default_report_type': 'lapsed'}</field>
+ </record>
+ <record id="action_yt_report_statement" model="ir.actions.act_window">
+  <field name="name">كشف حساب العميل لدى الورشة</field>
+  <field name="res_model">yt.maintenance.report.wizard</field>
+  <field name="view_mode">form</field>
+  <field name="target">new</field>
+  <field name="context">{'default_report_type': 'statement'}</field>
+ </record>
+
+ <menuitem id="menu_yt_reports_root" name="التقارير" parent="menu_workshop_root" sequence="60" groups="yousentech_car_maintain.group_workshop_followup_reports"/>
+ <menuitem id="menu_yt_reports_followup" name="متابعة العملاء والصيانة الدورية" parent="menu_yt_reports_root" sequence="10"/>
+ <menuitem id="menu_yt_report_customer" name="سجل صيانة سيارات العميل" parent="menu_yt_reports_followup" action="action_yt_report_customer" sequence="10"/>
+ <menuitem id="menu_yt_report_upcoming" name="الاستحقاقات القادمة" parent="menu_yt_reports_followup" action="action_yt_report_upcoming" sequence="20"/>
+ <menuitem id="menu_yt_report_overdue" name="الاستحقاقات الفائتة والمتأخرة" parent="menu_yt_reports_followup" action="action_yt_report_overdue" sequence="30"/>
+ <menuitem id="menu_yt_report_lapsed" name="العملاء المنقطعون" parent="menu_yt_reports_followup" action="action_yt_report_lapsed" sequence="40"/>
+ <menuitem id="menu_yt_report_statement" name="كشف حساب العميل لدى الورشة" parent="menu_yt_reports_followup" action="action_yt_report_statement" sequence="50"/>
+
+ <!-- Phase B: historical oil events. -->
+ <record id="view_yt_oil_history_wizard_form" model="ir.ui.view">
+  <field name="name">yt.oil.history.wizard.form</field>
+  <field name="model">yt.oil.history.wizard</field>
+  <field name="arch" type="xml">
+   <form string="ترحيل تاريخي لأحداث الزيوت">
+    <div class="alert alert-warning" role="status">ينشئ أحداث تغيير الزيت من أوامر العمل المكتملة السابقة حسب أصناف الزيت المعرّفة حالياً. لا يُنشئ أحداث صيانة دورية بأثر رجعي، ويمكن إعادة تشغيله دون تكرار.</div>
+    <group>
+     <field name="company_id" options="{'no_create': True}"/>
+     <field name="date_from"/>
+    </group>
+    <field name="result_message" nolabel="1" readonly="1" invisible="not result_message"/>
+    <footer>
+     <button name="action_run" type="object" string="تشغيل الترحيل" class="btn-primary" invisible="result_message"/>
+     <button special="cancel" string="إغلاق" class="btn-secondary"/>
+    </footer>
+   </form>
+  </field>
+ </record>
+ <record id="action_yt_oil_history_wizard" model="ir.actions.act_window">
+  <field name="name">ترحيل تاريخي للزيوت</field>
+  <field name="res_model">yt.oil.history.wizard</field>
+  <field name="view_mode">form</field>
+  <field name="target">new</field>
+ </record>
+ <menuitem id="menu_yt_oil_history" name="ترحيل تاريخي للزيوت" parent="menu_inspection_config" action="action_yt_oil_history_wizard" sequence="35" groups="base.group_system"/>
+
+ <!-- Customer PDF: maintenance record for one vehicle (no amounts, no previous owner). -->
+ <record id="action_report_customer_maintenance" model="ir.actions.report">
+  <field name="name">سجل صيانة السيارة</field>
+  <field name="model">yt.reception.vehicle</field>
+  <field name="report_type">qweb-pdf</field>
+  <field name="report_name">yousentech_car_maintain.report_customer_maintenance</field>
+  <field name="report_file">yousentech_car_maintain.report_customer_maintenance</field>
+  <field name="print_report_name">'سجل صيانة السيارة - %s' % (object.plate or '')</field>
+  <field name="binding_model_id" eval="False"/>
+ </record>
+ <template id="report_customer_maintenance">
+  <t t-call="web.html_container">
+   <t t-call="web.external_layout">
+    <t t-set="p" t-value="payload"/>
+    <div class="page" dir="rtl" style="font-size: 12pt; text-align: right;">
+     <h2 style="color: #3a2bb0;">سجل صيانة السيارة</h2>
+     <table class="table table-sm" style="margin-bottom: 16px;">
+      <tr><td><strong>العميل</strong></td><td t-esc="p['owner']"/><td><strong>اللوحة</strong></td><td dir="ltr" t-esc="p['plate']"/></tr>
+      <tr><td><strong>السيارة</strong></td><td t-esc="p['title']"/><td><strong>آخر ممشى مسجل</strong></td><td><t t-esc="p['odo']"/> <t t-if="p['odo_date']">(<t t-esc="p['odo_date']"/>)</t></td></tr>
+     </table>
+     <h4>مواعيد الصيانة القادمة</h4>
+     <table class="table table-sm">
+      <thead><tr style="background: #f1eeff;"><th>البند</th><th>آخر تنفيذ</th><th>الموعد القادم (أيهما أقرب)</th><th>الحالة</th></tr></thead>
+      <tbody>
+       <tr t-foreach="p['tracks']" t-as="t"><td t-esc="t['name']"/><td t-esc="t['last']"/><td t-esc="t['next']"/><td t-esc="t['label']"/></tr>
+      </tbody>
+     </table>
+     <h4>سجل الأعمال المنفذة</h4>
+     <table class="table table-sm">
+      <thead><tr style="background: #f1eeff;"><th>التاريخ</th><th>رقم الأمر</th><th>الممشى</th><th>الأعمال</th></tr></thead>
+      <tbody>
+       <tr t-foreach="p['history']" t-as="h"><td t-esc="h['date']"/><td t-esc="h['name']"/><td t-esc="h['odo']"/><td t-esc="h['work']"/></tr>
+      </tbody>
+     </table>
+     <t t-if="p['inspection']['lines']">
+      <h4>ملاحظات الفحص الأخير</h4>
+      <ul><li t-foreach="p['inspection']['lines']" t-as="l"><strong t-esc="l['name']"/>: <t t-esc="l['note'] or l['status']"/></li></ul>
+     </t>
+     <p class="text-muted" style="font-size: 10pt;">المواعيد محسوبة بالتاريخ أو الكيلو أيهما أقرب، بناءً على آخر ممشى مسجل في الورشة. لا تتضمن هذه النسخة أي مبالغ ولا بيانات مالك سابق.</p>
+    </div>
+   </t>
+  </t>
+ </template>
+</odoo>

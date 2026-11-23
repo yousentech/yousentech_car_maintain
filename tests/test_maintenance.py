@@ -5,11 +5,14 @@ from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
 
 
-class TestMaintenanceEvents(TransactionCase):
+class MaintenanceCase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.env.user.groups_id |= cls.env.ref('yousentech_car_maintain.group_workshop_periodic')
+        cls.env.user.groups_id |= (cls.env.ref('yousentech_car_maintain.group_workshop_periodic')
+                                   | cls.env.ref('yousentech_car_maintain.group_workshop_followup_reports')
+                                   | cls.env.ref('yousentech_car_maintain.group_workshop_followup')
+                                   | cls.env.ref('base.group_system'))
         cls.company = cls.env.company
         cls.settings = cls.env['yt.workshop.finance.settings'].search(
             [('company_id', '=', cls.company.id)], limit=1) or cls.env['yt.workshop.finance.settings'].create(
@@ -38,10 +41,12 @@ class TestMaintenanceEvents(TransactionCase):
             'name': 'ATF', 'type': 'consu', 'sale_ok': True, 'yt_is_oil': True,
             'yt_oil_type_id': cls.gear.id, 'yt_oil_interval_km': 60000, 'yt_oil_interval_days': 730})
 
-    def _order(self, products, odometer_in=80000, odometer_out=0, periodic=False):
-        order = self.env['yt.reception.order'].create({
-            'partner_id': self.partner.id, 'vehicle_id': self.vehicle.id,
-            'odometer_in': odometer_in, 'odometer_out': odometer_out})
+    def _order(self, products, odometer_in=80000, odometer_out=0, periodic=False, arrival_at=False):
+        vals = {'partner_id': self.partner.id, 'vehicle_id': self.vehicle.id,
+                'odometer_in': odometer_in, 'odometer_out': odometer_out}
+        if arrival_at:
+            vals['arrival_at'] = arrival_at
+        order = self.env['yt.reception.order'].create(vals)
         self.env['yt.reception.sale.line'].create([
             {'order_id': order.id, 'product_id': p.id, 'name': p.name, 'price_unit': 10.0}
             for p in products])
@@ -51,6 +56,9 @@ class TestMaintenanceEvents(TransactionCase):
 
     def _complete(self, order):
         order.write({'state': 'done'})
+
+
+class TestMaintenanceEvents(MaintenanceCase):
 
     def test_periodic_event_uses_company_interval(self):
         order = self._order(self.service, odometer_in=80000, odometer_out=80100, periodic=True)
@@ -119,3 +127,77 @@ class TestMaintenanceEvents(TransactionCase):
         self.settings.periodic_interval_km = 20000
         self.assertEqual(order.service_event_ids.interval_km, 10000)
         self.assertEqual(fields.Date.today() >= order.service_event_ids.done_date, True)
+
+
+class TestMaintenanceReports(MaintenanceCase):
+    """Status computation, dues report, banner, reminder and historical oil migration."""
+
+    def _due_vehicle(self):
+        first = self._order(self.service, odometer_in=80000, periodic=True,
+                            arrival_at=fields.Datetime.now() - timedelta(days=10))
+        self._complete(first)
+        later = self._order(self.env['product.product'], odometer_in=91000)
+        self._complete(later)
+        return first
+
+    def test_status_overdue_by_km(self):
+        self._due_vehicle()
+        tracks = self.env['yt.maintenance.report']._vehicle_tracks(self.vehicle)[self.vehicle.id]
+        periodic = next(t for t in tracks if t['key'] == 'periodic')
+        self.assertEqual(periodic['status'], 'due')
+        self.assertIn('1,000', periodic['label'])
+
+    def test_status_soon_and_ok(self):
+        order = self._order(self.engine_oil, odometer_in=70000)
+        self._complete(order)
+        tracks = self.env['yt.maintenance.report']._vehicle_tracks(self.vehicle)[self.vehicle.id]
+        engine = next(t for t in tracks if t['key'] == 'oil:%s' % self.engine.id)
+        self.assertEqual(engine['status'], 'ok')
+        self.settings.due_soon_km = 6000
+        tracks = self.env['yt.maintenance.report']._vehicle_tracks(self.vehicle)[self.vehicle.id]
+        engine = next(t for t in tracks if t['key'] == 'oil:%s' % self.engine.id)
+        self.assertEqual(engine['status'], 'soon')
+
+    def test_sold_followup_stops_alerts(self):
+        self._due_vehicle()
+        self.env['yt.vehicle.followup'].create({
+            'vehicle_id': self.vehicle.id, 'partner_id': self.partner.id,
+            'company_id': self.vehicle.company_id.id, 'result': 'sold'})
+        data = self.env['yt.maintenance.report'].get_dues_report({'statuses': ['due']})
+        self.assertFalse([r for r in data['rows'] if r['vehicle_id'] == self.vehicle.id])
+
+    def test_dues_and_customer_reports(self):
+        self._due_vehicle()
+        dues = self.env['yt.maintenance.report'].get_dues_report({'statuses': ['due']})
+        self.assertTrue([r for r in dues['rows'] if r['vehicle_id'] == self.vehicle.id])
+        customer = self.env['yt.maintenance.report'].get_customer_report({'partner_id': self.partner.id})
+        self.assertEqual(customer['stats']['vehicles'], 1)
+        self.assertTrue(customer['alerts'])
+        detail = self.env['yt.maintenance.report'].get_vehicle_detail({'vehicle_id': self.vehicle.id})
+        self.assertEqual(len(detail['timeline']), 2)
+
+    def test_banner_on_open_order(self):
+        self._due_vehicle()
+        order = self._order(self.service, odometer_in=91500)
+        self.assertIn('الصيانة الدورية', order.yt_due_banner or '')
+
+    def test_reminder_before_completion(self):
+        self._due_vehicle()
+        order = self._order(self.service, odometer_in=91500)
+        order.write({'state': 'in_progress'})
+        action = order.action_finish_workshop_execution()
+        self.assertEqual(action['res_model'], 'yt.periodic.reminder.wizard')
+        with self.assertRaises(UserError):
+            # Skipping the reminder runs the original completion checks (no posted invoice here).
+            order.with_context(yt_skip_periodic_reminder=True).action_finish_workshop_execution()
+
+    def test_history_wizard_is_idempotent(self):
+        order = self._order(self.engine_oil | self.gear_oil, odometer_in=60000)
+        self._complete(order)
+        order.service_event_ids.sudo().unlink()
+        wizard = self.env['yt.oil.history.wizard'].create({'company_id': self.company.id})
+        wizard.action_run()
+        self.assertEqual(len(order.service_event_ids), 2)
+        self.assertEqual(set(order.service_event_ids.mapped('interval_source')), {'history'})
+        self.env['yt.oil.history.wizard'].create({'company_id': self.company.id}).action_run()
+        self.assertEqual(len(order.service_event_ids), 2)

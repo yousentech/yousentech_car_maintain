@@ -234,9 +234,10 @@ class WorkshopOrderMaintenance(models.Model):
         source = 'mixed' if used_special and used_company else ('service' if used_special else 'company')
         return km, days, source
 
-    def _yt_event_values(self, track_type, track_key, km, days, source, oil_type=False, product=False):
+    def _yt_event_values(self, track_type, track_key, km, days, source, oil_type=False, product=False,
+                         done_date=False):
         self.ensure_one()
-        done_date = fields.Date.context_today(self, self.done_at or fields.Datetime.now())
+        done_date = done_date or fields.Date.context_today(self, self.done_at or fields.Datetime.now())
         odometer = self._yt_done_odometer()
         return {
             'order_id': self.id,
@@ -266,19 +267,7 @@ class WorkshopOrderMaintenance(models.Model):
                 km, days, source = order._yt_periodic_interval()
                 if km or days:
                     values.append(order._yt_event_values('periodic', 'periodic', km, days, source))
-            oil_lines = order.sale_line_ids.filtered(
-                lambda line: line.product_id.product_tmpl_id.yt_is_oil
-                and line.product_id.product_tmpl_id.yt_oil_type_id)
-            for oil_type in oil_lines.mapped('product_id.product_tmpl_id.yt_oil_type_id'):
-                lines = oil_lines.filtered(
-                    lambda line: line.product_id.product_tmpl_id.yt_oil_type_id == oil_type)
-                templates = lines.mapped('product_id.product_tmpl_id')
-                km = self._yt_shortest(templates.mapped('yt_oil_interval_km'))
-                days = self._yt_shortest(templates.mapped('yt_oil_interval_days'))
-                if km or days:
-                    values.append(order._yt_event_values(
-                        'oil', 'oil:%s' % oil_type.id, km, days, 'oil_product',
-                        oil_type=oil_type, product=lines[:1].product_id))
+            values += order._yt_oil_event_values('oil_product')
             existing = Event.with_context(active_test=False).search([('order_id', '=', order.id)])
             keys = set()
             for vals in values:
@@ -292,6 +281,25 @@ class WorkshopOrderMaintenance(models.Model):
             # A track no longer present after re-completion is deactivated, never deleted.
             existing.filtered(lambda e: e.track_key not in keys and e.state == 'active').write(
                 {'state': 'cancelled'})
+
+    def _yt_oil_event_values(self, source, done_date=False):
+        """One value dict per oil type found in the order lines (shortest interval per dimension)."""
+        self.ensure_one()
+        values = []
+        oil_lines = self.sale_line_ids.filtered(
+            lambda line: line.product_id.product_tmpl_id.yt_is_oil
+            and line.product_id.product_tmpl_id.yt_oil_type_id)
+        for oil_type in oil_lines.mapped('product_id.product_tmpl_id.yt_oil_type_id'):
+            lines = oil_lines.filtered(
+                lambda line: line.product_id.product_tmpl_id.yt_oil_type_id == oil_type)
+            templates = lines.mapped('product_id.product_tmpl_id')
+            km = self._yt_shortest(templates.mapped('yt_oil_interval_km'))
+            days = self._yt_shortest(templates.mapped('yt_oil_interval_days'))
+            if km or days:
+                values.append(self._yt_event_values(
+                    'oil', 'oil:%s' % oil_type.id, km, days, source,
+                    oil_type=oil_type, product=lines[:1].product_id, done_date=done_date))
+        return values
 
     def _yt_cancel_maintenance_events(self):
         events = self.env['yt.vehicle.service.event'].sudo().search(

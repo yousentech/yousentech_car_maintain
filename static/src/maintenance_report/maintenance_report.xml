@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+ <t t-name="yousentech_car_maintain.MaintenanceReport">
+  <div class="o_yt_mr" dir="rtl">
+   <div class="o_yt_mr_wrap">
+    <t t-if="state.loading and !state.data"><div class="o_yt_mr_empty">جاري تحميل التقرير…</div></t>
+    <t t-elif="state.error"><div class="o_yt_mr_empty" role="alert"><t t-esc="state.error"/></div></t>
+    <t t-elif="state.data">
+     <t t-set="d" t-value="state.data"/>
+
+     <!-- ============ Vehicle detail ============ -->
+     <t t-if="type === 'customer' and state.vehicle">
+      <t t-set="v" t-value="state.vehicle"/>
+      <div class="o_yt_mr_head">
+       <div class="o_yt_mr_titles">
+        <div class="o_yt_mr_crumb"><a href="#" t-on-click.prevent="closeVehicle">سجل صيانة سيارات العميل</a> / <t t-esc="v.owner"/></div>
+        <h1><t t-esc="v.title"/></h1>
+        <div class="o_yt_mr_sub">آخر ممشى مسجل بأمر العمل: <b t-esc="v.odo"/><t t-if="v.odo_date"> · <t t-esc="v.odo_date"/></t></div>
+       </div>
+       <div class="o_yt_mr_actions">
+        <span class="o_yt_mr_plate o_yt_mr_plate_lg" dir="ltr" t-esc="v.plate"/>
+        <button class="o_yt_mr_btn" t-on-click="() => this.printPdf(v.id)">PDF للعميل</button>
+        <button t-if="canFollow" class="o_yt_mr_btn o_yt_mr_btn_primary" t-on-click="() => this.openFollowup(v.id, v.partner_id, false)">تسجيل متابعة</button>
+       </div>
+      </div>
+      <div class="o_yt_mr_grid2">
+       <div t-foreach="v.tracks" t-as="t" t-key="t.key" class="o_yt_mr_card o_yt_mr_track">
+        <div class="o_yt_mr_track_head">
+         <h2 t-esc="t.name"/>
+         <span t-attf-class="o_yt_mr_badge #{t.cls}"><i/><t t-esc="t.label"/></span>
+        </div>
+        <div class="o_yt_mr_rows">
+         <div class="o_yt_mr_row"><span>آخر تنفيذ</span><b t-esc="t.last"/></div>
+         <div t-if="t.is_oil" class="o_yt_mr_row"><span>الصنف</span><b t-esc="t.product or '—'"/></div>
+         <div t-if="!t.is_oil" class="o_yt_mr_row"><span>الفترة المحددة</span><b t-esc="t.interval or '—'"/></div>
+         <div class="o_yt_mr_row"><span>الموعد القادم</span><b t-esc="t.next"/></div>
+        </div>
+        <div t-if="t.is_oil and t.log.length" class="o_yt_mr_log">
+         <span class="o_yt_mr_log_title">سجل التغيير</span>
+         <div t-foreach="t.log" t-as="l" t-key="l_index" class="o_yt_mr_log_row">
+          <span t-esc="l.date"/><span t-esc="l.odo"/><span class="o_yt_mr_muted"><t t-esc="l.product"/><t t-if="l.history"> · ترحيل تاريخي</t></span>
+         </div>
+        </div>
+        <button t-if="canFollow and (t.status === 'due' or t.status === 'soon')" class="o_yt_mr_link" t-on-click="() => this.openFollowup(v.id, v.partner_id, t.key)">متابعة هذا البند</button>
+       </div>
+      </div>
+      <div class="o_yt_mr_note">المتبقي = التاريخ أو الكيلو أيهما أقرب. الكيلو محسوب من آخر ممشى مسجل في الورشة، وليس من ممشى السيارة الحالي.</div>
+      <div class="o_yt_mr_card o_yt_mr_tabs_card">
+       <div class="o_yt_mr_tabs" role="tablist">
+        <button role="tab" t-att-aria-selected="state.tab === 'timeline' ? 'true' : 'false'" t-attf-class="o_yt_mr_tab #{state.tab === 'timeline' ? 'active' : ''}" t-on-click="() => this.setTab('timeline')">الخط الزمني</button>
+        <button role="tab" t-att-aria-selected="state.tab === 'inspection' ? 'true' : 'false'" t-attf-class="o_yt_mr_tab #{state.tab === 'inspection' ? 'active' : ''}" t-on-click="() => this.setTab('inspection')">آخر فحص</button>
+        <button role="tab" t-att-aria-selected="state.tab === 'followups' ? 'true' : 'false'" t-attf-class="o_yt_mr_tab #{state.tab === 'followups' ? 'active' : ''}" t-on-click="() => this.setTab('followups')">المتابعات</button>
+       </div>
+       <div t-if="state.tab === 'timeline'" class="o_yt_mr_list">
+        <div t-if="!v.timeline.length" class="o_yt_mr_muted o_yt_mr_pad">لا توجد أوامر عمل ضمن الفترة.</div>
+        <div t-foreach="v.timeline" t-as="o" t-key="o.id" class="o_yt_mr_item">
+         <span class="o_yt_mr_item_date" t-esc="o.date"/>
+         <div class="o_yt_mr_item_body"><b t-esc="o.services"/><span class="o_yt_mr_muted" t-esc="o.meta"/></div>
+         <span t-attf-class="o_yt_mr_badge #{o.cls}"><i/><t t-esc="o.state"/></span>
+         <a href="#" t-on-click.prevent="() => this.openOrder(o.id)" t-esc="o.name"/>
+        </div>
+       </div>
+       <div t-if="state.tab === 'inspection'" class="o_yt_mr_list">
+        <div t-if="!v.inspection.order" class="o_yt_mr_muted o_yt_mr_pad">لا يوجد فحص مكتمل لهذه السيارة.</div>
+        <div t-else="" class="o_yt_mr_muted o_yt_mr_pad">آخر فحص مكتمل <t t-esc="v.inspection.date"/> · <a href="#" t-on-click.prevent="() => this.openOrder(v.inspection.order_id)" t-esc="v.inspection.order"/><t t-if="v.inspection.employee"> · فني الفحص: <t t-esc="v.inspection.employee"/></t></div>
+        <div t-if="v.inspection.order and !v.inspection.lines.length" class="o_yt_mr_muted o_yt_mr_pad">لا توجد بنود تحتاج متابعة.</div>
+        <div t-foreach="v.inspection.lines" t-as="l" t-key="l_index" class="o_yt_mr_item">
+         <div class="o_yt_mr_item_body"><b t-esc="l.name"/><span class="o_yt_mr_muted" t-esc="l.note"/></div>
+         <span t-attf-class="o_yt_mr_badge #{l.cls}"><i/><t t-esc="l.status"/></span>
+        </div>
+       </div>
+       <div t-if="state.tab === 'followups'" class="o_yt_mr_list">
+        <div t-if="!v.followups.length" class="o_yt_mr_muted o_yt_mr_pad">لا توجد متابعات مسجلة.</div>
+        <div t-foreach="v.followups" t-as="f" t-key="f_index" class="o_yt_mr_item o_yt_mr_item_col">
+         <div class="o_yt_mr_item_line"><b><t t-esc="f.result"/><t t-if="f.track"> · <t t-esc="f.track"/></t></b><span class="o_yt_mr_muted"><t t-esc="f.date"/> · <t t-esc="f.user"/></span></div>
+         <span t-if="f.note" t-esc="f.note"/>
+         <span t-if="f.next" class="o_yt_mr_muted" t-esc="f.next"/>
+        </div>
+       </div>
+      </div>
+     </t>
+
+     <!-- ============ Customer page ============ -->
+     <t t-elif="type === 'customer'">
+      <div class="o_yt_mr_head">
+       <div class="o_yt_mr_titles">
+        <div class="o_yt_mr_crumb">التقارير / متابعة العملاء</div>
+        <h1>سجل صيانة سيارات العميل</h1>
+        <div class="o_yt_mr_sub"><t t-esc="d.filters"/> · <a href="#" t-on-click.prevent="editFilters">تعديل</a></div>
+       </div>
+      </div>
+      <div class="o_yt_mr_card o_yt_mr_customer">
+       <div class="o_yt_mr_customer_id">
+        <div class="o_yt_mr_avatar" t-esc="d.partner.initials"/>
+        <div class="o_yt_mr_stack">
+         <div class="o_yt_mr_inline"><span class="o_yt_mr_name" t-esc="d.partner.name"/><span class="o_yt_mr_pill" t-esc="d.partner.type"/></div>
+         <span class="o_yt_mr_muted" dir="ltr" t-esc="d.partner.mobile"/>
+        </div>
+       </div>
+       <div class="o_yt_mr_stats">
+        <div><b t-esc="d.stats.vehicles"/><span>سيارات</span></div>
+        <div><b t-esc="d.stats.visits"/><span>زيارات</span></div>
+        <div><b t-esc="d.stats.orders"/><span>أوامر عمل مكتملة</span></div>
+       </div>
+       <div class="o_yt_mr_actions">
+        <a t-if="d.partner.tel" class="o_yt_mr_icon" t-att-href="d.partner.tel" aria-label="اتصال" title="اتصال"><i class="fa fa-phone"/></a>
+        <a t-if="d.partner.whatsapp" class="o_yt_mr_icon o_yt_mr_icon_wa" t-att-href="d.partner.whatsapp" target="_blank" rel="noopener" aria-label="واتساب" title="واتساب"><i class="fa fa-whatsapp"/></a>
+       </div>
+      </div>
+      <div class="o_yt_mr_section">
+       <div class="o_yt_mr_section_head"><h2>تحتاج متابعة</h2><span class="o_yt_mr_muted">المتبقي = التاريخ أو الكيلو أيهما أقرب، من آخر ممشى مسجل · اليوم <t t-esc="d.today"/></span></div>
+       <div class="o_yt_mr_card o_yt_mr_list">
+        <div t-if="!d.alerts.length" class="o_yt_mr_muted o_yt_mr_pad">لا توجد استحقاقات متأخرة أو قريبة.</div>
+        <div t-foreach="d.alerts" t-as="a" t-key="a_index" class="o_yt_mr_item">
+         <span t-attf-class="o_yt_mr_dot #{a.cls}"/>
+         <div class="o_yt_mr_item_body"><b><t t-esc="a.track"/> · <span dir="ltr" t-esc="a.plate"/></b><span class="o_yt_mr_muted">الموعد: <t t-esc="a.next"/></span></div>
+         <span t-attf-class="o_yt_mr_badge #{a.cls}"><i/><t t-esc="a.label"/></span>
+         <button t-if="canFollow" class="o_yt_mr_link" t-on-click="() => this.openFollowup(a.vehicle_id, d.partner.id, a.track_key)">متابعة</button>
+        </div>
+       </div>
+      </div>
+      <div class="o_yt_mr_section">
+       <div class="o_yt_mr_section_head"><h2>السيارات</h2></div>
+       <div t-if="!d.vehicles.length" class="o_yt_mr_card o_yt_mr_muted o_yt_mr_pad">لا توجد سيارات مرتبطة بالعميل.</div>
+       <div class="o_yt_mr_grid3">
+        <div t-foreach="d.vehicles" t-as="c" t-key="c.id" class="o_yt_mr_card o_yt_mr_vehicle">
+         <div class="o_yt_mr_vehicle_head">
+          <div class="o_yt_mr_inline">
+           <div class="o_yt_mr_car_icon"><i class="fa fa-car"/></div>
+           <div class="o_yt_mr_stack"><b t-esc="c.title"/><span class="o_yt_mr_muted"><t t-esc="c.odo"/><t t-if="c.last_visit"> · آخر زيارة <t t-esc="c.last_visit"/></t></span></div>
+          </div>
+          <span class="o_yt_mr_plate" dir="ltr" t-esc="c.plate"/>
+         </div>
+         <div class="o_yt_mr_rows">
+          <t t-foreach="c.tracks" t-as="t" t-key="t.key">
+           <div t-if="!t.is_oil or t.status !== 'na'" class="o_yt_mr_row"><span t-esc="t.name"/><span t-attf-class="o_yt_mr_badge #{t.cls}"><i/><t t-esc="t.label"/></span></div>
+          </t>
+         </div>
+         <button class="o_yt_mr_btn o_yt_mr_btn_soft" t-on-click="() => this.openVehicle(c.id)">سجل السيارة</button>
+        </div>
+       </div>
+      </div>
+     </t>
+
+     <!-- ============ Dues (upcoming / overdue) ============ -->
+     <t t-elif="type === 'upcoming' or type === 'overdue'">
+      <div class="o_yt_mr_head">
+       <div class="o_yt_mr_titles">
+        <div class="o_yt_mr_crumb">التقارير / متابعة العملاء</div>
+        <h1 t-esc="d.title"/>
+        <div class="o_yt_mr_sub"><t t-esc="d.filters"/> · محسوبة على اليوم <t t-esc="d.today"/> · <a href="#" t-on-click.prevent="editFilters">تعديل</a></div>
+       </div>
+       <div class="o_yt_mr_actions"><span class="o_yt_mr_pill o_yt_mr_pill_lg"><t t-esc="d.rows.length"/> بند</span></div>
+      </div>
+      <div class="o_yt_mr_card o_yt_mr_list">
+       <div t-if="!d.rows.length" class="o_yt_mr_muted o_yt_mr_pad">لا توجد بنود مطابقة.</div>
+       <div t-foreach="d.rows" t-as="r" t-key="r_index" class="o_yt_mr_item">
+        <span t-attf-class="o_yt_mr_dot #{r.cls}"/>
+        <div class="o_yt_mr_item_body"><b><t t-esc="r.track"/> · <span dir="ltr" t-esc="r.plate"/> · <t t-esc="r.vehicle"/></b><span class="o_yt_mr_muted"><t t-esc="r.customer"/><t t-if="r.mobile"> · <span dir="ltr" t-esc="r.mobile"/></t> · الموعد: <t t-esc="r.next"/></span></div>
+        <span t-attf-class="o_yt_mr_badge #{r.cls}"><i/><t t-esc="r.label"/></span>
+        <a t-if="r.whatsapp" class="o_yt_mr_icon o_yt_mr_icon_wa" t-att-href="r.whatsapp" target="_blank" rel="noopener" aria-label="واتساب" title="واتساب"><i class="fa fa-whatsapp"/></a>
+        <button t-if="canFollow" class="o_yt_mr_link" t-on-click="() => this.openFollowup(r.vehicle_id, r.partner_id, r.track_key)">متابعة</button>
+       </div>
+      </div>
+     </t>
+
+     <!-- ============ Lapsed customers ============ -->
+     <t t-elif="type === 'lapsed'">
+      <div class="o_yt_mr_head">
+       <div class="o_yt_mr_titles">
+        <div class="o_yt_mr_crumb">التقارير / متابعة العملاء</div>
+        <h1>العملاء المنقطعون</h1>
+        <div class="o_yt_mr_sub">آخر أمر عمل مكتمل قبل أكثر من <t t-esc="d.lapsed_days"/> يوم · <t t-esc="d.filters"/> · <a href="#" t-on-click.prevent="editFilters">تعديل</a></div>
+       </div>
+       <div class="o_yt_mr_actions"><span class="o_yt_mr_pill o_yt_mr_pill_lg"><t t-esc="d.rows.length"/> عميل</span></div>
+      </div>
+      <div class="o_yt_mr_card o_yt_mr_list">
+       <div t-if="!d.rows.length" class="o_yt_mr_muted o_yt_mr_pad">لا يوجد عملاء منقطعون حسب المدة المحددة.</div>
+       <div t-foreach="d.rows" t-as="r" t-key="r.partner_id" class="o_yt_mr_item">
+        <div class="o_yt_mr_item_body"><b t-esc="r.customer"/><span class="o_yt_mr_muted">آخر زيارة <t t-esc="r.last_visit"/> · <t t-esc="r.vehicles"/> سيارة · <t t-esc="r.orders"/> أمر عمل مكتمل<t t-if="r.mobile"> · <span dir="ltr" t-esc="r.mobile"/></t></span></div>
+        <span class="o_yt_mr_badge b-due"><i/>منذ <t t-esc="r.days"/> يوم</span>
+        <a t-if="r.tel" class="o_yt_mr_icon" t-att-href="r.tel" aria-label="اتصال" title="اتصال"><i class="fa fa-phone"/></a>
+        <a t-if="r.whatsapp" class="o_yt_mr_icon o_yt_mr_icon_wa" t-att-href="r.whatsapp" target="_blank" rel="noopener" aria-label="واتساب" title="واتساب"><i class="fa fa-whatsapp"/></a>
+       </div>
+      </div>
+     </t>
+
+     <!-- ============ Customer statement ============ -->
+     <t t-elif="type === 'statement'">
+      <div class="o_yt_mr_head">
+       <div class="o_yt_mr_titles">
+        <div class="o_yt_mr_crumb">التقارير / متابعة العملاء</div>
+        <h1>كشف حساب العميل لدى الورشة</h1>
+        <div class="o_yt_mr_sub"><t t-esc="d.partner.name"/> · <t t-esc="d.filters"/> · <a href="#" t-on-click.prevent="editFilters">تعديل</a></div>
+       </div>
+      </div>
+      <div class="o_yt_mr_grid4">
+       <div t-foreach="d.kpis" t-as="k" t-key="k_index" class="o_yt_mr_card o_yt_mr_kpi">
+        <span class="o_yt_mr_muted" t-esc="k.label"/><b t-esc="k.value"/><span class="o_yt_mr_hint" t-esc="k.hint"/>
+       </div>
+      </div>
+      <div t-if="d.to_refund or d.refunded" class="o_yt_mr_note">
+       <t t-if="d.refunded">مبالغ مردودة للعميل ضمن الفترة: <b t-esc="d.refunded"/>. </t>
+       <t t-if="d.to_refund">مستحق رده للعميل حتى اليوم: <b t-esc="d.to_refund"/>.</t>
+      </div>
+      <div class="o_yt_mr_section">
+       <div class="o_yt_mr_section_head"><h2>الحركات ضمن الفترة</h2></div>
+       <div class="o_yt_mr_card o_yt_mr_table_wrap">
+        <table class="o_yt_mr_table">
+         <thead><tr><th>التاريخ</th><th>النوع</th><th>المرجع</th><th>أمر العمل</th><th>المبلغ</th></tr></thead>
+         <tbody>
+          <tr t-if="!d.movements.length"><td colspan="5" class="o_yt_mr_muted">لا توجد حركات ضمن الفترة.</td></tr>
+          <tr t-foreach="d.movements" t-as="m" t-key="m_index"><td t-esc="m.date"/><td t-esc="m.type"/><td t-esc="m.ref"/><td t-esc="m.order"/><td t-esc="m.amount"/></tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+      <div class="o_yt_mr_section">
+       <div class="o_yt_mr_section_head"><h2>أوامر العمل والرصيد القائم</h2></div>
+       <div class="o_yt_mr_card o_yt_mr_table_wrap">
+        <table class="o_yt_mr_table">
+         <thead><tr><th>أمر العمل</th><th>تاريخ الوصول</th><th>السيارة</th><th>صافي الفوترة</th><th>المستحق</th></tr></thead>
+         <tbody>
+          <tr t-if="!d.orders.length"><td colspan="5" class="o_yt_mr_muted">لا توجد أوامر عمل.</td></tr>
+          <tr t-foreach="d.orders" t-as="o" t-key="o.id"><td><a href="#" t-on-click.prevent="() => this.openOrder(o.id)" t-esc="o.name"/></td><td t-esc="o.date"/><td dir="ltr" t-esc="o.vehicle"/><td t-esc="o.invoiced"/><td t-esc="o.due"/></tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </t>
+    </t>
+   </div>
+  </div>
+ </t>
+</templates>

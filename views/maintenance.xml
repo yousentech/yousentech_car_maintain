@@ -185,5 +185,5 @@
   <field name="res_model">yt.vehicle.followup</field>
   <field name="view_mode">tree,form</field>
  </record>
- <menuitem id="menu_yt_followups" name="متابعات العملاء" parent="menu_workshop_root" action="action_yt_followups" sequence="40"/>
+ <menuitem id="menu_yt_followups" name="متابعات العملاء" parent="menu_workshop_root" action="action_yt_followups" sequence="40" groups="yousentech_car_maintain.group_workshop_followup,yousentech_car_maintain.group_workshop_followup_reports"/>
 </odoo>

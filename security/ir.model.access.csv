@@ -28,3 +28,7 @@ a_service_event_system,yt.vehicle.service.event system,model_yt_vehicle_service_
 a_followup_user,yt.vehicle.followup user,model_yt_vehicle_followup,base.group_user,1,0,0,0
 a_followup_writer,yt.vehicle.followup writer,model_yt_vehicle_followup,yousentech_car_maintain.group_workshop_followup,1,1,1,0
 a_followup_system,yt.vehicle.followup system,model_yt_vehicle_followup,base.group_system,1,1,1,1
+a_maint_report_wizard,yt.maintenance.report.wizard reports,model_yt_maintenance_report_wizard,yousentech_car_maintain.group_workshop_followup_reports,1,1,1,1
+a_maint_report_wizard_system,yt.maintenance.report.wizard system,model_yt_maintenance_report_wizard,base.group_system,1,1,1,1
+a_oil_history_wizard,yt.oil.history.wizard system,model_yt_oil_history_wizard,base.group_system,1,1,1,1
+a_periodic_reminder_wizard,yt.periodic.reminder.wizard periodic,model_yt_periodic_reminder_wizard,yousentech_car_maintain.group_workshop_periodic,1,1,1,1
