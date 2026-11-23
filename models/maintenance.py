@@ -95,9 +95,9 @@ class WorkshopMaintenanceEvent(models.Model):
     track_key = fields.Char(required=True, readonly=True, index=True)
     display_track = fields.Char(string='المسار', compute='_compute_display_track')
     done_date = fields.Date(string='تاريخ التنفيذ', required=True, readonly=True)
-    done_odometer = fields.Float(string='ممشى التنفيذ', readonly=True)
+    done_odometer = fields.Float(string='ممشى التنفيذ', readonly=True, digits=(16, 0))
     has_odometer = fields.Boolean(string='الممشى متوفر', readonly=True)
-    interval_km = fields.Float(string='الفترة المطبقة (كم)', readonly=True)
+    interval_km = fields.Float(string='الفترة المطبقة (كم)', readonly=True, digits=(16, 0))
     interval_days = fields.Integer(string='الفترة المطبقة (يوم)', readonly=True)
     interval_source = fields.Selection([
         ('company', 'إعدادات الشركة'), ('service', 'صنف الخدمة'),
@@ -105,9 +105,13 @@ class WorkshopMaintenanceEvent(models.Model):
         ('history', 'ترحيل تاريخي'),
     ], string='مصدر الفترة', readonly=True)
     next_due_date = fields.Date(string='الاستحقاق القادم (تاريخ)', readonly=True)
-    next_due_km = fields.Float(string='الاستحقاق القادم (كم)', readonly=True)
+    next_due_km = fields.Float(string='الاستحقاق القادم (كم)', readonly=True, digits=(16, 0))
     state = fields.Selection([('active', 'فعال'), ('cancelled', 'ملغي')],
                              string='الحالة', default='active', required=True, readonly=True)
+
+    current_state = fields.Selection([
+        ('current', 'الحالي'), ('superseded', 'مستبدل بحدث أحدث'), ('cancelled', 'ملغي'),
+    ], string='وضع الحدث', compute='_compute_current_state')
 
     _sql_constraints = [
         ('order_track_unique', 'unique(order_id, track_key)',
@@ -119,6 +123,21 @@ class WorkshopMaintenanceEvent(models.Model):
         for event in self:
             event.display_track = (event.oil_type_id.name if event.track_type == 'oil'
                                    else _('الصيانة الدورية'))
+
+    def _compute_current_state(self):
+        """Superseded = an active event of the same vehicle/track is more recent (not stored)."""
+        active = self.filtered(lambda e: e.state == 'active')
+        latest = {}
+        if active:
+            for event in self.search([('vehicle_id', 'in', active.vehicle_id.ids), ('state', '=', 'active')],
+                                     order='done_date desc, id desc'):
+                latest.setdefault((event.vehicle_id.id, event.track_key), event.id)
+        for event in self:
+            if event.state != 'active':
+                event.current_state = 'cancelled'
+            else:
+                is_latest = latest.get((event.vehicle_id.id, event.track_key)) == event.id
+                event.current_state = 'current' if is_latest else 'superseded'
 
     @api.depends('display_track', 'vehicle_id', 'done_date')
     def _compute_display_name(self):

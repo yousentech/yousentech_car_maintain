@@ -94,19 +94,21 @@
   <field name="name">yt.vehicle.service.event.tree</field>
   <field name="model">yt.vehicle.service.event</field>
   <field name="arch" type="xml">
-   <tree string="أحداث الصيانة" create="false" edit="false" delete="false" decoration-muted="state == 'cancelled'">
+   <tree string="أحداث الصيانة" create="false" edit="false" delete="false" decoration-muted="current_state != 'current'">
     <field name="done_date"/>
     <field name="vehicle_id"/>
     <field name="partner_id"/>
     <field name="display_track"/>
     <field name="order_id"/>
-    <field name="done_odometer"/>
-    <field name="interval_km"/>
-    <field name="interval_days"/>
+    <field name="has_odometer" column_invisible="True"/>
+    <field name="done_odometer" invisible="not has_odometer"/>
+    <field name="interval_km" invisible="not interval_km"/>
+    <field name="interval_days" invisible="not interval_days"/>
     <field name="interval_source"/>
     <field name="next_due_date"/>
-    <field name="next_due_km"/>
-    <field name="state"/>
+    <field name="next_due_km" invisible="not next_due_km"/>
+    <field name="state" column_invisible="True"/>
+    <field name="current_state" widget="badge" decoration-success="current_state == 'current'" decoration-muted="current_state != 'current'"/>
     <field name="company_id" groups="base.group_multi_company"/>
    </tree>
   </field>
