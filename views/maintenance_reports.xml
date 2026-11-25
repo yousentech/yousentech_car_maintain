@@ -129,7 +129,7 @@
   <field name="view_mode">form</field>
   <field name="target">new</field>
  </record>
- <menuitem id="menu_yt_oil_history" name="ترحيل تاريخي للزيوت" parent="menu_inspection_config" action="action_yt_oil_history_wizard" sequence="35" groups="base.group_system"/>
+ <menuitem id="menu_yt_oil_history" name="ترحيل تاريخي للزيوت" parent="menu_inspection_config" action="action_yt_oil_history_wizard" sequence="35" groups="yousentech_car_maintain.group_workshop_oil_tracking_enabled"/>
 
  <!-- Customer PDF: maintenance record for one vehicle (no amounts, no previous owner). -->
  <record id="action_report_customer_maintenance" model="ir.actions.report">
