@@ -390,9 +390,26 @@ class WorkshopSale(models.Model):
         self._compute_workshop_finance()
         if not self.currency_id.is_zero(self.finance_received - self.finance_refunded):
             return False
-        if self.sale_order_id.picking_ids.filtered(lambda p: p.state == 'done'):
+        if self._workshop_has_unreturned_delivery(self.sale_order_id):
             return False
         return True
+
+    def _workshop_has_unreturned_delivery(self, sale):
+        """True when the sale order still has delivered quantities not brought back by a done return
+        (net of done moves to and from the customer location, per product)."""
+        moves = sale.picking_ids.filtered(lambda p: p.state == 'done').mapped('move_ids').filtered(
+            lambda m: m.state == 'done')
+        net = {}
+        for move in moves:
+            if move.location_dest_id.usage == 'customer':
+                sign = 1
+            elif move.location_id.usage == 'customer':
+                sign = -1
+            else:
+                continue
+            net[move.product_id] = net.get(move.product_id, 0.0) + sign * move.product_qty
+        return any(
+            qty > (product.uom_id.rounding or 0.0) / 2 for product, qty in net.items())
 
     @api.depends('sale_order_id.invoice_ids', 'advance_payment_ids',
                  'advance_payment_ids.state', 'advance_payment_ids.amount')
@@ -443,8 +460,7 @@ class WorkshopSale(models.Model):
                 and not order.currency_id.is_zero(move.amount_residual))
             if unsettled:
                 raise UserError(_('يجب تسوية الفواتير والإشعارات الدائنة المرحلة قبل الإلغاء.'))
-            if order.sale_order_id and order.sale_order_id.picking_ids.filtered(
-                lambda picking: picking.state == 'done'):
+            if order.sale_order_id and order._workshop_has_unreturned_delivery(order.sale_order_id):
                 raise UserError(_('يوجد صرف مخزني منفذ؛ عالج مرتجع المخزون قبل إلغاء أمر العمل.'))
 
     def _check_completed_cancel_permission(self):
@@ -612,6 +628,8 @@ class WorkshopSale(models.Model):
                 if returns:
                     notes.append(_('مرتجع مخزني معتمد: %s') % ', '.join(returns.mapped('name')))
                 if sale.state != 'cancel':
+                    if getattr(sale, 'locked', False) and hasattr(sale, 'action_unlock'):
+                        sale.action_unlock()
                     sale._action_cancel()
                     notes.append(_('إلغاء أمر البيع %s') % sale.name)
                 order.write({'previous_sale_order_ids': [(4, sale.id)], 'sale_order_id': False})
