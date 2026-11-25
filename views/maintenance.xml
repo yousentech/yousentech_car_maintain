@@ -14,7 +14,7 @@
        <field name="yt_periodic_interval_days"/>
        <div colspan="2" class="text-muted">فارغ = تُطبق فترة الشركة. عند تعدد الخدمات في أمر واحد تُطبق الفترة الأقصر.</div>
       </group>
-      <group string="متابعة الزيت">
+      <group string="متابعة الزيت" groups="yousentech_car_maintain.group_workshop_oil_tracking_enabled">
        <field name="yt_is_oil"/>
        <field name="yt_oil_type_id" invisible="not yt_is_oil" required="yt_is_oil" options="{'no_create': True}"/>
        <field name="yt_oil_interval_km" invisible="not yt_is_oil"/>
@@ -41,6 +41,7 @@
       <field name="periodic_interval_days"/>
       <field name="due_soon_days"/>
       <field name="due_soon_km"/>
+      <field name="enable_oil_tracking" colspan="4"/>
       <field name="enforce_maintenance_odometer" colspan="4"/>
      </group>
     </div>
@@ -88,7 +89,7 @@
   <field name="res_model">yt.oil.type</field>
   <field name="view_mode">tree</field>
  </record>
- <menuitem id="menu_yt_oil_types" name="أنواع الزيوت" parent="menu_inspection_config" action="action_yt_oil_types" sequence="20" groups="yousentech_car_maintain.group_workshop_periodic,yousentech_car_maintain.group_workshop_followup,yousentech_car_maintain.group_workshop_followup_reports"/>
+ <menuitem id="menu_yt_oil_types" name="أنواع الزيوت" parent="menu_inspection_config" action="action_yt_oil_types" sequence="20" groups="yousentech_car_maintain.group_workshop_oil_tracking_enabled"/>
 
  <!-- Maintenance events (system-generated, read-only). -->
  <record id="view_yt_service_event_tree" model="ir.ui.view">

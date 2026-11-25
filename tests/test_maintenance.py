@@ -17,7 +17,7 @@ class MaintenanceCase(TransactionCase):
         cls.settings = cls.env['yt.workshop.finance.settings'].search(
             [('company_id', '=', cls.company.id)], limit=1) or cls.env['yt.workshop.finance.settings'].create(
             {'company_id': cls.company.id})
-        cls.settings.write({'periodic_interval_km': 10000, 'periodic_interval_days': 180})
+        cls.settings.write({'periodic_interval_km': 10000, 'periodic_interval_days': 180, 'enable_oil_tracking': True})
         cls.partner = cls.env['res.partner'].create({'name': 'Maintenance Customer'})
         cls.vehicle = cls.env['yt.reception.vehicle'].create({
             'partner_id': cls.partner.id, 'plate': 'MNT100', 'plate_country': 'SA'})
@@ -261,3 +261,15 @@ class TestWorkOrderAudit(MaintenanceCase):
         order = self._order(self.service)
         order.write({'discount_type': 'fixed', 'discount_value': 2.0})
         self.assertTrue(order.message_ids.filtered(lambda m: 'الإجمالي النهائي' in str(m.body or '')))
+
+
+class TestOilTrackingSwitch(MaintenanceCase):
+    def test_oil_disabled_records_periodic_only(self):
+        self.settings.enable_oil_tracking = False
+        order = self._order(self.service | self.engine_oil, periodic=True)
+        self._complete(order)
+        self.assertEqual(order.service_event_ids.mapped('track_type'), ['periodic'])
+        tracks = self.env['yt.maintenance.report']._vehicle_tracks(self.vehicle)[self.vehicle.id]
+        self.assertEqual([t['key'] for t in tracks], ['periodic'])
+        group = self.env.ref('yousentech_car_maintain.group_workshop_oil_tracking_enabled')
+        self.assertNotIn(group, self.env.ref('base.group_user').implied_ids)

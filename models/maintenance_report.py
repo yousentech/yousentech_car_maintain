@@ -125,6 +125,7 @@ class WorkshopMaintenanceReport(models.AbstractModel):
             by_vehicle.setdefault(event.vehicle_id.id, []).append(event)
         oil_types = self.env['yt.oil.type'].search([])
         thresholds = {}
+        oil_enabled = {}
         result = {}
         for vehicle in vehicles:
             if vehicle.company_id.id not in thresholds:
@@ -135,6 +136,8 @@ class WorkshopMaintenanceReport(models.AbstractModel):
             keys = [('periodic', _('الصيانة الدورية'), False)]
             used_oils = {e.oil_type_id.id for e in vehicle_events if e.track_type == 'oil'}
             for oil_type in oil_types:
+                if not oil_enabled.setdefault(vehicle.company_id.id, self.env['yt.workshop.finance.settings']._yt_oil_enabled(vehicle.company_id)):
+                    break
                 if include_empty_oils or oil_type.id in used_oils:
                     keys.append(('oil:%s' % oil_type.id, oil_type.name, oil_type))
             tracks = []
@@ -573,6 +576,8 @@ class WorkshopOilHistoryWizard(models.TransientModel):
         self.ensure_one()
         if not self.env.user.has_group('base.group_system'):
             raise AccessError(_('الترحيل التاريخي متاح لمدير النظام فقط.'))
+        if not self.env['yt.workshop.finance.settings']._yt_oil_enabled(self.company_id):
+            raise UserError(_('متابعة الزيوت غير مفعّلة لهذه الشركة في إعدادات الورشة.'))
         if not self.env['product.template'].sudo().search_count([('yt_is_oil', '=', True)]):
             raise UserError(_('عرّف أصناف الزيت وأنواعها في بطاقات الأصناف قبل تشغيل الترحيل.'))
         Order = self.env['yt.reception.order'].sudo()

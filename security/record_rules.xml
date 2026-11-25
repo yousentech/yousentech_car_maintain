@@ -50,6 +50,7 @@
  <record id="group_workshop_periodic" model="res.groups"><field name="name">احتساب أمر العمل كصيانة دورية</field><field name="category_id" ref="module_category_workshop_permissions"/></record>
  <record id="group_workshop_followup" model="res.groups"><field name="name">تسجيل متابعات العملاء للصيانة</field><field name="category_id" ref="module_category_workshop_permissions"/></record>
  <record id="group_workshop_followup_reports" model="res.groups"><field name="name">عرض تقارير متابعة العملاء والصيانة الدورية</field><field name="category_id" ref="module_category_workshop_permissions"/></record>
+ <record id="group_workshop_oil_tracking_enabled" model="res.groups"><field name="name">متابعة الزيوت مفعّلة (تقني – يُدار من إعدادات الورشة)</field></record>
  <record id="service_event_company_rule" model="ir.rule"><field name="name">Maintenance events by company</field><field name="model_id" ref="model_yt_vehicle_service_event"/><field name="domain_force">[('company_id','in',company_ids)]</field></record>
  <record id="followup_company_rule" model="ir.rule"><field name="name">Vehicle follow-ups by company</field><field name="model_id" ref="model_yt_vehicle_followup"/><field name="domain_force">[('company_id','in',company_ids)]</field></record>
 </odoo>

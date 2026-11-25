@@ -66,10 +66,45 @@ class WorkshopMaintenanceSettings(models.Model):
     periodic_interval_days = fields.Integer(string='فترة الصيانة الدورية (يوم)')
     due_soon_days = fields.Integer(string='تنبيه قريب الاستحقاق قبل (يوم)', default=15)
     due_soon_km = fields.Float(string='تنبيه قريب الاستحقاق قبل (كم)', default=500)
+    enable_oil_tracking = fields.Boolean(
+        string='تفعيل متابعة الزيوت',
+        help='عند الإيقاف (الافتراضي) لا تُسجَّل أحداث الزيوت ولا تظهر حقولها وقوائمها وأقسامها في التقارير. '
+             'الصيانة الدورية تعمل مستقلة عن هذا الخيار.')
     enforce_maintenance_odometer = fields.Boolean(
         string='منع إكمال أوامر الصيانة والزيوت بدون عداد صحيح',
         help='عند التفعيل: لا يكتمل أمر العمل الذي يحتوي صنف زيت أو مفعَّل كصيانة دورية إذا كان العداد صفراً '
              'أو أقل من آخر قراءة مسجلة للسيارة. باقي أوامر العمل لا تتأثر.')
+
+    @api.model
+    def _yt_oil_enabled(self, company):
+        return bool(self.sudo().search([('company_id', '=', company.id)], limit=1).enable_oil_tracking)
+
+    @api.model
+    def _yt_sync_oil_group(self):
+        """Show oil fields/menus to internal users only while at least one company enables oil tracking."""
+        group = self.env.ref('yousentech_car_maintain.group_workshop_oil_tracking_enabled', raise_if_not_found=False)
+        user_group = self.env.ref('base.group_user')
+        if not group:
+            return
+        enabled = bool(self.sudo().search_count([('enable_oil_tracking', '=', True)]))
+        if enabled and group not in user_group.implied_ids:
+            user_group.sudo().write({'implied_ids': [(4, group.id)]})
+        elif not enabled and group in user_group.implied_ids:
+            user_group.sudo().write({'implied_ids': [(3, group.id)]})
+            group.sudo().write({'users': [(5, 0, 0)]})
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        if any('enable_oil_tracking' in vals for vals in vals_list):
+            self._yt_sync_oil_group()
+        return records
+
+    def write(self, vals):
+        result = super().write(vals)
+        if 'enable_oil_tracking' in vals:
+            self._yt_sync_oil_group()
+        return result
 
     @api.constrains('periodic_interval_km', 'periodic_interval_days', 'due_soon_days', 'due_soon_km')
     def _check_yt_periodic_settings(self):
@@ -292,7 +327,8 @@ class WorkshopOrderMaintenance(models.Model):
                 km, days, source = order._yt_periodic_interval()
                 if km or days:
                     values.append(order._yt_event_values('periodic', 'periodic', km, days, source))
-            values += order._yt_oil_event_values('oil_product')
+            if self.env['yt.workshop.finance.settings']._yt_oil_enabled(order.company_id):
+                values += order._yt_oil_event_values('oil_product')
             existing = Event.with_context(active_test=False).search([('order_id', '=', order.id)])
             keys = set()
             for vals in values:
