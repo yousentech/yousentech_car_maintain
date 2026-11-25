@@ -532,28 +532,95 @@ class WorkshopSale(models.Model):
     def _compute_can_return_to_draft(self):
         allowed = self.env.user.has_group('yousentech_car_maintain.group_workshop_return_to_draft')
         for order in self:
-            invoices = order._workshop_financial_documents().filtered(
-                lambda move: move.move_type == 'out_invoice')
             order.can_return_to_draft = bool(
-                allowed and order.state == 'in_progress' and order.workshop_approved
-                and not invoices and not order.sale_order_id)
+                allowed and order.state in ('approved', 'in_progress', 'done')
+                and order.workshop_approved and not order._workshop_return_to_draft_blocker())
+
+    def _workshop_return_to_draft_blocker(self):
+        """Reason the order cannot go back to draft, or False.
+        Draft invoices/credit notes are cancelled by the action. A posted invoice is only
+        accepted when it is fully credited by posted credit notes with nothing left open."""
+        self.ensure_one()
+        current = self._workshop_current_documents()
+        posted = current.filtered(lambda m: m.state == 'posted')
+        if not posted:
+            return False
+        invoiced = sum(posted.filtered(lambda m: m.move_type == 'out_invoice').mapped('amount_total'))
+        credited = sum(posted.filtered(lambda m: m.move_type == 'out_refund').mapped('amount_total'))
+        if not self.currency_id.is_zero(invoiced - credited):
+            return _('يوجد فاتورة مرحّلة لم يصدر لها إشعار دائن كامل. أصدر إشعاراً دائناً كاملاً للفاتورة أولاً ثم أعد المحاولة.')
+        if posted.filtered(lambda m: not self.currency_id.is_zero(m.amount_residual)):
+            return _('الفاتورة والإشعار الدائن غير مسوّيين بالكامل. سوِّ الفاتورة مع الإشعار الدائن أولاً ثم أعد المحاولة.')
+        return False
+
+    def _workshop_return_delivered_stock(self, sale):
+        """Create and validate a return for every delivered (done, outgoing) picking of the sale
+        order that still has returnable quantities. Raises if a return cannot be validated, so the
+        whole action rolls back."""
+        self.ensure_one()
+        returned = self.env['stock.picking']
+        deliveries = sale.picking_ids.filtered(
+            lambda p: p.state == 'done' and p.picking_type_code == 'outgoing')
+        for picking in deliveries:
+            wizard = self.env['stock.return.picking'].with_context(
+                active_id=picking.id, active_ids=picking.ids, active_model='stock.picking').create(
+                {'picking_id': picking.id})
+            if hasattr(wizard, '_onchange_picking_id'):
+                wizard._onchange_picking_id()
+            lines = wizard.product_return_moves.filtered(lambda l: l.quantity > 0)
+            if not lines:
+                continue  # already fully returned
+            (wizard.product_return_moves - lines).unlink()
+            new_picking_id, _picking_type = wizard._create_returns()
+            return_picking = self.env['stock.picking'].browse(new_picking_id)
+            return_picking.action_assign()
+            for move in return_picking.move_ids.filtered(lambda m: m.state not in ('done', 'cancel')):
+                move.quantity = move.product_uom_qty
+                if 'picked' in move._fields:
+                    move.picked = True
+            result = return_picking.with_context(
+                skip_backorder=True, skip_immediate=True, skip_sms=True, cancel_backorder=True
+            ).button_validate()
+            if return_picking.state != 'done':
+                raise UserError(_('تعذر اعتماد المرتجع المخزني %s تلقائياً (قد يحتاج أرقام تشغيلات/تسلسل). '
+                                  'اعتمد المرتجع يدوياً من أمر البيع ثم أعد المحاولة.') % return_picking.name)
+            returned |= return_picking
+        return returned
 
     def action_return_to_draft_before_invoice(self):
+        """Single «إرجاع للمسودة» button for every case:
+        no sale order / sale order without invoice / draft invoices (+ delivered stock) /
+        posted invoices fully credited. Payments are never touched."""
         self.check_access_rights('write')
         self.check_access_rule('write')
         if not self.env.user.has_group('yousentech_car_maintain.group_workshop_return_to_draft'):
             raise UserError(_('ليس لديك صلاحية إرجاع أمر العمل للمسودة.'))
         for order in self:
-            if order.state != 'in_progress' or not order.workshop_approved:
-                raise UserError(_('إرجاع أمر العمل للمسودة متاح بعد بدء التنفيذ فقط.'))
-            invoices = order._workshop_financial_documents().filtered(
-                lambda move: move.move_type == 'out_invoice')
-            if invoices:
-                raise UserError(_('لا يمكن إرجاع أمر العمل للمسودة بعد إنشاء فاتورة مرتبطة به.'))
-            if order.sale_order_id:
-                raise UserError(_('يوجد أمر بيع مرتبط بأمر العمل؛ عالج أمر البيع أولاً قبل إرجاعه للمسودة.'))
+            if order.state not in ('approved', 'in_progress', 'done') or not order.workshop_approved:
+                raise UserError(_('إرجاع أمر العمل للمسودة متاح للأوامر المعتمدة فقط.'))
+            blocker = order._workshop_return_to_draft_blocker()
+            if blocker:
+                raise UserError(blocker)
+            notes = []
+            sale = order.sale_order_id
+            if sale:
+                drafts = order._workshop_current_documents().filtered(lambda m: m.state == 'draft')
+                if drafts:
+                    drafts.button_cancel()
+                    notes.append(_('إلغاء الفواتير/الإشعارات المسودة: %s') % ', '.join(drafts.mapped('display_name')))
+                returns = order._workshop_return_delivered_stock(sale)
+                if returns:
+                    notes.append(_('مرتجع مخزني معتمد: %s') % ', '.join(returns.mapped('name')))
+                if sale.state != 'cancel':
+                    sale._action_cancel()
+                    notes.append(_('إلغاء أمر البيع %s') % sale.name)
+                order.write({'previous_sale_order_ids': [(4, sale.id)], 'sale_order_id': False})
+                order.sale_line_ids.write({'sale_line_id': False})
             order.write({'state': 'draft', 'workshop_approved': False})
-            order.message_post(body=_('تم إرجاع أمر العمل إلى المسودة للتعديل قبل إنشاء الفاتورة.'))
+            body = _('تم إرجاع أمر العمل إلى المسودة للتعديل.')
+            if notes:
+                body += ' ' + ' · '.join(notes)
+            order.message_post(body=body)
         return True
 
     def action_approve_workshop(self):

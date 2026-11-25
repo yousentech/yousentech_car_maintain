@@ -214,3 +214,23 @@ class TestMaintenanceReports(MaintenanceCase):
         self._order(self.engine_oil, odometer_in=50500)._yt_check_maintenance_odometer()
         # Orders without oil or periodic maintenance are never blocked.
         self._order(self.service, odometer_in=0)._yt_check_maintenance_odometer()
+
+
+class TestReturnToDraft(MaintenanceCase):
+    def test_return_to_draft_without_sale_order(self):
+        self.env.user.groups_id |= self.env.ref('yousentech_car_maintain.group_workshop_return_to_draft')
+        order = self._order(self.service)
+        order.write({'state': 'in_progress', 'workshop_approved': True})
+        self.assertTrue(order.can_return_to_draft)
+        order.action_return_to_draft_before_invoice()
+        self.assertEqual(order.state, 'draft')
+        self.assertFalse(order.workshop_approved)
+
+    def test_return_to_draft_cancels_maintenance_events_of_done_order(self):
+        self.env.user.groups_id |= self.env.ref('yousentech_car_maintain.group_workshop_return_to_draft')
+        order = self._order(self.engine_oil)
+        order.write({'workshop_approved': True})
+        self._complete(order)
+        self.assertEqual(order.service_event_ids.state, 'active')
+        order.action_return_to_draft_before_invoice()
+        self.assertEqual(order.service_event_ids.state, 'cancelled')
