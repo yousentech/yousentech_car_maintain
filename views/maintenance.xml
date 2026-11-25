@@ -212,4 +212,15 @@
    </xpath>
   </field>
  </record>
+ <!-- Work order form had no chatter: show the history (tracking, audit and step logs). -->
+ <record id="view_reception_workshop_form_yt_chatter" model="ir.ui.view">
+  <field name="name">yt.reception.order.workshop.form.yt.chatter</field>
+  <field name="model">yt.reception.order</field>
+  <field name="inherit_id" ref="yousentech_car_maintain.view_reception_workshop_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="//sheet" position="after">
+    <div class="oe_chatter"><field name="message_follower_ids"/><field name="message_ids"/></div>
+   </xpath>
+  </field>
+ </record>
 </odoo>
