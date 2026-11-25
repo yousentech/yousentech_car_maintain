@@ -667,7 +667,8 @@ class WorkshopSale(models.Model):
             order._check_zero_price_permissions()
             values = {'workshop_approved': True, 'state': 'approved'}
             if not order.name or order.name == '/':
-                sequence = self.env['ir.sequence'].next_by_code('yt.reception.order')
+                # Number from the work order's branch sequence, not the user's active company.
+                sequence = self.env['ir.sequence'].with_company(order.company_id).next_by_code('yt.reception.order')
                 if not sequence:
                     raise UserError(_('تعذر توليد رقم أمر العمل؛ تحقق من إعدادات التسلسل.'))
                 values['name'] = sequence
@@ -1001,6 +1002,9 @@ class WorkshopSale(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            # The branch is the work order's company; never let it fall back to another active company.
+            if vals.get('company_id') and not vals.get('branch_id'):
+                vals['branch_id'] = vals['company_id']
             if not vals.get('workshop_tax_id'):
                 company = self.env['res.company'].browse(vals.get('company_id') or self.env.company.id)
                 default_tax = self._workshop_default_sale_tax(company)
