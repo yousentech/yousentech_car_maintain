@@ -146,21 +146,21 @@
    <t t-call="web.external_layout">
     <t t-set="p" t-value="payload"/>
     <div class="page" dir="rtl" style="font-size: 12pt; text-align: right;">
-     <h2 style="color: #3a2bb0;">سجل صيانة السيارة</h2>
+     <h2 style="color: #4f4b8f;">سجل صيانة السيارة</h2>
      <table class="table table-sm" style="margin-bottom: 16px;">
       <tr><td><strong>العميل</strong></td><td t-esc="p['owner']"/><td><strong>اللوحة</strong></td><td dir="ltr" t-esc="p['plate']"/></tr>
       <tr><td><strong>السيارة</strong></td><td t-esc="p['title']"/><td><strong>آخر ممشى مسجل</strong></td><td><t t-esc="p['odo']"/> <t t-if="p['odo_date']">(<t t-esc="p['odo_date']"/>)</t></td></tr>
      </table>
      <h4>مواعيد الصيانة القادمة</h4>
      <table class="table table-sm">
-      <thead><tr style="background: #f1eeff;"><th>البند</th><th>آخر تنفيذ</th><th>الموعد القادم (أيهما أقرب)</th><th>الحالة</th></tr></thead>
+      <thead><tr style="background: #eaf4f5;"><th>البند</th><th>آخر تنفيذ</th><th>الموعد القادم (أيهما أقرب)</th><th>الحالة</th></tr></thead>
       <tbody>
        <tr t-foreach="p['tracks']" t-as="t"><td t-esc="t['name']"/><td t-esc="t['last']"/><td t-esc="t['next']"/><td t-esc="t['label']"/></tr>
       </tbody>
      </table>
      <h4>سجل الأعمال المنفذة</h4>
      <table class="table table-sm">
-      <thead><tr style="background: #f1eeff;"><th>التاريخ</th><th>رقم الأمر</th><th>الممشى</th><th>الأعمال</th></tr></thead>
+      <thead><tr style="background: #eaf4f5;"><th>التاريخ</th><th>رقم الأمر</th><th>الممشى</th><th>الأعمال</th></tr></thead>
       <tbody>
        <tr t-foreach="p['history']" t-as="h"><td t-esc="h['date']"/><td t-esc="h['name']"/><td t-esc="h['odo']"/><td t-esc="h['work']"/></tr>
       </tbody>

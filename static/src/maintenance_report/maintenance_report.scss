@@ -1,142 +1,225 @@
-// Customer follow-up & periodic maintenance reports (REPORTS_DESIGN.md §11).
-// Identity: purple #5b45e0 for actions only; system tints on section icons;
-// green / amber / red / grey reserved for statuses, always with text.
-$yt-mr-primary: #5b45e0;
-$yt-mr-primary-dark: #3a2bb0;
-$yt-mr-ink: #1f2547;
-$yt-mr-muted: #5e6584;
-$yt-mr-ground: #f7f6fc;
-$yt-mr-line: #f1eff8;
-$yt-mr-shadow: 0 1px 2px rgba(31, 37, 71, 0.04), 0 8px 24px rgba(42, 31, 122, 0.04);
+// Customer follow-up & periodic maintenance reports (REPORTS_DESIGN.md §11, §11.21).
+// Visual language aligned with the Car Film module (yousentech_wo_v4): indigo primary,
+// teal accent, hero band with glass stat boxes, structured panels with tinted headers,
+// compact radii and real tables. Status colours (green/amber/red/grey) carry meaning only.
+$mr-primary: #4f4b8f;
+$mr-primary-dark: #39356f;
+$mr-accent: #2f858b;
+$mr-accent-dark: #256e73;
+$mr-accent-soft: #eaf6f6;
+$mr-ink: #26363a;
+$mr-muted: #66767c;
+$mr-line: #dbe4e7;
+$mr-line-soft: #edf1f3;
+$mr-ground: #f4f6f8;
+$mr-head: linear-gradient(90deg, #f3f8f9 0%, #eaf4f5 100%);
 
-@mixin yt-mr-status {
-    &.b-ok { background: #e3f5ec; color: #16653f; }
-    &.b-soon { background: #fff1cc; color: #7a4b00; }
-    &.b-due { background: #fde6e4; color: #a1231b; }
-    &.b-na { background: #eceef4; color: #4f5672; }
-    &.b-old { background: #f1eeff; color: $yt-mr-primary-dark; }
+@mixin mr-status {
+    &.b-ok { background: #e3f5ec; color: #146240; }
+    &.b-soon { background: #fff2cf; color: #774a00; }
+    &.b-due { background: #fde6e4; color: #9e2219; }
+    &.b-na { background: #eceef3; color: #4c5368; }
+    &.b-old { background: #eeedf8; color: $mr-primary-dark; }
 }
 
 .o_yt_mr {
-    background: $yt-mr-ground;
-    color: $yt-mr-ink;
+    background: $mr-ground;
+    color: $mr-ink;
     min-height: 100%;
     overflow: auto;
-    padding: 32px 32px 56px;
-    font-size: 14px;
+    font-size: 13.5px;
 
-    a { color: #4a34c9; }
-    a:hover { color: $yt-mr-primary-dark; }
-    h1 { margin: 0; font-size: 26px; font-weight: 700; color: $yt-mr-ink; }
-    h2 { margin: 0; font-size: 17px; font-weight: 700; color: $yt-mr-ink; }
+    a { color: $mr-accent-dark; font-weight: 600; }
+    a:hover { color: $mr-primary; }
+    h1, h2, h3 { margin: 0; color: inherit; font-weight: 700; }
 
-    .o_yt_mr_wrap { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
-    .o_yt_mr_empty { background: #fff; border-radius: 18px; padding: 40px; text-align: center; color: $yt-mr-muted; box-shadow: $yt-mr-shadow; }
-    .o_yt_mr_head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
-    .o_yt_mr_titles { display: flex; flex-direction: column; gap: 8px; }
-    .o_yt_mr_crumb, .o_yt_mr_sub, .o_yt_mr_muted { color: $yt-mr-muted; }
-    .o_yt_mr_crumb { font-size: 13px; }
-    .o_yt_mr_actions, .o_yt_mr_inline { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-    .o_yt_mr_stack { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-    .o_yt_mr_note, .o_yt_mr_hint { font-size: 12px; color: $yt-mr-muted; }
-    .o_yt_mr_pad { padding: 18px 24px; }
+    .o_yt_mr_page { max-width: 1500px; margin: 0 auto; padding: 18px 22px 40px; display: flex; flex-direction: column; gap: 16px; }
+    .o_yt_mr_state { background: #fff; border: 1px solid $mr-line; border-radius: 12px; padding: 36px; text-align: center; color: $mr-muted; font-size: 14px; }
+    .o_yt_mr_muted { color: $mr-muted; }
+    .o_yt_mr_strong { font-weight: 600; }
+    .o_yt_mr_nowrap { white-space: nowrap; }
+    .o_yt_mr_num { text-align: left !important; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .o_yt_mr_footnote { margin: -6px 2px 0; font-size: 12px; color: $mr-muted; }
+    .o_yt_mr_notice { margin: 0; padding: 10px 14px; border-inline-start: 4px solid $mr-accent; border-radius: 8px; background: $mr-accent-soft; font-size: 13px; }
 
-    .o_yt_mr_card { background: #fff; border-radius: 20px; box-shadow: $yt-mr-shadow; min-width: 0; }
-    .o_yt_mr_section { display: flex; flex-direction: column; gap: 14px; }
-    .o_yt_mr_section_head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; }
+    // ---------- Hero band ----------
+    .o_yt_mr_hero {
+        display: flex; flex-wrap: wrap; align-items: stretch; gap: 14px 18px;
+        padding: 18px 20px; border-radius: 14px; color: #fff;
+        background:
+            radial-gradient(circle at 8% 15%, rgba(255, 255, 255, 0.14), transparent 32%),
+            linear-gradient(135deg, $mr-primary, $mr-primary-dark);
+        box-shadow: 0 10px 26px rgba(57, 53, 111, 0.18);
+        a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+    }
+    .o_yt_mr_hero_main { flex: 1 1 360px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .o_yt_mr_crumb {
+        display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; opacity: 0.85;
+        a { text-decoration: none; font-weight: 600; }
+    }
+    .o_yt_mr_hero_title { display: flex; align-items: center; gap: 14px; min-width: 0; h1 { font-size: 22px; line-height: 1.3; } }
+    .o_yt_mr_hero_icon {
+        width: 48px; height: 48px; flex: none; border-radius: 12px; display: grid; place-items: center;
+        font-size: 20px; background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.24);
+    }
+    .o_yt_mr_avatar { font-size: 17px; font-weight: 700; }
+    .o_yt_mr_hero_meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: 4px; font-size: 12.5px; opacity: 0.94; }
+    .o_yt_mr_hero_stats { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+    .o_yt_mr_hero_box {
+        min-width: 118px; display: flex; flex-direction: column; justify-content: center; gap: 2px;
+        padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(255, 255, 255, 0.1);
+        small { font-size: 11.5px; opacity: 0.8; }
+        strong { font-size: 20px; font-weight: 700; line-height: 1.2; }
+    }
+    .o_yt_mr_hero_actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .o_yt_mr_hbtn {
+        min-height: 40px; display: inline-flex; align-items: center; gap: 7px; padding: 0 14px; border-radius: 9px;
+        border: 1px solid rgba(255, 255, 255, 0.34); background: rgba(255, 255, 255, 0.1); color: #fff !important;
+        font-weight: 700; font-size: 13px; text-decoration: none !important; cursor: pointer;
+        &:hover { background: rgba(255, 255, 255, 0.2); }
+    }
+    .o_yt_mr_hbtn_solid { background: #fff; color: $mr-primary-dark !important; border-color: #fff; &:hover { background: #f1f0fb; } }
+    .o_yt_mr_pill { display: inline-block; vertical-align: middle; padding: 1px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; background: rgba(255, 255, 255, 0.18); }
 
+    // ---------- Panels ----------
+    .o_yt_mr_panel { background: #fff; border: 1px solid $mr-line; border-radius: 12px; overflow: hidden; min-width: 0; box-shadow: 0 2px 10px rgba(31, 63, 68, 0.04); }
+    .o_yt_mr_panel_head {
+        display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+        background: $mr-head; border-bottom: 1px solid $mr-line;
+    }
+    .o_yt_mr_panel_icon {
+        width: 32px; height: 32px; flex: none; border-radius: 8px; display: grid; place-items: center;
+        background: #fff; border: 1px solid $mr-line; color: $mr-accent;
+        &.is-warn { color: #b26b00; }
+    }
+    .o_yt_mr_panel_title { flex: 1; min-width: 0; h2 { font-size: 14.5px; } h3 { font-size: 14px; } p { margin: 1px 0 0; font-size: 11.5px; color: $mr-muted; } }
+    .o_yt_mr_panel_foot { padding: 10px 14px; border-top: 1px solid $mr-line-soft; background: #fbfcfd; }
+    .o_yt_mr_count { min-width: 26px; padding: 1px 8px; border-radius: 999px; background: #fff; border: 1px solid $mr-line; color: $mr-ink; font-size: 12px; font-weight: 700; text-align: center; }
+    .o_yt_mr_empty { padding: 22px 16px !important; text-align: center; color: $mr-muted; }
+    .o_yt_mr_subhead { padding: 10px 14px; font-size: 12.5px; color: $mr-muted; border-bottom: 1px solid $mr-line-soft; }
+
+    // ---------- Buttons ----------
     .o_yt_mr_btn {
-        min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #e3def9;
-        background: #fff; color: $yt-mr-primary-dark; font-weight: 600; cursor: pointer;
-        &:hover { background: #f6f4ff; }
+        min-height: 36px; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border-radius: 8px;
+        border: 1px solid #cfdfe1; background: #fff; color: $mr-accent-dark; font-weight: 700; font-size: 12.5px; cursor: pointer;
+        &:hover { background: $mr-accent-soft; border-color: #b9d6d8; }
     }
-    .o_yt_mr_btn_primary { background: $yt-mr-primary; border-color: $yt-mr-primary; color: #fff; &:hover { background: $yt-mr-primary-dark; } }
-    .o_yt_mr_btn_soft { background: $yt-mr-ground; border-color: transparent; width: 100%; margin-top: auto; }
-    .o_yt_mr_link { min-height: 44px; padding: 0 12px; border: 0; background: transparent; color: #4a34c9; font-weight: 600; cursor: pointer; }
+    .o_yt_mr_link { min-height: 32px; padding: 0 8px; border: 0; background: transparent; color: $mr-accent-dark; font-weight: 700; cursor: pointer; &:hover { color: $mr-primary; } }
     .o_yt_mr_icon {
-        width: 44px; height: 44px; border-radius: 12px; border: 1px solid #e3def9; background: #fff;
-        display: inline-grid; place-items: center; color: $yt-mr-primary-dark; text-decoration: none;
+        width: 32px; height: 32px; display: inline-grid; place-items: center; border-radius: 8px; border: 1px solid $mr-line;
+        background: #fff; color: $mr-primary; text-decoration: none !important;
+        &.is-wa { color: #14864a; border-color: #c7e8d5; background: #f2fbf6; }
+        &:hover { filter: brightness(0.97); }
     }
-    .o_yt_mr_icon_wa { border-color: #c9ead8; background: #f0faf4; color: #16653f; }
 
+    // ---------- Status / tags ----------
     .o_yt_mr_badge {
-        display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 999px;
-        font-size: 12px; font-weight: 600; white-space: nowrap;
+        display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+        font-size: 12px; font-weight: 700; white-space: nowrap;
         i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: inline-block; }
-        @include yt-mr-status;
+        @include mr-status;
     }
-    .o_yt_mr_dot { width: 10px; height: 10px; border-radius: 50%; flex: none; @include yt-mr-status; &.b-due { background: #c4352b; } &.b-soon { background: #d49a00; } }
-    .o_yt_mr_pill { background: #eef3ff; color: #2c4fa8; border-radius: 999px; padding: 2px 10px; font-size: 12px; font-weight: 600; }
-    .o_yt_mr_pill_lg { font-size: 14px; padding: 6px 14px; background: #f1eeff; color: $yt-mr-primary-dark; }
-    .o_yt_mr_plate { border: 1.5px solid $yt-mr-ink; border-radius: 8px; padding: 3px 9px; font-weight: 700; letter-spacing: 1.5px; white-space: nowrap; background: #fff; }
-    .o_yt_mr_plate_lg { font-size: 17px; padding: 6px 14px; border-width: 2px; }
-
-    .o_yt_mr_customer { display: flex; flex-wrap: wrap; align-items: center; gap: 28px; padding: 26px; }
-    .o_yt_mr_customer_id { display: flex; align-items: center; gap: 16px; flex: 1 1 300px; }
-    .o_yt_mr_avatar { width: 56px; height: 56px; border-radius: 16px; background: #eef3ff; color: #3b65ce; display: grid; place-items: center; font-size: 20px; font-weight: 700; flex: none; }
-    .o_yt_mr_name { font-size: 20px; font-weight: 700; }
-    .o_yt_mr_stats {
-        display: flex; gap: 32px;
-        div { display: flex; flex-direction: column; gap: 2px; }
-        b { font-size: 24px; font-weight: 700; }
-        span { font-size: 13px; color: $yt-mr-muted; }
+    .o_yt_mr_tag { margin-inline-start: 6px; padding: 0 6px; border-radius: 5px; background: #eeedf8; color: $mr-primary-dark; font-size: 11px; font-weight: 700; }
+    .o_yt_mr_plate {
+        display: inline-block; padding: 2px 9px; border: 1.5px solid $mr-ink; border-radius: 6px; background: #fff;
+        color: $mr-ink; font-weight: 700; letter-spacing: 1.5px; white-space: nowrap; font-size: 13px;
     }
+    .o_yt_mr_plate_sm { padding: 0 6px; font-size: 11.5px; letter-spacing: 1px; border-width: 1px; }
+    .o_yt_mr_hero .o_yt_mr_plate { border-color: #fff; }
 
-    .o_yt_mr_list { overflow: hidden; }
-    .o_yt_mr_item {
-        display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 16px 24px;
-        & + .o_yt_mr_item { border-top: 1px solid $yt-mr-line; }
-    }
-    .o_yt_mr_item_col { flex-direction: column; align-items: stretch; gap: 4px; }
-    .o_yt_mr_item_line { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
-    .o_yt_mr_item_date { width: 96px; color: $yt-mr-muted; }
-    .o_yt_mr_item_body { display: flex; flex-direction: column; gap: 3px; flex: 1 1 280px; min-width: 0; }
-
-    .o_yt_mr_grid2, .o_yt_mr_grid3, .o_yt_mr_grid4 { display: grid; gap: 22px; }
-    .o_yt_mr_grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .o_yt_mr_grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .o_yt_mr_grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-    .o_yt_mr_vehicle { padding: 22px; display: flex; flex-direction: column; gap: 18px; }
-    .o_yt_mr_vehicle_head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .o_yt_mr_car_icon { width: 44px; height: 44px; border-radius: 12px; background: #f4f0ff; color: #7b64d9; display: grid; place-items: center; font-size: 18px; flex: none; }
-    .o_yt_mr_rows { display: flex; flex-direction: column; gap: 12px; }
-    .o_yt_mr_row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; span:first-child { color: $yt-mr-muted; } b { font-weight: 600; text-align: left; } }
-
-    .o_yt_mr_track { padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; }
-    .o_yt_mr_track_head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
-    .o_yt_mr_log { border-top: 1px solid $yt-mr-line; padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
-    .o_yt_mr_log_title { font-size: 13px; font-weight: 600; color: $yt-mr-muted; }
-    .o_yt_mr_log_row { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 8px; }
-
-    .o_yt_mr_tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 12px; border-bottom: 1px solid $yt-mr-line; }
-    .o_yt_mr_tab { min-height: 44px; padding: 0 18px; border-radius: 12px; border: 0; background: transparent; color: #3d3f66; font-weight: 600; cursor: pointer; &.active { background: $yt-mr-primary; color: #fff; } }
-
-    .o_yt_mr_kpi { padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; b { font-size: 22px; font-weight: 700; } }
+    // ---------- Tables ----------
     .o_yt_mr_table_wrap { overflow-x: auto; }
     .o_yt_mr_table {
-        width: 100%; min-width: 720px; border-collapse: collapse;
-        th { background: #f6f4ff; color: $yt-mr-primary-dark; font-weight: 600; padding: 12px 16px; text-align: right; }
-        td { padding: 12px 16px; border-top: 1px solid $yt-mr-line; }
+        width: 100%; border-collapse: collapse; min-width: 640px;
+        th {
+            padding: 9px 14px; background: #f7fafb; color: $mr-muted; font-size: 12px; font-weight: 700;
+            text-align: right; white-space: nowrap; border-bottom: 1px solid $mr-line;
+        }
+        td { padding: 10px 14px; border-bottom: 1px solid $mr-line-soft; vertical-align: middle; }
+        tbody tr:last-child td { border-bottom: 0; }
+        tbody tr:hover td { background: #fafcfc; }
+    }
+    .o_yt_mr_table_mini { min-width: 0; th, td { padding: 7px 14px; font-size: 12.5px; } }
+    .o_yt_mr_actions_col { white-space: nowrap; text-align: left !important; > * { margin-inline-start: 4px; } }
+
+    // ---------- Customer page ----------
+    .o_yt_mr_layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr); gap: 16px; align-items: start; }
+    .o_yt_mr_vehicles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 14px; }
+    .o_yt_mr_vehicle { display: flex; flex-direction: column; border: 1px solid $mr-line; border-top: 3px solid $mr-accent; border-radius: 10px; background: #fff; min-width: 0; }
+    .o_yt_mr_vehicle_head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 12px 14px; border-bottom: 1px solid $mr-line-soft; }
+    .o_yt_mr_tracklist {
+        list-style: none; margin: 0; padding: 6px 14px; flex: 1;
+        li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; & + li { border-top: 1px dashed $mr-line-soft; } }
+    }
+    .o_yt_mr_vehicle_foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border-top: 1px solid $mr-line-soft; background: #fbfcfd; border-radius: 0 0 10px 10px; font-size: 12px; }
+    .o_yt_mr_alerts {
+        list-style: none; margin: 0; padding: 0;
+        li {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 14px;
+            border-inline-start: 3px solid transparent;
+            & + li { border-top: 1px solid $mr-line-soft; }
+            &.is-due { border-inline-start-color: #c4352b; }
+            &.is-soon { border-inline-start-color: #d49a00; }
+        }
+    }
+    .o_yt_mr_alert_text { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-width: 0; small { flex-basis: 100%; color: $mr-muted; font-size: 12px; } }
+    .o_yt_mr_alert_side { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .o_yt_mr_layout_side .o_yt_mr_footnote { margin: 0; padding: 10px 14px; border-top: 1px solid $mr-line-soft; }
+
+    // ---------- Vehicle detail ----------
+    .o_yt_mr_grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .o_yt_mr_track { border-top: 3px solid $mr-line; &.is-ok { border-top-color: #2f9e64; } &.is-soon { border-top-color: #d49a00; } &.is-due { border-top-color: #c4352b; } }
+    .o_yt_mr_kv {
+        margin: 0; padding: 6px 14px;
+        > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; & + div { border-top: 1px dashed $mr-line-soft; } }
+        dt { font-weight: 500; color: $mr-muted; }
+        dd { margin: 0; font-weight: 700; text-align: left; }
+    }
+    .o_yt_mr_track .o_yt_mr_table_mini { border-top: 1px solid $mr-line-soft; }
+    .o_yt_mr_tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 10px; background: $mr-head; border-bottom: 1px solid $mr-line; }
+    .o_yt_mr_tab {
+        min-height: 38px; display: inline-flex; align-items: center; gap: 7px; padding: 0 14px; border-radius: 8px;
+        border: 1px solid transparent; background: transparent; color: $mr-ink; font-weight: 700; font-size: 13px; cursor: pointer;
+        .o_yt_mr_count { font-size: 11px; padding: 0 7px; min-width: 22px; }
+        &:hover { background: #fff; border-color: $mr-line; }
+        &.active { background: linear-gradient(135deg, $mr-primary, $mr-primary-dark); color: #fff; .o_yt_mr_count { background: rgba(255, 255, 255, 0.2); border-color: transparent; color: #fff; } }
     }
 
-    @media (max-width: 992px) {
-        padding: 20px 14px 40px;
-        .o_yt_mr_grid3, .o_yt_mr_grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .o_yt_mr_grid2 { grid-template-columns: minmax(0, 1fr); }
+    // ---------- Statement ----------
+    .o_yt_mr_kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .o_yt_mr_kpi {
+        display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; background: #fff; border: 1px solid $mr-line;
+        border-top: 3px solid $mr-accent; border-radius: 10px;
+        small { color: $mr-muted; font-weight: 700; font-size: 12px; }
+        strong { font-size: 19px; font-variant-numeric: tabular-nums; }
+        span { font-size: 11.5px; color: $mr-muted; }
+        &.is-balance { border-top-color: $mr-primary; background: #fbfaff; }
     }
-    @media (max-width: 640px) {
-        .o_yt_mr_grid3, .o_yt_mr_grid4 { grid-template-columns: minmax(0, 1fr); }
-        .o_yt_mr_stats { gap: 20px; }
+    .o_yt_mr_grid2_wide { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: start; }
+
+    // ---------- Responsive ----------
+    @media (max-width: 1200px) {
+        .o_yt_mr_layout { grid-template-columns: minmax(0, 1fr); }
+        .o_yt_mr_grid2_wide { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 900px) {
+        .o_yt_mr_page { padding: 12px 10px 32px; }
+        .o_yt_mr_vehicles, .o_yt_mr_grid2 { grid-template-columns: minmax(0, 1fr); }
+        .o_yt_mr_kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+        .o_yt_mr_kpis { grid-template-columns: minmax(0, 1fr); }
+        .o_yt_mr_hero_box { flex: 1 1 40%; }
     }
 }
 
 // Work order banner (computed Html field).
 .yt-due-banner-field { display: block; width: 100%; margin-bottom: 12px; }
 .yt-due-banner {
-    background: #fff8e6; border: 1px solid #f3dc9c; border-radius: 14px; padding: 12px 16px;
-    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; direction: rtl;
+    background: #fff8e6; border: 1px solid #f1d891; border-inline-start: 4px solid #d49a00; border-radius: 10px; padding: 10px 14px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; direction: rtl;
     strong { color: #5c3a00; }
-    .yt-due-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .yt-due-chip { border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600; @include yt-mr-status; }
+    .yt-due-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .yt-due-chip { border-radius: 999px; padding: 2px 11px; font-size: 12.5px; font-weight: 700; @include mr-status; }
 }
