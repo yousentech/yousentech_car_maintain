@@ -7,7 +7,7 @@
   <field name="inherit_id" ref="product.product_template_form_view"/>
   <field name="arch" type="xml">
    <xpath expr="//notebook" position="inside">
-    <page string="الصيانة" name="yt_maintenance">
+    <page string="الصيانة" name="yt_maintenance" groups="yousentech_car_maintain.group_workshop_periodic">
      <group>
       <group string="الصيانة الدورية (لصنف الخدمة)">
        <field name="yt_periodic_interval_km"/>
@@ -88,7 +88,7 @@
   <field name="res_model">yt.oil.type</field>
   <field name="view_mode">tree</field>
  </record>
- <menuitem id="menu_yt_oil_types" name="أنواع الزيوت" parent="menu_inspection_config" action="action_yt_oil_types" sequence="20" groups="yousentech_car_maintain.group_workshop_configuration_access"/>
+ <menuitem id="menu_yt_oil_types" name="أنواع الزيوت" parent="menu_inspection_config" action="action_yt_oil_types" sequence="20" groups="yousentech_car_maintain.group_workshop_periodic,yousentech_car_maintain.group_workshop_followup,yousentech_car_maintain.group_workshop_followup_reports"/>
 
  <!-- Maintenance events (system-generated, read-only). -->
  <record id="view_yt_service_event_tree" model="ir.ui.view">
@@ -138,7 +138,7 @@
   <field name="view_mode">tree</field>
   <field name="context">{'search_default_active_events': 1}</field>
  </record>
- <menuitem id="menu_yt_service_events" name="سجل أحداث الصيانة" parent="menu_inspection_config" action="action_yt_service_events" sequence="30" groups="yousentech_car_maintain.group_workshop_configuration_access"/>
+ <menuitem id="menu_yt_service_events" name="سجل أحداث الصيانة" parent="menu_inspection_config" action="action_yt_service_events" sequence="30" groups="yousentech_car_maintain.group_workshop_periodic,yousentech_car_maintain.group_workshop_followup,yousentech_car_maintain.group_workshop_followup_reports"/>
 
  <!-- Customer follow-ups. -->
  <record id="view_yt_followup_tree" model="ir.ui.view">

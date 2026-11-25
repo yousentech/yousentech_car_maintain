@@ -7,7 +7,7 @@
   <field name="inherit_id" ref="yousentech_car_maintain.view_reception_workshop_form"/>
   <field name="arch" type="xml">
    <xpath expr="//div[@name='button_box']" position="after">
-    <field name="yt_due_banner" nolabel="1" readonly="1" invisible="not yt_due_banner" class="yt-due-banner-field"/>
+    <field name="yt_due_banner" nolabel="1" readonly="1" invisible="not yt_due_banner" class="yt-due-banner-field" groups="yousentech_car_maintain.group_workshop_periodic,yousentech_car_maintain.group_workshop_followup,yousentech_car_maintain.group_workshop_followup_reports"/>
    </xpath>
   </field>
  </record>
