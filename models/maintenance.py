@@ -199,6 +199,8 @@ class WorkshopVehicleMaintenance(models.Model):
 class WorkshopOrderMaintenance(models.Model):
     _inherit = 'yt.reception.order'
 
+    # Every state change (including «إرجاع للمسودة», cancel and re-open) is logged in the chatter.
+    state = fields.Selection(tracking=True)
     yt_is_periodic = fields.Boolean(
         string='احتساب هذا الأمر كصيانة دورية', copy=False, tracking=True,
         groups=PERIODIC_GROUP,

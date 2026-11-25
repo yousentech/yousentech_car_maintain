@@ -1,3 +1,5 @@
+from markupsafe import Markup
+
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
@@ -617,27 +619,42 @@ class WorkshopSale(models.Model):
             blocker = order._workshop_return_to_draft_blocker()
             if blocker:
                 raise UserError(blocker)
-            notes = []
+            steps = []  # (label, records) shown as links in the work order history
             sale = order.sale_order_id
+            origin = order._get_html_link()
             if sale:
                 drafts = order._workshop_current_documents().filtered(lambda m: m.state == 'draft')
                 if drafts:
                     drafts.button_cancel()
-                    notes.append(_('إلغاء الفواتير/الإشعارات المسودة: %s') % ', '.join(drafts.mapped('display_name')))
+                    steps.append((_('إلغاء الفواتير/الإشعارات المسودة'), drafts))
+                    for move in drafts:
+                        move.message_post(body=Markup(_('أُلغيت ضمن «إرجاع للمسودة» لأمر العمل %s.')) % origin)
                 returns = order._workshop_return_delivered_stock(sale)
                 if returns:
-                    notes.append(_('مرتجع مخزني معتمد: %s') % ', '.join(returns.mapped('name')))
+                    steps.append((_('مرتجع مخزني معتمد لقطع الغيار المصروفة'), returns))
+                    for picking in returns:
+                        picking.message_post(body=Markup(_('مرتجع أُنشئ واعتُمد تلقائياً ضمن «إرجاع للمسودة» لأمر العمل %s.')) % origin)
                 if sale.state != 'cancel':
                     if getattr(sale, 'locked', False) and hasattr(sale, 'action_unlock'):
                         sale.action_unlock()
                     sale._action_cancel()
-                    notes.append(_('إلغاء أمر البيع %s') % sale.name)
+                    steps.append((_('إلغاء أمر البيع ونقله إلى أوامر البيع السابقة'), sale))
+                else:
+                    steps.append((_('نقل أمر البيع الملغي إلى أوامر البيع السابقة'), sale))
+                sale.message_post(body=Markup(_('أُلغي أمر البيع وفُصل عن أمر العمل %s ضمن «إرجاع للمسودة». قد يُنشأ أمر بيع جديد بعد تعديل أمر العمل.')) % origin)
                 order.write({'previous_sale_order_ids': [(4, sale.id)], 'sale_order_id': False})
                 order.sale_line_ids.write({'sale_line_id': False})
+            previous_state = dict(order._fields['state']._description_selection(self.env)).get(order.state, order.state)
             order.write({'state': 'draft', 'workshop_approved': False})
-            body = _('تم إرجاع أمر العمل إلى المسودة للتعديل.')
-            if notes:
-                body += ' ' + ' · '.join(notes)
+            items = Markup('').join(
+                Markup('<li>%s: %s</li>') % (label, Markup('، ').join(rec._get_html_link() for rec in records))
+                for label, records in steps)
+            body = Markup(_('<p><b>تم إرجاع أمر العمل إلى المسودة للتعديل</b> (من حالة «%s»).</p>')) % previous_state
+            if items:
+                body += Markup('<p>الخطوات المنفذة:</p><ul>%s</ul>') % items
+            else:
+                body += Markup(_('<p>لا يوجد أمر بيع مرتبط؛ لم تُنفَّذ أي خطوات مالية أو مخزنية.</p>'))
+            body += Markup(_('<p>الدفعات لم تتأثر.</p>'))
             order.message_post(body=body)
         return True
 
