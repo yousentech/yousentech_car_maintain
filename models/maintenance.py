@@ -211,12 +211,12 @@ class WorkshopVehicleFollowup(models.Model):
         for followup in self:
             if followup.vehicle_id:
                 followup.partner_id = followup.vehicle_id.partner_id
-                followup.company_id = followup.vehicle_id.company_id
+                followup.company_id = followup.vehicle_id.company_id or self.env.company
 
     @api.constrains('vehicle_id', 'company_id', 'track_type', 'oil_type_id')
     def _check_followup(self):
         for followup in self:
-            if followup.vehicle_id.company_id != followup.company_id:
+            if followup.vehicle_id.company_id and followup.vehicle_id.company_id != followup.company_id:
                 raise ValidationError(_('المتابعة يجب أن تتبع شركة السيارة.'))
             if followup.track_type == 'oil' and not followup.oil_type_id:
                 raise ValidationError(_('حدد نوع الزيت عند متابعة تغيير الزيت.'))

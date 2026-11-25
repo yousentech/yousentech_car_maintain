@@ -128,15 +128,17 @@ class WorkshopMaintenanceReport(models.AbstractModel):
         oil_enabled = {}
         result = {}
         for vehicle in vehicles:
-            if vehicle.company_id.id not in thresholds:
-                thresholds[vehicle.company_id.id] = self._thresholds(vehicle.company_id)
-            soon_days, soon_km = thresholds[vehicle.company_id.id]
+            # Shared vehicles (no company) use the active branch settings.
+            company = vehicle.company_id or self.env.company
+            if company.id not in thresholds:
+                thresholds[company.id] = self._thresholds(company)
+            soon_days, soon_km = thresholds[company.id]
             last_odo = odometers.get(vehicle.id, (0.0, False))[0]
             vehicle_events = by_vehicle.get(vehicle.id, [])
             keys = [('periodic', _('الصيانة الدورية'), False)]
             used_oils = {e.oil_type_id.id for e in vehicle_events if e.track_type == 'oil'}
             for oil_type in oil_types:
-                if not oil_enabled.setdefault(vehicle.company_id.id, self.env['yt.workshop.finance.settings']._yt_oil_enabled(vehicle.company_id)):
+                if not oil_enabled.setdefault(company.id, self.env['yt.workshop.finance.settings']._yt_oil_enabled(company)):
                     break
                 if include_empty_oils or oil_type.id in used_oils:
                     keys.append(('oil:%s' % oil_type.id, oil_type.name, oil_type))
@@ -367,7 +369,7 @@ class WorkshopMaintenanceReport(models.AbstractModel):
                     'tel': header['tel'], 'whatsapp': header['whatsapp'],
                     'track': track['name'], 'track_key': track['key'], 'next': track['next'],
                     'status': track['status'], 'cls': track['cls'], 'label': track['label'],
-                    'branch': vehicle.company_id.name,
+                    'branch': vehicle.company_id.name or _('مشتركة'),
                 })
         rows.sort(key=lambda r: (0 if r['status'] == 'due' else 1, r['customer']))
         return {'title': params.get('title') or _('الاستحقاقات'), 'filters': self._filters_label(params),

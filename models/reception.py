@@ -22,7 +22,8 @@ class WorkshopVehicle(models.Model):
     _inherit = ['mail.thread']
     _description = 'Customer Vehicle'
     _rec_name = 'plate'
-    company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
+    # Empty company = vehicle shared by all branches (default since 17.0.4.10.0).
+    company_id = fields.Many2one('res.company', string='الفرع', help='فارغ = السيارة مشتركة بين كل الفروع.')
     partner_id = fields.Many2one('res.partner', required=True, ondelete='restrict')
     plate = fields.Char(required=True, tracking=True)
     plate_spaced = fields.Char(string='اللوحة بتباعد الحروف', compute='_compute_plate_spaced')
@@ -64,13 +65,23 @@ class WorkshopVehicle(models.Model):
             if vehicle.plate:
                 vehicle.plate = re.sub(r'[\\s\\-]+', '', vehicle.plate).upper()
 
+    @api.constrains('plate', 'plate_country', 'plate_type')
+    def _check_plate_identity_shared(self):
+        # Vehicles are shared between branches: one plate identity in the whole database.
+        for vehicle in self:
+            duplicate = self.sudo().search_count([
+                ('id', '!=', vehicle.id), ('plate', '=', vehicle.plate),
+                ('plate_country', '=', vehicle.plate_country), ('plate_type', '=', vehicle.plate_type)])
+            if duplicate:
+                raise ValidationError(_('هوية اللوحة مسجلة مسبقاً في أحد الفروع.'))
+
     @api.onchange('make_id')
     def _onchange_make_id(self):
         for vehicle in self:
             if vehicle.model_id and vehicle.model_id.make_id != vehicle.make_id:
                 vehicle.model_id = False
 
-    _sql_constraints = [('vin_unique','unique(vin)','رقم الشاصي مسجل مسبقاً.'),('plate_unique','unique(company_id,plate_country,plate_type,plate)','هوية اللوحة مسجلة مسبقاً.')]
+    _sql_constraints = [('vin_unique','unique(vin)','رقم الشاصي مسجل مسبقاً.'),('plate_identity_unique','unique(plate_country,plate_type,plate)','هوية اللوحة مسجلة مسبقاً.')]
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -189,13 +200,13 @@ class ReceptionOrder(models.Model):
     @api.onchange('partner_id', 'company_id')
     def _onchange_partner_company(self):
         for order in self:
-            if order.vehicle_id and (order.vehicle_id.partner_id != order.partner_id or order.vehicle_id.company_id != order.company_id):
+            if order.vehicle_id and (order.vehicle_id.partner_id != order.partner_id or (order.vehicle_id.company_id and order.vehicle_id.company_id != order.company_id)):
                 order.vehicle_id = False
 
     @api.constrains('partner_id','vehicle_id','company_id','odometer_in','odometer_out','partner_mobile')
     def _validate_reception(self):
         for rec in self:
-            if rec.vehicle_id.partner_id != rec.partner_id or rec.vehicle_id.company_id != rec.company_id:
+            if rec.vehicle_id.partner_id != rec.partner_id or (rec.vehicle_id.company_id and rec.vehicle_id.company_id != rec.company_id):
                 raise ValidationError(_('السيارة يجب أن تتبع العميل والشركة المحددين.'))
             if rec.odometer_in < 0 or rec.odometer_out < 0:
                 raise ValidationError(_('قراءة العداد لا يمكن أن تكون سالبة.'))

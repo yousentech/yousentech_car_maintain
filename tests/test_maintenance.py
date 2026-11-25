@@ -162,7 +162,7 @@ class TestMaintenanceReports(MaintenanceCase):
         self._due_vehicle()
         self.env['yt.vehicle.followup'].create({
             'vehicle_id': self.vehicle.id, 'partner_id': self.partner.id,
-            'company_id': self.vehicle.company_id.id, 'result': 'sold'})
+            'company_id': self.company.id, 'result': 'sold'})
         data = self.env['yt.maintenance.report'].get_dues_report({'statuses': ['due']})
         self.assertFalse([r for r in data['rows'] if r['vehicle_id'] == self.vehicle.id])
 
@@ -273,3 +273,21 @@ class TestOilTrackingSwitch(MaintenanceCase):
         self.assertEqual([t['key'] for t in tracks], ['periodic'])
         group = self.env.ref('yousentech_car_maintain.group_workshop_oil_tracking_enabled')
         self.assertNotIn(group, self.env.ref('base.group_user').implied_ids)
+
+
+class TestSharedVehicles(MaintenanceCase):
+    def test_vehicle_shared_between_branches(self):
+        self.assertFalse(self.vehicle.company_id)
+        branch2 = self.env['res.company'].create({'name': 'Branch 2 Test'})
+        self.env.user.company_ids |= branch2
+        order = self.env['yt.reception.order'].with_company(branch2).create({
+            'partner_id': self.partner.id, 'vehicle_id': self.vehicle.id,
+            'odometer_in': 1000, 'company_id': branch2.id})
+        self.assertEqual(order.company_id, branch2)
+        self.assertEqual(order.branch_id, branch2)
+
+    def test_plate_identity_unique_across_branches(self):
+        from odoo.exceptions import ValidationError
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            self.env['yt.reception.vehicle'].create({
+                'partner_id': self.partner.id, 'plate': 'MNT100', 'plate_country': 'SA'})
