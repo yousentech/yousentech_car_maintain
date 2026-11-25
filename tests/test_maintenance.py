@@ -234,3 +234,30 @@ class TestReturnToDraft(MaintenanceCase):
         self.assertEqual(order.service_event_ids.state, 'active')
         order.action_return_to_draft_before_invoice()
         self.assertEqual(order.service_event_ids.state, 'cancelled')
+
+
+class TestWorkOrderAudit(MaintenanceCase):
+    def _last_body(self, order):
+        return str(order.message_ids.sorted('id', reverse=True)[:1].body or '')
+
+    def test_line_price_change_logged_with_total(self):
+        order = self._order(self.service)
+        line = order.sale_line_ids
+        line.price_unit = 25.0
+        body = self._last_body(order)
+        self.assertIn('10.00', body)
+        self.assertIn('25.00', body)
+        self.assertIn('الإجمالي النهائي', body)
+
+    def test_line_add_and_delete_logged(self):
+        order = self._order(self.service)
+        self.env['yt.reception.sale.line'].create(
+            {'order_id': order.id, 'product_id': self.engine_oil.id, 'name': 'oil', 'price_unit': 30.0})
+        self.assertIn('إضافة بنود', self._last_body(order))
+        order.sale_line_ids.filtered(lambda l: l.product_id == self.engine_oil).unlink()
+        self.assertIn('حذف بنود', self._last_body(order))
+
+    def test_discount_change_logged(self):
+        order = self._order(self.service)
+        order.write({'discount_type': 'fixed', 'discount_value': 2.0})
+        self.assertTrue(order.message_ids.filtered(lambda m: 'الإجمالي النهائي' in str(m.body or '')))

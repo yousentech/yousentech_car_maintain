@@ -6,3 +6,4 @@ from . import employee
 from . import workshop_sales
 from . import maintenance
 from . import maintenance_report
+from . import audit

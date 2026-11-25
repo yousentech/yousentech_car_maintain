@@ -190,4 +190,25 @@
   <field name="view_mode">tree,form</field>
  </record>
  <menuitem id="menu_yt_followups" name="متابعات العملاء" parent="menu_workshop_root" action="action_yt_followups" sequence="40" groups="yousentech_car_maintain.group_workshop_followup,yousentech_car_maintain.group_workshop_followup_reports"/>
+ <!-- Change history (chatter) for workshop settings and pricing policies. -->
+ <record id="view_workshop_finance_settings_form_yt_chatter" model="ir.ui.view">
+  <field name="name">yt.workshop.finance.settings.form.yt.chatter</field>
+  <field name="model">yt.workshop.finance.settings</field>
+  <field name="inherit_id" ref="yousentech_car_maintain.view_workshop_finance_settings_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="/form" position="inside">
+    <div class="oe_chatter"><field name="message_ids"/></div>
+   </xpath>
+  </field>
+ </record>
+ <record id="view_workshop_category_pricing_form_yt_chatter" model="ir.ui.view">
+  <field name="name">yt.workshop.category.pricing.form.yt.chatter</field>
+  <field name="model">yt.workshop.category.pricing</field>
+  <field name="inherit_id" ref="yousentech_car_maintain.view_workshop_category_pricing_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="/form" position="inside">
+    <div class="oe_chatter"><field name="message_ids"/></div>
+   </xpath>
+  </field>
+ </record>
 </odoo>
